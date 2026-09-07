@@ -1,0 +1,223 @@
+/* ============================== */
+/* APPARITION ÉCRAN */
+/* ============================== */
+
+.screen.active {
+
+    animation:
+        screenAppear
+        0.3s
+        ease;
+}
+
+
+@keyframes screenAppear {
+
+    from {
+
+        opacity: 0;
+
+        transform:
+            translateY(12px);
+    }
+
+    to {
+
+        opacity: 1;
+
+        transform:
+            translateY(0);
+    }
+
+}
+
+
+/* ============================== */
+/* SITUATION */
+/* ============================== */
+
+.situation-card {
+
+    animation:
+        cardAppear
+        0.4s
+        ease;
+}
+
+
+@keyframes cardAppear {
+
+    0% {
+
+        opacity: 0;
+
+        transform:
+            scale(0.97);
+    }
+
+    100% {
+
+        opacity: 1;
+
+        transform:
+            scale(1);
+    }
+
+}
+
+
+/* ============================== */
+/* ICÔNE */
+/* ============================== */
+
+.situation-icon {
+
+    animation:
+        iconBounce
+        0.55s
+        ease;
+}
+
+
+@keyframes iconBounce {
+
+    0% {
+        transform:
+            scale(0.6);
+    }
+
+    60% {
+        transform:
+            scale(1.15);
+    }
+
+    100% {
+        transform:
+            scale(1);
+    }
+
+}
+
+
+/* ============================== */
+/* CONSÉQUENCE */
+/* ============================== */
+
+.consequence-icon {
+
+    animation:
+        consequencePop
+        0.55s
+        ease;
+}
+
+
+@keyframes consequencePop {
+
+    0% {
+
+        opacity: 0;
+
+        transform:
+            scale(0.4)
+            rotate(-10deg);
+    }
+
+    70% {
+
+        transform:
+            scale(1.15)
+            rotate(4deg);
+    }
+
+    100% {
+
+        opacity: 1;
+
+        transform:
+            scale(1)
+            rotate(0deg);
+    }
+
+}
+
+
+/* ============================== */
+/* DÉGÂTS */
+/* ============================== */
+
+.damage-animation {
+
+    animation:
+        damageShake
+        0.4s
+        ease;
+}
+
+
+@keyframes damageShake {
+
+    0% {
+        transform:
+            translateX(0);
+    }
+
+    20% {
+        transform:
+            translateX(-8px);
+    }
+
+    40% {
+        transform:
+            translateX(8px);
+    }
+
+    60% {
+        transform:
+            translateX(-5px);
+    }
+
+    80% {
+        transform:
+            translateX(5px);
+    }
+
+    100% {
+        transform:
+            translateX(0);
+    }
+
+}
+
+
+/* ============================== */
+/* SOIN */
+/* ============================== */
+
+.heal-animation {
+
+    animation:
+        healPulse
+        0.5s
+        ease;
+}
+
+
+@keyframes healPulse {
+
+    0% {
+        transform:
+            scale(1);
+    }
+
+    50% {
+        transform:
+            scale(1.08);
+    }
+
+    100% {
+        transform:
+            scale(1);
+    }
+
+}

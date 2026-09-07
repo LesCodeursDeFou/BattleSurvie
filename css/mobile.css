@@ -1,0 +1,87 @@
+/* ============================== */
+/* PETITS TÉLÉPHONES */
+/* ============================== */
+
+@media (max-width: 420px) {
+
+    .app {
+
+        padding:
+            20px
+            12px
+            40px;
+    }
+
+
+    .header h1 {
+
+        font-size: 26px;
+    }
+
+
+    .card {
+
+        padding: 19px;
+    }
+
+
+    .player-card h2 {
+
+        font-size: 23px;
+    }
+
+
+    .life-counter {
+
+        padding:
+            8px
+            12px;
+
+        font-size: 17px;
+    }
+
+
+    .situation-icon {
+
+        font-size: 60px;
+    }
+
+
+    .situation-card h2 {
+
+        font-size: 21px;
+    }
+
+
+    .choice-button {
+
+        padding: 15px;
+    }
+
+
+    .choice-button strong {
+
+        font-size: 16px;
+    }
+
+}
+
+
+/* ============================== */
+/* TABLETTE / PC */
+/* ============================== */
+
+@media (min-width: 700px) {
+
+    .app {
+
+        padding-top: 50px;
+    }
+
+
+    .card {
+
+        padding: 30px;
+    }
+
+}

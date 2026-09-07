@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <meta
+        name="theme-color"
+        content="#101511"
+    >
+
+    <title>BattleSurvie</title>
+
+    <link
+        rel="stylesheet"
+        href="./css/style.css"
+    >
+
+    <link
+        rel="stylesheet"
+        href="./css/animations.css"
+    >
+
+    <link
+        rel="stylesheet"
+        href="./css/mobile.css"
+    >
+    
+    <link rel="manifest" href="./manifest.json">
+
+    <meta name="theme-color" content="#101511">
+
+    <meta
+        name="apple-mobile-web-app-capable"
+        content="yes"
+    >
+
+    <meta
+        name="apple-mobile-web-app-status-bar-style"
+        content="black-translucent"
+    >
+
+    <meta
+        name="apple-mobile-web-app-title"
+        content="BattleSurvie"
+    >
+
+    <link
+        rel="apple-touch-icon"
+        href="./assets/icons/icon-192.png"
+    >
+
+</head>
+
+<body>
+
+    <main class="app">
+
+        <!-- ========================= -->
+        <!-- HEADER -->
+        <!-- ========================= -->
+
+        <header class="header">
+
+            <h1>
+                🏝️ BattleSurvie
+            </h1>
+
+            <p>
+                Fais les bons choix. Survis aux conséquences.
+            </p>
+
+        </header>
+
+
+        <!-- ========================= -->
+        <!-- CONFIGURATION -->
+        <!-- ========================= -->
+
+        <section
+            id="screenSetup"
+            class="screen active"
+        >
+
+            <div class="card">
+
+                <span class="small-label">
+                    Configuration
+                </span>
+
+                <h2>
+                    Nouvelle partie
+                </h2>
+
+                <label for="playerCount">
+                    Nombre de joueurs
+                </label>
+
+                <select id="playerCount">
+
+                    <option value="1">
+                        1 joueur
+                    </option>
+
+                    <option
+                        value="2"
+                        selected
+                    >
+                        2 joueurs
+                    </option>
+
+                    <option value="3">
+                        3 joueurs
+                    </option>
+
+                    <option value="4">
+                        4 joueurs
+                    </option>
+
+                    <option value="5">
+                        5 joueurs
+                    </option>
+
+                    <option value="6">
+                        6 joueurs
+                    </option>
+
+                    <option value="7">
+                        7 joueurs
+                    </option>
+
+                    <option value="8">
+                        8 joueurs
+                    </option>
+
+                </select>
+
+
+                <!--
+                    Les champs joueurs sont
+                    générés ici par JavaScript
+                -->
+
+                <div id="playerNames"></div>
+
+
+                <button
+                    id="btnStartGame"
+                    class="btn btn-primary"
+                    type="button"
+                >
+                    Commencer la partie
+                </button>
+
+            </div>
+
+        </section>
+
+
+        <!-- ========================= -->
+        <!-- ÉCRAN DE JEU -->
+        <!-- ========================= -->
+
+        <section
+            id="screenGame"
+            class="screen"
+        >
+
+            <div class="top-bar">
+
+                <div>
+                    Tour
+                    <strong id="roundNumber">
+                        1
+                    </strong>
+                </div>
+
+                <div>
+                    Joueur
+                    <strong id="playerPosition">
+                        1 / 2
+                    </strong>
+                </div>
+
+            </div>
+
+
+            <div class="player-card">
+
+                <div>
+
+                    <span class="small-label">
+                        À toi de jouer
+                    </span>
+
+                    <h2 id="currentPlayerName">
+                        Joueur
+                    </h2>
+
+                </div>
+
+
+                <div class="life-counter">
+
+                    ❤️
+
+                    <span id="currentPlayerLives">
+                        10
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <article class="card situation-card">
+
+                <div
+                    id="situationIcon"
+                    class="situation-icon"
+                >
+                    🐒
+                </div>
+
+
+                <span
+                    id="situationCategory"
+                    class="category"
+                >
+                    Danger
+                </span>
+
+
+                <h2 id="situationTitle">
+                    Situation
+                </h2>
+
+
+                <p id="situationDescription">
+                    Description
+                </p>
+
+
+                <div
+                    id="choicesContainer"
+                    class="choices"
+                ></div>
+
+            </article>
+
+        </section>
+
+
+        <!-- ========================= -->
+        <!-- CONSÉQUENCE -->
+        <!-- ========================= -->
+
+        <section
+            id="screenConsequence"
+            class="screen"
+        >
+
+            <article class="card consequence-card">
+
+                <div
+                    id="consequenceIcon"
+                    class="consequence-icon"
+                >
+                    😱
+                </div>
+
+
+                <span class="small-label">
+                    Conséquence
+                </span>
+
+
+                <h2>
+                    Voilà ce qui arrive...
+                </h2>
+
+
+                <p id="consequenceText"></p>
+
+
+                <div
+                    id="lifeChange"
+                    class="life-change"
+                ></div>
+
+
+                <div class="life-result">
+
+                    ❤️
+
+                    <strong id="newLifeCount">
+                        10
+                    </strong>
+
+                    vies restantes
+
+                </div>
+
+
+                <button
+                    id="btnContinue"
+                    class="btn btn-primary"
+                    type="button"
+                >
+                    Continuer
+                </button>
+
+            </article>
+
+        </section>
+
+
+        <!-- ========================= -->
+        <!-- RÉCAP TOUR -->
+        <!-- ========================= -->
+
+        <section
+            id="screenRecap"
+            class="screen"
+        >
+
+            <div class="card">
+
+                <span class="small-label">
+                    Fin du tour
+                </span>
+
+                <h2 id="recapTitle">
+                    📊 Récapitulatif
+                </h2>
+
+
+                <div id="recapContainer"></div>
+
+
+                <button
+                    id="btnNextRound"
+                    class="btn btn-primary"
+                    type="button"
+                >
+                    Tour suivant
+                </button>
+
+            </div>
+
+        </section>
+
+
+        <!-- ========================= -->
+        <!-- FIN DE PARTIE -->
+        <!-- ========================= -->
+
+        <section
+            id="screenGameOver"
+            class="screen"
+        >
+
+            <div class="card game-over-card">
+
+                <div class="game-over-icon">
+                    🏆
+                </div>
+
+                <span class="small-label">
+                    Partie terminée
+                </span>
+
+                <h2>
+                    Fin de la partie
+                </h2>
+
+                <p id="gameOverText"></p>
+
+
+                <div id="finalRanking"></div>
+
+
+                <button
+                    id="btnRestart"
+                    class="btn btn-primary"
+                    type="button"
+                >
+                    Nouvelle partie
+                </button>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <!--
+        IMPORTANT :
+        type="module" est obligatoire
+        pour utiliser import/export.
+    -->
+
+    <script
+        type="module"
+        src="./js/main.js"
+    ></script>
+
+</body>
+
+</html>
