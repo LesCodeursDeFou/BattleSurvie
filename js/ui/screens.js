@@ -71,44 +71,55 @@ export function showScreen(
 
 
 export function createPlayerInputs(count) {
+
     const container =
         document.getElementById("playerNames");
 
     container.innerHTML = "";
 
     for (let i = 1; i <= count; i++) {
+
+        const group =
+            document.createElement("div");
+
+        group.className = "form-group";
+
+
+        const label =
+            document.createElement("label");
+
+        label.textContent =
+            `Nom du joueur ${i}`;
+
+
         const input =
             document.createElement("input");
 
         input.type = "text";
-        input.className = "player-name-input";
 
-        input.value = `Joueur ${i}`;
-        input.dataset.defaultName = `Joueur ${i}`;
+        input.className =
+            "player-name-input";
 
-        const selectDefaultName = () => {
-            if (
-                input.value ===
-                input.dataset.defaultName
-            ) {
-                input.select();
-            }
-        };
+        input.name =
+            `player-${i}`;
 
-        input.addEventListener(
-            "focus",
-            selectDefaultName
-        );
+        input.autocomplete = "off";
 
-        input.addEventListener(
-            "click",
-            selectDefaultName
-        );
+        // IMPORTANT :
+        // aucune valeur réelle
+        input.value = "";
 
-        container.appendChild(input);
+        // Joueur X est uniquement une indication
+        input.placeholder =
+            `Joueur ${i}`;
+
+
+        group.appendChild(label);
+        group.appendChild(input);
+
+        container.appendChild(group);
     }
 }
-
 
 export function getPlayerNames() {
 
@@ -117,30 +128,26 @@ export function getPlayerNames() {
             ".player-name-input"
         );
 
+    const names =
+        Array.from(inputs).map(
+            input => input.value.trim()
+        );
 
-    return Array.from(
-        inputs
-    ).map(
-        (input, index) => {
+    if (
+        names.some(
+            name => name === ""
+        )
+    ) {
 
-            const value =
-                input.value.trim();
+        alert(
+            "Merci de renseigner le nom de tous les joueurs."
+        );
 
+        return [];
+    }
 
-            if (value) {
-
-                return value;
-
-            }
-
-
-            return `Joueur ${index + 1}`;
-
-        }
-    );
-
+    return names;
 }
-
 
 export function displayGame(
     game,
@@ -634,7 +641,7 @@ export function displayConsequence(result) {
         newLifeCount.textContent =
             `${player.name} : ❤️ ${player.lives}`;
 
-    }
+    }-
 
 
     showScreen(
