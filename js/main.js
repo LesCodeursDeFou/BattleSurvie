@@ -13,6 +13,19 @@ import {
 
 
 // =====================================
+// DONNÉES TEMPORAIRES AVANT LANCEMENT
+// =====================================
+
+let pendingPlayerNames = [];
+
+let selectedGameMode =
+    "battle_royal";
+
+let selectedTheme =
+    "desert_island";
+
+
+// =====================================
 // JEU
 // =====================================
 
@@ -55,6 +68,34 @@ const btnRestart =
 
 
 // =====================================
+// ÉLÉMENTS OPTIONS
+// =====================================
+
+const btnLaunchAdventure =
+    document.getElementById(
+        "btnLaunchAdventure"
+    );
+
+
+const btnBackToSetup =
+    document.getElementById(
+        "btnBackToSetup"
+    );
+
+
+const gameModeContainer =
+    document.getElementById(
+        "gameModeContainer"
+    );
+
+
+const themeContainer =
+    document.getElementById(
+        "themeContainer"
+    );
+
+
+// =====================================
 // INPUTS JOUEURS
 // =====================================
 
@@ -74,7 +115,8 @@ function refreshPlayerInputs() {
 
 
 // =====================================
-// DÉMARRAGE DE LA PARTIE
+// ÉTAPE 1
+// JOUEURS → OPTIONS
 // =====================================
 
 function startGame() {
@@ -92,9 +134,230 @@ function startGame() {
     }
 
 
-    // Création de la partie
+    /*
+    On ne démarre PAS encore
+    réellement la partie.
+
+    On mémorise simplement
+    les joueurs.
+    */
+
+    pendingPlayerNames =
+        playerNames;
+
+
+    showScreen(
+        "gameOptions"
+    );
+
+}
+
+
+// =====================================
+// SÉLECTION DU MODE
+// =====================================
+
+function selectGameMode(
+    modeButton
+) {
+
+    if (
+        !modeButton ||
+        modeButton.disabled
+    ) {
+
+        return;
+
+    }
+
+
+    const mode =
+        modeButton.dataset.mode;
+
+
+    if (!mode) {
+
+        return;
+
+    }
+
+
+    selectedGameMode =
+        mode;
+
+
+    /*
+    On enlève "active"
+    des autres modes.
+    */
+
+    const modeButtons =
+        gameModeContainer.querySelectorAll(
+            ".option-card[data-mode]"
+        );
+
+
+    modeButtons.forEach(
+        button => {
+
+            button.classList.remove(
+                "active"
+            );
+
+        }
+    );
+
+
+    /*
+    On active le mode choisi.
+    */
+
+    modeButton.classList.add(
+        "active"
+    );
+
+
+    console.log(
+        "Mode sélectionné :",
+        selectedGameMode
+    );
+
+}
+
+
+// =====================================
+// SÉLECTION DU THÈME
+// =====================================
+
+function selectTheme(
+    themeButton
+) {
+
+    if (
+        !themeButton ||
+        themeButton.disabled
+    ) {
+
+        return;
+
+    }
+
+
+    const theme =
+        themeButton.dataset.theme;
+
+
+    if (!theme) {
+
+        return;
+
+    }
+
+
+    selectedTheme =
+        theme;
+
+
+    /*
+    On enlève "active"
+    des autres thèmes.
+    */
+
+    const themeButtons =
+        themeContainer.querySelectorAll(
+            ".theme-card[data-theme]"
+        );
+
+
+    themeButtons.forEach(
+        button => {
+
+            button.classList.remove(
+                "active"
+            );
+
+        }
+    );
+
+
+    /*
+    On active le thème choisi.
+    */
+
+    themeButton.classList.add(
+        "active"
+    );
+
+
+    console.log(
+        "Thème sélectionné :",
+        selectedTheme
+    );
+
+}
+
+
+// =====================================
+// ÉTAPE 2
+// OPTIONS → PROLOGUE
+// =====================================
+
+function launchAdventure() {
+
+    if (
+        pendingPlayerNames.length === 0
+    ) {
+
+        console.error(
+            "Aucun joueur en attente."
+        );
+
+        showScreen(
+            "setup"
+        );
+
+        return;
+
+    }
+
+
+    // =====================================
+    // CRÉATION RÉELLE DE LA PARTIE
+    // =====================================
+
     game.start(
-        playerNames
+        pendingPlayerNames
+    );
+
+
+    // =====================================
+    // MODE CHOISI
+    // =====================================
+
+    game.gameMode =
+        selectedGameMode;
+
+
+    // =====================================
+    // THÈME CHOISI
+    // =====================================
+
+    game.theme =
+        selectedTheme;
+
+
+    console.log(
+        "Partie lancée :",
+        {
+            players:
+                pendingPlayerNames,
+
+            mode:
+                selectedGameMode,
+
+            theme:
+                selectedTheme
+        }
     );
 
 
@@ -109,6 +372,19 @@ function startGame() {
             showCurrentTurn();
 
         }
+    );
+
+}
+
+
+// =====================================
+// RETOUR OPTIONS → ACCUEIL
+// =====================================
+
+function backToSetup() {
+
+    showScreen(
+        "setup"
     );
 
 }
@@ -277,20 +553,54 @@ function nextRound() {
 
 function restartGame() {
 
-    // Réinitialisation du moteur
+    // =====================================
+    // RESET MOTEUR
+    // =====================================
+
     game.reset();
 
 
-    // Recréation des champs joueurs
-    refreshPlayerInputs();
+    // =====================================
+    // RESET DONNÉES TEMPORAIRES
+    // =====================================
+
+    pendingPlayerNames = [];
 
 
-    // Texte du bouton par défaut
+    selectedGameMode =
+        "battle_royal";
+
+
+    selectedTheme =
+        "desert_island";
+
+
+    // =====================================
+    // RESET BOUTON RÉCAP
+    // =====================================
+
     btnNextRound.textContent =
         "Tour suivant";
 
 
-    // Retour accueil
+    // =====================================
+    // RESET OPTIONS VISUELLES
+    // =====================================
+
+    resetGameOptions();
+
+
+    // =====================================
+    // RECRÉATION DES JOUEURS
+    // =====================================
+
+    refreshPlayerInputs();
+
+
+    // =====================================
+    // RETOUR ACCUEIL
+    // =====================================
+
     showScreen(
         "setup"
     );
@@ -299,7 +609,95 @@ function restartGame() {
 
 
 // =====================================
-// EVENTS
+// RESET VISUEL DES OPTIONS
+// =====================================
+
+function resetGameOptions() {
+
+    // =====================================
+    // MODES
+    // =====================================
+
+    if (gameModeContainer) {
+
+        const modeButtons =
+            gameModeContainer.querySelectorAll(
+                ".option-card[data-mode]"
+            );
+
+
+        modeButtons.forEach(
+            button => {
+
+                button.classList.remove(
+                    "active"
+                );
+
+            }
+        );
+
+
+        const defaultMode =
+            gameModeContainer.querySelector(
+                '[data-mode="battle_royal"]'
+            );
+
+
+        if (defaultMode) {
+
+            defaultMode.classList.add(
+                "active"
+            );
+
+        }
+
+    }
+
+
+    // =====================================
+    // THÈMES
+    // =====================================
+
+    if (themeContainer) {
+
+        const themeButtons =
+            themeContainer.querySelectorAll(
+                ".theme-card[data-theme]"
+            );
+
+
+        themeButtons.forEach(
+            button => {
+
+                button.classList.remove(
+                    "active"
+                );
+
+            }
+        );
+
+
+        const defaultTheme =
+            themeContainer.querySelector(
+                '[data-theme="desert_island"]'
+            );
+
+
+        if (defaultTheme) {
+
+            defaultTheme.classList.add(
+                "active"
+            );
+
+        }
+
+    }
+
+}
+
+
+// =====================================
+// EVENTS - JOUEURS
 // =====================================
 
 playerCount.addEventListener(
@@ -313,6 +711,92 @@ btnStartGame.addEventListener(
     startGame
 );
 
+
+// =====================================
+// EVENTS - OPTIONS
+// =====================================
+
+if (gameModeContainer) {
+
+    gameModeContainer.addEventListener(
+        "click",
+        event => {
+
+            const button =
+                event.target.closest(
+                    ".option-card[data-mode]"
+                );
+
+
+            if (!button) {
+
+                return;
+
+            }
+
+
+            selectGameMode(
+                button
+            );
+
+        }
+    );
+
+}
+
+
+if (themeContainer) {
+
+    themeContainer.addEventListener(
+        "click",
+        event => {
+
+            const button =
+                event.target.closest(
+                    ".theme-card[data-theme]"
+                );
+
+
+            if (!button) {
+
+                return;
+
+            }
+
+
+            selectTheme(
+                button
+            );
+
+        }
+    );
+
+}
+
+
+if (btnLaunchAdventure) {
+
+    btnLaunchAdventure.addEventListener(
+        "click",
+        launchAdventure
+    );
+
+}
+
+
+if (btnBackToSetup) {
+
+    btnBackToSetup.addEventListener(
+        "click",
+        backToSetup
+    );
+
+}
+
+
+// =====================================
+// EVENTS - PARTIE
+// =====================================
 
 btnContinue.addEventListener(
     "click",
@@ -337,6 +821,8 @@ btnRestart.addEventListener(
 // =====================================
 
 refreshPlayerInputs();
+
+resetGameOptions();
 
 showScreen(
     "setup"

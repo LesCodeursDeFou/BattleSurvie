@@ -863,3 +863,251 @@ select:focus {
         transform: scale(1.12);
     }
 }
+
+/* =====================================
+   OPTIONS DE PARTIE
+===================================== */
+
+.game-options-card {
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.options-intro {
+    margin-bottom: 28px;
+    opacity: 0.75;
+}
+
+
+/* =====================================
+   SECTIONS
+===================================== */
+
+.option-section {
+    margin-top: 30px;
+}
+
+.option-section h3 {
+    margin-bottom: 14px;
+}
+
+
+/* =====================================
+   MODE
+===================================== */
+
+.option-grid {
+    display: grid;
+    gap: 12px;
+}
+
+.option-card {
+    position: relative;
+
+    display: flex;
+    align-items: center;
+    gap: 18px;
+
+    width: 100%;
+
+    padding: 18px;
+
+    border:
+        1px solid #33473a;
+
+    border-radius: 16px;
+
+    background: #223128;
+
+    color: white;
+
+    text-align: left;
+
+    cursor: pointer;
+
+    transition:
+        transform 0.2s ease,
+        border-color 0.2s ease,
+        background 0.2s ease;
+}
+
+.option-card.active {
+    border-color: #7cdd50;
+
+    background:
+        rgba(
+            124,
+            221,
+            80,
+            0.08
+        );
+}
+
+.option-card:not(.disabled):hover {
+    transform:
+        translateY(-2px);
+
+    border-color:
+        #7cdd50;
+}
+
+.option-icon {
+    font-size: 2.2rem;
+}
+
+.option-content {
+    flex: 1;
+}
+
+.option-content strong {
+    font-size: 1rem;
+}
+
+.option-content p {
+    margin:
+        5px 0 0;
+
+    opacity: 0.72;
+
+    line-height: 1.4;
+}
+
+
+/* =====================================
+   THÈMES
+===================================== */
+
+.theme-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(
+            2,
+            minmax(0, 1fr)
+        );
+
+    gap: 12px;
+}
+
+.theme-card {
+    position: relative;
+
+    display: flex;
+    flex-direction: column;
+
+    align-items: flex-start;
+
+    padding: 18px;
+
+    min-height: 190px;
+
+    border:
+        1px solid #33473a;
+
+    border-radius: 16px;
+
+    background: #223128;
+
+    color: white;
+
+    text-align: left;
+
+    cursor: pointer;
+
+    transition:
+        transform 0.2s ease,
+        border-color 0.2s ease;
+}
+
+.theme-card.active {
+    border-color:
+        #7cdd50;
+
+    background:
+        rgba(
+            124,
+            221,
+            80,
+            0.08
+        );
+}
+
+.theme-card:not(.disabled):hover {
+    transform:
+        translateY(-3px);
+}
+
+.theme-icon {
+    font-size: 2.3rem;
+    margin-bottom: 10px;
+}
+
+.theme-card strong {
+    font-size: 1rem;
+}
+
+.theme-card p {
+    margin:
+        8px 0 28px;
+
+    opacity: 0.7;
+
+    line-height: 1.45;
+}
+
+
+/* =====================================
+   STATUT
+===================================== */
+
+.option-status {
+    margin-top: auto;
+
+    font-size: 0.68rem;
+
+    font-weight: 800;
+
+    text-transform: uppercase;
+
+    letter-spacing: 0.08em;
+
+    opacity: 0.55;
+}
+
+.option-status.available {
+    color: #7cdd50;
+    opacity: 1;
+}
+
+
+/* =====================================
+   DÉSACTIVÉ
+===================================== */
+
+.disabled {
+    opacity: 0.45;
+
+    cursor:
+        not-allowed;
+}
+
+
+/* =====================================
+   ACTIONS
+===================================== */
+
+.options-actions {
+    display: grid;
+
+    grid-template-columns:
+        auto 1fr;
+
+    gap: 12px;
+
+    margin-top: 30px;
+}
+
+.btn-secondary {
+    background: #26372c;
+    color: white;
+}

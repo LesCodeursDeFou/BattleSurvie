@@ -1,62 +1,73 @@
-export const THEMES = [
+export const THEMES = {
 
-    {
-
-        id:
-            "desert_island",
-
-        name:
-            "Île déserte",
-
-        icon:
-            "🏝️",
+    desert_island: {
+        id: "desert_island",
+        name: "Île déserte",
+        icon: "🏝️",
+        available: true,
 
         description:
-            "Survis aux dangers d'une île complètement imprévisible.",
-
-        enabled:
-            true
-
+            "Naufragés sur une île hostile, vous devrez affronter la faim, les animaux sauvages et les autres survivants."
     },
 
-
-    {
-
-        id:
-            "zombie",
-
-        name:
-            "Apocalypse Zombie",
-
-        icon:
-            "🧟",
+    haunted_mansion: {
+        id: "haunted_mansion",
+        name: "Manoir hanté",
+        icon: "🏚️",
+        available: false,
 
         description:
-            "Les morts ne sont apparemment plus très morts.",
-
-        enabled:
-            false
-
+            "Une nuit dans un manoir où chaque pièce semble cacher quelque chose."
     },
 
-
-    {
-
-        id:
-            "space",
-
-        name:
-            "Survie spatiale",
-
-        icon:
-            "🚀",
+    drunk_party: {
+        id: "drunk_party",
+        name: "Soirée bien arrosée",
+        icon: "🍻",
+        available: false,
 
         description:
-            "L'espace est grand, froid et particulièrement peu accueillant.",
+            "Une soirée qui dégénère entre défis absurdes et décisions douteuses."
+    },
 
-        enabled:
-            false
+    egypt: {
+        id: "egypt",
+        name: "Archéologues d'Égypte",
+        icon: "🏺",
+        available: false,
 
+        description:
+            "Explorez une tombe oubliée remplie de pièges et de mystères."
+    },
+
+    zombie: {
+        id: "zombie",
+        name: "Apocalypse zombie",
+        icon: "🧟",
+        available: false,
+
+        description:
+            "Le monde s'est effondré et les morts marchent parmi les survivants."
+    },
+
+    bunker: {
+        id: "bunker",
+        name: "Bunker",
+        icon: "☢️",
+        available: false,
+
+        description:
+            "Enfermés sous terre, les ressources diminuent et les tensions augmentent."
+    },
+
+    spaceship: {
+        id: "spaceship",
+        name: "Vaisseau spatial",
+        icon: "🚀",
+        available: false,
+
+        description:
+            "Perdus dans l'espace à bord d'un vaisseau endommagé."
     }
 
-];
+};

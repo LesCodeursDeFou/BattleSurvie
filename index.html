@@ -160,6 +160,383 @@
             </div>
 
         </section>
+        
+        <!-- ========================= -->
+        <!-- CHOIX DU MODE ET DU THÈME -->
+        <!-- ========================= -->
+
+        <section
+            id="screenGameOptions"
+            class="screen"
+        >
+
+            <div class="card game-options-card">
+
+                <span class="small-label">
+                    Préparation
+                </span>
+
+                <h2>
+                    Choisis ton expérience
+                </h2>
+
+                <p class="options-intro">
+                    Sélectionne un mode de jeu puis un univers.
+                </p>
+
+
+                <!-- ========================= -->
+                <!-- MODE DE JEU -->
+                <!-- ========================= -->
+
+                <div class="option-section">
+
+                    <h3>
+                        🎮 Mode de jeu
+                    </h3>
+
+                    <div
+                        id="gameModeContainer"
+                        class="option-grid"
+                    >
+
+                        <button
+                            class="option-card active"
+                            type="button"
+                            data-mode="battle_royal"
+                        >
+
+                            <div class="option-icon">
+                                ⚔️
+                            </div>
+
+                            <div class="option-content">
+
+                                <strong>
+                                    Battle Royal
+                                </strong>
+
+                                <p>
+                                    Survis aux événements, prends les bonnes décisions
+                                    et reste le dernier joueur encore en vie.
+                                </p>
+
+                            </div>
+
+                            <span class="option-status available">
+                                Disponible
+                            </span>
+
+                        </button>
+
+
+                        <button
+                            class="option-card disabled"
+                            type="button"
+                            disabled
+                        >
+
+                            <div class="option-icon">
+                                🤝
+                            </div>
+
+                            <div class="option-content">
+
+                                <strong>
+                                    Survie en équipe
+                                </strong>
+
+                                <p>
+                                    Formez des alliances et tentez de survivre
+                                    ensemble jusqu'à la fin.
+                                </p>
+
+                            </div>
+
+                            <span class="option-status">
+                                Bientôt
+                            </span>
+
+                        </button>
+
+
+                        <button
+                            class="option-card disabled"
+                            type="button"
+                            disabled
+                        >
+
+                            <div class="option-icon">
+                                👑
+                            </div>
+
+                            <div class="option-content">
+
+                                <strong>
+                                    Le Traître
+                                </strong>
+
+                                <p>
+                                    Un joueur possède un objectif secret et tente
+                                    de saboter discrètement les autres survivants.
+                                </p>
+
+                            </div>
+
+                            <span class="option-status">
+                                Bientôt
+                            </span>
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+                <!-- ========================= -->
+                <!-- THÈME -->
+                <!-- ========================= -->
+
+                <div class="option-section">
+
+                    <h3>
+                        🌍 Univers
+                    </h3>
+
+                    <div
+                        id="themeContainer"
+                        class="theme-grid"
+                    >
+
+                        <!-- ÎLE DÉSERTE -->
+
+                        <button
+                            class="theme-card active"
+                            type="button"
+                            data-theme="desert_island"
+                        >
+
+                            <div class="theme-icon">
+                                🏝️
+                            </div>
+
+                            <strong>
+                                Île déserte
+                            </strong>
+
+                            <p>
+                                Naufragés sur une île hostile, vous devrez affronter
+                                la faim, les animaux sauvages et surtout les autres survivants.
+                            </p>
+
+                            <span class="option-status available">
+                                Disponible
+                            </span>
+
+                        </button>
+
+
+                        <!-- MANOIR -->
+
+                        <button
+                            class="theme-card disabled"
+                            type="button"
+                            disabled
+                        >
+
+                            <div class="theme-icon">
+                                🏚️
+                            </div>
+
+                            <strong>
+                                Manoir hanté
+                            </strong>
+
+                            <p>
+                                Une nuit dans un vieux manoir où chaque pièce semble
+                                cacher quelque chose qui aurait dû rester enterré.
+                            </p>
+
+                            <span class="option-status">
+                                Bientôt
+                            </span>
+
+                        </button>
+
+
+                        <!-- SOIRÉE -->
+
+                        <button
+                            class="theme-card disabled"
+                            type="button"
+                            disabled
+                        >
+
+                            <div class="theme-icon">
+                                🍻
+                            </div>
+
+                            <strong>
+                                Soirée bien arrosée
+                            </strong>
+
+                            <p>
+                                Une soirée qui dégénère progressivement entre défis,
+                                décisions douteuses et catastrophes mémorables.
+                            </p>
+
+                            <span class="option-status">
+                                Bientôt
+                            </span>
+
+                        </button>
+
+
+                        <!-- ÉGYPTE -->
+
+                        <button
+                            class="theme-card disabled"
+                            type="button"
+                            disabled
+                        >
+
+                            <div class="theme-icon">
+                                🏺
+                            </div>
+
+                            <strong>
+                                Archéologues d'Égypte
+                            </strong>
+
+                            <p>
+                                Explorez une tombe oubliée, déchiffrez ses secrets
+                                et évitez les pièges d'une civilisation disparue.
+                            </p>
+
+                            <span class="option-status">
+                                Bientôt
+                            </span>
+
+                        </button>
+
+
+                        <!-- ZOMBIES -->
+
+                        <button
+                            class="theme-card disabled"
+                            type="button"
+                            disabled
+                        >
+
+                            <div class="theme-icon">
+                                🧟
+                            </div>
+
+                            <strong>
+                                Apocalypse zombie
+                            </strong>
+
+                            <p>
+                                Le monde s'est effondré. Les morts marchent et
+                                chaque ressource peut devenir une question de survie.
+                            </p>
+
+                            <span class="option-status">
+                                Bientôt
+                            </span>
+
+                        </button>
+
+
+                        <!-- BUNKER -->
+
+                        <button
+                            class="theme-card disabled"
+                            type="button"
+                            disabled
+                        >
+
+                            <div class="theme-icon">
+                                ☢️
+                            </div>
+
+                            <strong>
+                                Bunker
+                            </strong>
+
+                            <p>
+                                Coupés du monde dans un bunker souterrain,
+                                vos réserves diminuent et la tension monte.
+                            </p>
+
+                            <span class="option-status">
+                                Bientôt
+                            </span>
+
+                        </button>
+
+
+                        <!-- ESPACE -->
+
+                        <button
+                            class="theme-card disabled"
+                            type="button"
+                            disabled
+                        >
+
+                            <div class="theme-icon">
+                                🚀
+                            </div>
+
+                            <strong>
+                                Vaisseau spatial
+                            </strong>
+
+                            <p>
+                                Perdus dans l'espace à bord d'un vaisseau endommagé,
+                                vous devrez choisir qui sauver... et quoi sacrifier.
+                            </p>
+
+                            <span class="option-status">
+                                Bientôt
+                            </span>
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+                <!-- ========================= -->
+                <!-- BOUTONS -->
+                <!-- ========================= -->
+
+                <div class="options-actions">
+
+                    <button
+                        id="btnBackToSetup"
+                        class="btn btn-secondary"
+                        type="button"
+                    >
+                        ← Retour
+                    </button>
+
+                    <button
+                        id="btnLaunchAdventure"
+                        class="btn btn-primary"
+                        type="button"
+                    >
+                        Commencer l'aventure
+                    </button>
+
+                </div>
+
+            </div>
+
+        </section>
+
 
         <!-- ========================= -->
         <!-- PROLOGUE -->

@@ -11,6 +11,11 @@ const screens = {
             "screenSetup"
         ),
 
+    gameOptions:
+        document.getElementById(
+            "screenGameOptions"
+        ),
+
     prologue:
         document.getElementById(
             "screenPrologue"
@@ -105,7 +110,7 @@ export function displayPrologue(
             visual: "🏝️",
             chapter: "",
             text:
-                "Une chose est sûre.\n\nPersonne ne viendra vous chercher.",
+                "Une chose est sûre. Personne ne viendra vous chercher.",
             duration: 3200
         },
 
@@ -129,7 +134,7 @@ export function displayPrologue(
             visual: "💀",
             chapter: "",
             text:
-                "Certaines seront mauvaises.\n\nD'autres seront pires.",
+                "Certaines seront mauvaises. D'autres seront pires.",
             duration: 3000
         },
 
@@ -137,7 +142,7 @@ export function displayPrologue(
             visual: "🤝",
             chapter: "",
             text:
-                "Coopérez.\n\nTrahissez-vous.",
+                "Coopérez. Trahissez-vous.",
             duration: 2600
         },
 
@@ -145,7 +150,7 @@ export function displayPrologue(
             visual: "❤️",
             chapter: "",
             text:
-                "Mais surtout...\n\ngardez vos vies.",
+                "Mais surtout... gardez vos vies.",
             duration: 2800
         },
 
