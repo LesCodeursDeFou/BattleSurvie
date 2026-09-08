@@ -128,25 +128,19 @@ export function getPlayerNames() {
             ".player-name-input"
         );
 
-    const names =
-        Array.from(inputs).map(
-            input => input.value.trim()
-        );
+    return Array.from(inputs).map(
+        (input, index) => {
 
-    if (
-        names.some(
-            name => name === ""
-        )
-    ) {
+            const value =
+                input.value.trim();
 
-        alert(
-            "Merci de renseigner le nom de tous les joueurs."
-        );
+            if (value !== "") {
+                return value;
+            }
 
-        return [];
-    }
-
-    return names;
+            return `Joueur ${index + 1}`;
+        }
+    );
 }
 
 export function displayGame(
@@ -154,9 +148,17 @@ export function displayGame(
     onChoice
 ) {
 
+    // =====================================
+    // JOUEUR ACTUEL
+    // =====================================
+
     const player =
         game.getCurrentPlayer();
 
+
+    // =====================================
+    // SITUATION ACTUELLE
+    // =====================================
 
     const situation =
         game.getCurrentSituation();
@@ -209,8 +211,7 @@ export function displayGame(
 
 
     if (
-        situation.type ===
-        "group_vs_one"
+        situation.type === "group_vs_one"
     ) {
 
         groupPlayers =
@@ -222,7 +223,7 @@ export function displayGame(
 
 
     // =====================================
-    // TOUR
+    // NUMÉRO DU TOUR
     // =====================================
 
     document.getElementById(
@@ -231,14 +232,43 @@ export function displayGame(
         game.roundNumber;
 
 
+    // =====================================
+    // COMPTEUR DE PARTICIPATION
+    // =====================================
+
+    const alreadyPlayed =
+        game.currentRound.playedPlayerIds.length;
+
+
+    let currentParticipants = 1;
+
+
+    if (
+        situation.type === "group_vs_one"
+    ) {
+
+        currentParticipants =
+            groupPlayers.length;
+
+    }
+
+
+    const participatedCount =
+        Math.min(
+            alreadyPlayed +
+            currentParticipants,
+            game.players.length
+        );
+
+
     document.getElementById(
         "playerPosition"
     ).textContent =
-        `${game.currentPlayerIndex + 1} / ${game.players.length}`;
+        `${participatedCount} / ${game.players.length}`;
 
 
     // =====================================
-    // À TOI DE JOUER
+    // NOM DU JOUEUR / GROUPE
     // =====================================
 
     const currentPlayerName =
@@ -248,8 +278,7 @@ export function displayGame(
 
 
     if (
-        situation.type ===
-        "group_vs_one"
+        situation.type === "group_vs_one"
     ) {
 
         currentPlayerName.textContent =
@@ -271,14 +300,52 @@ export function displayGame(
     // VIES
     // =====================================
 
-    document.getElementById(
-        "currentPlayerLives"
-    ).textContent =
-        player.lives;
+    const livesElement =
+        document.getElementById(
+            "currentPlayerLives"
+        );
+
+    if (livesElement) {
+
+        const livesContainer =
+            livesElement.closest(
+                ".life-counter"
+            );
+
+
+        if (
+            situation.type === "group_vs_one"
+        ) {
+
+            // Conflit de groupe :
+            // on masque complètement
+            // le compteur de vie
+            if (livesContainer) {
+                livesContainer.style.display =
+                    "none";
+            }
+
+        }
+
+        else {
+
+            // Tour normal / interaction :
+            // on réaffiche le compteur
+            if (livesContainer) {
+                livesContainer.style.display =
+                    "flex";
+            }
+
+            livesElement.textContent =
+                player.lives;
+
+        }
+
+    }
 
 
     // =====================================
-    // SITUATION
+    // ICÔNE
     // =====================================
 
     document.getElementById(
@@ -287,11 +354,19 @@ export function displayGame(
         situation.icon;
 
 
+    // =====================================
+    // CATÉGORIE
+    // =====================================
+
     document.getElementById(
         "situationCategory"
     ).textContent =
         situation.category;
 
+
+    // =====================================
+    // TITRE
+    // =====================================
 
     document.getElementById(
         "situationTitle"
@@ -303,6 +378,10 @@ export function displayGame(
             groupPlayers
         );
 
+
+    // =====================================
+    // DESCRIPTION
+    // =====================================
 
     document.getElementById(
         "situationDescription"
@@ -329,9 +408,14 @@ export function displayGame(
     );
 
 
+    // =====================================
+    // AFFICHAGE ÉCRAN
+    // =====================================
+
     showScreen(
         "game"
     );
+
 }
 
 function displayChoices(
@@ -448,43 +532,85 @@ function displayChoices(
 }
 
 
-export function displayConsequence(result) {
+export function displayConsequence(data) {
 
-    const player =
-        result.player;
+    // =====================================
+    // SÉCURITÉ
+    // =====================================
 
-    const targetPlayer =
-        result.targetPlayer ?? null;
+    if (!data) {
 
-    const consequence =
-        result.consequence;
+        console.error(
+            "displayConsequence : aucune donnée reçue"
+        );
 
-    const effects =
-        result.effects ?? [];
+        return;
+    }
+
+
+    const {
+        player,
+        targetPlayer,
+        groupPlayers = [],
+        situation,
+        choice,
+        consequence,
+        effects = [],
+        result
+    } = data;
+
+
+    if (!consequence || !result) {
+
+        console.error(
+            "displayConsequence : données incomplètes",
+            data
+        );
+
+        return;
+    }
 
 
     // =====================================
     // ICÔNE
     // =====================================
 
-    document.getElementById(
-        "consequenceIcon"
-    ).textContent =
-        consequence.icon;
+    const consequenceIcon =
+        document.getElementById(
+            "consequenceIcon"
+        );
+
+
+    if (consequenceIcon) {
+
+        consequenceIcon.textContent =
+            consequence.icon ?? "🎲";
+
+    }
 
 
     // =====================================
     // TEXTE DE CONSÉQUENCE
     // =====================================
 
-    document.getElementById(
-        "consequenceText"
-    ).textContent =
-        result.result.consequenceText;
+    const consequenceText =
+        document.getElementById(
+            "consequenceText"
+        );
+
+
+    if (consequenceText) {
+
+        consequenceText.textContent =
+            result.consequenceText ??
+            consequence.text ??
+            "";
+
+    }
 
 
     // =====================================
-    // ZONE DE VARIATION DE VIES
+    // CHANGEMENTS DE VIES
     // =====================================
 
     const lifeChange =
@@ -493,104 +619,75 @@ export function displayConsequence(result) {
         );
 
 
-    lifeChange.className =
-        "life-change";
+    if (lifeChange) {
 
-
-    // =====================================
-    // AUCUN EFFET
-    // =====================================
-
-    if (effects.length === 0) {
-
-        lifeChange.textContent =
-            "Aucune vie perdue";
-
-        lifeChange.classList.add(
-            "neutral"
-        );
-
-    }
-
-    // =====================================
-    // UN OU PLUSIEURS JOUEURS IMPACTÉS
-    // =====================================
-
-    else {
-
-        const lines =
-            effects.map(effect => {
-
-                const sign =
-                    effect.difference > 0
-                        ? "+"
-                        : "";
-
-                const heart =
-                    effect.difference > 0
-                        ? "💚"
-                        : effect.difference < 0
-                            ? "💔"
-                            : "❤️";
-
-
-                return (
-                    `${effect.playerName} : ` +
-                    `${sign}${effect.difference} ${heart}`
-                );
-
-            });
-
-
-        lifeChange.innerHTML =
-            lines.join("<br>");
-
-
-        // =================================
-        // STYLE GLOBAL
-        // =================================
-
-        const hasDamage =
-            effects.some(
-                effect =>
-                    effect.difference < 0
-            );
-
-
-        const hasHeal =
-            effects.some(
-                effect =>
-                    effect.difference > 0
-            );
+        lifeChange.innerHTML = "";
 
 
         if (
-            hasDamage &&
-            !hasHeal
+            Array.isArray(effects) &&
+            effects.length > 0
         ) {
 
-            lifeChange.classList.add(
-                "negative"
-            );
+            effects.forEach(effect => {
 
-        }
+                const line =
+                    document.createElement(
+                        "div"
+                    );
 
-        else if (
-            hasHeal &&
-            !hasDamage
-        ) {
 
-            lifeChange.classList.add(
-                "positive"
-            );
+                let sign = "";
+
+
+                if (
+                    effect.difference > 0
+                ) {
+
+                    sign = "+";
+
+                }
+
+
+                line.textContent =
+                    `${effect.playerName} : ${sign}${effect.difference} 💔`;
+
+
+                // Gain de vie :
+                // on affiche un coeur normal
+                if (
+                    effect.difference > 0
+                ) {
+
+                    line.textContent =
+                        `${effect.playerName} : +${effect.difference} ❤️`;
+
+                }
+
+
+                // Aucun changement
+                if (
+                    effect.difference === 0
+                ) {
+
+                    line.textContent =
+                        `${effect.playerName} : aucun changement`;
+
+                }
+
+
+                lifeChange.appendChild(
+                    line
+                );
+
+            });
 
         }
 
         else {
 
-            lifeChange.classList.add(
-                "neutral"
-            );
+            lifeChange.textContent =
+                "Aucune vie perdue";
 
         }
 
@@ -598,7 +695,7 @@ export function displayConsequence(result) {
 
 
     // =====================================
-    // RÉCAP RAPIDE DES VIES
+    // ÉTAT DES JOUEURS IMPACTÉS
     // =====================================
 
     const newLifeCount =
@@ -607,42 +704,92 @@ export function displayConsequence(result) {
         );
 
 
-    /*
-    Si plusieurs joueurs sont impactés,
-    on affiche leurs vies restantes.
-    */
+    if (newLifeCount) {
 
-    if (effects.length > 0) {
+        newLifeCount.innerHTML = "";
 
-        const recapLives =
-            effects.map(effect => {
 
-                return (
-                    `${effect.playerName} : ` +
-                    `❤️ ${effect.livesAfter}`
+        // On récupère une seule fois chaque joueur touché
+        const affectedPlayers = [];
+
+
+        effects.forEach(effect => {
+
+            if (
+                !affectedPlayers.some(
+                    item =>
+                        item.playerId ===
+                        effect.playerId
+                )
+            ) {
+
+                affectedPlayers.push(
+                    effect
                 );
 
-            });
+            }
+
+        });
 
 
-        newLifeCount.innerHTML =
-            recapLives.join("<br>");
+        // =====================================
+        // JOUEURS TOUCHÉS
+        // =====================================
+
+        if (
+            affectedPlayers.length > 0
+        ) {
+
+            affectedPlayers.forEach(
+                effect => {
+
+                    const line =
+                        document.createElement(
+                            "div"
+                        );
+
+
+                    line.textContent =
+                        `${effect.playerName} : ❤️ ${effect.livesAfter} vies restantes`;
+
+
+                    newLifeCount.appendChild(
+                        line
+                    );
+
+                }
+            );
+
+        }
+
+        // =====================================
+        // PERSONNE TOUCHÉ
+        // =====================================
+
+        else if (player) {
+
+            const line =
+                document.createElement(
+                    "div"
+                );
+
+
+            line.textContent =
+                `${player.name} : ❤️ ${player.lives} vies restantes`;
+
+
+            newLifeCount.appendChild(
+                line
+            );
+
+        }
 
     }
 
-    else {
 
-        /*
-        Aucun effet :
-        on affiche juste les vies
-        du joueur actif.
-        */
-
-        newLifeCount.textContent =
-            `${player.name} : ❤️ ${player.lives}`;
-
-    }-
-
+    // =====================================
+    // AFFICHER L'ÉCRAN
+    // =====================================
 
     showScreen(
         "consequence"
@@ -668,6 +815,149 @@ export function displayRecap(game) {
     container.innerHTML = "";
 
 
+    // =====================================
+    // SURVIVANTS
+    // =====================================
+
+    const survivorsSection =
+        document.createElement("div");
+
+    survivorsSection.className =
+        "survivors-section";
+
+
+    const survivorsTitle =
+        document.createElement("div");
+
+    survivorsTitle.className =
+        "survivors-title";
+
+    survivorsTitle.textContent =
+        "❤️ État des survivants";
+
+
+    const survivorsGrid =
+        document.createElement("div");
+
+    survivorsGrid.className =
+        "survivors-grid";
+
+
+    const alivePlayers =
+        game.players.filter(
+            player => player.alive
+        );
+
+
+    alivePlayers.forEach(
+        (player, index) => {
+
+            const card =
+                document.createElement("div");
+
+            card.className =
+                "survivor-card";
+
+            card.style.animationDelay =
+                `${index * 90}ms`;
+
+
+            const name =
+                document.createElement("div");
+
+            name.className =
+                "survivor-name";
+
+            name.textContent =
+                player.name;
+
+
+            const lives =
+                document.createElement("div");
+
+            lives.className =
+                "survivor-lives";
+
+
+            const heart =
+                document.createElement("span");
+
+            heart.className =
+                "survivor-heart";
+
+            heart.textContent =
+                "❤️";
+
+
+            const lifeCount =
+                document.createElement("span");
+
+            lifeCount.className =
+                "survivor-life-count";
+
+            lifeCount.textContent =
+                player.lives;
+
+
+            lives.appendChild(
+                heart
+            );
+
+            lives.appendChild(
+                lifeCount
+            );
+
+
+            card.appendChild(
+                name
+            );
+
+            card.appendChild(
+                lives
+            );
+
+
+            survivorsGrid.appendChild(
+                card
+            );
+
+        }
+    );
+
+
+    survivorsSection.appendChild(
+        survivorsTitle
+    );
+
+    survivorsSection.appendChild(
+        survivorsGrid
+    );
+
+
+    container.appendChild(
+        survivorsSection
+    );
+
+
+    // =====================================
+    // HISTORIQUE DU TOUR
+    // =====================================
+
+    const historyTitle =
+        document.createElement("div");
+
+    historyTitle.className =
+        "recap-history-title";
+
+    historyTitle.textContent =
+        "📝 Historique du tour";
+
+
+    container.appendChild(
+        historyTitle
+    );
+
+
     const results =
         game.getRoundResults();
 
@@ -678,192 +968,183 @@ export function displayRecap(game) {
     );
 
 
-    results.forEach(result => {
+    results.forEach(
+        (result, index) => {
 
-        const item =
-            document.createElement(
-                "div"
-            );
-
-
-        item.className =
-            "recap-player";
-
-
-        // =====================================
-        // PARTIE GAUCHE
-        // =====================================
-
-        const left =
-            document.createElement(
-                "div"
-            );
-
-
-        // =====================================
-        // QUI A JOUÉ ?
-        // =====================================
-
-        const name =
-            document.createElement(
-                "div"
-            );
-
-
-        name.className =
-            "recap-player-name";
-
-
-        /*
-        Situation de groupe :
-        on affiche TOUS les joueurs
-        ayant participé à la décision.
-
-        Exemple :
-        Joueur 1, Joueur 2 et Joueur 4
-        */
-
-        if (
-            result.situationType === "group_vs_one" &&
-            Array.isArray(result.playedPlayerNames) &&
-            result.playedPlayerNames.length > 0
-        ) {
-
-            name.textContent =
-                result.playedPlayerNames.join(
-                    ", "
-                );
-
-        }
-
-        else {
-
-            name.textContent =
-                result.playerName;
-
-        }
-
-
-        // =====================================
-        // SITUATION
-        // =====================================
-
-        const situation =
-            document.createElement(
-                "div"
-            );
-
-
-        situation.className =
-            "recap-situation";
-
-
-        situation.textContent =
-            `${result.situationIcon} ${result.situationTitle}`;
-
-
-        // =====================================
-        // CHOIX
-        // =====================================
-
-        const choice =
-            document.createElement(
-                "div"
-            );
-
-
-        choice.className =
-            "recap-choice";
-
-
-        choice.textContent =
-            `${result.choiceTitle}`;
-
-
-        left.appendChild(
-            name
-        );
-
-
-        left.appendChild(
-            situation
-        );
-
-
-        left.appendChild(
-            choice
-        );
-
-
-        // =====================================
-        // EFFETS
-        // =====================================
-
-        if (
-            Array.isArray(result.effects) &&
-            result.effects.length > 0
-        ) {
-
-            const effectsContainer =
+            const item =
                 document.createElement(
                     "div"
                 );
 
 
-            effectsContainer.className =
-                "recap-effects";
+            item.className =
+                "recap-player";
+
+            item.style.animationDelay =
+                `${index * 80}ms`;
 
 
-            result.effects.forEach(
-                effect => {
-
-                    const effectLine =
-                        document.createElement(
-                            "div"
-                        );
+            const left =
+                document.createElement(
+                    "div"
+                );
 
 
-                    let sign = "";
+            // =====================================
+            // QUI A JOUÉ
+            // =====================================
+
+            const name =
+                document.createElement(
+                    "div"
+                );
 
 
-                    if (
-                        effect.difference > 0
-                    ) {
-
-                        sign = "+";
-
-                    }
+            name.className =
+                "recap-player-name";
 
 
-                    effectLine.textContent =
-                        `${effect.playerName} : ${sign}${effect.difference} ❤️`;
+            if (
+                result.situationType === "group_vs_one" &&
+                Array.isArray(result.playedPlayerNames) &&
+                result.playedPlayerNames.length > 0
+            ) {
 
-
-                    effectsContainer.appendChild(
-                        effectLine
+                name.textContent =
+                    result.playedPlayerNames.join(
+                        ", "
                     );
 
-                }
+            }
+            else {
+
+                name.textContent =
+                    result.playerName;
+
+            }
+
+
+            // =====================================
+            // SITUATION
+            // =====================================
+
+            const situation =
+                document.createElement(
+                    "div"
+                );
+
+
+            situation.className =
+                "recap-situation";
+
+
+            situation.textContent =
+                `${result.situationIcon} ${result.situationTitle}`;
+
+
+            // =====================================
+            // CHOIX
+            // =====================================
+
+            const choice =
+                document.createElement(
+                    "div"
+                );
+
+
+            choice.className =
+                "recap-choice";
+
+
+            choice.textContent =
+                `${result.choiceTitle}`;
+
+
+            left.appendChild(
+                name
             );
 
 
             left.appendChild(
-                effectsContainer
+                situation
+            );
+
+
+            left.appendChild(
+                choice
+            );
+
+
+            // =====================================
+            // EFFETS
+            // =====================================
+
+            if (
+                Array.isArray(result.effects) &&
+                result.effects.length > 0
+            ) {
+
+                const effectsContainer =
+                    document.createElement(
+                        "div"
+                    );
+
+
+                effectsContainer.className =
+                    "recap-effects";
+
+
+                result.effects.forEach(
+                    effect => {
+
+                        const effectLine =
+                            document.createElement(
+                                "div"
+                            );
+
+
+                        let sign = "";
+
+
+                        if (
+                            effect.difference > 0
+                        ) {
+
+                            sign = "+";
+
+                        }
+
+
+                        effectLine.textContent =
+                            `${effect.playerName} : ${sign}${effect.difference} ❤️`;
+
+
+                        effectsContainer.appendChild(
+                            effectLine
+                        );
+
+                    }
+                );
+
+
+                left.appendChild(
+                    effectsContainer
+                );
+
+            }
+
+
+            item.appendChild(
+                left
+            );
+
+
+            container.appendChild(
+                item
             );
 
         }
-
-
-        item.appendChild(
-            left
-        );
-
-
-        container.appendChild(
-            item
-        );
-
-    });
+    );
 
 
     showScreen(

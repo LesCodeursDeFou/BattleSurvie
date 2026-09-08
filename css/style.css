@@ -747,3 +747,119 @@ select:focus {
 
     opacity: 0.45;
 }
+
+/* =====================================
+   SURVIVANTS - RECAP
+===================================== */
+
+.survivors-section {
+    margin-bottom: 28px;
+}
+
+.survivors-title {
+    font-size: 0.95rem;
+    font-weight: 800;
+    margin-bottom: 12px;
+    color: #dce9df;
+    letter-spacing: 0.04em;
+}
+
+.survivors-grid {
+    display: grid;
+    grid-template-columns: repeat(
+        auto-fit,
+        minmax(140px, 1fr)
+    );
+    gap: 12px;
+}
+
+.survivor-card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 14px 16px;
+
+    background: #233228;
+    border: 1px solid #33473a;
+    border-radius: 14px;
+
+    opacity: 0;
+    transform: translateY(10px);
+
+    animation:
+        survivorAppear
+        0.45s
+        ease
+        forwards;
+}
+
+.survivor-name {
+    font-weight: 800;
+    font-size: 0.95rem;
+}
+
+.survivor-lives {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+
+    font-weight: 900;
+    font-size: 1rem;
+}
+
+.survivor-heart {
+    display: inline-block;
+
+    animation:
+        heartPulse
+        1.8s
+        ease-in-out
+        infinite;
+}
+
+.survivor-life-count {
+    min-width: 18px;
+    text-align: center;
+}
+
+.recap-history-title {
+    margin-top: 6px;
+    margin-bottom: 12px;
+
+    font-size: 0.95rem;
+    font-weight: 800;
+
+    color: #dce9df;
+    letter-spacing: 0.04em;
+}
+
+
+/* =====================================
+   ANIMATIONS
+===================================== */
+
+@keyframes survivorAppear {
+
+    from {
+        opacity: 0;
+        transform: translateY(12px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes heartPulse {
+
+    0%,
+    100% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.12);
+    }
+}
