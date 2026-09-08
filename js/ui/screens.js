@@ -11,6 +11,11 @@ const screens = {
             "screenSetup"
         ),
 
+    prologue:
+        document.getElementById(
+            "screenPrologue"
+        ),
+
     game:
         document.getElementById(
             "screenGame"
@@ -33,6 +38,257 @@ const screens = {
 
 };
 
+export function displayPrologue(
+    game,
+    onComplete
+) {
+
+    const screen =
+        document.getElementById(
+            "screenPrologue"
+        );
+
+    const visual =
+        document.getElementById(
+            "prologueVisual"
+        );
+
+    const chapter =
+        document.getElementById(
+            "prologueChapter"
+        );
+
+    const text =
+        document.getElementById(
+            "prologueText"
+        );
+
+    const skipButton =
+        document.getElementById(
+            "btnSkipPrologue"
+        );
+
+
+    // =====================================
+    // NOMS DES JOUEURS
+    // =====================================
+
+    const playerNames =
+        game.players
+            .map(player => player.name)
+            .join("\n");
+
+
+    // =====================================
+    // SCÈNES
+    // =====================================
+
+    const scenes = [
+
+        {
+            visual: "🌊",
+            chapter: "JOUR 1",
+            text:
+                "Quelque part au milieu de nulle part...",
+            duration: 2600
+        },
+
+        {
+            visual: "⛈️",
+            chapter: "",
+            text:
+                "Vous ne savez pas exactement comment vous êtes arrivés ici.",
+            duration: 3000
+        },
+
+        {
+            visual: "🏝️",
+            chapter: "",
+            text:
+                "Une chose est sûre.\n\nPersonne ne viendra vous chercher.",
+            duration: 3200
+        },
+
+        {
+            visual: "🔥",
+            chapter: "LES SURVIVANTS",
+            text:
+                `${playerNames}\n\nVous êtes les seuls survivants.`,
+            duration: 3500
+        },
+
+        {
+            visual: "⚠️",
+            chapter: "",
+            text:
+                "Pour survivre, vous devrez prendre des décisions.",
+            duration: 2600
+        },
+
+        {
+            visual: "💀",
+            chapter: "",
+            text:
+                "Certaines seront mauvaises.\n\nD'autres seront pires.",
+            duration: 3000
+        },
+
+        {
+            visual: "🤝",
+            chapter: "",
+            text:
+                "Coopérez.\n\nTrahissez-vous.",
+            duration: 2600
+        },
+
+        {
+            visual: "❤️",
+            chapter: "",
+            text:
+                "Mais surtout...\n\ngardez vos vies.",
+            duration: 2800
+        },
+
+        {
+            visual: "🏝️",
+            chapter: "BATTLESURVIE",
+            text:
+                "QUE LA SURVIE COMMENCE.",
+            duration: 2800,
+            final: true
+        }
+
+    ];
+
+
+    let currentScene = 0;
+    let timeout = null;
+    let finished = false;
+
+
+    // =====================================
+    // TERMINER LE PROLOGUE
+    // =====================================
+
+    function finishPrologue() {
+
+        if (finished) {
+            return;
+        }
+
+        finished = true;
+
+        clearTimeout(timeout);
+
+        onComplete();
+    }
+
+
+    // =====================================
+    // AFFICHER UNE SCÈNE
+    // =====================================
+
+    function showScene() {
+
+        if (
+            currentScene >= scenes.length
+        ) {
+
+            finishPrologue();
+            return;
+        }
+
+
+        const scene =
+            scenes[currentScene];
+
+
+        // Retirer animation précédente
+        visual.classList.remove(
+            "prologue-appear"
+        );
+
+        chapter.classList.remove(
+            "prologue-appear"
+        );
+
+        text.classList.remove(
+            "prologue-appear"
+        );
+
+
+        // Force le navigateur
+        // à recalculer l'animation
+        void text.offsetWidth;
+
+
+        visual.textContent =
+            scene.visual;
+
+        chapter.textContent =
+            scene.chapter;
+
+        text.textContent =
+            scene.text;
+
+
+        visual.classList.add(
+            "prologue-appear"
+        );
+
+        chapter.classList.add(
+            "prologue-appear"
+        );
+
+        text.classList.add(
+            "prologue-appear"
+        );
+
+
+        if (scene.final) {
+
+            screen.classList.add(
+                "prologue-final"
+            );
+
+        }
+
+
+        currentScene++;
+
+
+        timeout =
+            setTimeout(
+                showScene,
+                scene.duration
+            );
+
+    }
+
+
+    // =====================================
+    // PASSER
+    // =====================================
+
+    skipButton.onclick =
+        finishPrologue;
+
+
+    // =====================================
+    // LANCEMENT
+    // =====================================
+
+    screen.classList.remove(
+        "prologue-final"
+    );
+
+    showScreen(
+        "prologue"
+    );
+
+    showScene();
+
+}
 
 export function showScreen(
     screenName

@@ -85,3 +85,29 @@
     }
 
 }
+
+@media (max-width: 600px) {
+
+    .prologue {
+        padding:
+            24px
+            22px
+            100px;
+    }
+
+    .prologue-text {
+        font-size: 1.35rem;
+    }
+
+    .prologue-visual {
+        font-size: 5rem;
+    }
+
+    .prologue-skip {
+        bottom: 25px;
+        right: 50%;
+
+        transform:
+            translateX(50%);
+    }
+}

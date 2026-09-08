@@ -221,3 +221,271 @@
     }
 
 }
+
+/* =====================================
+   PROLOGUE
+===================================== */
+
+#screenPrologue {
+    position: fixed;
+    inset: 0;
+
+    width: 100%;
+    min-height: 100vh;
+
+    background:
+        radial-gradient(
+            circle at center,
+            #182a1e 0%,
+            #0c130e 55%,
+            #050806 100%
+        );
+
+    z-index: 1000;
+
+    overflow: hidden;
+}
+
+
+/* Halo / ambiance */
+
+#screenPrologue::before {
+    content: "";
+
+    position: absolute;
+
+    inset: -30%;
+
+    background:
+        radial-gradient(
+            circle,
+            rgba(122, 220, 75, 0.08),
+            transparent 55%
+        );
+
+    animation:
+        prologueAtmosphere
+        5s
+        ease-in-out
+        infinite alternate;
+
+    pointer-events: none;
+}
+
+
+.prologue {
+    position: relative;
+
+    min-height: 100vh;
+
+    display: flex;
+    flex-direction: column;
+
+    align-items: center;
+    justify-content: center;
+
+    padding: 30px;
+
+    text-align: center;
+
+    z-index: 2;
+}
+
+
+.prologue-visual {
+    font-size: clamp(
+        4rem,
+        12vw,
+        7rem
+    );
+
+    margin-bottom: 28px;
+
+    filter:
+        drop-shadow(
+            0 8px 20px
+            rgba(0, 0, 0, 0.5)
+        );
+}
+
+
+.prologue-chapter {
+    min-height: 20px;
+
+    margin-bottom: 14px;
+
+    color: #7ddd50;
+
+    font-size: 0.8rem;
+
+    font-weight: 900;
+
+    letter-spacing: 0.25em;
+
+    text-transform: uppercase;
+}
+
+
+.prologue-text {
+    max-width: 650px;
+
+    white-space: pre-line;
+
+    color: #ffffff;
+
+    font-size: clamp(
+        1.25rem,
+        4vw,
+        2rem
+    );
+
+    font-weight: 800;
+
+    line-height: 1.5;
+
+    text-shadow:
+        0 3px 15px
+        rgba(0, 0, 0, 0.8);
+}
+
+
+.prologue-appear {
+    animation:
+        prologueAppear
+        0.8s
+        cubic-bezier(
+            0.22,
+            1,
+            0.36,
+            1
+        );
+}
+
+
+/* =====================================
+   PASSER
+===================================== */
+
+.prologue-skip {
+    position: absolute;
+
+    bottom: 35px;
+    right: 35px;
+
+    padding: 10px 16px;
+
+    border: 1px solid
+        rgba(255, 255, 255, 0.15);
+
+    border-radius: 999px;
+
+    background:
+        rgba(255, 255, 255, 0.05);
+
+    color:
+        rgba(255, 255, 255, 0.55);
+
+    font-size: 0.8rem;
+
+    cursor: pointer;
+
+    transition:
+        0.2s ease;
+}
+
+
+.prologue-skip:hover {
+    color: white;
+
+    background:
+        rgba(255, 255, 255, 0.1);
+}
+
+
+/* =====================================
+   DERNIÈRE SCÈNE
+===================================== */
+
+.prologue-final
+.prologue-visual {
+
+    animation:
+        finalIsland
+        1.2s
+        ease-out;
+}
+
+
+.prologue-final
+.prologue-chapter {
+
+    color: #7ddd50;
+
+    font-size: clamp(
+        1.8rem,
+        6vw,
+        3.5rem
+    );
+
+    letter-spacing: 0.08em;
+}
+
+
+/* =====================================
+   ANIMATIONS
+===================================== */
+
+@keyframes prologueAppear {
+
+    from {
+        opacity: 0;
+        transform:
+            translateY(20px)
+            scale(0.96);
+
+        filter: blur(5px);
+    }
+
+    to {
+        opacity: 1;
+        transform:
+            translateY(0)
+            scale(1);
+
+        filter: blur(0);
+    }
+}
+
+
+@keyframes prologueAtmosphere {
+
+    from {
+        transform:
+            translate(-3%, -2%)
+            scale(1);
+    }
+
+    to {
+        transform:
+            translate(3%, 2%)
+            scale(1.1);
+    }
+}
+
+
+@keyframes finalIsland {
+
+    0% {
+        transform: scale(0.5);
+        opacity: 0;
+    }
+
+    60% {
+        transform: scale(1.15);
+    }
+
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}

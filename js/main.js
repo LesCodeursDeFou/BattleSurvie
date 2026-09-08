@@ -7,13 +7,22 @@ import {
     displayGame,
     displayConsequence,
     displayRecap,
-    displayGameOver
+    displayGameOver,
+    displayPrologue
 } from "./ui/screens.js";
 
+
+// =====================================
+// JEU
+// =====================================
 
 const game =
     new Game();
 
+
+// =====================================
+// ÉLÉMENTS HTML
+// =====================================
 
 const playerCount =
     document.getElementById(
@@ -65,7 +74,7 @@ function refreshPlayerInputs() {
 
 
 // =====================================
-// DÉMARRAGE
+// DÉMARRAGE DE LA PARTIE
 // =====================================
 
 function startGame() {
@@ -83,18 +92,30 @@ function startGame() {
     }
 
 
+    // Création de la partie
     game.start(
         playerNames
     );
 
 
-    showCurrentTurn();
+    // =====================================
+    // PROLOGUE
+    // =====================================
+
+    displayPrologue(
+        game,
+        () => {
+
+            showCurrentTurn();
+
+        }
+    );
 
 }
 
 
 // =====================================
-// TOUR ACTUEL
+// AFFICHAGE TOUR ACTUEL
 // =====================================
 
 function showCurrentTurn() {
@@ -108,7 +129,7 @@ function showCurrentTurn() {
 
 
 // =====================================
-// CHOIX
+// CHOIX DU JOUEUR
 // =====================================
 
 function handleChoice(
@@ -122,6 +143,11 @@ function handleChoice(
 
 
     if (!result) {
+
+        console.error(
+            "Impossible d'appliquer le choix",
+            choiceId
+        );
 
         return;
 
@@ -141,17 +167,13 @@ function handleChoice(
 
 function continueAfterConsequence() {
 
-    /*
-    On essaye de passer
-    au prochain joueur.
-
-    game.nextPlayer() va également
-    tirer sa nouvelle question.
-    */
-
     const hasNextPlayer =
         game.nextPlayer();
 
+
+    // =====================================
+    // ENCORE UN JOUEUR À FAIRE JOUER
+    // =====================================
 
     if (hasNextPlayer) {
 
@@ -162,22 +184,18 @@ function continueAfterConsequence() {
     }
 
 
-    /*
-    Plus de joueur dans le tour
-    OU plus aucune question.
-
-    On affiche toujours le récap.
-    */
+    // =====================================
+    // FIN DU TOUR
+    // =====================================
 
     displayRecap(
         game
     );
 
 
-    /*
-    Si les questions sont épuisées,
-    le bouton devient "Voir le classement".
-    */
+    // =====================================
+    // QUESTIONS ÉPUISÉES
+    // =====================================
 
     if (
         game.areQuestionsExhausted()
@@ -199,15 +217,14 @@ function continueAfterConsequence() {
 
 
 // =====================================
-// APRÈS RÉCAP
+// TOUR SUIVANT
 // =====================================
 
 function nextRound() {
 
-    /*
-    Si la partie est déjà terminée,
-    on affiche le classement.
-    */
+    // =====================================
+    // PARTIE TERMINÉE
+    // =====================================
 
     if (
         game.isGameOver()
@@ -222,21 +239,17 @@ function nextRound() {
     }
 
 
-    /*
-    Tentative de démarrer
-    un nouveau tour.
-    */
+    // =====================================
+    // NOUVEAU TOUR
+    // =====================================
 
     const roundStarted =
         game.startNewRound();
 
 
-    /*
-    Si startNewRound retourne false,
-    cela signifie qu'il n'y a pas
-    assez de questions pour tous
-    les joueurs encore en vie.
-    */
+    // =====================================
+    // PLUS ASSEZ DE QUESTIONS
+    // =====================================
 
     if (!roundStarted) {
 
@@ -259,21 +272,25 @@ function nextRound() {
 
 
 // =====================================
-// RECOMMENCER
+// RECOMMENCER UNE PARTIE
 // =====================================
 
 function restartGame() {
 
+    // Réinitialisation du moteur
     game.reset();
 
 
+    // Recréation des champs joueurs
+    refreshPlayerInputs();
+
+
+    // Texte du bouton par défaut
     btnNextRound.textContent =
         "Tour suivant";
 
 
-    refreshPlayerInputs();
-
-
+    // Retour accueil
     showScreen(
         "setup"
     );
@@ -325,14 +342,37 @@ showScreen(
     "setup"
 );
 
-if ("serviceWorker" in navigator) {
+
+// =====================================
+// SERVICE WORKER
+// =====================================
+
+const isGitHubPages =
+    window.location.hostname.includes(
+        "github.io"
+    );
+
+
+if (
+    "serviceWorker" in navigator &&
+    isGitHubPages
+) {
 
     window.addEventListener(
         "load",
         () => {
 
             navigator.serviceWorker
-                .register("./service-worker.js")
+                .register(
+                    "./service-worker.js"
+                )
+                .then(() => {
+
+                    console.log(
+                        "Service Worker enregistré"
+                    );
+
+                })
                 .catch(error => {
 
                     console.error(
