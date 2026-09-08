@@ -70,89 +70,43 @@ export function showScreen(
 }
 
 
-export function createPlayerInputs(
-    count
-) {
-
+export function createPlayerInputs(count) {
     const container =
-        document.getElementById(
-            "playerNames"
-        );
-
-
-    if (!container) {
-
-        console.error(
-            "Impossible de trouver #playerNames"
-        );
-
-        return;
-
-    }
-
+        document.getElementById("playerNames");
 
     container.innerHTML = "";
 
-
-    for (
-        let i = 1;
-        i <= count;
-        i++
-    ) {
-
-        const label =
-            document.createElement(
-                "label"
-            );
-
-
-        label.textContent =
-            `Nom du joueur ${i}`;
-
-
-        label.setAttribute(
-            "for",
-            `player-${i}`
-        );
-
-
+    for (let i = 1; i <= count; i++) {
         const input =
-            document.createElement(
-                "input"
-            );
+            document.createElement("input");
 
+        input.type = "text";
+        input.className = "player-name-input";
 
-        input.type =
-            "text";
+        input.value = `Joueur ${i}`;
+        input.dataset.defaultName = `Joueur ${i}`;
 
+        const selectDefaultName = () => {
+            if (
+                input.value ===
+                input.dataset.defaultName
+            ) {
+                input.select();
+            }
+        };
 
-        input.id =
-            `player-${i}`;
-
-
-        input.className =
-            "player-name-input";
-
-
-        input.placeholder =
-            `Joueur ${i}`;
-
-
-        input.value =
-            `Joueur ${i}`;
-
-
-        container.appendChild(
-            label
+        input.addEventListener(
+            "focus",
+            selectDefaultName
         );
 
-
-        container.appendChild(
-            input
+        input.addEventListener(
+            "click",
+            selectDefaultName
         );
 
+        container.appendChild(input);
     }
-
 }
 
 
