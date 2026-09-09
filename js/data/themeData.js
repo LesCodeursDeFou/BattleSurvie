@@ -15,6 +15,10 @@ import {
 } from "./desertIsland/groupSituations.js";
 
 import {
+    SECRET_SITUATIONS as DESERT_SECRET_SITUATIONS
+} from "./desertIsland/secretSituations.js";
+
+import {
     PROLOGUE as DESERT_PROLOGUE
 } from "./desertIsland/prologue.js";
 
@@ -36,12 +40,16 @@ import {
 } from "./hauntedMansion/groupSituations.js";
 
 import {
+    SECRET_SITUATIONS as MANSION_SECRET_SITUATIONS
+} from "./hauntedMansion/secretSituations.js";
+
+import {
     PROLOGUE as MANSION_PROLOGUE
 } from "./hauntedMansion/prologue.js";
 
 
 // =====================================
-// DONNÉES PAR THÈME
+// DONNÉES
 // =====================================
 
 export const THEME_DATA = {
@@ -57,8 +65,12 @@ export const THEME_DATA = {
         groupSituations:
             DESERT_GROUP_SITUATIONS,
 
+        secretSituations:
+            DESERT_SECRET_SITUATIONS,
+
         prologue:
             DESERT_PROLOGUE
+
     },
 
 
@@ -73,15 +85,19 @@ export const THEME_DATA = {
         groupSituations:
             MANSION_GROUP_SITUATIONS,
 
+        secretSituations:
+            MANSION_SECRET_SITUATIONS,
+
         prologue:
             MANSION_PROLOGUE
+
     }
 
 };
 
 
 // =====================================
-// RÉCUPÉRER LES DONNÉES D'UN THÈME
+// RÉCUPÉRATION
 // =====================================
 
 export function getThemeData(

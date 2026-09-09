@@ -773,6 +773,46 @@
 
 
         <!-- ========================= -->
+        <!-- SECRET CHOICE : INTRO -->
+        <!-- ========================= -->
+
+        <section
+            id="screenSecretIntro"
+            class="screen"
+        >
+
+            <article class="card consequence-card">
+
+                <div class="consequence-icon">
+                    🤫
+                </div>
+
+                <span class="small-label">
+                    Choix secret
+                </span>
+
+                <h2 id="secretIntroTitle">
+                    Garde ton choix pour toi
+                </h2>
+
+                <p id="secretIntroText">
+                    Les autres joueurs ne doivent pas regarder l'écran.
+                </p>
+
+                <button
+                    id="btnSecretStart"
+                    class="btn btn-primary"
+                    type="button"
+                >
+                    Je suis prêt
+                </button>
+
+            </article>
+
+        </section>
+
+
+        <!-- ========================= -->
         <!-- ÉCRAN DE JEU -->
         <!-- ========================= -->
 
@@ -867,6 +907,84 @@
 
         </section>
 
+        <!-- ========================= -->
+        <!-- SECRET CHOICE : PASSAGE -->
+        <!-- ========================= -->
+
+        <section
+            id="screenSecretHandoff"
+            class="screen"
+        >
+
+            <article class="card consequence-card">
+
+                <div class="consequence-icon">
+                    📱
+                </div>
+
+                <span class="small-label">
+                    À vous de jouer
+                </span>
+
+                <h2>
+                    Passe le téléphone
+                </h2>
+
+                <p id="secretHandoffText">
+                    Passe maintenant le téléphone aux autres joueurs.
+                </p>
+
+                <button
+                    id="btnSecretReady"
+                    class="btn btn-primary"
+                    type="button"
+                >
+                    Téléphone passé
+                </button>
+
+            </article>
+
+        </section>
+
+
+        <!-- ========================= -->
+        <!-- SECRET CHOICE : DEVINETTE -->
+        <!-- ========================= -->
+
+        <section
+            id="screenSecretGuess"
+            class="screen"
+        >
+
+            <article class="card situation-card">
+
+                <div
+                    id="secretGuessIcon"
+                    class="situation-icon"
+                >
+                    🕵️
+                </div>
+
+                <span class="category">
+                    Devinette
+                </span>
+
+                <h2 id="secretGuessTitle">
+                    Qu'a choisi le joueur ?
+                </h2>
+
+                <p id="secretGuessDescription">
+                    À vous de deviner.
+                </p>
+
+                <div
+                    id="secretGuessChoices"
+                    class="choices"
+                ></div>
+
+            </article>
+
+        </section>
 
         <!-- ========================= -->
         <!-- CONSÉQUENCE -->

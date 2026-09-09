@@ -44,6 +44,16 @@ const screens = {
             "screenGame"
         ),
 
+    secretHandoff:
+        document.getElementById(
+            "screenSecretHandoff"
+        ),
+
+    secretGuess:
+        document.getElementById(
+            "screenSecretGuess"
+        ),
+
     consequence:
         document.getElementById(
             "screenConsequence"
@@ -57,10 +67,75 @@ const screens = {
     gameOver:
         document.getElementById(
             "screenGameOver"
-        )
+        ),
+
+    secretIntro:
+        document.getElementById(
+            "screenSecretIntro"
+        ),
 
 };
 
+export function displaySecretIntro(
+    game,
+    onReady
+) {
+
+    const player =
+        game.getCurrentPlayer();
+
+
+    const title =
+        document.getElementById(
+            "secretIntroTitle"
+        );
+
+
+    const text =
+        document.getElementById(
+            "secretIntroText"
+        );
+
+
+    const button =
+        document.getElementById(
+            "btnSecretStart"
+        );
+
+
+    if (
+        !player ||
+        !title ||
+        !text ||
+        !button
+    ) {
+
+        console.error(
+            "Écran secretIntro incomplet."
+        );
+
+        return;
+
+    }
+
+
+    title.textContent =
+        `${player.name}, garde ton choix pour toi`;
+
+
+    text.textContent =
+        "Les autres joueurs ne doivent pas regarder l'écran pendant ta décision.";
+
+
+    button.onclick =
+        onReady;
+
+
+    showScreen(
+        "secretIntro"
+    );
+
+}
 
 export function displayModePrologue(
     game,
@@ -1486,6 +1561,304 @@ function displayChoices(
             );
 
         }
+    );
+
+}
+
+
+// =====================================
+// SECRET CHOICE : PASSAGE DU TÉLÉPHONE
+// =====================================
+
+export function displaySecretHandoff(
+    data,
+    onReady
+) {
+
+    const text =
+        document.getElementById(
+            "secretHandoffText"
+        );
+
+
+    const button =
+        document.getElementById(
+            "btnSecretReady"
+        );
+
+
+    if (
+        !text ||
+        !button
+    ) {
+
+        console.error(
+            "Écran SecretHandoff incomplet."
+        );
+
+        return;
+
+    }
+
+
+    const otherPlayers =
+        data.otherPlayers ?? [];
+
+
+    const names =
+        otherPlayers.map(
+            player =>
+                player.name
+        );
+
+
+    let groupText =
+        "aux autres joueurs";
+
+
+    if (
+        names.length === 1
+    ) {
+
+        groupText =
+            `à ${names[0]}`;
+
+    }
+
+    else if (
+        names.length === 2
+    ) {
+
+        groupText =
+            `à ${names[0]} et ${names[1]}`;
+
+    }
+
+    else if (
+        names.length > 2
+    ) {
+
+        groupText =
+            `à ${
+                names
+                    .slice(0, -1)
+                    .join(", ")
+            } et ${
+                names[
+                    names.length - 1
+                ]
+            }`;
+
+    }
+
+
+    text.textContent =
+        `Passe maintenant le téléphone ${groupText}.`;
+
+
+    button.onclick =
+        onReady;
+
+
+    showScreen(
+        "secretHandoff"
+    );
+
+}
+
+
+// =====================================
+// SECRET CHOICE : DEVINETTE
+// =====================================
+
+export function displaySecretGuess(
+    game,
+    data,
+    onGuess
+) {
+
+    if (
+        !game ||
+        !data ||
+        !data.situation
+    ) {
+
+        console.error(
+            "displaySecretGuess : données invalides",
+            data
+        );
+
+        return;
+
+    }
+
+
+    const {
+        player,
+        situation,
+        otherPlayers = []
+    } = data;
+
+
+    const icon =
+        document.getElementById(
+            "secretGuessIcon"
+        );
+
+
+    const title =
+        document.getElementById(
+            "secretGuessTitle"
+        );
+
+
+    const description =
+        document.getElementById(
+            "secretGuessDescription"
+        );
+
+
+    const container =
+        document.getElementById(
+            "secretGuessChoices"
+        );
+
+
+    if (
+        !icon ||
+        !title ||
+        !description ||
+        !container
+    ) {
+
+        console.error(
+            "Écran SecretGuess incomplet."
+        );
+
+        return;
+
+    }
+
+
+    icon.textContent =
+        "🕵️";
+
+
+    title.textContent =
+        game.renderPlayerText(
+            situation.guess?.title ??
+                `Qu'a choisi ${player.name} ?`,
+            player,
+            null,
+            otherPlayers
+        );
+
+
+    description.textContent =
+        game.renderPlayerText(
+            situation.guess?.description ??
+                "À vous de deviner.",
+            player,
+            null,
+            otherPlayers
+        );
+
+
+    container.innerHTML =
+        "";
+
+
+    const guesses =
+        situation.guess?.choices ??
+        [];
+
+
+    guesses.forEach(
+        guess => {
+
+            const button =
+                document.createElement(
+                    "button"
+                );
+
+
+            button.type =
+                "button";
+
+
+            button.className =
+                "choice-button";
+
+
+            const buttonTitle =
+                document.createElement(
+                    "strong"
+                );
+
+
+            buttonTitle.textContent =
+                game.renderPlayerText(
+                    guess.title,
+                    player,
+                    null,
+                    otherPlayers
+                );
+
+
+            const buttonDescription =
+                document.createElement(
+                    "span"
+                );
+
+
+            buttonDescription.textContent =
+                game.renderPlayerText(
+                    guess.description ?? "",
+                    player,
+                    null,
+                    otherPlayers
+                );
+
+
+            button.appendChild(
+                buttonTitle
+            );
+
+
+            if (
+                buttonDescription.textContent !==
+                ""
+            ) {
+
+                button.appendChild(
+                    buttonDescription
+                );
+
+            }
+
+
+            button.addEventListener(
+                "click",
+                () => {
+
+                    onGuess(
+                        guess.id
+                    );
+
+                }
+            );
+
+
+            container.appendChild(
+                button
+            );
+
+        }
+    );
+
+
+    showScreen(
+        "secretGuess"
     );
 
 }

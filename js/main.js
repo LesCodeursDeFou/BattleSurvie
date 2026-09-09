@@ -9,7 +9,10 @@ import {
     displayRecap,
     displayGameOver,
     displayPrologue,
-    displayModePrologue
+    displayModePrologue,
+    displaySecretHandoff,
+    displaySecretGuess,
+    displaySecretIntro
 } from "./ui/screens.js";
 
 
@@ -17,16 +20,21 @@ import {
 // DONNÉES TEMPORAIRES AVANT LANCEMENT
 // =====================================
 
-let pendingPlayerNames = [];
+let pendingPlayerNames =
+    [];
+
 
 let selectedGameMode =
     "battle_royal";
 
+
 let selectedTheme =
     "desert_island";
 
+
 let selectedMaxRounds =
     5;
+
 
 // =====================================
 // JEU
@@ -37,7 +45,7 @@ const game =
 
 
 // =====================================
-// ÉLÉMENTS HTML
+// ÉLÉMENTS HTML - GÉNÉRAL
 // =====================================
 
 const playerCount =
@@ -71,7 +79,7 @@ const btnRestart =
 
 
 // =====================================
-// ÉLÉMENTS OPTIONS
+// ÉLÉMENTS HTML - OPTIONS
 // =====================================
 
 const btnLaunchAdventure =
@@ -97,6 +105,7 @@ const themeContainer =
         "themeContainer"
     );
 
+
 const roundConfig =
     document.getElementById(
         "roundConfig"
@@ -115,12 +124,61 @@ const roundEstimate =
     );
 
 
+// =====================================
+// APPARENCE DU THÈME
+// =====================================
+
+function applyThemeAppearance(
+    themeId
+) {
+
+    document.body.dataset.theme =
+        themeId;
+
+}
+
+
+// =====================================
+// INPUTS JOUEURS
+// =====================================
+
+function refreshPlayerInputs() {
+
+    if (!playerCount) {
+
+        return;
+
+    }
+
+
+    const count =
+        Number(
+            playerCount.value
+        );
+
+
+    createPlayerInputs(
+        count
+    );
+
+}
+
+
+// =====================================
+// CHOIX DU NOMBRE DE TOURS
+// =====================================
+
 function selectRoundCount(
     button
 ) {
 
-    if (!button) {
+    if (
+        !button ||
+        !roundChoices
+    ) {
+
         return;
+
     }
 
 
@@ -131,7 +189,9 @@ function selectRoundCount(
 
 
     if (!rounds) {
+
         return;
+
     }
 
 
@@ -166,7 +226,7 @@ function selectRoundCount(
 
 
     // =====================================
-    // DESCRIPTION
+    // DESCRIPTIONS
     // =====================================
 
     const configs = {
@@ -174,35 +234,46 @@ function selectRoundCount(
         3: {
             name:
                 "Partie courte",
+
             icon:
                 "⚡",
+
             minutes:
                 8
         },
 
+
         5: {
             name:
                 "Partie normale",
+
             icon:
                 "🎮",
+
             minutes:
                 15
         },
 
+
         8: {
             name:
                 "Partie longue",
+
             icon:
                 "🔥",
+
             minutes:
                 25
         },
 
+
         10: {
             name:
                 "Marathon",
+
             icon:
                 "🏆",
+
             minutes:
                 35
         }
@@ -216,32 +287,20 @@ function selectRoundCount(
         ];
 
 
-    roundEstimate.textContent =
-        `${config.icon} ${config.name} • ${selectedMaxRounds} tours • environ ${config.minutes} min`;
+    if (
+        roundEstimate &&
+        config
+    ) {
+
+        roundEstimate.textContent =
+            `${config.icon} ${config.name} • ${selectedMaxRounds} tours • environ ${config.minutes} min`;
+
+    }
 
 
     console.log(
-        "Nombre de tours :",
+        "Nombre de tours sélectionné :",
         selectedMaxRounds
-    );
-
-}
-
-
-// =====================================
-// INPUTS JOUEURS
-// =====================================
-
-function refreshPlayerInputs() {
-
-    const count =
-        Number(
-            playerCount.value
-        );
-
-
-    createPlayerInputs(
-        count
     );
 
 }
@@ -259,21 +318,23 @@ function startGame() {
 
 
     if (
+        !Array.isArray(
+            playerNames
+        ) ||
         playerNames.length === 0
     ) {
+
+        console.error(
+            "Aucun joueur trouvé."
+        );
 
         return;
 
     }
 
 
-    /*
-    On ne démarre PAS encore
-    réellement la partie.
-
-    On mémorise simplement
-    les joueurs.
-    */
+    // On ne démarre pas encore
+    // réellement le moteur.
 
     pendingPlayerNames =
         playerNames;
@@ -296,7 +357,8 @@ function selectGameMode(
 
     if (
         !modeButton ||
-        modeButton.disabled
+        modeButton.disabled ||
+        !gameModeContainer
     ) {
 
         return;
@@ -319,9 +381,41 @@ function selectGameMode(
         mode;
 
 
-    if (
-        roundConfig
-    ) {
+    // =====================================
+    // RETIRER ACTIVE PARTOUT
+    // =====================================
+
+    const modeButtons =
+        gameModeContainer.querySelectorAll(
+            ".option-card[data-mode]"
+        );
+
+
+    modeButtons.forEach(
+        button => {
+
+            button.classList.remove(
+                "active"
+            );
+
+        }
+    );
+
+
+    // =====================================
+    // ACTIVER LE MODE CHOISI
+    // =====================================
+
+    modeButton.classList.add(
+        "active"
+    );
+
+
+    // =====================================
+    // PANNEAU SURVIVAL PARTY
+    // =====================================
+
+    if (roundConfig) {
 
         if (
             selectedGameMode ===
@@ -344,80 +438,6 @@ function selectGameMode(
 
     }
 
-    function updateRoundEstimate() {
-
-        if (
-            !roundCount
-        ) {
-
-            return;
-
-        }
-
-
-        selectedMaxRounds =
-            Number(
-                roundCount.value
-            );
-
-
-        const estimates = {
-
-            3: 8,
-            5: 15,
-            8: 25,
-            10: 35
-
-        };
-
-
-        if (
-            roundEstimate
-        ) {
-
-            roundEstimate.textContent =
-                `⏱️ Durée estimée : environ ${estimates[selectedMaxRounds]} minutes`;
-
-        }
-
-    }
-
-    if (
-        roundCount
-    ) {
-
-        roundCount.addEventListener(
-            "change",
-            updateRoundEstimate
-        );
-
-    }
-
-    const modeButtons =
-        gameModeContainer.querySelectorAll(
-            ".option-card[data-mode]"
-        );
-
-
-    modeButtons.forEach(
-        button => {
-
-            button.classList.remove(
-                "active"
-            );
-
-        }
-    );
-
-
-    /*
-    On active le mode choisi.
-    */
-
-    modeButton.classList.add(
-        "active"
-    );
-
 
     console.log(
         "Mode sélectionné :",
@@ -426,14 +446,6 @@ function selectGameMode(
 
 }
 
-function applyThemeAppearance(
-    themeId
-) {
-
-    document.body.dataset.theme =
-        themeId;
-
-}
 
 // =====================================
 // SÉLECTION DU THÈME
@@ -445,7 +457,8 @@ function selectTheme(
 
     if (
         !themeButton ||
-        themeButton.disabled
+        themeButton.disabled ||
+        !themeContainer
     ) {
 
         return;
@@ -468,9 +481,18 @@ function selectTheme(
         theme;
 
 
+    // =====================================
+    // CHANGEMENT IMMÉDIAT DE L'AMBIANCE
+    // =====================================
+
     applyThemeAppearance(
         selectedTheme
     );
+
+
+    // =====================================
+    // RETIRER ACTIVE PARTOUT
+    // =====================================
 
     const themeButtons =
         themeContainer.querySelectorAll(
@@ -489,9 +511,9 @@ function selectTheme(
     );
 
 
-    /*
-    On active le thème choisi.
-    */
+    // =====================================
+    // ACTIVER LE THÈME CHOISI
+    // =====================================
 
     themeButton.classList.add(
         "active"
@@ -508,7 +530,7 @@ function selectTheme(
 
 // =====================================
 // ÉTAPE 2
-// OPTIONS → PROLOGUE
+// OPTIONS → PROLOGUES
 // =====================================
 
 function launchAdventure() {
@@ -521,14 +543,20 @@ function launchAdventure() {
             "Aucun joueur en attente."
         );
 
+
         showScreen(
             "setup"
         );
+
 
         return;
 
     }
 
+
+    // =====================================
+    // DÉMARRAGE RÉEL DU MOTEUR
+    // =====================================
 
     const gameStarted =
         game.start(
@@ -542,15 +570,22 @@ function launchAdventure() {
     if (!gameStarted) {
 
         console.error(
-            "Impossible de démarrer la partie",
+            "Impossible de démarrer la partie.",
             {
+                players:
+                    pendingPlayerNames,
+
                 mode:
                     selectedGameMode,
 
                 theme:
-                    selectedTheme
+                    selectedTheme,
+
+                rounds:
+                    selectedMaxRounds
             }
         );
+
 
         return;
 
@@ -569,15 +604,26 @@ function launchAdventure() {
             theme:
                 selectedTheme,
 
+            rounds:
+                selectedMaxRounds,
+
             situations:
                 game.availableSituations.length
         }
     );
 
 
+    // =====================================
+    // PROLOGUE DU THÈME
+    // =====================================
+
     displayPrologue(
         game,
         () => {
+
+            // =================================
+            // PROLOGUE DU MODE
+            // =================================
 
             displayModePrologue(
                 game,
@@ -600,6 +646,42 @@ function launchAdventure() {
 
 function backToSetup() {
 
+    // =====================================
+    // RESET DES CHOIX
+    // =====================================
+
+    selectedGameMode =
+        "battle_royal";
+
+
+    selectedTheme =
+        "desert_island";
+
+
+    selectedMaxRounds =
+        5;
+
+
+    // =====================================
+    // RETOUR AU VERT
+    // =====================================
+
+    applyThemeAppearance(
+        "desert_island"
+    );
+
+
+    // =====================================
+    // RESET VISUEL
+    // =====================================
+
+    resetGameOptions();
+
+
+    // =====================================
+    // RETOUR ACCUEIL
+    // =====================================
+
     showScreen(
         "setup"
     );
@@ -608,10 +690,56 @@ function backToSetup() {
 
 
 // =====================================
-// AFFICHAGE TOUR ACTUEL
+// AFFICHAGE DU TOUR ACTUEL
 // =====================================
 
 function showCurrentTurn() {
+
+    const situation =
+        game.getCurrentSituation();
+
+
+    if (!situation) {
+
+        console.error(
+            "Aucune situation actuelle."
+        );
+
+        return;
+
+    }
+
+
+    // =====================================
+    // CHOIX SECRET
+    // =====================================
+
+    if (
+        situation.type ===
+        "secret_choice"
+    ) {
+
+        displaySecretIntro(
+            game,
+            () => {
+
+                displayGame(
+                    game,
+                    handleChoice
+                );
+
+            }
+        );
+
+
+        return;
+
+    }
+
+
+    // =====================================
+    // SITUATION NORMALE
+    // =====================================
 
     displayGame(
         game,
@@ -629,26 +757,111 @@ function handleChoice(
     choiceId
 ) {
 
-    const result =
+    const data =
         game.makeChoice(
             choiceId
         );
 
 
-    if (!result) {
+    if (!data) {
 
         console.error(
-            "Impossible d'appliquer le choix",
+            "Impossible d'appliquer le choix :",
             choiceId
         );
+
 
         return;
 
     }
 
 
+    console.log(
+        "Résultat de makeChoice :",
+        data
+    );
+
+
+    // =====================================
+    // SECRET CHOICE
+    // PHASE 1 TERMINÉE
+    // =====================================
+
+    if (
+        data.phase ===
+        "secret_waiting"
+    ) {
+
+        displaySecretHandoff(
+            data,
+            () => {
+
+                displaySecretGuess(
+                    game,
+                    data,
+                    handleSecretGuess
+                );
+
+            }
+        );
+
+
+        return;
+
+    }
+
+
+    // =====================================
+    // SITUATION CLASSIQUE
+    // =====================================
+
     displayConsequence(
-        result
+        data
+    );
+
+}
+
+
+// =====================================
+// SECRET CHOICE
+// DEVINETTE DES AUTRES JOUEURS
+// =====================================
+
+function handleSecretGuess(
+    guessId
+) {
+
+    const data =
+        game.resolveSecretGuess(
+            guessId
+        );
+
+
+    if (!data) {
+
+        console.error(
+            "Impossible de résoudre la devinette :",
+            guessId
+        );
+
+
+        return;
+
+    }
+
+
+    console.log(
+        "Choix secret résolu :",
+        data
+    );
+
+
+    // =====================================
+    // AFFICHAGE DE LA RÉVÉLATION
+    // =====================================
+
+    displayConsequence(
+        data
     );
 
 }
@@ -665,7 +878,7 @@ function continueAfterConsequence() {
 
 
     // =====================================
-    // ENCORE UN JOUEUR À FAIRE JOUER
+    // ENCORE UN JOUEUR
     // =====================================
 
     if (hasNextPlayer) {
@@ -687,10 +900,19 @@ function continueAfterConsequence() {
 
 
     // =====================================
-    // QUESTIONS ÉPUISÉES
+    // BOUTON APRÈS RÉCAP
     // =====================================
 
     if (
+        game.isGameOver()
+    ) {
+
+        btnNextRound.textContent =
+            "Voir le classement";
+
+    }
+
+    else if (
         game.areQuestionsExhausted()
     ) {
 
@@ -727,28 +949,26 @@ function nextRound() {
             game
         );
 
+
         return;
 
     }
 
 
     // =====================================
-    // NOUVEAU TOUR
+    // DÉMARRAGE NOUVEAU TOUR
     // =====================================
 
     const roundStarted =
         game.startNewRound();
 
 
-    // =====================================
-    // PLUS ASSEZ DE QUESTIONS
-    // =====================================
-
     if (!roundStarted) {
 
         displayGameOver(
             game
         );
+
 
         return;
 
@@ -765,71 +985,6 @@ function nextRound() {
 
 
 // =====================================
-// RECOMMENCER UNE PARTIE
-// =====================================
-
-function restartGame() {
-
-    // =====================================
-    // RESET MOTEUR
-    // =====================================
-
-    game.reset();
-
-
-    // =====================================
-    // RESET DONNÉES TEMPORAIRES
-    // =====================================
-
-    pendingPlayerNames = [];
-
-
-    selectedGameMode =
-        "battle_royal";
-
-
-    selectedTheme =
-        "desert_island";
-    
-    applyThemeAppearance(
-        "desert_island"
-    );
-
-
-    // =====================================
-    // RESET BOUTON RÉCAP
-    // =====================================
-
-    btnNextRound.textContent =
-        "Tour suivant";
-
-
-    // =====================================
-    // RESET OPTIONS VISUELLES
-    // =====================================
-
-    resetGameOptions();
-
-
-    // =====================================
-    // RECRÉATION DES JOUEURS
-    // =====================================
-
-    refreshPlayerInputs();
-
-
-    // =====================================
-    // RETOUR ACCUEIL
-    // =====================================
-
-    showScreen(
-        "setup"
-    );
-
-}
-
-
-// =====================================
 // RESET VISUEL DES OPTIONS
 // =====================================
 
@@ -839,7 +994,9 @@ function resetGameOptions() {
     // MODES
     // =====================================
 
-    if (gameModeContainer) {
+    if (
+        gameModeContainer
+    ) {
 
         const modeButtons =
             gameModeContainer.querySelectorAll(
@@ -864,7 +1021,9 @@ function resetGameOptions() {
             );
 
 
-        if (defaultMode) {
+        if (
+            defaultMode
+        ) {
 
             defaultMode.classList.add(
                 "active"
@@ -879,7 +1038,9 @@ function resetGameOptions() {
     // THÈMES
     // =====================================
 
-    if (themeContainer) {
+    if (
+        themeContainer
+    ) {
 
         const themeButtons =
             themeContainer.querySelectorAll(
@@ -904,7 +1065,9 @@ function resetGameOptions() {
             );
 
 
-        if (defaultTheme) {
+        if (
+            defaultTheme
+        ) {
 
             defaultTheme.classList.add(
                 "active"
@@ -914,6 +1077,154 @@ function resetGameOptions() {
 
     }
 
+
+    // =====================================
+    // SURVIVAL PARTY
+    // =====================================
+
+    if (
+        roundConfig
+    ) {
+
+        roundConfig.classList.add(
+            "hidden"
+        );
+
+    }
+
+
+    // =====================================
+    // RESET DU NOMBRE DE TOURS
+    // =====================================
+
+    selectedMaxRounds =
+        5;
+
+
+    if (
+        roundChoices
+    ) {
+
+        const roundButtons =
+            roundChoices.querySelectorAll(
+                ".round-choice[data-rounds]"
+            );
+
+
+        roundButtons.forEach(
+            button => {
+
+                button.classList.remove(
+                    "active"
+                );
+
+            }
+        );
+
+
+        const defaultRound =
+            roundChoices.querySelector(
+                '[data-rounds="5"]'
+            );
+
+
+        if (
+            defaultRound
+        ) {
+
+            defaultRound.classList.add(
+                "active"
+            );
+
+        }
+
+    }
+
+
+    if (
+        roundEstimate
+    ) {
+
+        roundEstimate.textContent =
+            "🎮 Partie normale • 5 tours • environ 15 min";
+
+    }
+
+}
+
+
+// =====================================
+// RECOMMENCER UNE PARTIE
+// =====================================
+
+function restartGame() {
+
+    // =====================================
+    // RESET MOTEUR
+    // =====================================
+
+    game.reset();
+
+
+    // =====================================
+    // RESET TEMPORAIRE
+    // =====================================
+
+    pendingPlayerNames =
+        [];
+
+
+    selectedGameMode =
+        "battle_royal";
+
+
+    selectedTheme =
+        "desert_island";
+
+
+    selectedMaxRounds =
+        5;
+
+
+    // =====================================
+    // RETOUR THÈME ÎLE
+    // =====================================
+
+    applyThemeAppearance(
+        "desert_island"
+    );
+
+
+    // =====================================
+    // RESET BOUTON
+    // =====================================
+
+    btnNextRound.textContent =
+        "Tour suivant";
+
+
+    // =====================================
+    // RESET OPTIONS
+    // =====================================
+
+    resetGameOptions();
+
+
+    // =====================================
+    // RECRÉER LES INPUTS
+    // =====================================
+
+    refreshPlayerInputs();
+
+
+    // =====================================
+    // RETOUR ACCUEIL
+    // =====================================
+
+    showScreen(
+        "setup"
+    );
+
 }
 
 
@@ -921,24 +1232,37 @@ function resetGameOptions() {
 // EVENTS - JOUEURS
 // =====================================
 
-playerCount.addEventListener(
-    "change",
-    refreshPlayerInputs
-);
+if (
+    playerCount
+) {
+
+    playerCount.addEventListener(
+        "change",
+        refreshPlayerInputs
+    );
+
+}
 
 
-btnStartGame.addEventListener(
-    "click",
-    startGame
-);
+if (
+    btnStartGame
+) {
 
+    btnStartGame.addEventListener(
+        "click",
+        startGame
+    );
+
+}
 
 
 // =====================================
-// EVENTS - OPTIONS
+// EVENTS - MODES
 // =====================================
 
-if (gameModeContainer) {
+if (
+    gameModeContainer
+) {
 
     gameModeContainer.addEventListener(
         "click",
@@ -967,7 +1291,13 @@ if (gameModeContainer) {
 }
 
 
-if (themeContainer) {
+// =====================================
+// EVENTS - THÈMES
+// =====================================
+
+if (
+    themeContainer
+) {
 
     themeContainer.addEventListener(
         "click",
@@ -996,51 +1326,8 @@ if (themeContainer) {
 }
 
 
-if (btnLaunchAdventure) {
-
-    btnLaunchAdventure.addEventListener(
-        "click",
-        launchAdventure
-    );
-
-}
-
-
-if (btnBackToSetup) {
-
-    btnBackToSetup.addEventListener(
-        "click",
-        backToSetup
-    );
-
-}
-
-
 // =====================================
-// EVENTS - PARTIE
-// =====================================
-
-btnContinue.addEventListener(
-    "click",
-    continueAfterConsequence
-);
-
-
-btnNextRound.addEventListener(
-    "click",
-    nextRound
-);
-
-
-btnRestart.addEventListener(
-    "click",
-    restartGame
-);
-
-
-// =====================================
-// CHOIX DU NOMBRE DE TOURS
-// SURVIVAL PARTY
+// EVENTS - NOMBRE DE TOURS
 // =====================================
 
 if (
@@ -1075,26 +1362,92 @@ if (
 
 
 // =====================================
+// EVENTS - OPTIONS
+// =====================================
+
+if (
+    btnLaunchAdventure
+) {
+
+    btnLaunchAdventure.addEventListener(
+        "click",
+        launchAdventure
+    );
+
+}
+
+
+if (
+    btnBackToSetup
+) {
+
+    btnBackToSetup.addEventListener(
+        "click",
+        backToSetup
+    );
+
+}
+
+
+// =====================================
+// EVENTS - PARTIE
+// =====================================
+
+if (
+    btnContinue
+) {
+
+    btnContinue.addEventListener(
+        "click",
+        continueAfterConsequence
+    );
+
+}
+
+
+if (
+    btnNextRound
+) {
+
+    btnNextRound.addEventListener(
+        "click",
+        nextRound
+    );
+
+}
+
+
+if (
+    btnRestart
+) {
+
+    btnRestart.addEventListener(
+        "click",
+        restartGame
+    );
+
+}
+
+
+// =====================================
 // INITIALISATION
 // =====================================
 
-// Applique le thème par défaut
-// dès le chargement de la page
+// Thème visuel par défaut
 applyThemeAppearance(
     selectedTheme
 );
 
 
-// Crée les champs joueurs
+// Champs joueurs
 refreshPlayerInputs();
 
 
-// Remet les options visuelles
-// sur Battle Royal + Île déserte
+// Options par défaut
 resetGameOptions();
 
 
-// Affiche l'écran d'accueil
+// Écran initial
 showScreen(
     "setup"
 );
@@ -1130,14 +1483,16 @@ if (
                     );
 
                 })
-                .catch(error => {
+                .catch(
+                    error => {
 
-                    console.error(
-                        "Erreur Service Worker :",
-                        error
-                    );
+                        console.error(
+                            "Erreur Service Worker :",
+                            error
+                        );
 
-                });
+                    }
+                );
 
         }
     );
