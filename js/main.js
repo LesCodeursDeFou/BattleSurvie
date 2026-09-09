@@ -8,7 +8,8 @@ import {
     displayConsequence,
     displayRecap,
     displayGameOver,
-    displayPrologue
+    displayPrologue,
+    displayModePrologue
 } from "./ui/screens.js";
 
 
@@ -24,6 +25,8 @@ let selectedGameMode =
 let selectedTheme =
     "desert_island";
 
+let selectedMaxRounds =
+    5;
 
 // =====================================
 // JEU
@@ -93,6 +96,136 @@ const themeContainer =
     document.getElementById(
         "themeContainer"
     );
+
+const roundConfig =
+    document.getElementById(
+        "roundConfig"
+    );
+
+
+const roundChoices =
+    document.getElementById(
+        "roundChoices"
+    );
+
+
+const roundEstimate =
+    document.getElementById(
+        "roundEstimate"
+    );
+
+
+function selectRoundCount(
+    button
+) {
+
+    if (!button) {
+        return;
+    }
+
+
+    const rounds =
+        Number(
+            button.dataset.rounds
+        );
+
+
+    if (!rounds) {
+        return;
+    }
+
+
+    selectedMaxRounds =
+        rounds;
+
+
+    // =====================================
+    // SÉLECTION VISUELLE
+    // =====================================
+
+    const buttons =
+        roundChoices.querySelectorAll(
+            ".round-choice"
+        );
+
+
+    buttons.forEach(
+        item => {
+
+            item.classList.remove(
+                "active"
+            );
+
+        }
+    );
+
+
+    button.classList.add(
+        "active"
+    );
+
+
+    // =====================================
+    // DESCRIPTION
+    // =====================================
+
+    const configs = {
+
+        3: {
+            name:
+                "Partie courte",
+            icon:
+                "⚡",
+            minutes:
+                8
+        },
+
+        5: {
+            name:
+                "Partie normale",
+            icon:
+                "🎮",
+            minutes:
+                15
+        },
+
+        8: {
+            name:
+                "Partie longue",
+            icon:
+                "🔥",
+            minutes:
+                25
+        },
+
+        10: {
+            name:
+                "Marathon",
+            icon:
+                "🏆",
+            minutes:
+                35
+        }
+
+    };
+
+
+    const config =
+        configs[
+            selectedMaxRounds
+        ];
+
+
+    roundEstimate.textContent =
+        `${config.icon} ${config.name} • ${selectedMaxRounds} tours • environ ${config.minutes} min`;
+
+
+    console.log(
+        "Nombre de tours :",
+        selectedMaxRounds
+    );
+
+}
 
 
 // =====================================
@@ -186,10 +319,79 @@ function selectGameMode(
         mode;
 
 
-    /*
-    On enlève "active"
-    des autres modes.
-    */
+    if (
+        roundConfig
+    ) {
+
+        if (
+            selectedGameMode ===
+            "survival_party"
+        ) {
+
+            roundConfig.classList.remove(
+                "hidden"
+            );
+
+        }
+
+        else {
+
+            roundConfig.classList.add(
+                "hidden"
+            );
+
+        }
+
+    }
+
+    function updateRoundEstimate() {
+
+        if (
+            !roundCount
+        ) {
+
+            return;
+
+        }
+
+
+        selectedMaxRounds =
+            Number(
+                roundCount.value
+            );
+
+
+        const estimates = {
+
+            3: 8,
+            5: 15,
+            8: 25,
+            10: 35
+
+        };
+
+
+        if (
+            roundEstimate
+        ) {
+
+            roundEstimate.textContent =
+                `⏱️ Durée estimée : environ ${estimates[selectedMaxRounds]} minutes`;
+
+        }
+
+    }
+
+    if (
+        roundCount
+    ) {
+
+        roundCount.addEventListener(
+            "change",
+            updateRoundEstimate
+        );
+
+    }
 
     const modeButtons =
         gameModeContainer.querySelectorAll(
@@ -224,6 +426,14 @@ function selectGameMode(
 
 }
 
+function applyThemeAppearance(
+    themeId
+) {
+
+    document.body.dataset.theme =
+        themeId;
+
+}
 
 // =====================================
 // SÉLECTION DU THÈME
@@ -258,10 +468,9 @@ function selectTheme(
         theme;
 
 
-    /*
-    On enlève "active"
-    des autres thèmes.
-    */
+    applyThemeAppearance(
+        selectedTheme
+    );
 
     const themeButtons =
         themeContainer.querySelectorAll(
@@ -321,29 +530,31 @@ function launchAdventure() {
     }
 
 
-    // =====================================
-    // CRÉATION RÉELLE DE LA PARTIE
-    // =====================================
-
-    game.start(
-        pendingPlayerNames
-    );
-
-
-    // =====================================
-    // MODE CHOISI
-    // =====================================
-
-    game.gameMode =
-        selectedGameMode;
+    const gameStarted =
+        game.start(
+            pendingPlayerNames,
+            selectedGameMode,
+            selectedTheme,
+            selectedMaxRounds
+        );
 
 
-    // =====================================
-    // THÈME CHOISI
-    // =====================================
+    if (!gameStarted) {
 
-    game.theme =
-        selectedTheme;
+        console.error(
+            "Impossible de démarrer la partie",
+            {
+                mode:
+                    selectedGameMode,
+
+                theme:
+                    selectedTheme
+            }
+        );
+
+        return;
+
+    }
 
 
     console.log(
@@ -356,20 +567,26 @@ function launchAdventure() {
                 selectedGameMode,
 
             theme:
-                selectedTheme
+                selectedTheme,
+
+            situations:
+                game.availableSituations.length
         }
     );
 
-
-    // =====================================
-    // PROLOGUE
-    // =====================================
 
     displayPrologue(
         game,
         () => {
 
-            showCurrentTurn();
+            displayModePrologue(
+                game,
+                () => {
+
+                    showCurrentTurn();
+
+                }
+            );
 
         }
     );
@@ -573,6 +790,10 @@ function restartGame() {
 
     selectedTheme =
         "desert_island";
+    
+    applyThemeAppearance(
+        "desert_island"
+    );
 
 
     // =====================================
@@ -712,6 +933,7 @@ btnStartGame.addEventListener(
 );
 
 
+
 // =====================================
 // EVENTS - OPTIONS
 // =====================================
@@ -817,13 +1039,62 @@ btnRestart.addEventListener(
 
 
 // =====================================
+// CHOIX DU NOMBRE DE TOURS
+// SURVIVAL PARTY
+// =====================================
+
+if (
+    roundChoices
+) {
+
+    roundChoices.addEventListener(
+        "click",
+        event => {
+
+            const button =
+                event.target.closest(
+                    ".round-choice[data-rounds]"
+                );
+
+
+            if (!button) {
+
+                return;
+
+            }
+
+
+            selectRoundCount(
+                button
+            );
+
+        }
+    );
+
+}
+
+
+// =====================================
 // INITIALISATION
 // =====================================
 
+// Applique le thème par défaut
+// dès le chargement de la page
+applyThemeAppearance(
+    selectedTheme
+);
+
+
+// Crée les champs joueurs
 refreshPlayerInputs();
 
+
+// Remet les options visuelles
+// sur Battle Royal + Île déserte
 resetGameOptions();
 
+
+// Affiche l'écran d'accueil
 showScreen(
     "setup"
 );

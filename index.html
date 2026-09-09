@@ -200,6 +200,10 @@
                         class="option-grid"
                     >
 
+                        <!-- ========================= -->
+                        <!-- BATTLE ROYAL -->
+                        <!-- ========================= -->
+
                         <button
                             class="option-card active"
                             type="button"
@@ -229,6 +233,46 @@
 
                         </button>
 
+
+                        <!-- ========================= -->
+                        <!-- SURVIVAL PARTY -->
+                        <!-- ========================= -->
+
+                        <button
+                            class="option-card"
+                            type="button"
+                            data-mode="survival_party"
+                        >
+
+                            <div class="option-icon">
+                                ❤️
+                            </div>
+
+                            <div class="option-content">
+
+                                <strong>
+                                    Survival Party
+                                </strong>
+
+                                <p>
+                                    Accumule un maximum de cœurs pendant
+                                    un nombre limité de tours.
+                                    Des Cœurs Bonus seront distribués
+                                    à la fin de la partie.
+                                </p>
+
+                            </div>
+
+                            <span class="option-status available">
+                                Disponible
+                            </span>
+
+                        </button>
+
+
+                        <!-- ========================= -->
+                        <!-- SURVIE EN ÉQUIPE -->
+                        <!-- ========================= -->
 
                         <button
                             class="option-card disabled"
@@ -260,6 +304,10 @@
                         </button>
 
 
+                        <!-- ========================= -->
+                        <!-- TRAÎTRE -->
+                        <!-- ========================= -->
+
                         <button
                             class="option-card disabled"
                             type="button"
@@ -277,8 +325,9 @@
                                 </strong>
 
                                 <p>
-                                    Un joueur possède un objectif secret et tente
-                                    de saboter discrètement les autres survivants.
+                                    Un joueur possède un objectif secret
+                                    et tente de saboter discrètement
+                                    les autres survivants.
                                 </p>
 
                             </div>
@@ -291,8 +340,152 @@
 
                     </div>
 
-                </div>
 
+                <!-- ========================= -->
+                <!-- DURÉE SURVIVAL PARTY -->
+                <!-- ========================= -->
+
+                <div
+                    id="roundConfig"
+                    class="round-config hidden"
+                >
+
+                    <span class="small-label">
+                        Durée de la partie
+                    </span>
+
+                    <h3 class="round-config-title">
+                        ⏱️ Combien de tours ?
+                    </h3>
+
+                    <p class="round-config-description">
+                        Choisis la durée de votre partie.
+                    </p>
+
+
+                    <div
+                        id="roundChoices"
+                        class="round-choices"
+                    >
+
+                        <!-- COURT -->
+
+                        <button
+                            class="round-choice"
+                            type="button"
+                            data-rounds="3"
+                        >
+
+                            <span class="round-choice-icon">
+                                ⚡
+                            </span>
+
+                            <span class="round-choice-name">
+                                Court
+                            </span>
+
+                            <span class="round-choice-rounds">
+                                3 tours
+                            </span>
+
+                            <span class="round-choice-time">
+                                ≈ 8 min
+                            </span>
+
+                        </button>
+
+
+                        <!-- NORMAL -->
+
+                        <button
+                            class="round-choice active"
+                            type="button"
+                            data-rounds="5"
+                        >
+
+                            <span class="round-choice-icon">
+                                🎮
+                            </span>
+
+                            <span class="round-choice-name">
+                                Normal
+                            </span>
+
+                            <span class="round-choice-rounds">
+                                5 tours
+                            </span>
+
+                            <span class="round-choice-time">
+                                ≈ 15 min
+                            </span>
+
+                        </button>
+
+
+                        <!-- LONG -->
+
+                        <button
+                            class="round-choice"
+                            type="button"
+                            data-rounds="8"
+                        >
+
+                            <span class="round-choice-icon">
+                                🔥
+                            </span>
+
+                            <span class="round-choice-name">
+                                Long
+                            </span>
+
+                            <span class="round-choice-rounds">
+                                8 tours
+                            </span>
+
+                            <span class="round-choice-time">
+                                ≈ 25 min
+                            </span>
+
+                        </button>
+
+
+                        <!-- MARATHON -->
+
+                        <button
+                            class="round-choice"
+                            type="button"
+                            data-rounds="10"
+                        >
+
+                            <span class="round-choice-icon">
+                                🏆
+                            </span>
+
+                            <span class="round-choice-name">
+                                Marathon
+                            </span>
+
+                            <span class="round-choice-rounds">
+                                10 tours
+                            </span>
+
+                            <span class="round-choice-time">
+                                ≈ 35 min
+                            </span>
+
+                        </button>
+
+                    </div>
+
+
+                    <div
+                        id="roundEstimate"
+                        class="round-selected-info"
+                    >
+                        🎮 Partie normale • 5 tours • ≈ 15 min
+                    </div>
+
+                </div>
 
                 <!-- ========================= -->
                 <!-- THÈME -->

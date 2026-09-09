@@ -1,6 +1,6 @@
-/* ============================== */
-/* APPARITION ÉCRAN */
-/* ============================== */
+/* =========================================================
+   APPARITION ÉCRAN
+========================================================= */
 
 .screen.active {
 
@@ -8,6 +8,7 @@
         screenAppear
         0.3s
         ease;
+
 }
 
 
@@ -15,26 +16,34 @@
 
     from {
 
-        opacity: 0;
+        opacity:
+            0;
 
         transform:
-            translateY(12px);
+            translateY(
+                12px
+            );
+
     }
 
     to {
 
-        opacity: 1;
+        opacity:
+            1;
 
         transform:
-            translateY(0);
+            translateY(
+                0
+            );
+
     }
 
 }
 
 
-/* ============================== */
-/* SITUATION */
-/* ============================== */
+/* =========================================================
+   SITUATION
+========================================================= */
 
 .situation-card {
 
@@ -42,6 +51,7 @@
         cardAppear
         0.4s
         ease;
+
 }
 
 
@@ -49,26 +59,34 @@
 
     0% {
 
-        opacity: 0;
+        opacity:
+            0;
 
         transform:
-            scale(0.97);
+            scale(
+                0.97
+            );
+
     }
 
     100% {
 
-        opacity: 1;
+        opacity:
+            1;
 
         transform:
-            scale(1);
+            scale(
+                1
+            );
+
     }
 
 }
 
 
-/* ============================== */
-/* ICÔNE */
-/* ============================== */
+/* =========================================================
+   ICÔNE SITUATION
+========================================================= */
 
 .situation-icon {
 
@@ -76,32 +94,45 @@
         iconBounce
         0.55s
         ease;
+
 }
 
 
 @keyframes iconBounce {
 
     0% {
+
         transform:
-            scale(0.6);
+            scale(
+                0.6
+            );
+
     }
 
     60% {
+
         transform:
-            scale(1.15);
+            scale(
+                1.15
+            );
+
     }
 
     100% {
+
         transform:
-            scale(1);
+            scale(
+                1
+            );
+
     }
 
 }
 
 
-/* ============================== */
-/* CONSÉQUENCE */
-/* ============================== */
+/* =========================================================
+   CONSÉQUENCE
+========================================================= */
 
 .consequence-icon {
 
@@ -109,6 +140,7 @@
         consequencePop
         0.55s
         ease;
+
 }
 
 
@@ -116,35 +148,52 @@
 
     0% {
 
-        opacity: 0;
+        opacity:
+            0;
 
         transform:
-            scale(0.4)
-            rotate(-10deg);
+            scale(
+                0.4
+            )
+            rotate(
+                -10deg
+            );
+
     }
 
     70% {
 
         transform:
-            scale(1.15)
-            rotate(4deg);
+            scale(
+                1.15
+            )
+            rotate(
+                4deg
+            );
+
     }
 
     100% {
 
-        opacity: 1;
+        opacity:
+            1;
 
         transform:
-            scale(1)
-            rotate(0deg);
+            scale(
+                1
+            )
+            rotate(
+                0deg
+            );
+
     }
 
 }
 
 
-/* ============================== */
-/* DÉGÂTS */
-/* ============================== */
+/* =========================================================
+   DÉGÂTS
+========================================================= */
 
 .damage-animation {
 
@@ -152,47 +201,72 @@
         damageShake
         0.4s
         ease;
+
 }
 
 
 @keyframes damageShake {
 
     0% {
+
         transform:
-            translateX(0);
+            translateX(
+                0
+            );
+
     }
 
     20% {
+
         transform:
-            translateX(-8px);
+            translateX(
+                -8px
+            );
+
     }
 
     40% {
+
         transform:
-            translateX(8px);
+            translateX(
+                8px
+            );
+
     }
 
     60% {
+
         transform:
-            translateX(-5px);
+            translateX(
+                -5px
+            );
+
     }
 
     80% {
+
         transform:
-            translateX(5px);
+            translateX(
+                5px
+            );
+
     }
 
     100% {
+
         transform:
-            translateX(0);
+            translateX(
+                0
+            );
+
     }
 
 }
 
 
-/* ============================== */
-/* SOIN */
-/* ============================== */
+/* =========================================================
+   SOIN
+========================================================= */
 
 .heal-animation {
 
@@ -200,156 +274,264 @@
         healPulse
         0.5s
         ease;
+
 }
 
 
 @keyframes healPulse {
 
     0% {
+
         transform:
-            scale(1);
+            scale(
+                1
+            );
+
     }
 
     50% {
+
         transform:
-            scale(1.08);
+            scale(
+                1.08
+            );
+
     }
 
     100% {
+
         transform:
-            scale(1);
+            scale(
+                1
+            );
+
     }
 
 }
 
-/* =====================================
+
+/* =========================================================
    PROLOGUE
-===================================== */
+========================================================= */
 
 #screenPrologue {
-    position: fixed;
-    inset: 0;
 
-    width: 100%;
-    min-height: 100vh;
+    position:
+        fixed;
+
+    inset:
+        0;
+
+    width:
+        100%;
+
+    min-height:
+        100vh;
 
     background:
         radial-gradient(
             circle at center,
-            #182a1e 0%,
-            #0c130e 55%,
-            #050806 100%
+            var(--prologue-center) 0%,
+            var(--prologue-middle) 55%,
+            var(--prologue-edge) 100%
         );
 
-    z-index: 1000;
+    z-index:
+        1000;
 
-    overflow: hidden;
+    overflow:
+        hidden;
+
+    transition:
+        background
+        0.6s
+        ease;
+
 }
 
 
-/* Halo / ambiance */
+/* =========================================================
+   HALO PROLOGUE
+========================================================= */
 
 #screenPrologue::before {
-    content: "";
 
-    position: absolute;
+    content:
+        "";
 
-    inset: -30%;
+    position:
+        absolute;
+
+    inset:
+        -30%;
 
     background:
         radial-gradient(
             circle,
-            rgba(122, 220, 75, 0.08),
-            transparent 55%
+            var(--prologue-halo),
+            transparent
+            55%
         );
 
     animation:
         prologueAtmosphere
         5s
         ease-in-out
-        infinite alternate;
+        infinite
+        alternate;
 
-    pointer-events: none;
+    pointer-events:
+        none;
+
 }
 
+
+/* =========================================================
+   STRUCTURE PROLOGUE
+========================================================= */
 
 .prologue {
-    position: relative;
 
-    min-height: 100vh;
+    position:
+        relative;
 
-    display: flex;
-    flex-direction: column;
+    min-height:
+        100vh;
 
-    align-items: center;
-    justify-content: center;
+    display:
+        flex;
 
-    padding: 30px;
+    flex-direction:
+        column;
 
-    text-align: center;
+    align-items:
+        center;
 
-    z-index: 2;
+    justify-content:
+        center;
+
+    padding:
+        30px;
+
+    text-align:
+        center;
+
+    z-index:
+        2;
+
 }
 
 
-.prologue-visual {
-    font-size: clamp(
-        4rem,
-        12vw,
-        7rem
-    );
+/* =========================================================
+   VISUEL PROLOGUE
+========================================================= */
 
-    margin-bottom: 28px;
+.prologue-visual {
+
+    margin-bottom:
+        28px;
+
+    font-size:
+        clamp(
+            4rem,
+            12vw,
+            7rem
+        );
 
     filter:
         drop-shadow(
-            0 8px 20px
-            rgba(0, 0, 0, 0.5)
+            0
+            8px
+            20px
+            rgba(
+                0,
+                0,
+                0,
+                0.5
+            )
         );
+
 }
 
+
+/* =========================================================
+   CHAPITRE
+========================================================= */
 
 .prologue-chapter {
-    min-height: 20px;
 
-    margin-bottom: 14px;
+    min-height:
+        20px;
 
-    color: #7ddd50;
+    margin-bottom:
+        14px;
 
-    font-size: 0.8rem;
+    color:
+        var(--primary);
 
-    font-weight: 900;
+    font-size:
+        0.8rem;
 
-    letter-spacing: 0.25em;
+    font-weight:
+        900;
 
-    text-transform: uppercase;
+    letter-spacing:
+        0.25em;
+
+    text-transform:
+        uppercase;
+
 }
 
+
+/* =========================================================
+   TEXTE
+========================================================= */
 
 .prologue-text {
-    max-width: 650px;
 
-    white-space: pre-line;
+    max-width:
+        650px;
 
-    color: #ffffff;
+    color:
+        var(--text);
 
-    font-size: clamp(
-        1.25rem,
-        4vw,
-        2rem
-    );
+    font-size:
+        clamp(
+            1.25rem,
+            4vw,
+            2rem
+        );
 
-    font-weight: 800;
+    font-weight:
+        800;
 
-    line-height: 1.5;
+    line-height:
+        1.5;
+
+    white-space:
+        pre-line;
 
     text-shadow:
-        0 3px 15px
-        rgba(0, 0, 0, 0.8);
+        0
+        3px
+        15px
+        rgba(
+            0,
+            0,
+            0,
+            0.8
+        );
+
 }
 
 
+/* =========================================================
+   APPARITION PROLOGUE
+========================================================= */
+
 .prologue-appear {
+
     animation:
         prologueAppear
         0.8s
@@ -359,133 +541,237 @@
             0.36,
             1
         );
+
 }
 
 
-/* =====================================
-   PASSER
-===================================== */
+/* =========================================================
+   BOUTON PASSER
+========================================================= */
 
 .prologue-skip {
-    position: absolute;
 
-    bottom: 35px;
-    right: 35px;
+    position:
+        absolute;
 
-    padding: 10px 16px;
+    bottom:
+        35px;
 
-    border: 1px solid
-        rgba(255, 255, 255, 0.15);
+    right:
+        35px;
 
-    border-radius: 999px;
+    padding:
+        10px
+        16px;
+
+    border:
+        1px solid
+        rgba(
+            255,
+            255,
+            255,
+            0.15
+        );
+
+    border-radius:
+        999px;
 
     background:
-        rgba(255, 255, 255, 0.05);
+        rgba(
+            255,
+            255,
+            255,
+            0.05
+        );
 
     color:
-        rgba(255, 255, 255, 0.55);
+        rgba(
+            255,
+            255,
+            255,
+            0.55
+        );
 
-    font-size: 0.8rem;
+    font-size:
+        0.8rem;
 
-    cursor: pointer;
+    cursor:
+        pointer;
 
     transition:
-        0.2s ease;
+        color
+        0.2s
+        ease,
+        background
+        0.2s
+        ease;
+
 }
 
 
 .prologue-skip:hover {
-    color: white;
 
     background:
-        rgba(255, 255, 255, 0.1);
+        rgba(
+            255,
+            255,
+            255,
+            0.1
+        );
+
+    color:
+        var(--text);
+
 }
 
 
-/* =====================================
+/* =========================================================
    DERNIÈRE SCÈNE
-===================================== */
+========================================================= */
 
 .prologue-final
 .prologue-visual {
 
     animation:
-        finalIsland
+        finalPrologueIcon
         1.2s
         ease-out;
+
 }
 
 
 .prologue-final
 .prologue-chapter {
 
-    color: #7ddd50;
+    color:
+        var(--primary);
 
-    font-size: clamp(
-        1.8rem,
-        6vw,
-        3.5rem
-    );
+    font-size:
+        clamp(
+            1.8rem,
+            6vw,
+            3.5rem
+        );
 
-    letter-spacing: 0.08em;
+    letter-spacing:
+        0.08em;
+
 }
 
 
-/* =====================================
-   ANIMATIONS
-===================================== */
+/* =========================================================
+   ANIMATIONS PROLOGUE
+========================================================= */
 
 @keyframes prologueAppear {
 
     from {
-        opacity: 0;
-        transform:
-            translateY(20px)
-            scale(0.96);
 
-        filter: blur(5px);
+        opacity:
+            0;
+
+        transform:
+            translateY(
+                20px
+            )
+            scale(
+                0.96
+            );
+
+        filter:
+            blur(
+                5px
+            );
+
     }
 
     to {
-        opacity: 1;
-        transform:
-            translateY(0)
-            scale(1);
 
-        filter: blur(0);
+        opacity:
+            1;
+
+        transform:
+            translateY(
+                0
+            )
+            scale(
+                1
+            );
+
+        filter:
+            blur(
+                0
+            );
+
     }
+
 }
 
 
 @keyframes prologueAtmosphere {
 
     from {
+
         transform:
-            translate(-3%, -2%)
-            scale(1);
+            translate(
+                -3%,
+                -2%
+            )
+            scale(
+                1
+            );
+
     }
 
     to {
+
         transform:
-            translate(3%, 2%)
-            scale(1.1);
+            translate(
+                3%,
+                2%
+            )
+            scale(
+                1.1
+            );
+
     }
+
 }
 
 
-@keyframes finalIsland {
+@keyframes finalPrologueIcon {
 
     0% {
-        transform: scale(0.5);
-        opacity: 0;
+
+        opacity:
+            0;
+
+        transform:
+            scale(
+                0.5
+            );
+
     }
 
     60% {
-        transform: scale(1.15);
+
+        transform:
+            scale(
+                1.15
+            );
+
     }
 
     100% {
-        transform: scale(1);
-        opacity: 1;
+
+        opacity:
+            1;
+
+        transform:
+            scale(
+                1
+            );
+
     }
+
 }

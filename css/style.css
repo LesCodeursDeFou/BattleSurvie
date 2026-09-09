@@ -1,47 +1,281 @@
+/* =========================================================
+   RESET
+========================================================= */
+
 * {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
 }
 
+
+/* =========================================================
+   VARIABLES - ÎLE DÉSERTE
+========================================================= */
+
 :root {
 
-    --background: #101511;
+    /* ==============================
+       FONDS
+    ============================== */
 
-    --background-light: #172019;
+    --background:
+        #101511;
 
-    --card: #1c251e;
+    --background-light:
+        #172019;
 
-    --card-light: #253028;
+    --background-glow:
+        #263a29;
 
-    --primary: #7ed957;
 
-    --primary-dark: #5bb53a;
+    /* ==============================
+       CARTES
+    ============================== */
 
-    --text: #ffffff;
+    --card:
+        #1c251e;
 
-    --text-secondary: #b9c2bb;
+    --card-light:
+        #253028;
 
-    --danger: #ff6262;
+    --card-hover:
+        #303e33;
 
-    --success: #71df7f;
 
-    --warning: #ffc857;
+    /* ==============================
+       COULEUR PRINCIPALE
+    ============================== */
+
+    --primary:
+        #7ed957;
+
+    --primary-dark:
+        #5bb53a;
+
+    --primary-soft:
+        rgba(
+            126,
+            217,
+            87,
+            0.14
+        );
+
+    --primary-ultra-soft:
+        rgba(
+            126,
+            217,
+            87,
+            0.08
+        );
+
+    --focus-ring:
+        rgba(
+            126,
+            217,
+            87,
+            0.12
+        );
+
+
+    /* ==============================
+       OPTIONS
+    ============================== */
+
+    --option-card:
+        #223128;
+
+    --option-border:
+        #33473a;
+
+    --secondary-button:
+        #26372c;
+
+
+    /* ==============================
+       RÉCAP
+    ============================== */
+
+    --survivor-card:
+        #233228;
+
+    --survivor-border:
+        #33473a;
+
+
+    /* ==============================
+       PROLOGUE
+    ============================== */
+
+    --prologue-center:
+        #182a1e;
+
+    --prologue-middle:
+        #0c130e;
+
+    --prologue-edge:
+        #050806;
+
+    --prologue-halo:
+        rgba(
+            122,
+            220,
+            75,
+            0.08
+        );
+
+
+    /* ==============================
+       TEXTE
+    ============================== */
+
+    --text:
+        #ffffff;
+
+    --text-secondary:
+        #b9c2bb;
+
+
+    /* ==============================
+       ÉTATS
+    ============================== */
+
+    --danger:
+        #ff6262;
+
+    --success:
+        #71df7f;
+
+    --warning:
+        #ffc857;
+
+
+    /* ==============================
+       BORDURES
+    ============================== */
 
     --border:
-        rgba(255, 255, 255, 0.08);
+        rgba(
+            255,
+            255,
+            255,
+            0.08
+        );
 
-    --radius-small: 12px;
 
-    --radius-medium: 16px;
+    /* ==============================
+       RAYONS
+    ============================== */
 
-    --radius-large: 22px;
+    --radius-small:
+        12px;
+
+    --radius-medium:
+        16px;
+
+    --radius-large:
+        22px;
+
 }
 
 
-/* ============================== */
-/* BASE */
-/* ============================== */
+/* =========================================================
+   THÈME - MANOIR HANTÉ
+========================================================= */
+
+body[data-theme="haunted_mansion"] {
+
+    --background:
+        #0f0a14;
+
+    --background-light:
+        #17101e;
+
+    --background-glow:
+        #38214a;
+
+
+    --card:
+        #1d1426;
+
+    --card-light:
+        #291c35;
+
+    --card-hover:
+        #382448;
+
+
+    --primary:
+        #b16cff;
+
+    --primary-dark:
+        #9148df;
+
+    --primary-soft:
+        rgba(
+            177,
+            108,
+            255,
+            0.16
+        );
+
+    --primary-ultra-soft:
+        rgba(
+            177,
+            108,
+            255,
+            0.09
+        );
+
+    --focus-ring:
+        rgba(
+            177,
+            108,
+            255,
+            0.15
+        );
+
+
+    --option-card:
+        #24172f;
+
+    --option-border:
+        #49345b;
+
+    --secondary-button:
+        #2d1d3a;
+
+
+    --survivor-card:
+        #281a34;
+
+    --survivor-border:
+        #49345b;
+
+
+    --prologue-center:
+        #291638;
+
+    --prologue-middle:
+        #140b1c;
+
+    --prologue-edge:
+        #070409;
+
+    --prologue-halo:
+        rgba(
+            177,
+            108,
+            255,
+            0.10
+        );
+
+}
+
+
+/* =========================================================
+   BASE
+========================================================= */
 
 html {
     min-height: 100%;
@@ -63,57 +297,89 @@ body {
     background:
         radial-gradient(
             circle at top,
-            #263a29 0%,
+            var(--background-glow) 0%,
             var(--background) 45%
         );
 
-    color: var(--text);
+    color:
+        var(--text);
+
+    transition:
+        background
+        0.6s
+        ease;
+
 }
 
 
 button,
 input,
 select {
-    font: inherit;
+
+    font:
+        inherit;
+
 }
 
 
 button {
-    cursor: pointer;
+
+    cursor:
+        pointer;
+
+}
+
+
+button:disabled {
+
+    cursor:
+        not-allowed;
+
 }
 
 
 .app {
 
-    width: 100%;
+    width:
+        100%;
 
-    max-width: 600px;
+    max-width:
+        600px;
 
-    margin: 0 auto;
+    margin:
+        0 auto;
 
     padding:
         28px
         16px
         60px;
+
 }
 
 
-/* ============================== */
-/* HEADER */
-/* ============================== */
+/* =========================================================
+   HEADER
+========================================================= */
 
 .header {
-    margin-bottom: 28px;
+
+    margin-bottom:
+        28px;
+
 }
 
 
 .header h1 {
 
-    font-size: 30px;
+    font-size:
+        30px;
 
-    line-height: 1.1;
+    line-height:
+        1.1;
 
-    margin-bottom: 6px;
+    margin-bottom:
+        6px;
+
 }
 
 
@@ -122,32 +388,52 @@ button {
     color:
         var(--text-secondary);
 
-    font-size: 14px;
+    font-size:
+        14px;
+
 }
 
 
-/* ============================== */
-/* ÉCRANS */
-/* ============================== */
+/* =========================================================
+   ÉCRANS
+========================================================= */
 
 .screen {
-    display: none;
+
+    display:
+        none;
+
 }
 
 
 .screen.active {
-    display: block;
+
+    display:
+        block;
+
 }
 
 
-/* ============================== */
-/* CARTE */
-/* ============================== */
+/* =========================================================
+   UTILITAIRES
+========================================================= */
+
+.hidden {
+
+    display:
+        none !important;
+
+}
+
+
+/* =========================================================
+   CARTES
+========================================================= */
 
 .card {
 
-    background:
-        rgba(28, 37, 30, 0.96);
+    padding:
+        24px;
 
     border:
         1px solid
@@ -156,80 +442,115 @@ button {
     border-radius:
         var(--radius-large);
 
-    padding: 24px;
+    background:
+        var(--card);
 
     box-shadow:
-        0 20px 50px
-        rgba(0, 0, 0, 0.25);
+        0
+        20px
+        50px
+        rgba(
+            0,
+            0,
+            0,
+            0.25
+        );
+
+    transition:
+        background
+        0.5s
+        ease,
+        border-color
+        0.5s
+        ease;
+
 }
 
 
 .card h2 {
-    margin-bottom: 18px;
+
+    margin-bottom:
+        18px;
+
 }
 
 
-/* ============================== */
-/* LABEL */
-/* ============================== */
+/* =========================================================
+   LABEL
+========================================================= */
 
 .small-label {
 
-    display: block;
+    display:
+        block;
 
-    font-size: 11px;
-
-    font-weight: 700;
-
-    text-transform: uppercase;
-
-    letter-spacing: 1.3px;
+    margin-bottom:
+        5px;
 
     color:
         var(--text-secondary);
 
-    margin-bottom: 5px;
+    font-size:
+        11px;
+
+    font-weight:
+        700;
+
+    text-transform:
+        uppercase;
+
+    letter-spacing:
+        1.3px;
+
 }
 
 
-/* ============================== */
-/* FORMULAIRES */
-/* ============================== */
+/* =========================================================
+   FORMULAIRES
+========================================================= */
 
 label {
 
-    display: block;
+    display:
+        block;
 
-    margin-top: 16px;
+    margin-top:
+        16px;
 
-    margin-bottom: 7px;
+    margin-bottom:
+        7px;
 
     color:
         var(--text-secondary);
 
-    font-size: 14px;
+    font-size:
+        14px;
 
-    font-weight: 600;
+    font-weight:
+        600;
+
 }
 
 
 input,
 select {
 
-    width: 100%;
+    width:
+        100%;
 
-    min-height: 48px;
+    min-height:
+        48px;
 
     padding:
         12px
         14px;
 
-    border-radius:
-        var(--radius-small);
-
     border:
         1px solid
         var(--border);
+
+    border-radius:
+        var(--radius-small);
 
     background:
         var(--card-light);
@@ -237,7 +558,9 @@ select {
     color:
         var(--text);
 
-    outline: none;
+    outline:
+        none;
+
 }
 
 
@@ -248,137 +571,198 @@ select:focus {
         var(--primary);
 
     box-shadow:
-        0 0 0 3px
-        rgba(126, 217, 87, 0.12);
+        0
+        0
+        0
+        3px
+        var(--focus-ring);
+
 }
 
 
 #playerNames {
 
-    margin-top: 10px;
+    margin-top:
+        10px;
+
 }
 
 
 .player-name-input {
 
-    margin-bottom: 8px;
+    margin-bottom:
+        8px;
+
 }
 
 
-/* ============================== */
-/* BOUTONS */
-/* ============================== */
+/* =========================================================
+   BOUTONS GÉNÉRAUX
+========================================================= */
 
 .btn {
 
-    width: 100%;
+    width:
+        100%;
 
-    min-height: 52px;
-
-    border: none;
-
-    border-radius:
-        var(--radius-medium);
+    min-height:
+        52px;
 
     padding:
         14px
         18px;
 
-    font-weight: 800;
+    border:
+        none;
+
+    border-radius:
+        var(--radius-medium);
+
+    font-weight:
+        800;
 
     transition:
-        transform 0.15s,
-        background 0.15s;
+        transform
+        0.15s
+        ease,
+        background
+        0.15s
+        ease;
+
 }
 
 
 .btn:active {
-    transform: scale(0.98);
+
+    transform:
+        scale(
+            0.98
+        );
+
 }
 
 
 .btn-primary {
 
-    margin-top: 22px;
+    margin-top:
+        22px;
 
     background:
         var(--primary);
 
     color:
-        #102011;
+        #101510;
+
 }
 
 
 .btn-primary:hover {
+
     background:
         var(--primary-dark);
+
 }
 
 
-/* ============================== */
-/* TOP BAR */
-/* ============================== */
+.btn-secondary {
+
+    background:
+        var(--secondary-button);
+
+    color:
+        var(--text);
+
+}
+
+
+/* =========================================================
+   TOP BAR
+========================================================= */
 
 .top-bar {
 
-    display: flex;
+    display:
+        flex;
 
     justify-content:
         space-between;
 
-    align-items: center;
+    align-items:
+        center;
 
-    margin-bottom: 14px;
+    margin-bottom:
+        14px;
 
     color:
         var(--text-secondary);
 
-    font-size: 13px;
+    font-size:
+        13px;
+
 }
 
 
 .top-bar strong {
 
+    margin-left:
+        4px;
+
     color:
         var(--text);
 
-    margin-left: 4px;
 }
 
 
-/* ============================== */
-/* JOUEUR */
-/* ============================== */
+/* =========================================================
+   JOUEUR
+========================================================= */
 
 .player-card {
 
-    display: flex;
+    display:
+        flex;
 
     justify-content:
         space-between;
 
-    align-items: center;
+    align-items:
+        center;
 
-    gap: 20px;
+    gap:
+        20px;
 
     padding:
         10px
         4px
         20px;
+
 }
 
 
 .player-card h2 {
 
-    margin: 0;
+    margin:
+        0;
 
-    font-size: 28px;
+    font-size:
+        28px;
+
 }
 
 
 .life-counter {
 
-    flex-shrink: 0;
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    gap:
+        6px;
+
+    flex-shrink:
+        0;
 
     padding:
         10px
@@ -388,36 +772,60 @@ select:focus {
         999px;
 
     background:
-        rgba(255, 255, 255, 0.08);
+        rgba(
+            255,
+            255,
+            255,
+            0.08
+        );
 
-    font-size: 20px;
+    font-size:
+        20px;
 
-    font-weight: 800;
+    font-weight:
+        800;
+
 }
 
 
-/* ============================== */
-/* SITUATION */
-/* ============================== */
+.life-heart {
+
+    display:
+        inline-block;
+
+}
+
+
+/* =========================================================
+   SITUATION
+========================================================= */
 
 .situation-card {
-    text-align: center;
+
+    text-align:
+        center;
+
 }
 
 
 .situation-icon {
 
-    font-size: 70px;
+    margin-bottom:
+        8px;
 
-    margin-bottom: 8px;
+    font-size:
+        70px;
+
 }
 
 
 .category {
 
-    display: inline-block;
+    display:
+        inline-block;
 
-    margin-bottom: 14px;
+    margin-bottom:
+        14px;
 
     padding:
         5px
@@ -427,59 +835,79 @@ select:focus {
         999px;
 
     background:
-        rgba(126, 217, 87, 0.14);
+        var(--primary-soft);
 
     color:
         var(--primary);
 
-    font-size: 11px;
+    font-size:
+        11px;
 
-    font-weight: 700;
+    font-weight:
+        700;
 
-    text-transform: uppercase;
+    text-transform:
+        uppercase;
 
-    letter-spacing: 0.6px;
+    letter-spacing:
+        0.6px;
+
 }
 
 
 .situation-card h2 {
 
-    font-size: 25px;
+    margin-bottom:
+        12px;
 
-    line-height: 1.25;
+    font-size:
+        25px;
 
-    margin-bottom: 12px;
+    line-height:
+        1.25;
+
 }
 
 
 .situation-card p {
 
+    margin-bottom:
+        22px;
+
     color:
         var(--text-secondary);
 
-    line-height: 1.6;
+    line-height:
+        1.6;
 
-    margin-bottom: 22px;
 }
 
 
-/* ============================== */
-/* CHOIX */
-/* ============================== */
+/* =========================================================
+   CHOIX
+========================================================= */
 
 .choices {
 
-    display: flex;
+    display:
+        flex;
 
-    flex-direction: column;
+    flex-direction:
+        column;
 
-    gap: 12px;
+    gap:
+        12px;
+
 }
 
 
 .choice-button {
 
-    width: 100%;
+    width:
+        100%;
+
+    padding:
+        17px;
 
     border:
         1px solid
@@ -488,45 +916,61 @@ select:focus {
     border-radius:
         var(--radius-medium);
 
-    padding: 17px;
-
     background:
         var(--card-light);
 
     color:
         var(--text);
 
-    text-align: left;
+    text-align:
+        left;
 
     transition:
-        transform 0.15s,
-        border-color 0.15s,
-        background 0.15s;
+        transform
+        0.15s
+        ease,
+        border-color
+        0.15s
+        ease,
+        background
+        0.15s
+        ease;
+
 }
 
 
 .choice-button:hover {
 
     background:
-        #303e33;
+        var(--card-hover);
 
     border-color:
         var(--primary);
+
 }
 
 
 .choice-button:active {
-    transform: scale(0.985);
+
+    transform:
+        scale(
+            0.985
+        );
+
 }
 
 
 .choice-button strong {
 
-    display: block;
+    display:
+        block;
 
-    margin-bottom: 4px;
+    margin-bottom:
+        4px;
 
-    font-size: 17px;
+    font-size:
+        17px;
+
 }
 
 
@@ -535,26 +979,35 @@ select:focus {
     color:
         var(--text-secondary);
 
-    font-size: 13px;
+    font-size:
+        13px;
 
-    line-height: 1.4;
+    line-height:
+        1.4;
+
 }
 
 
-/* ============================== */
-/* CONSÉQUENCE */
-/* ============================== */
+/* =========================================================
+   CONSÉQUENCE
+========================================================= */
 
 .consequence-card {
-    text-align: center;
+
+    text-align:
+        center;
+
 }
 
 
 .consequence-icon {
 
-    font-size: 75px;
+    margin-bottom:
+        16px;
 
-    margin-bottom: 16px;
+    font-size:
+        75px;
+
 }
 
 
@@ -568,9 +1021,12 @@ select:focus {
     color:
         var(--text-secondary);
 
-    font-size: 17px;
+    font-size:
+        17px;
 
-    line-height: 1.6;
+    line-height:
+        1.6;
+
 }
 
 
@@ -581,157 +1037,397 @@ select:focus {
         0
         8px;
 
-    font-size: 34px;
+    font-size:
+        34px;
 
-    font-weight: 900;
+    font-weight:
+        900;
+
 }
 
 
 .life-change.positive {
+
     color:
         var(--success);
+
 }
 
 
 .life-change.negative {
+
     color:
         var(--danger);
+
 }
 
 
 .life-change.neutral {
+
     color:
         var(--text-secondary);
+
 }
 
 
 .life-result {
 
+    margin-bottom:
+        6px;
+
     color:
         var(--text-secondary);
 
-    margin-bottom: 6px;
 }
 
 
-.life-result strong {
+.life-result-line {
+
+    margin-top:
+        4px;
+
     color:
         var(--text);
+
+    font-weight:
+        700;
+
 }
 
 
-/* ============================== */
-/* RÉCAP */
-/* ============================== */
+/* =========================================================
+   RÉCAPITULATIF
+========================================================= */
 
 .recap-player {
 
-    display: flex;
+    display:
+        flex;
 
     justify-content:
         space-between;
 
-    align-items: center;
+    align-items:
+        center;
 
-    gap: 15px;
+    gap:
+        15px;
 
-    padding: 15px;
+    margin-bottom:
+        10px;
 
-    margin-bottom: 10px;
+    padding:
+        15px;
 
     border-radius:
         var(--radius-small);
 
     background:
         var(--card-light);
+
 }
 
 
 .recap-player-name {
 
-    font-size: 16px;
+    font-size:
+        16px;
 
-    font-weight: 800;
-}
+    font-weight:
+        800;
 
-
-.recap-choice {
-
-    margin-top: 4px;
-
-    color:
-        var(--text-secondary);
-
-    font-size: 12px;
-}
-
-
-.recap-lives {
-
-    flex-shrink: 0;
-
-    font-weight: 800;
 }
 
 
 .recap-situation {
 
-    margin-top: 6px;
+    margin-top:
+        6px;
 
-    color: var(--text);
+    color:
+        var(--text);
 
-    font-size: 13px;
+    font-size:
+        13px;
 
-    font-weight: 600;
+    font-weight:
+        600;
 
 }
 
-/* ============================== */
-/* FIN PARTIE */
-/* ============================== */
+
+.recap-choice {
+
+    margin-top:
+        4px;
+
+    color:
+        var(--text-secondary);
+
+    font-size:
+        12px;
+
+}
+
+
+.recap-effects {
+
+    margin-top:
+        7px;
+
+    color:
+        var(--text-secondary);
+
+    font-size:
+        12px;
+
+}
+
+
+.recap-lives {
+
+    flex-shrink:
+        0;
+
+    font-weight:
+        800;
+
+}
+
+
+/* =========================================================
+   SURVIVANTS - RÉCAP
+========================================================= */
+
+.survivors-section {
+
+    margin-bottom:
+        28px;
+
+}
+
+
+.survivors-title {
+
+    margin-bottom:
+        12px;
+
+    color:
+        var(--text);
+
+    font-size:
+        0.95rem;
+
+    font-weight:
+        800;
+
+    letter-spacing:
+        0.04em;
+
+}
+
+
+.survivors-grid {
+
+    display:
+        grid;
+
+    grid-template-columns:
+        repeat(
+            auto-fit,
+            minmax(
+                140px,
+                1fr
+            )
+        );
+
+    gap:
+        12px;
+
+}
+
+
+.survivor-card {
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    justify-content:
+        space-between;
+
+    padding:
+        14px
+        16px;
+
+    border:
+        1px solid
+        var(--survivor-border);
+
+    border-radius:
+        14px;
+
+    background:
+        var(--survivor-card);
+
+    opacity:
+        0;
+
+    transform:
+        translateY(
+            10px
+        );
+
+    animation:
+        survivorAppear
+        0.45s
+        ease
+        forwards;
+
+}
+
+
+.survivor-name {
+
+    font-size:
+        0.95rem;
+
+    font-weight:
+        800;
+
+}
+
+
+.survivor-lives {
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    gap:
+        6px;
+
+    font-size:
+        1rem;
+
+    font-weight:
+        900;
+
+}
+
+
+.survivor-heart {
+
+    display:
+        inline-block;
+
+    animation:
+        heartPulse
+        1.8s
+        ease-in-out
+        infinite;
+
+}
+
+
+.survivor-life-count {
+
+    min-width:
+        18px;
+
+    text-align:
+        center;
+
+}
+
+
+.recap-history-title {
+
+    margin-top:
+        6px;
+
+    margin-bottom:
+        12px;
+
+    color:
+        var(--text);
+
+    font-size:
+        0.95rem;
+
+    font-weight:
+        800;
+
+    letter-spacing:
+        0.04em;
+
+}
+
+
+/* =========================================================
+   FIN DE PARTIE
+========================================================= */
 
 .game-over-card {
-    text-align: center;
+
+    text-align:
+        center;
+
 }
 
 
 .game-over-card > p {
 
+    margin-bottom:
+        20px;
+
     color:
         var(--text-secondary);
 
-    margin-bottom: 20px;
+    line-height:
+        1.5;
 
-    line-height: 1.5;
 }
 
 
 .game-over-icon {
 
-    font-size: 80px;
+    margin-bottom:
+        12px;
 
-    margin-bottom: 12px;
+    font-size:
+        80px;
+
 }
 
 
 .ranking-player {
 
-    display: flex;
+    display:
+        flex;
 
     justify-content:
         space-between;
 
-    align-items: center;
+    align-items:
+        center;
 
-    padding: 15px;
+    margin-top:
+        10px;
 
-    margin-top: 10px;
+    padding:
+        15px;
 
     border-radius:
         var(--radius-small);
 
     background:
         var(--card-light);
+
 }
 
 
@@ -739,375 +1435,869 @@ select:focus {
 
     border:
         1px solid
-        rgba(126, 217, 87, 0.5);
+        var(--primary);
+
 }
 
 
 .player-dead {
 
-    opacity: 0.45;
-}
+    opacity:
+        0.45;
 
-/* =====================================
-   SURVIVANTS - RECAP
-===================================== */
-
-.survivors-section {
-    margin-bottom: 28px;
-}
-
-.survivors-title {
-    font-size: 0.95rem;
-    font-weight: 800;
-    margin-bottom: 12px;
-    color: #dce9df;
-    letter-spacing: 0.04em;
-}
-
-.survivors-grid {
-    display: grid;
-    grid-template-columns: repeat(
-        auto-fit,
-        minmax(140px, 1fr)
-    );
-    gap: 12px;
-}
-
-.survivor-card {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-
-    padding: 14px 16px;
-
-    background: #233228;
-    border: 1px solid #33473a;
-    border-radius: 14px;
-
-    opacity: 0;
-    transform: translateY(10px);
-
-    animation:
-        survivorAppear
-        0.45s
-        ease
-        forwards;
-}
-
-.survivor-name {
-    font-weight: 800;
-    font-size: 0.95rem;
-}
-
-.survivor-lives {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-
-    font-weight: 900;
-    font-size: 1rem;
-}
-
-.survivor-heart {
-    display: inline-block;
-
-    animation:
-        heartPulse
-        1.8s
-        ease-in-out
-        infinite;
-}
-
-.survivor-life-count {
-    min-width: 18px;
-    text-align: center;
-}
-
-.recap-history-title {
-    margin-top: 6px;
-    margin-bottom: 12px;
-
-    font-size: 0.95rem;
-    font-weight: 800;
-
-    color: #dce9df;
-    letter-spacing: 0.04em;
 }
 
 
-/* =====================================
-   ANIMATIONS
-===================================== */
+/* =========================================================
+   OPTIONS DE PARTIE
+========================================================= */
+
+.game-options-card {
+
+    max-width:
+        900px;
+
+    margin:
+        0 auto;
+
+}
+
+
+.options-intro {
+
+    margin-bottom:
+        28px;
+
+    color:
+        var(--text-secondary);
+
+}
+
+
+/* =========================================================
+   SECTIONS OPTIONS
+========================================================= */
+
+.option-section {
+
+    margin-top:
+        30px;
+
+}
+
+
+.option-section h3 {
+
+    margin-bottom:
+        14px;
+
+}
+
+
+/* =========================================================
+   MODES DE JEU
+========================================================= */
+
+.option-grid {
+
+    display:
+        grid;
+
+    gap:
+        12px;
+
+}
+
+
+.option-card {
+
+    position:
+        relative;
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    gap:
+        18px;
+
+    width:
+        100%;
+
+    padding:
+        18px;
+
+    border:
+        1px solid
+        var(--option-border);
+
+    border-radius:
+        16px;
+
+    background:
+        var(--option-card);
+
+    color:
+        var(--text);
+
+    text-align:
+        left;
+
+    cursor:
+        pointer;
+
+    appearance:
+        none;
+
+    -webkit-appearance:
+        none;
+
+    transition:
+        transform
+        0.2s
+        ease,
+        border-color
+        0.2s
+        ease,
+        background
+        0.2s
+        ease;
+
+}
+
+
+.option-card.active {
+
+    border-color:
+        var(--primary);
+
+    background:
+        var(--primary-ultra-soft);
+
+}
+
+
+.option-card:not(.disabled):hover {
+
+    border-color:
+        var(--primary);
+
+    transform:
+        translateY(
+            -2px
+        );
+
+}
+
+
+.option-icon {
+
+    flex-shrink:
+        0;
+
+    font-size:
+        2.2rem;
+
+}
+
+
+.option-content {
+
+    flex:
+        1;
+
+    min-width:
+        0;
+
+}
+
+
+.option-content strong {
+
+    font-size:
+        1rem;
+
+}
+
+
+.option-content p {
+
+    margin:
+        5px
+        0
+        0;
+
+    color:
+        var(--text-secondary);
+
+    line-height:
+        1.4;
+
+}
+
+
+.option-status {
+
+    flex-shrink:
+        0;
+
+    margin-left:
+        auto;
+
+    margin-top:
+        auto;
+
+    font-size:
+        0.68rem;
+
+    font-weight:
+        800;
+
+    text-transform:
+        uppercase;
+
+    letter-spacing:
+        0.08em;
+
+    opacity:
+        0.55;
+
+}
+
+
+.option-status.available {
+
+    color:
+        var(--primary);
+
+    opacity:
+        1;
+
+}
+
+
+.disabled {
+
+    opacity:
+        0.45;
+
+    cursor:
+        not-allowed;
+
+}
+
+
+/* =========================================================
+   THÈMES
+========================================================= */
+
+.theme-grid {
+
+    display:
+        grid;
+
+    grid-template-columns:
+        repeat(
+            2,
+            minmax(
+                0,
+                1fr
+            )
+        );
+
+    gap:
+        12px;
+
+}
+
+
+.theme-card {
+
+    position:
+        relative;
+
+    display:
+        flex;
+
+    flex-direction:
+        column;
+
+    align-items:
+        flex-start;
+
+    min-height:
+        190px;
+
+    padding:
+        18px;
+
+    border:
+        1px solid
+        var(--option-border);
+
+    border-radius:
+        16px;
+
+    background:
+        var(--option-card);
+
+    color:
+        var(--text);
+
+    text-align:
+        left;
+
+    cursor:
+        pointer;
+
+    appearance:
+        none;
+
+    -webkit-appearance:
+        none;
+
+    transition:
+        transform
+        0.2s
+        ease,
+        border-color
+        0.2s
+        ease,
+        background
+        0.2s
+        ease;
+
+}
+
+
+.theme-card.active {
+
+    border-color:
+        var(--primary);
+
+    background:
+        var(--primary-ultra-soft);
+
+}
+
+
+.theme-card:not(.disabled):hover {
+
+    border-color:
+        var(--primary);
+
+    transform:
+        translateY(
+            -3px
+        );
+
+}
+
+
+.theme-icon {
+
+    margin-bottom:
+        10px;
+
+    font-size:
+        2.3rem;
+
+}
+
+
+.theme-card strong {
+
+    font-size:
+        1rem;
+
+}
+
+
+.theme-card p {
+
+    margin:
+        8px
+        0
+        28px;
+
+    color:
+        var(--text-secondary);
+
+    line-height:
+        1.45;
+
+}
+
+
+/* =========================================================
+   ACTIONS OPTIONS
+========================================================= */
+
+.options-actions {
+
+    display:
+        grid;
+
+    grid-template-columns:
+        auto
+        1fr;
+
+    gap:
+        12px;
+
+    margin-top:
+        30px;
+
+}
+
+
+/* =========================================================
+   SURVIVAL PARTY - NOMBRE DE TOURS
+========================================================= */
+
+.round-config {
+
+    margin-top:
+        22px;
+
+    padding:
+        20px;
+
+    border:
+        1px solid
+        var(--option-border);
+
+    border-radius:
+        var(--radius-medium);
+
+    background:
+        rgba(
+            255,
+            255,
+            255,
+            0.025
+        );
+
+}
+
+
+.round-config-title {
+
+    margin:
+        4px
+        0
+        6px;
+
+    font-size:
+        18px;
+
+}
+
+
+.round-config-description {
+
+    margin-bottom:
+        18px;
+
+    color:
+        var(--text-secondary);
+
+    font-size:
+        13px;
+
+    line-height:
+        1.45;
+
+}
+
+
+/* =========================================================
+   GRILLE DURÉES
+========================================================= */
+
+.round-choices {
+
+    display:
+        grid;
+
+    grid-template-columns:
+        repeat(
+            2,
+            minmax(
+                0,
+                1fr
+            )
+        );
+
+    gap:
+        10px;
+
+}
+
+
+/* =========================================================
+   CARTE DURÉE
+========================================================= */
+
+.round-choice {
+
+    position:
+        relative;
+
+    display:
+        grid;
+
+    grid-template-columns:
+        auto
+        1fr;
+
+    grid-template-areas:
+        "icon name"
+        "icon rounds"
+        "icon time";
+
+    align-items:
+        center;
+
+    column-gap:
+        12px;
+
+    row-gap:
+        2px;
+
+    width:
+        100%;
+
+    min-width:
+        0;
+
+    padding:
+        15px
+        14px;
+
+    border:
+        1px solid
+        var(--option-border);
+
+    border-radius:
+        14px;
+
+    background:
+        var(--card-light);
+
+    color:
+        var(--text);
+
+    text-align:
+        left;
+
+    cursor:
+        pointer;
+
+    appearance:
+        none;
+
+    -webkit-appearance:
+        none;
+
+    transition:
+        transform
+        0.15s
+        ease,
+        background
+        0.2s
+        ease,
+        border-color
+        0.2s
+        ease;
+
+}
+
+
+.round-choice:hover {
+
+    border-color:
+        var(--primary);
+
+    background:
+        var(--card-hover);
+
+}
+
+
+.round-choice:active {
+
+    transform:
+        scale(
+            0.98
+        );
+
+}
+
+
+.round-choice.active {
+
+    border-color:
+        var(--primary);
+
+    background:
+        var(--primary-soft);
+
+    box-shadow:
+        inset
+        0
+        0
+        0
+        1px
+        var(--primary);
+
+}
+
+
+.round-choice.active::after {
+
+    content:
+        "✓";
+
+    position:
+        absolute;
+
+    top:
+        9px;
+
+    right:
+        10px;
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    justify-content:
+        center;
+
+    width:
+        20px;
+
+    height:
+        20px;
+
+    border-radius:
+        50%;
+
+    background:
+        var(--primary);
+
+    color:
+        var(--background);
+
+    font-size:
+        12px;
+
+    font-weight:
+        900;
+
+}
+
+
+/* =========================================================
+   ICÔNE DURÉE
+========================================================= */
+
+.round-choice-icon {
+
+    grid-area:
+        icon;
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    justify-content:
+        center;
+
+    width:
+        40px;
+
+    height:
+        40px;
+
+    border-radius:
+        11px;
+
+    background:
+        rgba(
+            255,
+            255,
+            255,
+            0.06
+        );
+
+    font-size:
+        21px;
+
+}
+
+
+/* =========================================================
+   NOM DURÉE
+========================================================= */
+
+.round-choice-name {
+
+    grid-area:
+        name;
+
+    padding-right:
+        24px;
+
+    color:
+        var(--text);
+
+    font-size:
+        14px;
+
+    font-weight:
+        800;
+
+}
+
+
+/* =========================================================
+   NOMBRE DE TOURS
+========================================================= */
+
+.round-choice-rounds {
+
+    grid-area:
+        rounds;
+
+    color:
+        var(--text-secondary);
+
+    font-size:
+        12px;
+
+    font-weight:
+        600;
+
+}
+
+
+/* =========================================================
+   TEMPS
+========================================================= */
+
+.round-choice-time {
+
+    grid-area:
+        time;
+
+    margin-top:
+        2px;
+
+    color:
+        var(--primary);
+
+    font-size:
+        11px;
+
+    font-weight:
+        800;
+
+}
+
+
+/* =========================================================
+   RÉSUMÉ DURÉE
+========================================================= */
+
+.round-selected-info {
+
+    margin-top:
+        16px;
+
+    padding:
+        13px
+        10px
+        0;
+
+    border-top:
+        1px solid
+        var(--border);
+
+    color:
+        var(--text-secondary);
+
+    font-size:
+        12px;
+
+    font-weight:
+        600;
+
+    text-align:
+        center;
+
+}
+
+
+/* =========================================================
+   ANIMATIONS RÉCAP
+========================================================= */
 
 @keyframes survivorAppear {
 
     from {
-        opacity: 0;
-        transform: translateY(12px);
+
+        opacity:
+            0;
+
+        transform:
+            translateY(
+                12px
+            );
+
     }
 
     to {
-        opacity: 1;
-        transform: translateY(0);
+
+        opacity:
+            1;
+
+        transform:
+            translateY(
+                0
+            );
+
     }
+
 }
+
 
 @keyframes heartPulse {
 
     0%,
     100% {
-        transform: scale(1);
+
+        transform:
+            scale(
+                1
+            );
+
     }
 
     50% {
-        transform: scale(1.12);
+
+        transform:
+            scale(
+                1.12
+            );
+
     }
-}
 
-/* =====================================
-   OPTIONS DE PARTIE
-===================================== */
-
-.game-options-card {
-    max-width: 900px;
-    margin: 0 auto;
-}
-
-.options-intro {
-    margin-bottom: 28px;
-    opacity: 0.75;
-}
-
-
-/* =====================================
-   SECTIONS
-===================================== */
-
-.option-section {
-    margin-top: 30px;
-}
-
-.option-section h3 {
-    margin-bottom: 14px;
-}
-
-
-/* =====================================
-   MODE
-===================================== */
-
-.option-grid {
-    display: grid;
-    gap: 12px;
-}
-
-.option-card {
-    position: relative;
-
-    display: flex;
-    align-items: center;
-    gap: 18px;
-
-    width: 100%;
-
-    padding: 18px;
-
-    border:
-        1px solid #33473a;
-
-    border-radius: 16px;
-
-    background: #223128;
-
-    color: white;
-
-    text-align: left;
-
-    cursor: pointer;
-
-    transition:
-        transform 0.2s ease,
-        border-color 0.2s ease,
-        background 0.2s ease;
-}
-
-.option-card.active {
-    border-color: #7cdd50;
-
-    background:
-        rgba(
-            124,
-            221,
-            80,
-            0.08
-        );
-}
-
-.option-card:not(.disabled):hover {
-    transform:
-        translateY(-2px);
-
-    border-color:
-        #7cdd50;
-}
-
-.option-icon {
-    font-size: 2.2rem;
-}
-
-.option-content {
-    flex: 1;
-}
-
-.option-content strong {
-    font-size: 1rem;
-}
-
-.option-content p {
-    margin:
-        5px 0 0;
-
-    opacity: 0.72;
-
-    line-height: 1.4;
-}
-
-
-/* =====================================
-   THÈMES
-===================================== */
-
-.theme-grid {
-    display: grid;
-
-    grid-template-columns:
-        repeat(
-            2,
-            minmax(0, 1fr)
-        );
-
-    gap: 12px;
-}
-
-.theme-card {
-    position: relative;
-
-    display: flex;
-    flex-direction: column;
-
-    align-items: flex-start;
-
-    padding: 18px;
-
-    min-height: 190px;
-
-    border:
-        1px solid #33473a;
-
-    border-radius: 16px;
-
-    background: #223128;
-
-    color: white;
-
-    text-align: left;
-
-    cursor: pointer;
-
-    transition:
-        transform 0.2s ease,
-        border-color 0.2s ease;
-}
-
-.theme-card.active {
-    border-color:
-        #7cdd50;
-
-    background:
-        rgba(
-            124,
-            221,
-            80,
-            0.08
-        );
-}
-
-.theme-card:not(.disabled):hover {
-    transform:
-        translateY(-3px);
-}
-
-.theme-icon {
-    font-size: 2.3rem;
-    margin-bottom: 10px;
-}
-
-.theme-card strong {
-    font-size: 1rem;
-}
-
-.theme-card p {
-    margin:
-        8px 0 28px;
-
-    opacity: 0.7;
-
-    line-height: 1.45;
-}
-
-
-/* =====================================
-   STATUT
-===================================== */
-
-.option-status {
-    margin-top: auto;
-
-    font-size: 0.68rem;
-
-    font-weight: 800;
-
-    text-transform: uppercase;
-
-    letter-spacing: 0.08em;
-
-    opacity: 0.55;
-}
-
-.option-status.available {
-    color: #7cdd50;
-    opacity: 1;
-}
-
-
-/* =====================================
-   DÉSACTIVÉ
-===================================== */
-
-.disabled {
-    opacity: 0.45;
-
-    cursor:
-        not-allowed;
-}
-
-
-/* =====================================
-   ACTIONS
-===================================== */
-
-.options-actions {
-    display: grid;
-
-    grid-template-columns:
-        auto 1fr;
-
-    gap: 12px;
-
-    margin-top: 30px;
-}
-
-.btn-secondary {
-    background: #26372c;
-    color: white;
 }

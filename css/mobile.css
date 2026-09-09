@@ -1,8 +1,11 @@
-/* ============================== */
-/* PETITS TÉLÉPHONES */
-/* ============================== */
+/* =========================================================
+   PETITS TÉLÉPHONES
+========================================================= */
 
-@media (max-width: 420px) {
+@media (
+    max-width:
+    420px
+) {
 
     .app {
 
@@ -10,24 +13,43 @@
             20px
             12px
             40px;
+
     }
 
+
+    /* ==============================
+       HEADER
+    ============================== */
 
     .header h1 {
 
-        font-size: 26px;
+        font-size:
+            26px;
+
     }
 
+
+    /* ==============================
+       CARTES
+    ============================== */
 
     .card {
 
-        padding: 19px;
+        padding:
+            19px;
+
     }
 
 
+    /* ==============================
+       JOUEUR
+    ============================== */
+
     .player-card h2 {
 
-        font-size: 23px;
+        font-size:
+            23px;
+
     }
 
 
@@ -37,98 +59,243 @@
             8px
             12px;
 
-        font-size: 17px;
+        font-size:
+            17px;
+
     }
 
 
+    /* ==============================
+       SITUATION
+    ============================== */
+
     .situation-icon {
 
-        font-size: 60px;
+        font-size:
+            60px;
+
     }
 
 
     .situation-card h2 {
 
-        font-size: 21px;
+        font-size:
+            21px;
+
     }
 
 
+    /* ==============================
+       CHOIX
+    ============================== */
+
     .choice-button {
 
-        padding: 15px;
+        padding:
+            15px;
+
     }
 
 
     .choice-button strong {
 
-        font-size: 16px;
+        font-size:
+            16px;
+
+    }
+
+
+    /* ==============================
+       SURVIVAL PARTY
+    ============================== */
+
+    .round-config {
+
+        padding:
+            15px;
+
+    }
+
+
+    .round-choices {
+
+        grid-template-columns:
+            1fr;
+
+    }
+
+
+    .round-choice {
+
+        padding:
+            13px
+            14px;
+
+    }
+
+
+    .round-choice-icon {
+
+        width:
+            38px;
+
+        height:
+            38px;
+
+        font-size:
+            20px;
+
     }
 
 }
 
 
-/* ============================== */
-/* TABLETTE / PC */
-/* ============================== */
+/* =========================================================
+   TÉLÉPHONES / PETITES TABLETTES
+========================================================= */
 
-@media (min-width: 700px) {
+@media (
+    max-width:
+    600px
+) {
+
+    /* ==============================
+       PROLOGUE
+    ============================== */
+
+    .prologue {
+
+        padding:
+            24px
+            22px
+            100px;
+
+    }
+
+
+    .prologue-text {
+
+        font-size:
+            1.35rem;
+
+    }
+
+
+    .prologue-visual {
+
+        font-size:
+            5rem;
+
+    }
+
+
+    .prologue-skip {
+
+        bottom:
+            25px;
+
+        right:
+            50%;
+
+        transform:
+            translateX(
+                50%
+            );
+
+    }
+
+}
+
+
+/* =========================================================
+   MOBILE / TABLETTE
+========================================================= */
+
+@media (
+    max-width:
+    700px
+) {
+
+    /* ==============================
+       THÈMES
+    ============================== */
+
+    .theme-grid {
+
+        grid-template-columns:
+            1fr;
+
+    }
+
+
+    /* ==============================
+       MODES
+    ============================== */
+
+    .option-card {
+
+        align-items:
+            flex-start;
+
+    }
+
+
+    .option-status {
+
+        align-self:
+            center;
+
+    }
+
+
+    /* ==============================
+       ACTIONS
+    ============================== */
+
+    .options-actions {
+
+        grid-template-columns:
+            1fr;
+
+    }
+
+
+    /* ==============================
+       THÈMES
+    ============================== */
+
+    .theme-card {
+
+        min-height:
+            auto;
+
+    }
+
+}
+
+
+/* =========================================================
+   TABLETTE / PC
+========================================================= */
+
+@media (
+    min-width:
+    700px
+) {
 
     .app {
 
-        padding-top: 50px;
+        padding-top:
+            50px;
+
     }
 
 
     .card {
 
-        padding: 30px;
-    }
-
-}
-
-@media (max-width: 600px) {
-
-    .prologue {
         padding:
-            24px
-            22px
-            100px;
-    }
+            30px;
 
-    .prologue-text {
-        font-size: 1.35rem;
-    }
-
-    .prologue-visual {
-        font-size: 5rem;
-    }
-
-    .prologue-skip {
-        bottom: 25px;
-        right: 50%;
-
-        transform:
-            translateX(50%);
-    }
-}
-
-@media (max-width: 700px) {
-
-    .theme-grid {
-        grid-template-columns: 1fr;
-    }
-
-    .option-card {
-        align-items:
-            flex-start;
-    }
-
-    .options-actions {
-        grid-template-columns: 1fr;
-    }
-
-    .theme-card {
-        min-height: auto;
     }
 
 }
