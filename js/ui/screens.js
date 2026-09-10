@@ -1,10 +1,4 @@
 import {
-    playDamageAnimation,
-    playHealAnimation
-} from "./animations.js";
-
-
-import {
     THEMES
 } from "../data/themes.js";
 
@@ -74,11 +68,6 @@ const screens = {
             "screenSecretIntro"
         ),
     
-    judgeChoice:
-        document.getElementById(
-            "screenJudgeChoice"
-        ),
-
 };
 
 export function displaySecretIntro(
@@ -1581,146 +1570,6 @@ function displayChoices(
             );
 
         }
-    );
-
-}
-
-
-// =====================================
-// JUDGE CHOICE
-// CHOIX DU SORT
-// =====================================
-
-export function displayJudgeChoice(
-    game,
-    data,
-    onJudgeChoice
-) {
-
-    if (
-        !game ||
-        !data ||
-        !data.player ||
-        !data.choice
-    ) {
-
-        console.error(
-            "displayJudgeChoice : données invalides",
-            data
-        );
-
-        return;
-
-    }
-
-
-    const {
-        player,
-        choice,
-        groupPlayers = []
-    } = data;
-
-
-    const icon =
-        document.getElementById(
-            "judgeChoiceIcon"
-        );
-
-
-    const title =
-        document.getElementById(
-            "judgeChoiceTitle"
-        );
-
-
-    const description =
-        document.getElementById(
-            "judgeChoiceDescription"
-        );
-
-
-    const btnGood =
-        document.getElementById(
-            "btnJudgeGood"
-        );
-
-
-    const btnBad =
-        document.getElementById(
-            "btnJudgeBad"
-        );
-
-
-    if (
-        !icon ||
-        !title ||
-        !description ||
-        !btnGood ||
-        !btnBad
-    ) {
-
-        console.error(
-            "Écran judgeChoice incomplet."
-        );
-
-        return;
-
-    }
-
-
-    icon.textContent =
-        "⚖️";
-
-
-    title.textContent =
-        `${player.name}, à toi de décider de leur sort`;
-
-
-    const groupName =
-        game.formatPlayerGroup(
-            groupPlayers
-        );
-
-
-    description.textContent =
-        `${groupName} dépendent maintenant de ton choix : ${game.renderPlayerText(
-            choice.title,
-            player,
-            null,
-            groupPlayers
-        )}`;
-
-
-    // =====================================
-    // BIEN
-    // =====================================
-
-    btnGood.onclick =
-        () => {
-
-            onJudgeChoice(
-                "good"
-            );
-
-        };
-
-
-    // =====================================
-    // MAL
-    // =====================================
-
-    btnBad.onclick =
-        () => {
-
-            onJudgeChoice(
-                "bad"
-            );
-
-        };
-
-
-    showScreen(
-        "judgeChoice"
     );
 
 }

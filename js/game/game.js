@@ -70,9 +70,6 @@ export class Game {
         this.usedSituationIds =
             [];
 
-        this.questionsExhausted =
-            false;
-
 
         // =================================================
         // HISTOIRE PERSONNELLE
@@ -99,21 +96,6 @@ export class Game {
 
         this.pendingSecretChoice =
             null;
-
-
-        // =================================================
-        // SURVIVAL PARTY
-        // =================================================
-
-        this.endBonuses =
-            [];
-
-        this.partyBonusesApplied =
-            false;
-
-
-        this.started =
-            false;
 
     }
 
@@ -284,23 +266,11 @@ export class Game {
         this.usedSituationIds =
             [];
 
-        this.questionsExhausted =
-            false;
-
         this.pendingSecretChoice =
             null;
 
         this.playerNarratives =
             {};
-
-        this.endBonuses =
-            [];
-
-        this.partyBonusesApplied =
-            false;
-
-        this.started =
-            true;
 
 
         // =================================================
@@ -391,9 +361,6 @@ export class Game {
             this.getRemainingSituationCount() <
                 alivePlayers.length
         ) {
-
-            this.questionsExhausted =
-                true;
 
             return false;
 
@@ -2245,6 +2212,54 @@ export class Game {
         }
 
 
+        // =================================================
+        // VARIANTE PONDÉRÉE
+        // =================================================
+
+        let resolvedOutcome =
+            outcome;
+
+
+        if (
+            Array.isArray(
+                outcome.variants
+            ) &&
+            outcome.variants.length > 0
+        ) {
+
+            const variant =
+                this.getWeightedRandomItem(
+                    outcome.variants,
+                    item =>
+                        Number(
+                            item.weight ??
+                            1
+                        )
+                );
+
+
+            if (variant) {
+
+                resolvedOutcome = {
+
+                    ...outcome,
+                    ...variant,
+
+                    title:
+                        variant.title ??
+                        outcome.title,
+
+                    icon:
+                        variant.icon ??
+                        outcome.icon
+
+                };
+
+            }
+
+        }
+
+
         const otherPlayers =
             pending.otherPlayerIds
                 .map(
@@ -2258,11 +2273,15 @@ export class Game {
                 .filter(Boolean);
 
 
+        // =================================================
+        // EFFETS
+        // =================================================
+
         const effects =
             applyConsequence(
                 player,
                 player,
-                outcome,
+                resolvedOutcome,
                 this.players
             );
 
@@ -2277,15 +2296,21 @@ export class Game {
         );
 
 
-        // Secret situations pourront aussi
-        // utiliser le système narratif.
+        // =================================================
+        // NARRATION
+        // =================================================
+
         this.applyNarrativeTransition(
             player,
             situation,
             secretChoice,
-            outcome
+            resolvedOutcome
         );
 
+
+        // =================================================
+        // RÉSULTAT
+        // =================================================
 
         const result = {
 
@@ -2375,18 +2400,23 @@ export class Game {
                 correct,
 
             consequenceId:
+                resolvedOutcome.id ??
                 outcomeKey,
 
             consequenceText:
                 this.renderPlayerText(
-                    outcome.text,
+                    resolvedOutcome.text,
                     player,
                     null,
                     otherPlayers
                 ),
 
             consequenceIcon:
-                outcome.icon,
+                resolvedOutcome.icon,
+
+            consequenceWeight:
+                resolvedOutcome.weight ??
+                null,
 
             effects,
 
@@ -2432,7 +2462,7 @@ export class Game {
             guess,
 
             consequence:
-                outcome,
+                resolvedOutcome,
 
             effects,
 
@@ -2441,7 +2471,6 @@ export class Game {
         };
 
     }
-
 
     // =====================================================
     // STATS
@@ -2774,23 +2803,11 @@ export class Game {
         this.usedSituationIds =
             [];
 
-        this.questionsExhausted =
-            false;
-
         this.playerNarratives =
             {};
 
         this.pendingSecretChoice =
             null;
-
-        this.endBonuses =
-            [];
-
-        this.partyBonusesApplied =
-            false;
-
-        this.started =
-            false;
 
     }
 

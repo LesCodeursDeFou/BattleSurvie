@@ -2,11 +2,16 @@
 <html lang="fr">
 
 <head>
+
+    <!-- ===================================== -->
+    <!-- MÉTADONNÉES -->
+    <!-- ===================================== -->
+
     <meta charset="UTF-8">
 
     <meta
         name="viewport"
-        content="width=device-width, initial-scale=1.0"
+        content="width=device-width, initial-scale=1.0, viewport-fit=cover"
     >
 
     <meta
@@ -14,7 +19,24 @@
         content="#101511"
     >
 
-    <title>BattleSurvie</title>
+    <meta
+        name="description"
+        content="BattleSurvie - Fais les bons choix et survis aux conséquences."
+    >
+
+
+    <!-- ===================================== -->
+    <!-- TITRE -->
+    <!-- ===================================== -->
+
+    <title>
+        BattleSurvie
+    </title>
+
+
+    <!-- ===================================== -->
+    <!-- STYLES -->
+    <!-- ===================================== -->
 
     <link
         rel="stylesheet"
@@ -30,10 +52,16 @@
         rel="stylesheet"
         href="./css/mobile.css"
     >
-    
-    <link rel="manifest" href="./manifest.json">
 
-    <meta name="theme-color" content="#101511">
+
+    <!-- ===================================== -->
+    <!-- PWA -->
+    <!-- ===================================== -->
+
+    <link
+        rel="manifest"
+        href="./manifest.json"
+    >
 
     <meta
         name="apple-mobile-web-app-capable"
@@ -57,13 +85,15 @@
 
 </head>
 
+
 <body>
 
     <main class="app">
 
-        <!-- ========================= -->
+
+        <!-- ===================================== -->
         <!-- HEADER -->
-        <!-- ========================= -->
+        <!-- ===================================== -->
 
         <header class="header">
 
@@ -78,9 +108,10 @@
         </header>
 
 
-        <!-- ========================= -->
-        <!-- CONFIGURATION -->
-        <!-- ========================= -->
+
+        <!-- ===================================== -->
+        <!-- ÉCRAN 1 : CONFIGURATION DES JOUEURS -->
+        <!-- ===================================== -->
 
         <section
             id="screenSetup"
@@ -96,6 +127,9 @@
                 <h2>
                     Nouvelle partie
                 </h2>
+
+
+                <!-- Nombre de joueurs -->
 
                 <label for="playerCount">
                     Nombre de joueurs
@@ -142,8 +176,8 @@
 
 
                 <!--
-                    Les champs joueurs sont
-                    générés ici par JavaScript
+                    Généré dynamiquement
+                    par createPlayerInputs()
                 -->
 
                 <div id="playerNames"></div>
@@ -160,10 +194,12 @@
             </div>
 
         </section>
-        
-        <!-- ========================= -->
-        <!-- CHOIX DU MODE ET DU THÈME -->
-        <!-- ========================= -->
+
+
+
+        <!-- ===================================== -->
+        <!-- ÉCRAN 2 : MODE ET UNIVERS -->
+        <!-- ===================================== -->
 
         <section
             id="screenGameOptions"
@@ -185,9 +221,10 @@
                 </p>
 
 
-                <!-- ========================= -->
+
+                <!-- ================================= -->
                 <!-- MODE DE JEU -->
-                <!-- ========================= -->
+                <!-- ================================= -->
 
                 <div class="option-section">
 
@@ -200,9 +237,8 @@
                         class="option-grid"
                     >
 
-                        <!-- ========================= -->
+
                         <!-- BATTLE ROYAL -->
-                        <!-- ========================= -->
 
                         <button
                             class="option-card active"
@@ -234,9 +270,8 @@
                         </button>
 
 
-                        <!-- ========================= -->
+
                         <!-- SURVIVAL PARTY -->
-                        <!-- ========================= -->
 
                         <button
                             class="option-card"
@@ -257,7 +292,7 @@
                                 <p>
                                     Accumule un maximum de cœurs pendant
                                     un nombre limité de tours.
-                                    Des Cœurs Bonus seront distribués
+                                    Des Cœurs Bonus pourront être distribués
                                     à la fin de la partie.
                                 </p>
 
@@ -270,9 +305,8 @@
                         </button>
 
 
-                        <!-- ========================= -->
+
                         <!-- SURVIE EN ÉQUIPE -->
-                        <!-- ========================= -->
 
                         <button
                             class="option-card disabled"
@@ -304,9 +338,8 @@
                         </button>
 
 
-                        <!-- ========================= -->
+
                         <!-- TRAÎTRE -->
-                        <!-- ========================= -->
 
                         <button
                             class="option-card disabled"
@@ -340,10 +373,13 @@
 
                     </div>
 
+                </div>
 
-                <!-- ========================= -->
+
+
+                <!-- ================================= -->
                 <!-- DURÉE SURVIVAL PARTY -->
-                <!-- ========================= -->
+                <!-- ================================= -->
 
                 <div
                     id="roundConfig"
@@ -367,6 +403,7 @@
                         id="roundChoices"
                         class="round-choices"
                     >
+
 
                         <!-- COURT -->
 
@@ -393,6 +430,7 @@
                             </span>
 
                         </button>
+
 
 
                         <!-- NORMAL -->
@@ -422,6 +460,7 @@
                         </button>
 
 
+
                         <!-- LONG -->
 
                         <button
@@ -447,6 +486,7 @@
                             </span>
 
                         </button>
+
 
 
                         <!-- MARATHON -->
@@ -482,14 +522,16 @@
                         id="roundEstimate"
                         class="round-selected-info"
                     >
-                        🎮 Partie normale • 5 tours • ≈ 15 min
+                        🎮 Partie normale • 5 tours • environ 15 min
                     </div>
 
                 </div>
 
-                <!-- ========================= -->
-                <!-- THÈME -->
-                <!-- ========================= -->
+
+
+                <!-- ================================= -->
+                <!-- UNIVERS -->
+                <!-- ================================= -->
 
                 <div class="option-section">
 
@@ -497,214 +539,25 @@
                         🌍 Univers
                     </h3>
 
+
+                    <!--
+                        Les thèmes sont générés
+                        dynamiquement par
+                        renderThemeOptions()
+                    -->
+
                     <div
                         id="themeContainer"
                         class="theme-grid"
-                    >
-
-                        <!-- ÎLE DÉSERTE -->
-
-                        <button
-                            class="theme-card active"
-                            type="button"
-                            data-theme="desert_island"
-                        >
-
-                            <div class="theme-icon">
-                                🏝️
-                            </div>
-
-                            <strong>
-                                Île déserte
-                            </strong>
-
-                            <p>
-                                Naufragés sur une île hostile, vous devrez affronter
-                                la faim, les animaux sauvages et surtout les autres survivants.
-                            </p>
-
-                            <span class="option-status available">
-                                Disponible
-                            </span>
-
-                        </button>
-
-
-                        <!-- MANOIR -->
-
-                        <button
-                            class="theme-card disabled"
-                            type="button"
-                            disabled
-                        >
-
-                            <div class="theme-icon">
-                                🏚️
-                            </div>
-
-                            <strong>
-                                Manoir hanté
-                            </strong>
-
-                            <p>
-                                Une nuit dans un vieux manoir où chaque pièce semble
-                                cacher quelque chose qui aurait dû rester enterré.
-                            </p>
-
-                            <span class="option-status">
-                                Bientôt
-                            </span>
-
-                        </button>
-
-
-                        <!-- SOIRÉE -->
-
-                        <button
-                            class="theme-card disabled"
-                            type="button"
-                            disabled
-                        >
-
-                            <div class="theme-icon">
-                                🍻
-                            </div>
-
-                            <strong>
-                                Soirée bien arrosée
-                            </strong>
-
-                            <p>
-                                Une soirée qui dégénère progressivement entre défis,
-                                décisions douteuses et catastrophes mémorables.
-                            </p>
-
-                            <span class="option-status">
-                                Bientôt
-                            </span>
-
-                        </button>
-
-
-                        <!-- ÉGYPTE -->
-
-                        <button
-                            class="theme-card disabled"
-                            type="button"
-                            disabled
-                        >
-
-                            <div class="theme-icon">
-                                🏺
-                            </div>
-
-                            <strong>
-                                Archéologues d'Égypte
-                            </strong>
-
-                            <p>
-                                Explorez une tombe oubliée, déchiffrez ses secrets
-                                et évitez les pièges d'une civilisation disparue.
-                            </p>
-
-                            <span class="option-status">
-                                Bientôt
-                            </span>
-
-                        </button>
-
-
-                        <!-- ZOMBIES -->
-
-                        <button
-                            class="theme-card disabled"
-                            type="button"
-                            disabled
-                        >
-
-                            <div class="theme-icon">
-                                🧟
-                            </div>
-
-                            <strong>
-                                Apocalypse zombie
-                            </strong>
-
-                            <p>
-                                Le monde s'est effondré. Les morts marchent et
-                                chaque ressource peut devenir une question de survie.
-                            </p>
-
-                            <span class="option-status">
-                                Bientôt
-                            </span>
-
-                        </button>
-
-
-                        <!-- BUNKER -->
-
-                        <button
-                            class="theme-card disabled"
-                            type="button"
-                            disabled
-                        >
-
-                            <div class="theme-icon">
-                                ☢️
-                            </div>
-
-                            <strong>
-                                Bunker
-                            </strong>
-
-                            <p>
-                                Coupés du monde dans un bunker souterrain,
-                                vos réserves diminuent et la tension monte.
-                            </p>
-
-                            <span class="option-status">
-                                Bientôt
-                            </span>
-
-                        </button>
-
-
-                        <!-- ESPACE -->
-
-                        <button
-                            class="theme-card disabled"
-                            type="button"
-                            disabled
-                        >
-
-                            <div class="theme-icon">
-                                🚀
-                            </div>
-
-                            <strong>
-                                Vaisseau spatial
-                            </strong>
-
-                            <p>
-                                Perdus dans l'espace à bord d'un vaisseau endommagé,
-                                vous devrez choisir qui sauver... et quoi sacrifier.
-                            </p>
-
-                            <span class="option-status">
-                                Bientôt
-                            </span>
-
-                        </button>
-
-                    </div>
+                    ></div>
 
                 </div>
 
 
-                <!-- ========================= -->
-                <!-- BOUTONS -->
-                <!-- ========================= -->
+
+                <!-- ================================= -->
+                <!-- ACTIONS -->
+                <!-- ================================= -->
 
                 <div class="options-actions">
 
@@ -731,9 +584,10 @@
         </section>
 
 
-        <!-- ========================= -->
-        <!-- PROLOGUE -->
-        <!-- ========================= -->
+
+        <!-- ===================================== -->
+        <!-- ÉCRAN 3 : PROLOGUE -->
+        <!-- ===================================== -->
 
         <section
             id="screenPrologue"
@@ -772,9 +626,10 @@
         </section>
 
 
-        <!-- ========================= -->
+
+        <!-- ===================================== -->
         <!-- SECRET CHOICE : INTRO -->
-        <!-- ========================= -->
+        <!-- ===================================== -->
 
         <section
             id="screenSecretIntro"
@@ -812,9 +667,10 @@
         </section>
 
 
-        <!-- ========================= -->
+
+        <!-- ===================================== -->
         <!-- ÉCRAN DE JEU -->
-        <!-- ========================= -->
+        <!-- ===================================== -->
 
         <section
             id="screenGame"
@@ -861,7 +717,10 @@
                         10
                     </span>
 
-                    <span class="life-heart">
+                    <span
+                        class="life-heart"
+                        aria-hidden="true"
+                    >
                         ❤️
                     </span>
 
@@ -876,27 +735,29 @@
                     id="situationIcon"
                     class="situation-icon"
                 >
-                    🐒
+                    🎲
                 </div>
-
 
                 <span
                     id="situationCategory"
                     class="category"
                 >
-                    Danger
+                    Situation
                 </span>
-
 
                 <h2 id="situationTitle">
                     Situation
                 </h2>
 
-
                 <p id="situationDescription">
                     Description
                 </p>
 
+
+                <!--
+                    Généré dynamiquement
+                    par displayChoices()
+                -->
 
                 <div
                     id="choicesContainer"
@@ -908,85 +769,10 @@
         </section>
 
 
-        <!-- ========================= -->
-        <!-- JUDGE CHOICE -->
-        <!-- ========================= -->
 
-        <section
-            id="screenJudgeChoice"
-            class="screen"
-        >
-
-            <article class="card situation-card">
-
-                <div
-                    id="judgeChoiceIcon"
-                    class="situation-icon"
-                >
-                    ⚖️
-                </div>
-
-
-                <span class="category">
-                    Maître du destin
-                </span>
-
-
-                <h2 id="judgeChoiceTitle">
-                    À toi de décider
-                </h2>
-
-
-                <p id="judgeChoiceDescription">
-                    Choisis comment la situation va se terminer.
-                </p>
-
-
-                <div class="choices">
-
-                    <button
-                        id="btnJudgeGood"
-                        class="choice-button"
-                        type="button"
-                    >
-
-                        <strong>
-                            😇 Ça se passe bien
-                        </strong>
-
-                        <span>
-                            Tu décides d'offrir une issue favorable.
-                        </span>
-
-                    </button>
-
-
-                    <button
-                        id="btnJudgeBad"
-                        class="choice-button"
-                        type="button"
-                    >
-
-                        <strong>
-                            😈 Ça se passe mal
-                        </strong>
-
-                        <span>
-                            Tu décides que les autres vont souffrir.
-                        </span>
-
-                    </button>
-
-                </div>
-
-            </article>
-
-        </section>      
-
-
-        <!-- ========================= -->
-        <!-- SECRET CHOICE : PASSAGE -->
-        <!-- ========================= -->
+        <!-- ===================================== -->
+        <!-- SECRET CHOICE : PASSAGE DU TÉLÉPHONE -->
+        <!-- ===================================== -->
 
         <section
             id="screenSecretHandoff"
@@ -1024,9 +810,10 @@
         </section>
 
 
-        <!-- ========================= -->
+
+        <!-- ===================================== -->
         <!-- SECRET CHOICE : DEVINETTE -->
-        <!-- ========================= -->
+        <!-- ===================================== -->
 
         <section
             id="screenSecretGuess"
@@ -1054,6 +841,12 @@
                     À vous de deviner.
                 </p>
 
+
+                <!--
+                    Généré dynamiquement
+                    par displaySecretGuess()
+                -->
+
                 <div
                     id="secretGuessChoices"
                     class="choices"
@@ -1063,9 +856,11 @@
 
         </section>
 
-        <!-- ========================= -->
+
+
+        <!-- ===================================== -->
         <!-- CONSÉQUENCE -->
-        <!-- ========================= -->
+        <!-- ===================================== -->
 
         <section
             id="screenConsequence"
@@ -1078,34 +873,28 @@
                     id="consequenceIcon"
                     class="consequence-icon"
                 >
-                    😱
+                    🎲
                 </div>
-
 
                 <span class="small-label">
                     Conséquence
                 </span>
 
-
                 <h2>
                     Voilà ce qui arrive...
                 </h2>
 
-
                 <p id="consequenceText"></p>
-
 
                 <div
                     id="lifeChange"
                     class="life-change"
                 ></div>
 
-
                 <div
                     id="newLifeCount"
                     class="life-result"
                 ></div>
-
 
                 <button
                     id="btnContinue"
@@ -1120,9 +909,10 @@
         </section>
 
 
-        <!-- ========================= -->
-        <!-- RÉCAP TOUR -->
-        <!-- ========================= -->
+
+        <!-- ===================================== -->
+        <!-- RÉCAPITULATIF DU TOUR -->
+        <!-- ===================================== -->
 
         <section
             id="screenRecap"
@@ -1140,6 +930,11 @@
                 </h2>
 
 
+                <!--
+                    Généré dynamiquement
+                    par displayRecap()
+                -->
+
                 <div id="recapContainer"></div>
 
 
@@ -1156,9 +951,10 @@
         </section>
 
 
-        <!-- ========================= -->
+
+        <!-- ===================================== -->
         <!-- FIN DE PARTIE -->
-        <!-- ========================= -->
+        <!-- ===================================== -->
 
         <section
             id="screenGameOver"
@@ -1182,6 +978,11 @@
                 <p id="gameOverText"></p>
 
 
+                <!--
+                    Généré dynamiquement
+                    par displayGameOver()
+                -->
+
                 <div id="finalRanking"></div>
 
 
@@ -1199,30 +1000,11 @@
 
     </main>
 
-    <script>
-        window.addEventListener("error", function(event) {
-            alert(
-                "ERREUR JS\n\n" +
-                "Message : " + event.message + "\n\n" +
-                "Fichier : " + event.filename + "\n" +
-                "Ligne : " + event.lineno + "\n" +
-                "Colonne : " + event.colno
-            );
-        });
 
-        window.addEventListener("unhandledrejection", function(event) {
-            alert(
-                "ERREUR PROMISE\n\n" +
-                String(event.reason)
-            );
-        });
-    </script>
 
-    <!--
-        IMPORTANT :
-        type="module" est obligatoire
-        pour utiliser import/export.
-    -->
+    <!-- ===================================== -->
+    <!-- JAVASCRIPT -->
+    <!-- ===================================== -->
 
     <script
         type="module"

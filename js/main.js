@@ -12,8 +12,7 @@ import {
     displayModePrologue,
     displaySecretHandoff,
     displaySecretGuess,
-    displaySecretIntro,
-    displayJudgeChoice,
+    displaySecretIntro
 } from "./ui/screens.js";
 
 
@@ -813,28 +812,6 @@ function handleChoice(
 
 
     // =====================================
-    // JUDGE CHOICE
-    // LE JOUEUR A CHOISI SON ACTION
-    // =====================================
-
-    if (
-        data.phase ===
-        "judge_waiting"
-    ) {
-
-        displayJudgeChoice(
-            game,
-            data,
-            handleJudgeChoice
-        );
-
-
-        return;
-
-    }
-
-
-    // =====================================
     // SITUATION CLASSIQUE
     // =====================================
 
@@ -882,46 +859,6 @@ function handleSecretGuess(
     // =====================================
     // AFFICHAGE DE LA RÉVÉLATION
     // =====================================
-
-    displayConsequence(
-        data
-    );
-
-}
-
-
-// =====================================
-// JUDGE CHOICE
-// BIEN OU MAL
-// =====================================
-
-function handleJudgeChoice(
-    outcomeType
-) {
-
-    const data =
-        game.resolveJudgeChoice(
-            outcomeType
-        );
-
-
-    if (!data) {
-
-        console.error(
-            "Impossible de résoudre le Judge Choice :",
-            outcomeType
-        );
-
-        return;
-
-    }
-
-
-    console.log(
-        "Judge Choice résolu :",
-        data
-    );
-
 
     displayConsequence(
         data
