@@ -1,12 +1,19 @@
 export const SECRET_SITUATIONS = [
 
     // =====================================================
-    // 1. LA CLÉ DORÉE
+    // 1 - CLÉ DORÉE
+    // DÉBUT MINI-HISTOIRE
     // =====================================================
 
     {
-        id: "mansion_secret_key",
-        type: "secret_choice",
+        id:
+            "mansion_secret_key",
+
+        type:
+            "secret_choice",
+
+        baseWeight:
+            1,
 
         title:
             "{actor} découvre une clé dorée",
@@ -33,8 +40,31 @@ export const SECRET_SITUATIONS = [
                     "🤫 Garder la clé secrète",
 
                 description:
-                    "La cacher et découvrir seul ce qu'elle pourrait ouvrir."
+                    "La cacher et découvrir seul ce qu'elle pourrait ouvrir.",
+
+                narrative: {
+
+                    setFlags: [
+                        "mansion_secret_key_hidden"
+                    ],
+
+                    removeFlags: [
+                        "mansion_secret_key_shared"
+                    ],
+
+                    nextSituationBoosts: [
+                        {
+                            id:
+                                "mansion_secret_golden_door",
+
+                            weight:
+                                30
+                        }
+                    ]
+
+                }
             },
+
 
             {
                 id:
@@ -47,10 +77,23 @@ export const SECRET_SITUATIONS = [
                     "🗣️ Prévenir les autres",
 
                 description:
-                    "Montrer immédiatement la clé au groupe."
+                    "Montrer immédiatement la clé au groupe.",
+
+                narrative: {
+
+                    setFlags: [
+                        "mansion_secret_key_shared"
+                    ],
+
+                    removeFlags: [
+                        "mansion_secret_key_hidden"
+                    ]
+
+                }
             }
 
         ],
+
 
         guess: {
 
@@ -94,112 +137,284 @@ export const SECRET_SITUATIONS = [
 
         },
 
+
         outcomes: {
 
             hide_correct: {
 
+                title:
+                    "Pris sur le fait",
+
                 icon:
                     "👁️",
 
-                title:
-                    "Pris sur le fait !",
+                variants: [
 
-                text:
-                    "{actor} avait gardé la clé secrète. Les autres l'avaient parfaitement deviné.",
-
-                effects: [
                     {
-                        target:
-                            "actor",
+                        id:
+                            "mansion_key_hide_correct_bad",
 
-                        lives:
-                            -2
+                        text:
+                            "Les autres découvrent que {actor} cachait la clé et la lui retirent.",
+
+                        icon:
+                            "😡",
+
+                        effects: [
+                            {
+                                target:
+                                    "actor",
+
+                                lives:
+                                    -1
+                            }
+                        ],
+
+                        weight:
+                            60,
+
+                        narrative: {
+
+                            nextSituationBoosts: [
+                                {
+                                    id:
+                                        "mansion_secret_golden_door",
+
+                                    weight:
+                                        4
+                                }
+                            ]
+
+                        }
                     },
 
                     {
-                        target:
-                            "others",
+                        id:
+                            "mansion_key_hide_correct_neutral",
 
-                        lives:
-                            1
+                        text:
+                            "{actor} est découvert mais parvient à convaincre le groupe de lui laisser la clé.",
+
+                        icon:
+                            "😬",
+
+                        effects:
+                            [],
+
+                        weight:
+                            40,
+
+                        narrative: {
+
+                            nextSituationBoosts: [
+                                {
+                                    id:
+                                        "mansion_secret_golden_door",
+
+                                    weight:
+                                        14
+                                }
+                            ]
+
+                        }
                     }
+
                 ]
 
             },
 
-            hide_wrong: {
 
-                icon:
-                    "😈",
+            hide_wrong: {
 
                 title:
                     "Secret bien gardé",
 
-                text:
-                    "{actor} avait caché la clé. Personne ne s'en est rendu compte.",
+                icon:
+                    "😈",
 
-                effects: [
+                variants: [
+
                     {
-                        target:
-                            "actor",
+                        id:
+                            "mansion_key_hide_wrong_good",
 
-                        lives:
-                            2
+                        text:
+                            "Personne ne soupçonne {actor}. La clé semble vibrer près d'une aile du manoir.",
+
+                        icon:
+                            "✨",
+
+                        effects: [
+                            {
+                                target:
+                                    "actor",
+
+                                lives:
+                                    1
+                            }
+                        ],
+
+                        weight:
+                            15,
+
+                        narrative: {
+
+                            nextSituationBoosts: [
+                                {
+                                    id:
+                                        "mansion_secret_golden_door",
+
+                                    weight:
+                                        44
+                                }
+                            ]
+
+                        }
+                    },
+
+                    {
+                        id:
+                            "mansion_key_hide_wrong_neutral",
+
+                        text:
+                            "La clé reste parfaitement cachée et personne ne remarque quoi que ce soit.",
+
+                        icon:
+                            "🤫",
+
+                        effects:
+                            [],
+
+                        weight:
+                            85,
+
+                        narrative: {
+
+                            nextSituationBoosts: [
+                                {
+                                    id:
+                                        "mansion_secret_golden_door",
+
+                                    weight:
+                                        35
+                                }
+                            ]
+
+                        }
                     }
+
                 ]
 
             },
 
-            share_correct: {
 
-                icon:
-                    "🤝",
+            share_correct: {
 
                 title:
                     "Confiance récompensée",
 
-                text:
-                    "{actor} voulait réellement partager la clé et les autres lui ont fait confiance.",
+                icon:
+                    "🤝",
 
-                effects: [
+                variants: [
+
                     {
-                        target:
-                            "all",
+                        id:
+                            "mansion_key_share_correct_good",
 
-                        lives:
-                            1
+                        text:
+                            "Le groupe examine ensemble la clé et découvre une inscription utile.",
+
+                        icon:
+                            "🗝️",
+
+                        effects: [
+                            {
+                                target:
+                                    "all",
+
+                                lives:
+                                    1
+                            }
+                        ],
+
+                        weight:
+                            15
+                    },
+
+                    {
+                        id:
+                            "mansion_key_share_correct_neutral",
+
+                        text:
+                            "La clé est conservée collectivement, mais personne ne sait encore ce qu'elle ouvre.",
+
+                        icon:
+                            "🔑",
+
+                        effects:
+                            [],
+
+                        weight:
+                            85
                     }
+
                 ]
 
             },
 
-            share_wrong: {
 
-                icon:
-                    "💔",
+            share_wrong: {
 
                 title:
                     "Soupçonné à tort",
 
-                text:
-                    "{actor} voulait prévenir les autres, mais personne ne l'a cru.",
+                icon:
+                    "💔",
 
-                effects: [
+                variants: [
+
                     {
-                        target:
-                            "actor",
+                        id:
+                            "mansion_key_share_wrong_bad",
 
-                        lives:
-                            -1
+                        text:
+                            "{actor} voulait réellement partager mais les accusations provoquent une dispute.",
+
+                        icon:
+                            "😤",
+
+                        effects: [
+                            {
+                                target:
+                                    "actor",
+
+                                lives:
+                                    -1
+                            }
+                        ],
+
+                        weight:
+                            45
                     },
 
                     {
-                        target:
-                            "others",
+                        id:
+                            "mansion_key_share_wrong_neutral",
 
-                        lives:
-                            -1
+                        text:
+                            "Le groupe réalise finalement que {actor} disait la vérité.",
+
+                        icon:
+                            "😐",
+
+                        effects:
+                            [],
+
+                        weight:
+                            55
                     }
+
                 ]
 
             }
@@ -210,12 +425,19 @@ export const SECRET_SITUATIONS = [
 
 
     // =====================================================
-    // 2. LE LIVRE MAUDIT
+    // 2 - LIVRE MAUDIT
+    // DÉBUT MINI-HISTOIRE
     // =====================================================
 
     {
-        id: "mansion_secret_book",
-        type: "secret_choice",
+        id:
+            "mansion_secret_book",
+
+        type:
+            "secret_choice",
+
+        baseWeight:
+            1,
 
         title:
             "{actor} découvre un livre interdit",
@@ -242,7 +464,29 @@ export const SECRET_SITUATIONS = [
                     "📖 L'ouvrir",
 
                 description:
-                    "Ignorer l'avertissement et découvrir ce qu'il contient."
+                    "Ignorer l'avertissement et découvrir ce qu'il contient.",
+
+                narrative: {
+
+                    setFlags: [
+                        "mansion_secret_book_opened"
+                    ],
+
+                    removeFlags: [
+                        "mansion_secret_book_closed"
+                    ],
+
+                    nextSituationBoosts: [
+                        {
+                            id:
+                                "mansion_secret_book_return",
+
+                            weight:
+                                28
+                        }
+                    ]
+
+                }
             },
 
             {
@@ -256,10 +500,23 @@ export const SECRET_SITUATIONS = [
                     "🔒 Le laisser fermé",
 
                 description:
-                    "Décider que certains secrets doivent rester enterrés."
+                    "Décider que certains secrets doivent rester enterrés.",
+
+                narrative: {
+
+                    setFlags: [
+                        "mansion_secret_book_closed"
+                    ],
+
+                    removeFlags: [
+                        "mansion_secret_book_opened"
+                    ]
+
+                }
             }
 
         ],
+
 
         guess: {
 
@@ -279,7 +536,7 @@ export const SECRET_SITUATIONS = [
                         "open",
 
                     title:
-                        "📖 Évidemment qu'il l'a ouvert",
+                        "📖 Évidemment",
 
                     description:
                         "Vous pensez que {actor} n'a pas résisté."
@@ -303,104 +560,280 @@ export const SECRET_SITUATIONS = [
 
         },
 
+
         outcomes: {
 
             open_correct: {
 
-                icon:
-                    "👹",
-
                 title:
                     "Vous le connaissez trop bien",
 
-                text:
-                    "{actor} avait bien ouvert le livre. Une présence s'en échappe avant de disparaître dans le manoir.",
+                icon:
+                    "👹",
 
-                effects: [
+                variants: [
+
                     {
-                        target:
-                            "actor",
+                        id:
+                            "mansion_book_open_correct_bad",
 
-                        lives:
-                            -2
+                        text:
+                            "Le livre libère une présence sombre qui frappe {actor}.",
+
+                        icon:
+                            "👻",
+
+                        effects: [
+                            {
+                                target:
+                                    "actor",
+
+                                lives:
+                                    -2
+                            }
+                        ],
+
+                        weight:
+                            68,
+
+                        narrative: {
+
+                            nextSituationBoosts: [
+                                {
+                                    id:
+                                        "mansion_secret_book_return",
+
+                                    weight:
+                                        42
+                                }
+                            ]
+
+                        }
+                    },
+
+                    {
+                        id:
+                            "mansion_book_open_correct_neutral",
+
+                        text:
+                            "Le groupe referme le livre avant qu'autre chose ne sorte des pages.",
+
+                        icon:
+                            "📕",
+
+                        effects:
+                            [],
+
+                        weight:
+                            32,
+
+                        narrative: {
+
+                            nextSituationBoosts: [
+                                {
+                                    id:
+                                        "mansion_secret_book_return",
+
+                                    weight:
+                                        10
+                                }
+                            ]
+
+                        }
                     }
+
                 ]
 
             },
 
-            open_wrong: {
 
-                icon:
-                    "😈",
+            open_wrong: {
 
                 title:
                     "Curiosité bien cachée",
 
-                text:
-                    "{actor} avait ouvert le livre sans que personne ne le soupçonne. Il y découvre un rituel de protection.",
+                icon:
+                    "😈",
 
-                effects: [
+                variants: [
+
                     {
-                        target:
-                            "actor",
+                        id:
+                            "mansion_book_open_wrong_good",
 
-                        lives:
-                            2
+                        text:
+                            "Personne ne sait que {actor} a ouvert le livre. Il découvre un symbole de protection.",
+
+                        icon:
+                            "✨",
+
+                        effects: [
+                            {
+                                target:
+                                    "actor",
+
+                                lives:
+                                    1
+                            }
+                        ],
+
+                        weight:
+                            12
+                    },
+
+                    {
+                        id:
+                            "mansion_book_open_wrong_neutral",
+
+                        text:
+                            "Le livre contient surtout des pages incompréhensibles.",
+
+                        icon:
+                            "📖",
+
+                        effects:
+                            [],
+
+                        weight:
+                            68
+                    },
+
+                    {
+                        id:
+                            "mansion_book_open_wrong_bad",
+
+                        text:
+                            "Une ombre s'échappe discrètement des pages sans que personne ne la remarque.",
+
+                        icon:
+                            "👤",
+
+                        effects: [
+                            {
+                                target:
+                                    "actor",
+
+                                lives:
+                                    -1
+                            }
+                        ],
+
+                        weight:
+                            20
                     }
+
                 ]
 
             },
 
+
             leave_correct: {
+
+                title:
+                    "Enfin raisonnable",
 
                 icon:
                     "🧠",
 
-                title:
-                    "Enfin une décision raisonnable",
+                variants: [
 
-                text:
-                    "{actor} avait laissé le livre fermé. Pour une fois, tout le monde avait raison de lui faire confiance.",
-
-                effects: [
                     {
-                        target:
-                            "actor",
+                        id:
+                            "mansion_book_leave_correct_neutral",
 
-                        lives:
-                            1
+                        text:
+                            "{actor} n'a pas touché au livre. Rien ne se produit.",
+
+                        icon:
+                            "😌",
+
+                        effects:
+                            [],
+
+                        weight:
+                            90
                     },
 
                     {
-                        target:
-                            "others",
+                        id:
+                            "mansion_book_leave_correct_good",
 
-                        lives:
-                            1
+                        text:
+                            "En laissant le livre fermé, {actor} remarque une petite clé cachée sous celui-ci.",
+
+                        icon:
+                            "🗝️",
+
+                        effects: [
+                            {
+                                target:
+                                    "actor",
+
+                                lives:
+                                    1
+                            }
+                        ],
+
+                        weight:
+                            10
                     }
+
                 ]
 
             },
 
+
             leave_wrong: {
+
+                title:
+                    "Quelle réputation",
 
                 icon:
                     "😑",
 
-                title:
-                    "Quelle réputation...",
+                variants: [
 
-                text:
-                    "{actor} n'avait même pas touché au livre, mais tout le monde était persuadé du contraire.",
-
-                effects: [
                     {
-                        target:
-                            "actor",
+                        id:
+                            "mansion_book_leave_wrong_neutral",
 
-                        lives:
-                            1
+                        text:
+                            "Tout le monde pensait que {actor} avait ouvert le livre. Il n'y avait pourtant même pas touché.",
+
+                        icon:
+                            "😐",
+
+                        effects:
+                            [],
+
+                        weight:
+                            72
+                    },
+
+                    {
+                        id:
+                            "mansion_book_leave_wrong_bad",
+
+                        text:
+                            "La dispute autour du livre fait perdre un temps précieux.",
+
+                        icon:
+                            "😤",
+
+                        effects: [
+                            {
+                                target:
+                                    "others",
+
+                                lives:
+                                    -1
+                            }
+                        ],
+
+                        weight:
+                            28
                     }
+
                 ]
 
             }
@@ -411,12 +844,18 @@ export const SECRET_SITUATIONS = [
 
 
     // =====================================================
-    // 3. LE PASSAGE SECRET
+    // 3 - PASSAGE SECRET
     // =====================================================
 
     {
-        id: "mansion_secret_passage",
-        type: "secret_choice",
+        id:
+            "mansion_secret_passage",
+
+        type:
+            "secret_choice",
+
+        baseWeight:
+            1,
 
         title:
             "{actor} découvre un passage secret",
@@ -508,92 +947,247 @@ export const SECRET_SITUATIONS = [
 
             alone_correct: {
 
-                icon:
-                    "🕳️",
-
                 title:
                     "Plan démasqué",
 
-                text:
-                    "{actor} comptait explorer seul. Le groupe découvre son absence et le retrouve coincé dans le passage.",
+                icon:
+                    "🕳️",
 
-                effects: [
+                variants: [
+
                     {
-                        target:
-                            "actor",
+                        id:
+                            "mansion_passage_alone_correct_bad",
 
-                        lives:
-                            -2
+                        text:
+                            "{actor} comptait explorer seul et finit coincé derrière une partie du mur.",
+
+                        icon:
+                            "🧱",
+
+                        effects: [
+                            {
+                                target:
+                                    "actor",
+
+                                lives:
+                                    -2
+                            }
+                        ],
+
+                        weight:
+                            68
+                    },
+
+                    {
+                        id:
+                            "mansion_passage_alone_correct_neutral",
+
+                        text:
+                            "Le groupe retrouve {actor} avant qu'il ne s'engage trop loin.",
+
+                        icon:
+                            "😐",
+
+                        effects:
+                            [],
+
+                        weight:
+                            32
                     }
+
                 ]
 
             },
 
+
             alone_wrong: {
+
+                title:
+                    "Exploration discrète",
 
                 icon:
                     "🎁",
 
-                title:
-                    "Exploration rentable",
+                variants: [
 
-                text:
-                    "Personne ne soupçonne {actor}, qui découvre seul une réserve oubliée.",
-
-                effects: [
                     {
-                        target:
-                            "actor",
+                        id:
+                            "mansion_passage_alone_wrong_good",
 
-                        lives:
-                            2
+                        text:
+                            "{actor} découvre une petite cache contenant quelques soins.",
+
+                        icon:
+                            "🩹",
+
+                        effects: [
+                            {
+                                target:
+                                    "actor",
+
+                                lives:
+                                    2
+                            }
+                        ],
+
+                        weight:
+                            8
+                    },
+
+                    {
+                        id:
+                            "mansion_passage_alone_wrong_neutral",
+
+                        text:
+                            "Le passage débouche simplement dans un autre couloir.",
+
+                        icon:
+                            "🚪",
+
+                        effects:
+                            [],
+
+                        weight:
+                            72
+                    },
+
+                    {
+                        id:
+                            "mansion_passage_alone_wrong_bad",
+
+                        text:
+                            "Une partie du mur se referme brutalement sur {actor}.",
+
+                        icon:
+                            "💥",
+
+                        effects: [
+                            {
+                                target:
+                                    "actor",
+
+                                lives:
+                                    -1
+                            }
+                        ],
+
+                        weight:
+                            20
                     }
+
                 ]
 
             },
 
-            group_correct: {
 
-                icon:
-                    "🤝",
+            group_correct: {
 
                 title:
                     "Expédition collective",
 
-                text:
-                    "{actor} comptait bien prévenir tout le monde. Le passage mène vers une pièce sûre.",
+                icon:
+                    "🤝",
 
-                effects: [
+                variants: [
+
                     {
-                        target:
-                            "all",
+                        id:
+                            "mansion_passage_group_correct_good",
 
-                        lives:
-                            1
+                        text:
+                            "Le passage mène vers une petite pièce contenant quelques objets utiles.",
+
+                        icon:
+                            "🎁",
+
+                        effects: [
+                            {
+                                target:
+                                    "all",
+
+                                lives:
+                                    1
+                            }
+                        ],
+
+                        weight:
+                            12
+                    },
+
+                    {
+                        id:
+                            "mansion_passage_group_correct_neutral",
+
+                        text:
+                            "Le passage mène simplement vers une autre partie du manoir.",
+
+                        icon:
+                            "🚪",
+
+                        effects:
+                            [],
+
+                        weight:
+                            88
                     }
+
                 ]
 
             },
 
-            group_wrong: {
 
-                icon:
-                    "🙄",
+            group_wrong: {
 
                 title:
                     "Paranoïa collective",
 
-                text:
-                    "{actor} voulait partager sa découverte, mais les autres étaient persuadés qu'il partirait seul.",
+                icon:
+                    "🙄",
 
-                effects: [
+                variants: [
+
                     {
-                        target:
-                            "others",
+                        id:
+                            "mansion_passage_group_wrong_bad",
 
-                        lives:
-                            -1
+                        text:
+                            "{actor} voulait prévenir les autres, mais la dispute bloque l'exploration pendant longtemps.",
+
+                        icon:
+                            "😤",
+
+                        effects: [
+                            {
+                                target:
+                                    "others",
+
+                                lives:
+                                    -1
+                            }
+                        ],
+
+                        weight:
+                            42
+                    },
+
+                    {
+                        id:
+                            "mansion_passage_group_wrong_neutral",
+
+                        text:
+                            "Le malentendu finit par être dissipé.",
+
+                        icon:
+                            "😐",
+
+                        effects:
+                            [],
+
+                        weight:
+                            58
                     }
+
                 ]
 
             }
@@ -604,12 +1198,18 @@ export const SECRET_SITUATIONS = [
 
 
     // =====================================================
-    // 4. LE VERRE DE VIN
+    // 4 - VIN
     // =====================================================
 
     {
-        id: "mansion_secret_wine",
-        type: "secret_choice",
+        id:
+            "mansion_secret_wine",
+
+        type:
+            "secret_choice",
+
+        baseWeight:
+            1,
 
         title:
             "{actor} trouve une bouteille encore pleine",
@@ -621,7 +1221,7 @@ export const SECRET_SITUATIONS = [
             "🍷",
 
         description:
-            "Une bouteille de vin parfaitement intacte repose sur une table. À côté, plusieurs verres semblent attendre les invités.",
+            "Une bouteille parfaitement intacte repose sur une table. À côté, plusieurs verres semblent attendre les invités.",
 
         choices: [
 
@@ -673,7 +1273,7 @@ export const SECRET_SITUATIONS = [
                         "drink",
 
                     title:
-                        "🍷 Oui, il a bu",
+                        "🍷 Oui",
 
                     description:
                         "{actor} n'a certainement pas résisté."
@@ -687,7 +1287,7 @@ export const SECRET_SITUATIONS = [
                         "refuse",
 
                     title:
-                        "🚫 Non, il a refusé",
+                        "🚫 Non",
 
                     description:
                         "Vous pensez qu'il a préféré rester prudent."
@@ -701,92 +1301,247 @@ export const SECRET_SITUATIONS = [
 
             drink_correct: {
 
+                title:
+                    "Prévisible",
+
                 icon:
                     "🤢",
 
-                title:
-                    "Prévisible...",
+                variants: [
 
-                text:
-                    "{actor} avait effectivement bu. Le liquide était beaucoup trop ancien.",
-
-                effects: [
                     {
-                        target:
-                            "actor",
+                        id:
+                            "mansion_wine_drink_correct_bad",
 
-                        lives:
-                            -2
+                        text:
+                            "Le liquide était beaucoup trop ancien.",
+
+                        icon:
+                            "🤢",
+
+                        effects: [
+                            {
+                                target:
+                                    "actor",
+
+                                lives:
+                                    -2
+                            }
+                        ],
+
+                        weight:
+                            75
+                    },
+
+                    {
+                        id:
+                            "mansion_wine_drink_correct_neutral",
+
+                        text:
+                            "Le vin est infect mais ne semble pas dangereux.",
+
+                        icon:
+                            "😖",
+
+                        effects:
+                            [],
+
+                        weight:
+                            25
                     }
+
                 ]
 
             },
 
+
             drink_wrong: {
+
+                title:
+                    "Santé",
 
                 icon:
                     "🍷",
 
-                title:
-                    "Santé !",
+                variants: [
 
-                text:
-                    "{actor} avait bu en secret. Étrangement, le vin lui redonne des forces.",
-
-                effects: [
                     {
-                        target:
-                            "actor",
+                        id:
+                            "mansion_wine_drink_wrong_good",
 
-                        lives:
-                            2
+                        text:
+                            "Étrangement, une petite quantité du vin semble redonner des forces à {actor}.",
+
+                        icon:
+                            "✨",
+
+                        effects: [
+                            {
+                                target:
+                                    "actor",
+
+                                lives:
+                                    1
+                            }
+                        ],
+
+                        weight:
+                            12
+                    },
+
+                    {
+                        id:
+                            "mansion_wine_drink_wrong_neutral",
+
+                        text:
+                            "{actor} a bu en secret. Le goût est terrible mais aucun effet ne se manifeste.",
+
+                        icon:
+                            "😐",
+
+                        effects:
+                            [],
+
+                        weight:
+                            68
+                    },
+
+                    {
+                        id:
+                            "mansion_wine_drink_wrong_bad",
+
+                        text:
+                            "{actor} commence à avoir de violents vertiges.",
+
+                        icon:
+                            "🌀",
+
+                        effects: [
+                            {
+                                target:
+                                    "actor",
+
+                                lives:
+                                    -1
+                            }
+                        ],
+
+                        weight:
+                            20
                     }
+
                 ]
 
             },
 
-            refuse_correct: {
 
-                icon:
-                    "🧠",
+            refuse_correct: {
 
                 title:
                     "Instinct de survie",
 
-                text:
-                    "{actor} avait refusé de boire. Quelques secondes plus tard, le liquide devient noir dans la bouteille.",
+                icon:
+                    "🧠",
 
-                effects: [
+                variants: [
+
                     {
-                        target:
-                            "actor",
+                        id:
+                            "mansion_wine_refuse_correct_neutral",
 
-                        lives:
-                            1
+                        text:
+                            "Quelques secondes plus tard, le liquide devient noir dans la bouteille.",
+
+                        icon:
+                            "🖤",
+
+                        effects:
+                            [],
+
+                        weight:
+                            90
+                    },
+
+                    {
+                        id:
+                            "mansion_wine_refuse_correct_good",
+
+                        text:
+                            "En reposant la bouteille, {actor} découvre une petite clé sous celle-ci.",
+
+                        icon:
+                            "🗝️",
+
+                        effects: [
+                            {
+                                target:
+                                    "actor",
+
+                                lives:
+                                    1
+                            }
+                        ],
+
+                        weight:
+                            10
                     }
+
                 ]
 
             },
 
-            refuse_wrong: {
 
-                icon:
-                    "😅",
+            refuse_wrong: {
 
                 title:
                     "Finalement raisonnable",
 
-                text:
-                    "Tout le monde pensait que {actor} boirait, mais il n'avait même pas touché à la bouteille.",
+                icon:
+                    "😅",
 
-                effects: [
+                variants: [
+
                     {
-                        target:
-                            "actor",
+                        id:
+                            "mansion_wine_refuse_wrong_neutral",
 
-                        lives:
-                            1
+                        text:
+                            "Tout le monde pensait que {actor} boirait, mais il n'avait même pas touché à la bouteille.",
+
+                        icon:
+                            "😐",
+
+                        effects:
+                            [],
+
+                        weight:
+                            80
+                    },
+
+                    {
+                        id:
+                            "mansion_wine_refuse_wrong_bad",
+
+                        text:
+                            "Les accusations créent une dispute complètement inutile.",
+
+                        icon:
+                            "😒",
+
+                        effects: [
+                            {
+                                target:
+                                    "actor",
+
+                                lives:
+                                    -1
+                            }
+                        ],
+
+                        weight:
+                            20
                     }
+
                 ]
 
             }
@@ -797,12 +1552,18 @@ export const SECRET_SITUATIONS = [
 
 
     // =====================================================
-    // 5. LA POUPÉE
+    // 5 - POUPÉE
     // =====================================================
 
     {
-        id: "mansion_secret_doll",
-        type: "secret_choice",
+        id:
+            "mansion_secret_doll",
+
+        type:
+            "secret_choice",
+
+        baseWeight:
+            1,
 
         title:
             "{actor} trouve une poupée inquiétante",
@@ -854,7 +1615,7 @@ export const SECRET_SITUATIONS = [
                 "{actor} a-t-il touché à la poupée ?",
 
             description:
-                "Il va falloir décider s'il est courageux... ou inconscient.",
+                "À vous de juger son niveau de prudence.",
 
             choices: [
 
@@ -894,92 +1655,223 @@ export const SECRET_SITUATIONS = [
 
             take_correct: {
 
-                icon:
-                    "😱",
-
                 title:
                     "On savait que tu le ferais",
 
-                text:
-                    "{actor} avait bien pris la poupée. Elle lui mord violemment la main.",
+                icon:
+                    "😱",
 
-                effects: [
+                variants: [
+
                     {
-                        target:
-                            "actor",
+                        id:
+                            "mansion_secret_doll_take_bad",
 
-                        lives:
-                            -2
+                        text:
+                            "La poupée mord violemment la main de {actor}.",
+
+                        icon:
+                            "🩸",
+
+                        effects: [
+                            {
+                                target:
+                                    "actor",
+
+                                lives:
+                                    -2
+                            }
+                        ],
+
+                        weight:
+                            72
+                    },
+
+                    {
+                        id:
+                            "mansion_secret_doll_take_neutral",
+
+                        text:
+                            "La poupée reste parfaitement immobile. La clé est malheureusement rouillée.",
+
+                        icon:
+                            "🗝️",
+
+                        effects:
+                            [],
+
+                        weight:
+                            28
                     }
+
                 ]
 
             },
 
-            take_wrong: {
 
-                icon:
-                    "🗝️",
+            take_wrong: {
 
                 title:
                     "Personne ne s'en doutait",
 
-                text:
-                    "{actor} avait pris la poupée et récupère discrètement la clé cachée dans sa poche.",
+                icon:
+                    "🗝️",
 
-                effects: [
+                variants: [
+
                     {
-                        target:
-                            "actor",
+                        id:
+                            "mansion_secret_doll_wrong_good",
 
-                        lives:
-                            2
+                        text:
+                            "{actor} récupère discrètement la petite clé.",
+
+                        icon:
+                            "🗝️",
+
+                        effects: [
+                            {
+                                target:
+                                    "actor",
+
+                                lives:
+                                    1
+                            }
+                        ],
+
+                        weight:
+                            15
+                    },
+
+                    {
+                        id:
+                            "mansion_secret_doll_wrong_neutral",
+
+                        text:
+                            "La clé ne semble correspondre à aucune serrure proche.",
+
+                        icon:
+                            "🔑",
+
+                        effects:
+                            [],
+
+                        weight:
+                            85
                     }
+
                 ]
 
             },
 
-            leave_correct: {
 
-                icon:
-                    "😌",
+            leave_correct: {
 
                 title:
                     "Bonne décision",
 
-                text:
-                    "{actor} avait laissé la poupée tranquille. Elle tourne la tête quelques secondes après son départ.",
+                icon:
+                    "😌",
 
-                effects: [
+                variants: [
+
                     {
-                        target:
-                            "actor",
+                        id:
+                            "mansion_secret_doll_leave_neutral",
 
-                        lives:
-                            1
+                        text:
+                            "La poupée tourne la tête quelques secondes après le départ de {actor}.",
+
+                        icon:
+                            "🧸",
+
+                        effects:
+                            [],
+
+                        weight:
+                            90
+                    },
+
+                    {
+                        id:
+                            "mansion_secret_doll_leave_bad",
+
+                        text:
+                            "Une petite voix appelle {actor} depuis la chambre alors qu'il repart.",
+
+                        icon:
+                            "👻",
+
+                        effects: [
+                            {
+                                target:
+                                    "actor",
+
+                                lives:
+                                    -1
+                            }
+                        ],
+
+                        weight:
+                            10
                     }
+
                 ]
 
             },
 
-            leave_wrong: {
 
-                icon:
-                    "😂",
+            leave_wrong: {
 
                 title:
                     "Vous l'avez sous-estimé",
 
-                text:
-                    "{actor} n'avait même pas touché à la poupée. Les autres étaient pourtant certains du contraire.",
+                icon:
+                    "😂",
 
-                effects: [
+                variants: [
+
                     {
-                        target:
-                            "actor",
+                        id:
+                            "mansion_secret_doll_leave_wrong_neutral",
 
-                        lives:
-                            1
+                        text:
+                            "{actor} n'avait même pas touché à la poupée.",
+
+                        icon:
+                            "😐",
+
+                        effects:
+                            [],
+
+                        weight:
+                            80
+                    },
+
+                    {
+                        id:
+                            "mansion_secret_doll_leave_wrong_bad",
+
+                        text:
+                            "Les autres perdent un temps fou à chercher une poupée que {actor} n'avait même pas prise.",
+
+                        icon:
+                            "🙄",
+
+                        effects: [
+                            {
+                                target:
+                                    "others",
+
+                                lives:
+                                    -1
+                            }
+                        ],
+
+                        weight:
+                            20
                     }
+
                 ]
 
             }
@@ -990,12 +1882,18 @@ export const SECRET_SITUATIONS = [
 
 
     // =====================================================
-    // 6. LE COFFRE
+    // 6 - COFFRE
     // =====================================================
 
     {
-        id: "mansion_secret_chest",
-        type: "secret_choice",
+        id:
+            "mansion_secret_chest",
+
+        type:
+            "secret_choice",
+
+        baseWeight:
+            1,
 
         title:
             "{actor} découvre un coffre verrouillé",
@@ -1087,92 +1985,247 @@ export const SECRET_SITUATIONS = [
 
             force_correct: {
 
-                icon:
-                    "💥",
-
                 title:
                     "Démasqué",
 
-                text:
-                    "{actor} avait essayé de forcer le coffre. Le mécanisme se bloque définitivement.",
+                icon:
+                    "💥",
 
-                effects: [
+                variants: [
+
                     {
-                        target:
-                            "actor",
+                        id:
+                            "mansion_chest_force_correct_bad",
 
-                        lives:
-                            -2
+                        text:
+                            "Le mécanisme se bloque et blesse {actor}.",
+
+                        icon:
+                            "🤕",
+
+                        effects: [
+                            {
+                                target:
+                                    "actor",
+
+                                lives:
+                                    -2
+                            }
+                        ],
+
+                        weight:
+                            65
+                    },
+
+                    {
+                        id:
+                            "mansion_chest_force_correct_neutral",
+
+                        text:
+                            "{actor} est interrompu avant d'avoir réussi à ouvrir le coffre.",
+
+                        icon:
+                            "😐",
+
+                        effects:
+                            [],
+
+                        weight:
+                            35
                     }
+
                 ]
 
             },
 
+
             force_wrong: {
+
+                title:
+                    "Coup discret",
 
                 icon:
                     "💎",
 
-                title:
-                    "Coup parfait",
+                variants: [
 
-                text:
-                    "{actor} avait ouvert le coffre discrètement et récupère ce qu'il contenait.",
-
-                effects: [
                     {
-                        target:
-                            "actor",
+                        id:
+                            "mansion_chest_force_wrong_good",
 
-                        lives:
-                            2
+                        text:
+                            "Le coffre contient quelques objets utiles.",
+
+                        icon:
+                            "🎁",
+
+                        effects: [
+                            {
+                                target:
+                                    "actor",
+
+                                lives:
+                                    2
+                            }
+                        ],
+
+                        weight:
+                            8
+                    },
+
+                    {
+                        id:
+                            "mansion_chest_force_wrong_neutral",
+
+                        text:
+                            "Le coffre contient uniquement des papiers moisis.",
+
+                        icon:
+                            "📜",
+
+                        effects:
+                            [],
+
+                        weight:
+                            72
+                    },
+
+                    {
+                        id:
+                            "mansion_chest_force_wrong_bad",
+
+                        text:
+                            "Une lame dissimulée dans le mécanisme coupe la main de {actor}.",
+
+                        icon:
+                            "🩸",
+
+                        effects: [
+                            {
+                                target:
+                                    "actor",
+
+                                lives:
+                                    -1
+                            }
+                        ],
+
+                        weight:
+                            20
                     }
+
                 ]
 
             },
 
-            wait_correct: {
 
-                icon:
-                    "🤝",
+            wait_correct: {
 
                 title:
                     "Travail d'équipe",
 
-                text:
-                    "{actor} avait réellement attendu le groupe. Ensemble, vous ouvrez le coffre sans danger.",
+                icon:
+                    "🤝",
 
-                effects: [
+                variants: [
+
                     {
-                        target:
-                            "all",
+                        id:
+                            "mansion_chest_wait_good",
 
-                        lives:
-                            1
+                        text:
+                            "Le groupe ouvre le coffre et partage quelques objets utiles.",
+
+                        icon:
+                            "🎁",
+
+                        effects: [
+                            {
+                                target:
+                                    "all",
+
+                                lives:
+                                    1
+                            }
+                        ],
+
+                        weight:
+                            12
+                    },
+
+                    {
+                        id:
+                            "mansion_chest_wait_neutral",
+
+                        text:
+                            "Le coffre ne contient presque rien.",
+
+                        icon:
+                            "😐",
+
+                        effects:
+                            [],
+
+                        weight:
+                            88
                     }
+
                 ]
 
             },
 
-            wait_wrong: {
 
-                icon:
-                    "😒",
+            wait_wrong: {
 
                 title:
                     "Encore soupçonné",
 
-                text:
-                    "{actor} avait attendu tout le monde, mais personne ne lui faisait confiance.",
+                icon:
+                    "😒",
 
-                effects: [
+                variants: [
+
                     {
-                        target:
-                            "actor",
+                        id:
+                            "mansion_chest_wait_wrong_bad",
 
-                        lives:
-                            1
+                        text:
+                            "La méfiance du groupe provoque une dispute inutile.",
+
+                        icon:
+                            "😤",
+
+                        effects: [
+                            {
+                                target:
+                                    "actor",
+
+                                lives:
+                                    -1
+                            }
+                        ],
+
+                        weight:
+                            40
+                    },
+
+                    {
+                        id:
+                            "mansion_chest_wait_wrong_neutral",
+
+                        text:
+                            "Le coffre était toujours parfaitement fermé.",
+
+                        icon:
+                            "🧰",
+
+                        effects:
+                            [],
+
+                        weight:
+                            60
                     }
+
                 ]
 
             }
@@ -1183,12 +2236,18 @@ export const SECRET_SITUATIONS = [
 
 
     // =====================================================
-    // 7. LA VOIX DANS LE COULOIR
+    // 7 - VOIX
     // =====================================================
 
     {
-        id: "mansion_secret_voice",
-        type: "secret_choice",
+        id:
+            "mansion_secret_voice",
+
+        type:
+            "secret_choice",
+
+        baseWeight:
+            1,
 
         title:
             "Une voix appelle {actor} depuis un couloir",
@@ -1240,7 +2299,7 @@ export const SECRET_SITUATIONS = [
                 "{actor} a-t-il suivi la voix ?",
 
             description:
-                "À vous de deviner s'il a choisi la curiosité ou la fuite.",
+                "À vous de deviner.",
 
             choices: [
 
@@ -1280,92 +2339,247 @@ export const SECRET_SITUATIONS = [
 
             follow_correct: {
 
-                icon:
-                    "👻",
-
                 title:
                     "On le savait",
 
-                text:
-                    "{actor} avait suivi la voix. Une silhouette surgit brusquement de l'obscurité.",
+                icon:
+                    "👻",
 
-                effects: [
+                variants: [
+
                     {
-                        target:
-                            "actor",
+                        id:
+                            "mansion_voice_follow_bad",
 
-                        lives:
-                            -2
+                        text:
+                            "Une silhouette surgit de l'obscurité et frappe {actor}.",
+
+                        icon:
+                            "👹",
+
+                        effects: [
+                            {
+                                target:
+                                    "actor",
+
+                                lives:
+                                    -2
+                            }
+                        ],
+
+                        weight:
+                            70
+                    },
+
+                    {
+                        id:
+                            "mansion_voice_follow_neutral",
+
+                        text:
+                            "La pièce est complètement vide.",
+
+                        icon:
+                            "🌑",
+
+                        effects:
+                            [],
+
+                        weight:
+                            30
                     }
+
                 ]
 
             },
 
+
             follow_wrong: {
+
+                title:
+                    "Curiosité cachée",
 
                 icon:
                     "🕯️",
 
-                title:
-                    "Curiosité récompensée",
+                variants: [
 
-                text:
-                    "{actor} avait suivi la voix sans que personne ne le soupçonne. Il découvre une pièce protégée.",
-
-                effects: [
                     {
-                        target:
-                            "actor",
+                        id:
+                            "mansion_voice_follow_wrong_good",
 
-                        lives:
-                            2
+                        text:
+                            "{actor} découvre une petite pièce calme contenant une lampe.",
+
+                        icon:
+                            "🔦",
+
+                        effects: [
+                            {
+                                target:
+                                    "actor",
+
+                                lives:
+                                    1
+                            }
+                        ],
+
+                        weight:
+                            12
+                    },
+
+                    {
+                        id:
+                            "mansion_voice_follow_wrong_bad",
+
+                        text:
+                            "Une présence invisible traverse {actor}.",
+
+                        icon:
+                            "🥶",
+
+                        effects: [
+                            {
+                                target:
+                                    "actor",
+
+                                lives:
+                                    -1
+                            }
+                        ],
+
+                        weight:
+                            28
+                    },
+
+                    {
+                        id:
+                            "mansion_voice_follow_wrong_neutral",
+
+                        text:
+                            "La voix disparaît dès que {actor} entre dans la pièce.",
+
+                        icon:
+                            "😐",
+
+                        effects:
+                            [],
+
+                        weight:
+                            60
                     }
+
                 ]
 
             },
 
-            run_correct: {
 
-                icon:
-                    "🏃",
+            run_correct: {
 
                 title:
                     "Instinct intact",
 
-                text:
-                    "{actor} avait choisi de fuir. Quelques secondes plus tard, la porte se referme violemment derrière lui.",
+                icon:
+                    "🏃",
 
-                effects: [
+                variants: [
+
                     {
-                        target:
-                            "actor",
+                        id:
+                            "mansion_voice_run_neutral",
 
-                        lives:
-                            1
+                        text:
+                            "Quelques secondes après le départ de {actor}, la porte se referme violemment derrière lui.",
+
+                        icon:
+                            "🚪",
+
+                        effects:
+                            [],
+
+                        weight:
+                            90
+                    },
+
+                    {
+                        id:
+                            "mansion_voice_run_good",
+
+                        text:
+                            "{actor} trouve rapidement une pièce plus calme.",
+
+                        icon:
+                            "😌",
+
+                        effects: [
+                            {
+                                target:
+                                    "actor",
+
+                                lives:
+                                    1
+                            }
+                        ],
+
+                        weight:
+                            10
                     }
+
                 ]
 
             },
 
+
             run_wrong: {
+
+                title:
+                    "Pas si courageux",
 
                 icon:
                     "😂",
 
-                title:
-                    "Pas si courageux finalement",
+                variants: [
 
-                text:
-                    "Tout le monde pensait que {actor} suivrait la voix. Il avait déjà quitté le couloir depuis longtemps.",
-
-                effects: [
                     {
-                        target:
-                            "actor",
+                        id:
+                            "mansion_voice_run_wrong_neutral",
 
-                        lives:
-                            1
+                        text:
+                            "{actor} avait déjà quitté le couloir depuis longtemps.",
+
+                        icon:
+                            "🏃",
+
+                        effects:
+                            [],
+
+                        weight:
+                            80
+                    },
+
+                    {
+                        id:
+                            "mansion_voice_run_wrong_bad",
+
+                        text:
+                            "Dans sa fuite, {actor} trébuche dans l'escalier.",
+
+                        icon:
+                            "💥",
+
+                        effects: [
+                            {
+                                target:
+                                    "actor",
+
+                                lives:
+                                    -1
+                            }
+                        ],
+
+                        weight:
+                            20
                     }
+
                 ]
 
             }
@@ -1376,12 +2590,18 @@ export const SECRET_SITUATIONS = [
 
 
     // =====================================================
-    // 8. LE MÉDAILLON
+    // 8 - MÉDAILLON
     // =====================================================
 
     {
-        id: "mansion_secret_medallion",
-        type: "secret_choice",
+        id:
+            "mansion_secret_medallion",
+
+        type:
+            "secret_choice",
+
+        baseWeight:
+            1,
 
         title:
             "{actor} trouve un étrange médaillon",
@@ -1473,92 +2693,977 @@ export const SECRET_SITUATIONS = [
 
             keep_correct: {
 
-                icon:
-                    "🩸",
-
                 title:
                     "Objet maudit",
 
-                text:
-                    "{actor} avait bien gardé le médaillon. L'objet se resserre brutalement autour de son cou.",
+                icon:
+                    "🩸",
 
-                effects: [
+                variants: [
+
                     {
-                        target:
-                            "actor",
+                        id:
+                            "mansion_medallion_keep_bad",
 
-                        lives:
-                            -2
+                        text:
+                            "Le médaillon se resserre brutalement autour du cou de {actor}.",
+
+                        icon:
+                            "🩸",
+
+                        effects: [
+                            {
+                                target:
+                                    "actor",
+
+                                lives:
+                                    -2
+                            }
+                        ],
+
+                        weight:
+                            70
+                    },
+
+                    {
+                        id:
+                            "mansion_medallion_keep_neutral",
+
+                        text:
+                            "Le groupe récupère le médaillon avant qu'il ne se produise quoi que ce soit.",
+
+                        icon:
+                            "📿",
+
+                        effects:
+                            [],
+
+                        weight:
+                            30
                     }
+
                 ]
 
             },
 
-            keep_wrong: {
 
-                icon:
-                    "✨",
+            keep_wrong: {
 
                 title:
                     "Pouvoir caché",
 
-                text:
-                    "{actor} avait conservé le médaillon. Personne ne le savait, et l'objet semble le protéger.",
+                icon:
+                    "✨",
 
-                effects: [
+                variants: [
+
                     {
-                        target:
-                            "actor",
+                        id:
+                            "mansion_medallion_wrong_good",
 
-                        lives:
-                            2
+                        text:
+                            "Le médaillon semble brièvement protéger {actor}.",
+
+                        icon:
+                            "✨",
+
+                        effects: [
+                            {
+                                target:
+                                    "actor",
+
+                                lives:
+                                    1
+                            }
+                        ],
+
+                        weight:
+                            15
+                    },
+
+                    {
+                        id:
+                            "mansion_medallion_wrong_neutral",
+
+                        text:
+                            "Le médaillon reste parfaitement silencieux.",
+
+                        icon:
+                            "📿",
+
+                        effects:
+                            [],
+
+                        weight:
+                            65
+                    },
+
+                    {
+                        id:
+                            "mansion_medallion_wrong_bad",
+
+                        text:
+                            "Une douleur glaciale traverse soudainement {actor}.",
+
+                        icon:
+                            "🥶",
+
+                        effects: [
+                            {
+                                target:
+                                    "actor",
+
+                                lives:
+                                    -1
+                            }
+                        ],
+
+                        weight:
+                            20
                     }
+
                 ]
 
             },
 
-            destroy_correct: {
 
-                icon:
-                    "💥",
+            destroy_correct: {
 
                 title:
                     "Bonne intuition",
 
-                text:
-                    "{actor} avait détruit le médaillon. Une fumée noire s'en échappe avant de disparaître.",
+                icon:
+                    "💥",
 
-                effects: [
+                variants: [
+
                     {
-                        target:
-                            "all",
+                        id:
+                            "mansion_medallion_destroy_neutral",
 
-                        lives:
-                            1
+                        text:
+                            "Une fumée noire s'échappe du médaillon puis disparaît.",
+
+                        icon:
+                            "🌫️",
+
+                        effects:
+                            [],
+
+                        weight:
+                            85
+                    },
+
+                    {
+                        id:
+                            "mansion_medallion_destroy_good",
+
+                        text:
+                            "L'atmosphère semble légèrement plus calme après la destruction de l'objet.",
+
+                        icon:
+                            "✨",
+
+                        effects: [
+                            {
+                                target:
+                                    "all",
+
+                                lives:
+                                    1
+                            }
+                        ],
+
+                        weight:
+                            15
                     }
+
                 ]
 
             },
 
-            destroy_wrong: {
 
-                icon:
-                    "👏",
+            destroy_wrong: {
 
                 title:
                     "Finalement prudent",
 
-                text:
-                    "Tout le monde pensait que {actor} garderait le médaillon, mais il l'avait détruit sans hésiter.",
+                icon:
+                    "👏",
 
-                effects: [
+                variants: [
+
                     {
-                        target:
-                            "actor",
+                        id:
+                            "mansion_medallion_destroy_wrong_neutral",
 
-                        lives:
-                            2
+                        text:
+                            "Tout le monde pensait que {actor} garderait l'objet, mais il l'avait détruit.",
+
+                        icon:
+                            "😐",
+
+                        effects:
+                            [],
+
+                        weight:
+                            80
+                    },
+
+                    {
+                        id:
+                            "mansion_medallion_destroy_wrong_bad",
+
+                        text:
+                            "La méfiance provoque une dispute inutile.",
+
+                        icon:
+                            "😒",
+
+                        effects: [
+                            {
+                                target:
+                                    "others",
+
+                                lives:
+                                    -1
+                            }
+                        ],
+
+                        weight:
+                            20
                     }
+
+                ]
+
+            }
+
+        }
+
+    },
+
+
+    // =====================================================
+    // 9 - PORTE DORÉE
+    // SUITE CLÉ DORÉE
+    // =====================================================
+
+    {
+        id:
+            "mansion_secret_golden_door",
+
+        type:
+            "secret_choice",
+
+        baseWeight:
+            1,
+
+        requirements: {
+
+            all: [
+                "mansion_secret_key_hidden"
+            ]
+
+        },
+
+        title:
+            "{actor} trouve une porte correspondant à sa clé",
+
+        category:
+            "Suite",
+
+        icon:
+            "🚪",
+
+        description:
+            "Dans une aile isolée du manoir, {actor} découvre une porte ornée du même symbole que la clé dorée cachée plus tôt.",
+
+        choices: [
+
+            {
+                id:
+                    "mansion_golden_door_open",
+
+                secretValue:
+                    "open",
+
+                title:
+                    "🔓 Ouvrir",
+
+                description:
+                    "Utiliser la clé sans prévenir personne."
+            },
+
+            {
+                id:
+                    "mansion_golden_door_leave",
+
+                secretValue:
+                    "leave",
+
+                title:
+                    "🚪 Ne pas ouvrir",
+
+                description:
+                    "Continuer son chemin."
+            }
+
+        ],
+
+        guess: {
+
+            title:
+                "{actor} a-t-il utilisé sa clé ?",
+
+            description:
+                "À vous de deviner.",
+
+            choices: [
+
+                {
+                    id:
+                        "mansion_golden_door_guess_open",
+
+                    secretValue:
+                        "open",
+
+                    title:
+                        "🔓 Oui",
+
+                    description:
+                        "{actor} a ouvert la porte."
+                },
+
+                {
+                    id:
+                        "mansion_golden_door_guess_leave",
+
+                    secretValue:
+                        "leave",
+
+                    title:
+                        "🚪 Non",
+
+                    description:
+                        "{actor} a résisté."
+                }
+
+            ]
+
+        },
+
+        outcomes: {
+
+            open_correct: {
+
+                title:
+                    "Curiosité prévisible",
+
+                icon:
+                    "👁️",
+
+                variants: [
+
+                    {
+                        id:
+                            "golden_door_open_correct_bad",
+
+                        text:
+                            "La porte révèle une pièce remplie de silhouettes immobiles qui se tournent toutes vers {actor}.",
+
+                        icon:
+                            "👤",
+
+                        effects: [
+                            {
+                                target:
+                                    "actor",
+
+                                lives:
+                                    -2
+                            }
+                        ],
+
+                        weight:
+                            70
+                    },
+
+                    {
+                        id:
+                            "golden_door_open_correct_neutral",
+
+                        text:
+                            "La pièce derrière la porte est totalement vide.",
+
+                        icon:
+                            "🌑",
+
+                        effects:
+                            [],
+
+                        weight:
+                            30
+                    }
+
+                ]
+
+            },
+
+
+            open_wrong: {
+
+                title:
+                    "Personne n'était au courant",
+
+                icon:
+                    "🤫",
+
+                variants: [
+
+                    {
+                        id:
+                            "golden_door_open_wrong_good",
+
+                        text:
+                            "Une petite cache contient quelques soins anciens mais encore utilisables.",
+
+                        icon:
+                            "🩹",
+
+                        effects: [
+                            {
+                                target:
+                                    "actor",
+
+                                lives:
+                                    2
+                            }
+                        ],
+
+                        weight:
+                            8
+                    },
+
+                    {
+                        id:
+                            "golden_door_open_wrong_bad",
+
+                        text:
+                            "Une présence frappe {actor} dès qu'il entre.",
+
+                        icon:
+                            "👹",
+
+                        effects: [
+                            {
+                                target:
+                                    "actor",
+
+                                lives:
+                                    -1
+                            }
+                        ],
+
+                        weight:
+                            32
+                    },
+
+                    {
+                        id:
+                            "golden_door_open_wrong_neutral",
+
+                        text:
+                            "La pièce ne contient rien d'intéressant.",
+
+                        icon:
+                            "😐",
+
+                        effects:
+                            [],
+
+                        weight:
+                            60
+                    }
+
+                ]
+
+            },
+
+
+            leave_correct: {
+
+                title:
+                    "Résistance inattendue",
+
+                icon:
+                    "🚪",
+
+                variants: [
+
+                    {
+                        id:
+                            "golden_door_leave_neutral",
+
+                        text:
+                            "{actor} range la clé et s'éloigne.",
+
+                        icon:
+                            "😌",
+
+                        effects:
+                            [],
+
+                        weight:
+                            90
+                    },
+
+                    {
+                        id:
+                            "golden_door_leave_bad",
+
+                        text:
+                            "Des coups violents retentissent derrière la porte au moment où {actor} s'éloigne.",
+
+                        icon:
+                            "👊",
+
+                        effects: [
+                            {
+                                target:
+                                    "actor",
+
+                                lives:
+                                    -1
+                            }
+                        ],
+
+                        weight:
+                            10
+                    }
+
+                ]
+
+            },
+
+
+            leave_wrong: {
+
+                title:
+                    "Finalement prudent",
+
+                icon:
+                    "😅",
+
+                variants: [
+
+                    {
+                        id:
+                            "golden_door_leave_wrong_neutral",
+
+                        text:
+                            "Tout le monde pensait que {actor} ouvrirait la porte. Il ne l'a pourtant même pas touchée.",
+
+                        icon:
+                            "😐",
+
+                        effects:
+                            [],
+
+                        weight:
+                            100
+                    }
+
+                ]
+
+            }
+
+        }
+
+    },
+
+
+    // =====================================================
+    // 10 - LE LIVRE REVIENT
+    // SUITE LIVRE MAUDIT
+    // =====================================================
+
+    {
+        id:
+            "mansion_secret_book_return",
+
+        type:
+            "secret_choice",
+
+        baseWeight:
+            1,
+
+        requirements: {
+
+            all: [
+                "mansion_secret_book_opened"
+            ],
+
+            not: [
+                "mansion_secret_book_closed"
+            ]
+
+        },
+
+        title:
+            "Le livre maudit apparaît de nouveau devant {actor}",
+
+        category:
+            "Suite",
+
+        icon:
+            "📖",
+
+        description:
+            "Alors que {actor} avait laissé le livre derrière lui, celui-ci repose maintenant sur une table quelques pièces plus loin.",
+
+        choices: [
+
+            {
+                id:
+                    "mansion_book_return_read",
+
+                secretValue:
+                    "read",
+
+                title:
+                    "📖 Lire la nouvelle page",
+
+                description:
+                    "Une page qui n'existait pas auparavant est maintenant ouverte."
+            },
+
+            {
+                id:
+                    "mansion_book_return_burn",
+
+                secretValue:
+                    "burn",
+
+                title:
+                    "🔥 Brûler le livre",
+
+                description:
+                    "Cette fois, terminer le problème définitivement."
+            }
+
+        ],
+
+        guess: {
+
+            title:
+                "Qu'a fait {actor} avec le livre revenu ?",
+
+            description:
+                "Curiosité ou destruction ?",
+
+            choices: [
+
+                {
+                    id:
+                        "mansion_book_return_guess_read",
+
+                    secretValue:
+                        "read",
+
+                    title:
+                        "📖 Lire",
+
+                    description:
+                        "{actor} n'a sûrement pas résisté."
+                },
+
+                {
+                    id:
+                        "mansion_book_return_guess_burn",
+
+                    secretValue:
+                        "burn",
+
+                    title:
+                        "🔥 Le brûler",
+
+                    description:
+                        "{actor} a voulu en finir."
+                }
+
+            ]
+
+        },
+
+        outcomes: {
+
+            read_correct: {
+
+                title:
+                    "Encore curieux",
+
+                icon:
+                    "📖",
+
+                variants: [
+
+                    {
+                        id:
+                            "book_return_read_bad",
+
+                        text:
+                            "Les nouvelles lignes mentionnent le nom de {actor}. Une ombre sort immédiatement de la page.",
+
+                        icon:
+                            "👤",
+
+                        effects: [
+                            {
+                                target:
+                                    "actor",
+
+                                lives:
+                                    -2
+                            }
+                        ],
+
+                        weight:
+                            72
+                    },
+
+                    {
+                        id:
+                            "book_return_read_neutral",
+
+                        text:
+                            "Les nouvelles pages deviennent blanches dès que {actor} commence à lire.",
+
+                        icon:
+                            "📄",
+
+                        effects:
+                            [],
+
+                        weight:
+                            28
+                    }
+
+                ]
+
+            },
+
+
+            read_wrong: {
+
+                title:
+                    "Curiosité secrète",
+
+                icon:
+                    "🤫",
+
+                variants: [
+
+                    {
+                        id:
+                            "book_return_read_wrong_good",
+
+                        text:
+                            "Le texte révèle brièvement un symbole protecteur.",
+
+                        icon:
+                            "✨",
+
+                        effects: [
+                            {
+                                target:
+                                    "actor",
+
+                                lives:
+                                    1
+                            }
+                        ],
+
+                        weight:
+                            10
+                    },
+
+                    {
+                        id:
+                            "book_return_read_wrong_bad",
+
+                        text:
+                            "Une douleur glaciale traverse {actor} à la dernière ligne.",
+
+                        icon:
+                            "🥶",
+
+                        effects: [
+                            {
+                                target:
+                                    "actor",
+
+                                lives:
+                                    -1
+                            }
+                        ],
+
+                        weight:
+                            30
+                    },
+
+                    {
+                        id:
+                            "book_return_read_wrong_neutral",
+
+                        text:
+                            "Le texte est incompréhensible.",
+
+                        icon:
+                            "📖",
+
+                        effects:
+                            [],
+
+                        weight:
+                            60
+                    }
+
+                ]
+
+            },
+
+
+            burn_correct: {
+
+                title:
+                    "Cette fois c'est fini",
+
+                icon:
+                    "🔥",
+
+                variants: [
+
+                    {
+                        id:
+                            "book_return_burn_good",
+
+                        text:
+                            "Le livre brûle entièrement et l'atmosphère du manoir semble brièvement plus légère.",
+
+                        icon:
+                            "✨",
+
+                        effects: [
+                            {
+                                target:
+                                    "all",
+
+                                lives:
+                                    1
+                            }
+                        ],
+
+                        weight:
+                            12
+                    },
+
+                    {
+                        id:
+                            "book_return_burn_bad",
+
+                        text:
+                            "Une fumée noire remplit brutalement la pièce.",
+
+                        icon:
+                            "🌫️",
+
+                        effects: [
+                            {
+                                target:
+                                    "actor",
+
+                                lives:
+                                    -1
+                            }
+                        ],
+
+                        weight:
+                            28
+                    },
+
+                    {
+                        id:
+                            "book_return_burn_neutral",
+
+                        text:
+                            "Le livre se consume sans autre manifestation.",
+
+                        icon:
+                            "🔥",
+
+                        effects:
+                            [],
+
+                        weight:
+                            60
+                    }
+
+                ]
+
+            },
+
+
+            burn_wrong: {
+
+                title:
+                    "Plus raisonnable que prévu",
+
+                icon:
+                    "🔥",
+
+                variants: [
+
+                    {
+                        id:
+                            "book_return_burn_wrong_neutral",
+
+                        text:
+                            "Tout le monde pensait que {actor} lirait encore. Le livre est pourtant déjà réduit en cendres.",
+
+                        icon:
+                            "😐",
+
+                        effects:
+                            [],
+
+                        weight:
+                            80
+                    },
+
+                    {
+                        id:
+                            "book_return_burn_wrong_bad",
+
+                        text:
+                            "La fumée du livre brûlé fait tousser {actor}.",
+
+                        icon:
+                            "🌫️",
+
+                        effects: [
+                            {
+                                target:
+                                    "actor",
+
+                                lives:
+                                    -1
+                            }
+                        ],
+
+                        weight:
+                            20
+                    }
+
                 ]
 
             }

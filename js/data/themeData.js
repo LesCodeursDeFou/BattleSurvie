@@ -22,6 +22,10 @@ import {
     PROLOGUE as DESERT_PROLOGUE
 } from "./desertIsland/prologue.js";
 
+import {
+    JUDGE_SITUATIONS as DESERT_JUDGE_SITUATIONS
+} from "./desertIsland/judgeSituations.js";
+
 
 // =====================================
 // MANOIR HANTÉ
@@ -47,6 +51,10 @@ import {
     PROLOGUE as MANSION_PROLOGUE
 } from "./hauntedMansion/prologue.js";
 
+import {
+    JUDGE_SITUATIONS as MANSION_JUDGE_SITUATIONS
+} from "./hauntedMansion/judgeSituations.js";
+
 
 // =====================================
 // DONNÉES
@@ -68,6 +76,9 @@ export const THEME_DATA = {
         secretSituations:
             DESERT_SECRET_SITUATIONS,
 
+        judgeSituations:
+            DESERT_JUDGE_SITUATIONS,
+
         prologue:
             DESERT_PROLOGUE
 
@@ -87,6 +98,9 @@ export const THEME_DATA = {
 
         secretSituations:
             MANSION_SECRET_SITUATIONS,
+
+        judgeSituations:
+            MANSION_JUDGE_SITUATIONS,
 
         prologue:
             MANSION_PROLOGUE

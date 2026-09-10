@@ -1,7 +1,22 @@
+// =====================================
+// MODIFICATION DES VIES
+// =====================================
+
 export function applyLifeEffect(
     player,
     amount
 ) {
+
+    if (
+        !player ||
+        typeof amount !==
+            "number"
+    ) {
+
+        return null;
+
+    }
+
 
     const livesBefore =
         player.lives;
@@ -26,16 +41,17 @@ export function applyLifeEffect(
             player.lives,
 
         difference:
-            player.lives - livesBefore
+            player.lives -
+            livesBefore
 
     };
 
 }
 
 
-// =====================================================
+// =====================================
 // APPLIQUER UNE CONSÉQUENCE
-// =====================================================
+// =====================================
 
 export function applyConsequence(
     actorPlayer,
@@ -44,8 +60,25 @@ export function applyConsequence(
     allPlayers = []
 ) {
 
-    const appliedEffects = [];
+    const appliedEffects =
+        [];
 
+
+    if (!consequence) {
+
+        console.error(
+            "applyConsequence : conséquence absente"
+        );
+
+        return appliedEffects;
+
+    }
+
+
+    // =====================================
+    // NOUVEAU FORMAT
+    // effects: [...]
+    // =====================================
 
     if (
         Array.isArray(
@@ -56,7 +89,15 @@ export function applyConsequence(
         consequence.effects.forEach(
             effect => {
 
-                let affectedPlayers = [];
+                if (!effect) {
+
+                    return;
+
+                }
+
+
+                let affectedPlayers =
+                    [];
 
 
                 // =====================================
@@ -100,7 +141,16 @@ export function applyConsequence(
 
 
                 // =====================================
-                // TOUS SAUF LA CIBLE
+                // AUTRES
+                //
+                // Tous les vivants sauf targetPlayer.
+                //
+                // Pour judge_choice :
+                // game.js passe actor comme
+                // targetPlayer.
+                //
+                // Donc :
+                // others = tous sauf X.
                 // =====================================
 
                 else if (
@@ -110,20 +160,39 @@ export function applyConsequence(
 
                     affectedPlayers =
                         allPlayers.filter(
-                            player =>
-                                player.alive &&
-                                (
-                                    !targetPlayer ||
+                            player => {
+
+                                if (
+                                    !player.alive
+                                ) {
+
+                                    return false;
+
+                                }
+
+
+                                if (
+                                    !targetPlayer
+                                ) {
+
+                                    return true;
+
+                                }
+
+
+                                return (
                                     player.id !==
                                     targetPlayer.id
-                                )
+                                );
+
+                            }
                         );
 
                 }
 
 
                 // =====================================
-                // TOUS LES JOUEURS
+                // TOUS
                 // =====================================
 
                 else if (
@@ -141,21 +210,41 @@ export function applyConsequence(
 
 
                 // =====================================
-                // APPLICATION DES VIES
+                // TARGET INCONNU
+                // =====================================
+
+                else {
+
+                    console.warn(
+                        "Type d'effet inconnu :",
+                        effect.target
+                    );
+
+                    return;
+
+                }
+
+
+                // =====================================
+                // PAS DE MODIFICATION DE VIE
+                // =====================================
+
+                if (
+                    typeof effect.lives !==
+                    "number"
+                ) {
+
+                    return;
+
+                }
+
+
+                // =====================================
+                // APPLICATION
                 // =====================================
 
                 affectedPlayers.forEach(
                     affectedPlayer => {
-
-                        if (
-                            typeof effect.lives !==
-                            "number"
-                        ) {
-
-                            return;
-
-                        }
-
 
                         const lifeEffect =
                             applyLifeEffect(
@@ -164,9 +253,15 @@ export function applyConsequence(
                             );
 
 
-                        appliedEffects.push(
+                        if (
                             lifeEffect
-                        );
+                        ) {
+
+                            appliedEffects.push(
+                                lifeEffect
+                            );
+
+                        }
 
                     }
                 );
@@ -181,20 +276,38 @@ export function applyConsequence(
 
 
     // =====================================
-    // COMPATIBILITÉ ANCIENNES QUESTIONS
+    // ANCIEN FORMAT
+    //
+    // {
+    //     lives: -2
+    // }
+    //
+    // Compatibilité avec les anciennes
+    // situations.
     // =====================================
 
     if (
         typeof consequence.lives ===
-        "number"
+        "number" &&
+        actorPlayer
     ) {
 
-        appliedEffects.push(
+        const lifeEffect =
             applyLifeEffect(
                 actorPlayer,
                 consequence.lives
-            )
-        );
+            );
+
+
+        if (
+            lifeEffect
+        ) {
+
+            appliedEffects.push(
+                lifeEffect
+            );
+
+        }
 
     }
 

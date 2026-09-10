@@ -2,11 +2,18 @@ export const GROUP_SITUATIONS = [
 
     // =========================================================
     // 1 - CHAMBRE SÉCURISÉE
+    // DÉBUT MINI-HISTOIRE
     // =========================================================
 
     {
-        id: "mansion_group_safe_room",
-        type: "group_vs_one",
+        id:
+            "mansion_group_safe_room",
+
+        type:
+            "group_vs_one",
+
+        baseWeight:
+            1,
 
         title:
             "{group} trouvent une chambre qui semble sécurisée",
@@ -23,7 +30,8 @@ export const GROUP_SITUATIONS = [
         choices: [
 
             {
-                id: "mansion_group_room_accept",
+                id:
+                    "mansion_group_room_accept",
 
                 title:
                     "🤝 Accepter {target}",
@@ -31,10 +39,29 @@ export const GROUP_SITUATIONS = [
                 description:
                     "Faire une place supplémentaire.",
 
+                narrative: {
+
+                    setFlags: [
+                        "mansion_group_safe_room_used"
+                    ],
+
+                    nextSituationBoosts: [
+                        {
+                            id:
+                                "mansion_group_safe_room_night",
+
+                            weight:
+                                28
+                        }
+                    ]
+
+                },
+
                 consequences: [
 
                     {
-                        id: "mansion_group_room_accept_good",
+                        id:
+                            "mansion_group_room_accept_good",
 
                         text:
                             "{target} découvre une seconde serrure et sécurise parfaitement la pièce.",
@@ -44,14 +71,35 @@ export const GROUP_SITUATIONS = [
 
                         effects: [
                             {
-                                target: "all",
-                                lives: 1
+                                target:
+                                    "all",
+
+                                lives:
+                                    1
                             }
-                        ]
+                        ],
+
+                        weight:
+                            12,
+
+                        narrative: {
+
+                            nextSituationBoosts: [
+                                {
+                                    id:
+                                        "mansion_group_safe_room_night",
+
+                                    weight:
+                                        42
+                                }
+                            ]
+
+                        }
                     },
 
                     {
-                        id: "mansion_group_room_accept_bad",
+                        id:
+                            "mansion_group_room_accept_bad",
 
                         text:
                             "{target} ouvre accidentellement une armoire contenant une présence hostile.",
@@ -61,10 +109,47 @@ export const GROUP_SITUATIONS = [
 
                         effects: [
                             {
-                                target: "all",
-                                lives: -1
+                                target:
+                                    "all",
+
+                                lives:
+                                    -1
                             }
-                        ]
+                        ],
+
+                        weight:
+                            58,
+
+                        narrative: {
+
+                            nextSituationBoosts: [
+                                {
+                                    id:
+                                        "mansion_group_safe_room_night",
+
+                                    weight:
+                                        5
+                                }
+                            ]
+
+                        }
+                    },
+
+                    {
+                        id:
+                            "mansion_group_room_accept_neutral",
+
+                        text:
+                            "Tout le monde entre et verrouille la porte. La pièce semble calme.",
+
+                        icon:
+                            "😌",
+
+                        effects:
+                            [],
+
+                        weight:
+                            30
                     }
 
                 ]
@@ -72,7 +157,8 @@ export const GROUP_SITUATIONS = [
 
 
             {
-                id: "mansion_group_room_refuse",
+                id:
+                    "mansion_group_room_refuse",
 
                 title:
                     "🚫 Refuser",
@@ -80,40 +166,89 @@ export const GROUP_SITUATIONS = [
                 description:
                     "Verrouiller la porte sans {target}.",
 
+                narrative: {
+
+                    setFlags: [
+                        "mansion_group_safe_room_used"
+                    ],
+
+                    nextSituationBoosts: [
+                        {
+                            id:
+                                "mansion_group_safe_room_night",
+
+                            weight:
+                                20
+                        }
+                    ]
+
+                },
+
                 consequences: [
 
                     {
-                        id: "mansion_group_room_refuse_good",
+                        id:
+                            "mansion_group_room_refuse_neutral",
 
                         text:
-                            "{group} passent un moment parfaitement tranquilles.",
+                            "{group} ferment la porte tandis que {target} cherche un autre endroit.",
 
                         icon:
-                            "😌",
+                            "🚪",
 
-                        effects: [
-                            {
-                                target: "others",
-                                lives: 1
-                            }
-                        ]
+                        effects:
+                            [],
+
+                        weight:
+                            55
                     },
 
                     {
-                        id: "mansion_group_room_refuse_bad",
+                        id:
+                            "mansion_group_room_refuse_bad",
 
                         text:
-                            "{target} reste seul dans le couloir et est attaqué par quelque chose dans l'obscurité.",
+                            "{target} reste seul dans le couloir et quelque chose l'attaque dans l'obscurité.",
 
                         icon:
                             "👹",
 
                         effects: [
                             {
-                                target: "target",
-                                lives: -2
+                                target:
+                                    "target",
+
+                                lives:
+                                    -2
                             }
-                        ]
+                        ],
+
+                        weight:
+                            35
+                    },
+
+                    {
+                        id:
+                            "mansion_group_room_refuse_good",
+
+                        text:
+                            "La chambre est parfaitement silencieuse et {group} récupèrent un peu.",
+
+                        icon:
+                            "😴",
+
+                        effects: [
+                            {
+                                target:
+                                    "others",
+
+                                lives:
+                                    1
+                            }
+                        ],
+
+                        weight:
+                            10
                     }
 
                 ]
@@ -125,11 +260,18 @@ export const GROUP_SITUATIONS = [
 
     // =========================================================
     // 2 - RITUEL
+    // DÉBUT MINI-HISTOIRE
     // =========================================================
 
     {
-        id: "mansion_group_ritual",
-        type: "group_vs_one",
+        id:
+            "mansion_group_ritual",
+
+        type:
+            "group_vs_one",
+
+        baseWeight:
+            1,
 
         title:
             "{group} découvrent un cercle rituel",
@@ -146,7 +288,8 @@ export const GROUP_SITUATIONS = [
         choices: [
 
             {
-                id: "mansion_group_ritual_target",
+                id:
+                    "mansion_group_ritual_target",
 
                 title:
                     "😈 Envoyer {target}",
@@ -154,27 +297,53 @@ export const GROUP_SITUATIONS = [
                 description:
                     "Quelqu'un doit tester le rituel.",
 
+                narrative: {
+
+                    setFlags: [
+                        "mansion_group_ritual_used"
+                    ],
+
+                    nextSituationBoosts: [
+                        {
+                            id:
+                                "mansion_group_ritual_aftermath",
+
+                            weight:
+                                26
+                        }
+                    ]
+
+                },
+
                 consequences: [
 
                     {
-                        id: "mansion_group_ritual_target_good",
+                        id:
+                            "mansion_group_ritual_target_good",
 
                         text:
-                            "Le rituel fonctionne et {target} reçoit une étrange énergie.",
+                            "Le rituel fonctionne et une faible énergie entoure {target}.",
 
                         icon:
                             "✨",
 
                         effects: [
                             {
-                                target: "target",
-                                lives: 3
+                                target:
+                                    "target",
+
+                                lives:
+                                    1
                             }
-                        ]
+                        ],
+
+                        weight:
+                            10
                     },
 
                     {
-                        id: "mansion_group_ritual_target_bad",
+                        id:
+                            "mansion_group_ritual_target_bad",
 
                         text:
                             "Une présence frappe violemment {target} au centre du cercle.",
@@ -184,10 +353,47 @@ export const GROUP_SITUATIONS = [
 
                         effects: [
                             {
-                                target: "target",
-                                lives: -3
+                                target:
+                                    "target",
+
+                                lives:
+                                    -3
                             }
-                        ]
+                        ],
+
+                        weight:
+                            70,
+
+                        narrative: {
+
+                            nextSituationBoosts: [
+                                {
+                                    id:
+                                        "mansion_group_ritual_aftermath",
+
+                                    weight:
+                                        42
+                                }
+                            ]
+
+                        }
+                    },
+
+                    {
+                        id:
+                            "mansion_group_ritual_target_neutral",
+
+                        text:
+                            "Les bougies s'éteignent. Rien ne semble se produire.",
+
+                        icon:
+                            "🌑",
+
+                        effects:
+                            [],
+
+                        weight:
+                            20
                     }
 
                 ]
@@ -195,7 +401,8 @@ export const GROUP_SITUATIONS = [
 
 
             {
-                id: "mansion_group_ritual_destroy",
+                id:
+                    "mansion_group_ritual_destroy",
 
                 title:
                     "🔥 Détruire le cercle",
@@ -203,27 +410,40 @@ export const GROUP_SITUATIONS = [
                 description:
                     "Personne ne participera à ce rituel.",
 
+                narrative: {
+
+                    setFlags: [
+                        "mansion_group_ritual_destroyed"
+                    ],
+
+                    removeFlags: [
+                        "mansion_group_ritual_used"
+                    ]
+
+                },
+
                 consequences: [
 
                     {
-                        id: "mansion_group_ritual_destroy_good",
+                        id:
+                            "mansion_group_ritual_destroy_neutral",
 
                         text:
-                            "Les symboles disparaissent et l'atmosphère du manoir devient légèrement plus calme.",
+                            "Les symboles disparaissent sans provoquer de réaction.",
 
                         icon:
                             "😌",
 
-                        effects: [
-                            {
-                                target: "all",
-                                lives: 1
-                            }
-                        ]
+                        effects:
+                            [],
+
+                        weight:
+                            45
                     },
 
                     {
-                        id: "mansion_group_ritual_destroy_bad",
+                        id:
+                            "mansion_group_ritual_destroy_bad",
 
                         text:
                             "Briser le cercle libère brutalement ce qu'il contenait.",
@@ -233,10 +453,16 @@ export const GROUP_SITUATIONS = [
 
                         effects: [
                             {
-                                target: "all",
-                                lives: -2
+                                target:
+                                    "all",
+
+                                lives:
+                                    -2
                             }
-                        ]
+                        ],
+
+                        weight:
+                            55
                     }
 
                 ]
@@ -251,8 +477,14 @@ export const GROUP_SITUATIONS = [
     // =========================================================
 
     {
-        id: "mansion_group_food",
-        type: "group_vs_one",
+        id:
+            "mansion_group_food",
+
+        type:
+            "group_vs_one",
+
+        baseWeight:
+            1,
 
         title:
             "{group} trouvent une réserve de nourriture",
@@ -269,7 +501,8 @@ export const GROUP_SITUATIONS = [
         choices: [
 
             {
-                id: "mansion_group_food_share",
+                id:
+                    "mansion_group_food_share",
 
                 title:
                     "🍽️ Partager",
@@ -280,24 +513,32 @@ export const GROUP_SITUATIONS = [
                 consequences: [
 
                     {
-                        id: "mansion_group_food_share_good",
+                        id:
+                            "mansion_group_food_share_good",
 
                         text:
-                            "Les provisions sont parfaitement consommables et tout le monde reprend des forces.",
+                            "Une petite partie des provisions est encore parfaitement consommable.",
 
                         icon:
                             "😋",
 
                         effects: [
                             {
-                                target: "all",
-                                lives: 2
+                                target:
+                                    "all",
+
+                                lives:
+                                    1
                             }
-                        ]
+                        ],
+
+                        weight:
+                            12
                     },
 
                     {
-                        id: "mansion_group_food_share_bad",
+                        id:
+                            "mansion_group_food_share_bad",
 
                         text:
                             "Une partie de la nourriture était contaminée.",
@@ -307,10 +548,33 @@ export const GROUP_SITUATIONS = [
 
                         effects: [
                             {
-                                target: "all",
-                                lives: -1
+                                target:
+                                    "all",
+
+                                lives:
+                                    -1
                             }
-                        ]
+                        ],
+
+                        weight:
+                            58
+                    },
+
+                    {
+                        id:
+                            "mansion_group_food_share_neutral",
+
+                        text:
+                            "La nourriture est mangeable mais presque sans valeur nutritive.",
+
+                        icon:
+                            "😐",
+
+                        effects:
+                            [],
+
+                        weight:
+                            30
                     }
 
                 ]
@@ -318,7 +582,8 @@ export const GROUP_SITUATIONS = [
 
 
             {
-                id: "mansion_group_food_keep",
+                id:
+                    "mansion_group_food_keep",
 
                 title:
                     "🔒 Garder pour le groupe",
@@ -329,37 +594,68 @@ export const GROUP_SITUATIONS = [
                 consequences: [
 
                     {
-                        id: "mansion_group_food_keep_good",
+                        id:
+                            "mansion_group_food_keep_good",
 
                         text:
-                            "{group} récupèrent suffisamment d'énergie pour poursuivre l'exploration.",
+                            "{group} trouvent quelques aliments encore corrects.",
 
                         icon:
-                            "💪",
+                            "🥫",
 
                         effects: [
                             {
-                                target: "others",
-                                lives: 2
+                                target:
+                                    "others",
+
+                                lives:
+                                    1
                             }
-                        ]
+                        ],
+
+                        weight:
+                            12
                     },
 
                     {
-                        id: "mansion_group_food_keep_bad",
+                        id:
+                            "mansion_group_food_keep_bad",
 
                         text:
-                            "{target} trouve ailleurs une réserve encore meilleure.",
+                            "{target} trouve ailleurs une meilleure réserve et se sert seul.",
 
                         icon:
                             "😏",
 
                         effects: [
                             {
-                                target: "target",
-                                lives: 2
+                                target:
+                                    "target",
+
+                                lives:
+                                    1
                             }
-                        ]
+                        ],
+
+                        weight:
+                            18
+                    },
+
+                    {
+                        id:
+                            "mansion_group_food_keep_neutral",
+
+                        text:
+                            "Les provisions conservées par {group} sont finalement presque inutilisables.",
+
+                        icon:
+                            "😐",
+
+                        effects:
+                            [],
+
+                        weight:
+                            70
                     }
 
                 ]
@@ -374,8 +670,14 @@ export const GROUP_SITUATIONS = [
     // =========================================================
 
     {
-        id: "mansion_group_ghost_attack",
-        type: "group_vs_one",
+        id:
+            "mansion_group_ghost_attack",
+
+        type:
+            "group_vs_one",
+
+        baseWeight:
+            1,
 
         title:
             "Une apparition se dirige vers {target}",
@@ -392,7 +694,8 @@ export const GROUP_SITUATIONS = [
         choices: [
 
             {
-                id: "mansion_group_ghost_help",
+                id:
+                    "mansion_group_ghost_help",
 
                 title:
                     "🛡️ Aider {target}",
@@ -403,7 +706,8 @@ export const GROUP_SITUATIONS = [
                 consequences: [
 
                     {
-                        id: "mansion_group_ghost_help_good",
+                        id:
+                            "mansion_group_ghost_help_good",
 
                         text:
                             "{group} parviennent à faire disparaître le spectre.",
@@ -411,16 +715,16 @@ export const GROUP_SITUATIONS = [
                         icon:
                             "✨",
 
-                        effects: [
-                            {
-                                target: "all",
-                                lives: 1
-                            }
-                        ]
+                        effects:
+                            [],
+
+                        weight:
+                            30
                     },
 
                     {
-                        id: "mansion_group_ghost_help_bad",
+                        id:
+                            "mansion_group_ghost_help_bad",
 
                         text:
                             "Le spectre se divise en plusieurs silhouettes et attaque tout le monde.",
@@ -430,10 +734,40 @@ export const GROUP_SITUATIONS = [
 
                         effects: [
                             {
-                                target: "all",
-                                lives: -2
+                                target:
+                                    "all",
+
+                                lives:
+                                    -2
                             }
-                        ]
+                        ],
+
+                        weight:
+                            60
+                    },
+
+                    {
+                        id:
+                            "mansion_group_ghost_help_reward",
+
+                        text:
+                            "Le spectre disparaît et laisse derrière lui une étrange chaleur protectrice.",
+
+                        icon:
+                            "✨",
+
+                        effects: [
+                            {
+                                target:
+                                    "all",
+
+                                lives:
+                                    1
+                            }
+                        ],
+
+                        weight:
+                            10
                     }
 
                 ]
@@ -441,7 +775,8 @@ export const GROUP_SITUATIONS = [
 
 
             {
-                id: "mansion_group_ghost_ignore",
+                id:
+                    "mansion_group_ghost_ignore",
 
                 title:
                     "👀 Ne pas intervenir",
@@ -452,24 +787,8 @@ export const GROUP_SITUATIONS = [
                 consequences: [
 
                     {
-                        id: "mansion_group_ghost_ignore_good",
-
-                        text:
-                            "{target} traverse courageusement l'apparition, qui disparaît immédiatement.",
-
-                        icon:
-                            "😎",
-
-                        effects: [
-                            {
-                                target: "target",
-                                lives: 2
-                            }
-                        ]
-                    },
-
-                    {
-                        id: "mansion_group_ghost_ignore_bad",
+                        id:
+                            "mansion_group_ghost_ignore_bad",
 
                         text:
                             "L'apparition frappe violemment {target}.",
@@ -479,10 +798,33 @@ export const GROUP_SITUATIONS = [
 
                         effects: [
                             {
-                                target: "target",
-                                lives: -3
+                                target:
+                                    "target",
+
+                                lives:
+                                    -3
                             }
-                        ]
+                        ],
+
+                        weight:
+                            72
+                    },
+
+                    {
+                        id:
+                            "mansion_group_ghost_ignore_neutral",
+
+                        text:
+                            "{target} traverse l'apparition, qui disparaît soudainement.",
+
+                        icon:
+                            "😮‍💨",
+
+                        effects:
+                            [],
+
+                        weight:
+                            28
                     }
 
                 ]
@@ -497,8 +839,14 @@ export const GROUP_SITUATIONS = [
     // =========================================================
 
     {
-        id: "mansion_group_exit",
-        type: "group_vs_one",
+        id:
+            "mansion_group_exit",
+
+        type:
+            "group_vs_one",
+
+        baseWeight:
+            1,
 
         title:
             "{group} découvrent une possible sortie",
@@ -515,7 +863,8 @@ export const GROUP_SITUATIONS = [
         choices: [
 
             {
-                id: "mansion_group_exit_together",
+                id:
+                    "mansion_group_exit_together",
 
                 title:
                     "🤝 Attendre {target}",
@@ -526,24 +875,32 @@ export const GROUP_SITUATIONS = [
                 consequences: [
 
                     {
-                        id: "mansion_group_exit_together_good",
+                        id:
+                            "mansion_group_exit_together_good",
 
                         text:
-                            "La porte mène vers une cour extérieure sécurisée.",
+                            "La porte mène vers une cour extérieure relativement calme.",
 
                         icon:
                             "🌙",
 
                         effects: [
                             {
-                                target: "all",
-                                lives: 2
+                                target:
+                                    "all",
+
+                                lives:
+                                    1
                             }
-                        ]
+                        ],
+
+                        weight:
+                            12
                     },
 
                     {
-                        id: "mansion_group_exit_together_bad",
+                        id:
+                            "mansion_group_exit_together_bad",
 
                         text:
                             "La porte était un piège. Le couloir se referme derrière tout le monde.",
@@ -553,10 +910,33 @@ export const GROUP_SITUATIONS = [
 
                         effects: [
                             {
-                                target: "all",
-                                lives: -1
+                                target:
+                                    "all",
+
+                                lives:
+                                    -1
                             }
-                        ]
+                        ],
+
+                        weight:
+                            58
+                    },
+
+                    {
+                        id:
+                            "mansion_group_exit_together_neutral",
+
+                        text:
+                            "La porte mène simplement vers une autre aile du manoir.",
+
+                        icon:
+                            "🚪",
+
+                        effects:
+                            [],
+
+                        weight:
+                            30
                     }
 
                 ]
@@ -564,7 +944,8 @@ export const GROUP_SITUATIONS = [
 
 
             {
-                id: "mansion_group_exit_leave",
+                id:
+                    "mansion_group_exit_leave",
 
                 title:
                     "🏃 Partir sans {target}",
@@ -575,24 +956,25 @@ export const GROUP_SITUATIONS = [
                 consequences: [
 
                     {
-                        id: "mansion_group_exit_leave_good",
+                        id:
+                            "mansion_group_exit_leave_good",
 
                         text:
-                            "{group} atteignent une zone relativement sûre.",
+                            "{group} atteignent un couloir relativement calme.",
 
                         icon:
                             "😮‍💨",
 
-                        effects: [
-                            {
-                                target: "others",
-                                lives: 2
-                            }
-                        ]
+                        effects:
+                            [],
+
+                        weight:
+                            45
                     },
 
                     {
-                        id: "mansion_group_exit_leave_bad",
+                        id:
+                            "mansion_group_exit_leave_bad",
 
                         text:
                             "{target} découvre que la véritable sortie était dans la direction opposée.",
@@ -602,10 +984,40 @@ export const GROUP_SITUATIONS = [
 
                         effects: [
                             {
-                                target: "target",
-                                lives: 3
+                                target:
+                                    "target",
+
+                                lives:
+                                    2
                             }
-                        ]
+                        ],
+
+                        weight:
+                            10
+                    },
+
+                    {
+                        id:
+                            "mansion_group_exit_leave_loss",
+
+                        text:
+                            "La porte se referme sur {group} et les enferme dans un petit vestibule.",
+
+                        icon:
+                            "🧱",
+
+                        effects: [
+                            {
+                                target:
+                                    "others",
+
+                                lives:
+                                    -1
+                            }
+                        ],
+
+                        weight:
+                            45
                     }
 
                 ]
@@ -620,8 +1032,14 @@ export const GROUP_SITUATIONS = [
     // =========================================================
 
     {
-        id: "mansion_group_medkit",
-        type: "group_vs_one",
+        id:
+            "mansion_group_medkit",
+
+        type:
+            "group_vs_one",
+
+        baseWeight:
+            1,
 
         title:
             "{group} trouvent une ancienne trousse médicale",
@@ -638,7 +1056,8 @@ export const GROUP_SITUATIONS = [
         choices: [
 
             {
-                id: "mansion_group_medkit_share",
+                id:
+                    "mansion_group_medkit_share",
 
                 title:
                     "🩹 Soigner {target}",
@@ -649,24 +1068,32 @@ export const GROUP_SITUATIONS = [
                 consequences: [
 
                     {
-                        id: "mansion_group_medkit_share_good",
+                        id:
+                            "mansion_group_medkit_share_good",
 
                         text:
-                            "Les médicaments fonctionnent parfaitement.",
+                            "L'un des médicaments fonctionne encore correctement.",
 
                         icon:
                             "❤️‍🩹",
 
                         effects: [
                             {
-                                target: "target",
-                                lives: 3
+                                target:
+                                    "target",
+
+                                lives:
+                                    2
                             }
-                        ]
+                        ],
+
+                        weight:
+                            10
                     },
 
                     {
-                        id: "mansion_group_medkit_share_bad",
+                        id:
+                            "mansion_group_medkit_share_bad",
 
                         text:
                             "Les médicaments sont beaucoup trop anciens et rendent {target} malade.",
@@ -676,10 +1103,33 @@ export const GROUP_SITUATIONS = [
 
                         effects: [
                             {
-                                target: "target",
-                                lives: -2
+                                target:
+                                    "target",
+
+                                lives:
+                                    -2
                             }
-                        ]
+                        ],
+
+                        weight:
+                            60
+                    },
+
+                    {
+                        id:
+                            "mansion_group_medkit_share_neutral",
+
+                        text:
+                            "Les produits n'ont plus réellement d'effet.",
+
+                        icon:
+                            "💊",
+
+                        effects:
+                            [],
+
+                        weight:
+                            30
                     }
 
                 ]
@@ -687,7 +1137,8 @@ export const GROUP_SITUATIONS = [
 
 
             {
-                id: "mansion_group_medkit_keep",
+                id:
+                    "mansion_group_medkit_keep",
 
                 title:
                     "🔒 Garder les médicaments",
@@ -698,24 +1149,32 @@ export const GROUP_SITUATIONS = [
                 consequences: [
 
                     {
-                        id: "mansion_group_medkit_keep_good",
+                        id:
+                            "mansion_group_medkit_keep_good",
 
                         text:
-                            "{group} utilisent les soins pour récupérer.",
+                            "{group} utilisent une petite partie des soins avec succès.",
 
                         icon:
                             "❤️‍🩹",
 
                         effects: [
                             {
-                                target: "others",
-                                lives: 1
+                                target:
+                                    "others",
+
+                                lives:
+                                    1
                             }
-                        ]
+                        ],
+
+                        weight:
+                            12
                     },
 
                     {
-                        id: "mansion_group_medkit_keep_bad",
+                        id:
+                            "mansion_group_medkit_keep_bad",
 
                         text:
                             "{target} vole discrètement la trousse quelques minutes plus tard.",
@@ -725,15 +1184,41 @@ export const GROUP_SITUATIONS = [
 
                         effects: [
                             {
-                                target: "target",
-                                lives: 2
+                                target:
+                                    "target",
+
+                                lives:
+                                    1
                             },
 
                             {
-                                target: "others",
-                                lives: -1
+                                target:
+                                    "others",
+
+                                lives:
+                                    -1
                             }
-                        ]
+                        ],
+
+                        weight:
+                            48
+                    },
+
+                    {
+                        id:
+                            "mansion_group_medkit_keep_neutral",
+
+                        text:
+                            "Personne n'utilise finalement la vieille trousse.",
+
+                        icon:
+                            "🩹",
+
+                        effects:
+                            [],
+
+                        weight:
+                            40
                     }
 
                 ]
@@ -748,8 +1233,14 @@ export const GROUP_SITUATIONS = [
     // =========================================================
 
     {
-        id: "mansion_group_cursed_door",
-        type: "group_vs_one",
+        id:
+            "mansion_group_cursed_door",
+
+        type:
+            "group_vs_one",
+
+        baseWeight:
+            1,
 
         title:
             "{group} trouvent une porte couverte de symboles",
@@ -766,7 +1257,8 @@ export const GROUP_SITUATIONS = [
         choices: [
 
             {
-                id: "mansion_group_door_target",
+                id:
+                    "mansion_group_door_target",
 
                 title:
                     "👉 Laisser {target} ouvrir",
@@ -777,24 +1269,25 @@ export const GROUP_SITUATIONS = [
                 consequences: [
 
                     {
-                        id: "mansion_group_door_target_good",
+                        id:
+                            "mansion_group_door_target_good",
 
                         text:
-                            "{target} ouvre la porte et découvre une pièce sécurisée.",
+                            "{target} ouvre la porte et découvre une pièce calme.",
 
                         icon:
-                            "🎉",
+                            "🚪",
 
-                        effects: [
-                            {
-                                target: "all",
-                                lives: 1
-                            }
-                        ]
+                        effects:
+                            [],
+
+                        weight:
+                            38
                     },
 
                     {
-                        id: "mansion_group_door_target_bad",
+                        id:
+                            "mansion_group_door_target_bad",
 
                         text:
                             "Une décharge surnaturelle traverse {target} lorsqu'il touche la poignée.",
@@ -804,10 +1297,16 @@ export const GROUP_SITUATIONS = [
 
                         effects: [
                             {
-                                target: "target",
-                                lives: -3
+                                target:
+                                    "target",
+
+                                lives:
+                                    -3
                             }
-                        ]
+                        ],
+
+                        weight:
+                            62
                     }
 
                 ]
@@ -815,7 +1314,8 @@ export const GROUP_SITUATIONS = [
 
 
             {
-                id: "mansion_group_door_together",
+                id:
+                    "mansion_group_door_together",
 
                 title:
                     "🤝 Ouvrir ensemble",
@@ -826,24 +1326,32 @@ export const GROUP_SITUATIONS = [
                 consequences: [
 
                     {
-                        id: "mansion_group_door_together_good",
+                        id:
+                            "mansion_group_door_together_good",
 
                         text:
-                            "La porte s'ouvre sans incident et révèle un passage utile.",
+                            "La porte révèle quelques ressources utiles.",
 
                         icon:
                             "🗝️",
 
                         effects: [
                             {
-                                target: "all",
-                                lives: 2
+                                target:
+                                    "all",
+
+                                lives:
+                                    1
                             }
-                        ]
+                        ],
+
+                        weight:
+                            10
                     },
 
                     {
-                        id: "mansion_group_door_together_bad",
+                        id:
+                            "mansion_group_door_together_bad",
 
                         text:
                             "Une onde surnaturelle frappe toutes les personnes présentes.",
@@ -853,10 +1361,33 @@ export const GROUP_SITUATIONS = [
 
                         effects: [
                             {
-                                target: "all",
-                                lives: -2
+                                target:
+                                    "all",
+
+                                lives:
+                                    -2
                             }
-                        ]
+                        ],
+
+                        weight:
+                            65
+                    },
+
+                    {
+                        id:
+                            "mansion_group_door_together_neutral",
+
+                        text:
+                            "La porte s'ouvre lentement sur un simple couloir.",
+
+                        icon:
+                            "🚪",
+
+                        effects:
+                            [],
+
+                        weight:
+                            25
                     }
 
                 ]
@@ -871,8 +1402,14 @@ export const GROUP_SITUATIONS = [
     // =========================================================
 
     {
-        id: "mansion_group_library_fire",
-        type: "group_vs_one",
+        id:
+            "mansion_group_library_fire",
+
+        type:
+            "group_vs_one",
+
+        baseWeight:
+            1,
 
         title:
             "La bibliothèque commence à brûler",
@@ -889,7 +1426,8 @@ export const GROUP_SITUATIONS = [
         choices: [
 
             {
-                id: "mansion_group_fire_save",
+                id:
+                    "mansion_group_fire_save",
 
                 title:
                     "🧯 Retourner chercher {target}",
@@ -900,24 +1438,25 @@ export const GROUP_SITUATIONS = [
                 consequences: [
 
                     {
-                        id: "mansion_group_fire_save_good",
+                        id:
+                            "mansion_group_fire_save_neutral",
 
                         text:
-                            "{group} retrouvent {target} et tout le monde quitte la bibliothèque à temps.",
+                            "{group} retrouvent {target} et tout le monde rejoint la sortie.",
 
                         icon:
                             "🏃",
 
-                        effects: [
-                            {
-                                target: "all",
-                                lives: 1
-                            }
-                        ]
+                        effects:
+                            [],
+
+                        weight:
+                            40
                     },
 
                     {
-                        id: "mansion_group_fire_save_bad",
+                        id:
+                            "mansion_group_fire_save_bad",
 
                         text:
                             "Une poutre enflammée s'effondre pendant le sauvetage.",
@@ -927,10 +1466,40 @@ export const GROUP_SITUATIONS = [
 
                         effects: [
                             {
-                                target: "others",
-                                lives: -2
+                                target:
+                                    "others",
+
+                                lives:
+                                    -2
                             }
-                        ]
+                        ],
+
+                        weight:
+                            50
+                    },
+
+                    {
+                        id:
+                            "mansion_group_fire_save_good",
+
+                        text:
+                            "Tout le monde sort à temps et récupère même une petite caisse utile.",
+
+                        icon:
+                            "📦",
+
+                        effects: [
+                            {
+                                target:
+                                    "all",
+
+                                lives:
+                                    1
+                            }
+                        ],
+
+                        weight:
+                            10
                     }
 
                 ]
@@ -938,7 +1507,8 @@ export const GROUP_SITUATIONS = [
 
 
             {
-                id: "mansion_group_fire_leave",
+                id:
+                    "mansion_group_fire_leave",
 
                 title:
                     "🚪 Fermer la porte",
@@ -949,24 +1519,25 @@ export const GROUP_SITUATIONS = [
                 consequences: [
 
                     {
-                        id: "mansion_group_fire_leave_good",
+                        id:
+                            "mansion_group_fire_leave_neutral",
 
                         text:
-                            "{target} découvre une fenêtre et parvient miraculeusement à s'échapper.",
+                            "{target} découvre une fenêtre et parvient à sortir seul.",
 
                         icon:
                             "🪟",
 
-                        effects: [
-                            {
-                                target: "target",
-                                lives: 1
-                            }
-                        ]
+                        effects:
+                            [],
+
+                        weight:
+                            38
                     },
 
                     {
-                        id: "mansion_group_fire_leave_bad",
+                        id:
+                            "mansion_group_fire_leave_bad",
 
                         text:
                             "{target} reste bloqué au milieu de la fumée.",
@@ -976,10 +1547,375 @@ export const GROUP_SITUATIONS = [
 
                         effects: [
                             {
-                                target: "target",
-                                lives: -3
+                                target:
+                                    "target",
+
+                                lives:
+                                    -3
                             }
-                        ]
+                        ],
+
+                        weight:
+                            62
+                    }
+
+                ]
+            }
+
+        ]
+    },
+
+
+    // =========================================================
+    // 9 - NUIT DANS LA CHAMBRE
+    // SUITE CHAMBRE SÛRE
+    // =========================================================
+
+    {
+        id:
+            "mansion_group_safe_room_night",
+
+        type:
+            "group_vs_one",
+
+        baseWeight:
+            1,
+
+        requirements: {
+
+            all: [
+                "mansion_group_safe_room_used"
+            ]
+
+        },
+
+        title:
+            "Quelque chose frappe à la porte de la chambre",
+
+        category:
+            "Suite",
+
+        icon:
+            "🚪",
+
+        description:
+            "{group} se trouvent encore dans la chambre sécurisée lorsque trois coups résonnent. Une voix imite parfaitement celle de {target}.",
+
+        choices: [
+
+            {
+                id:
+                    "mansion_safe_room_open",
+
+                title:
+                    "🔓 Ouvrir",
+
+                description:
+                    "Vérifier qui se trouve derrière.",
+
+                consequences: [
+
+                    {
+                        id:
+                            "mansion_safe_room_open_bad",
+
+                        text:
+                            "La voix n'appartenait pas du tout à {target}. Une silhouette entre immédiatement.",
+
+                        icon:
+                            "👹",
+
+                        effects: [
+                            {
+                                target:
+                                    "others",
+
+                                lives:
+                                    -2
+                            }
+                        ],
+
+                        weight:
+                            70
+                    },
+
+                    {
+                        id:
+                            "mansion_safe_room_open_neutral",
+
+                        text:
+                            "Le couloir est vide.",
+
+                        icon:
+                            "🌑",
+
+                        effects:
+                            [],
+
+                        weight:
+                            25
+                    },
+
+                    {
+                        id:
+                            "mansion_safe_room_open_good",
+
+                        text:
+                            "Une petite boîte contenant quelques soins a été laissée devant la porte.",
+
+                        icon:
+                            "🩹",
+
+                        effects: [
+                            {
+                                target:
+                                    "others",
+
+                                lives:
+                                    1
+                            }
+                        ],
+
+                        weight:
+                            5
+                    }
+
+                ]
+            },
+
+
+            {
+                id:
+                    "mansion_safe_room_ignore",
+
+                title:
+                    "🤫 Ne pas répondre",
+
+                description:
+                    "Personne n'ouvre cette porte.",
+
+                consequences: [
+
+                    {
+                        id:
+                            "mansion_safe_room_ignore_neutral",
+
+                        text:
+                            "Les coups cessent après quelques minutes.",
+
+                        icon:
+                            "😮‍💨",
+
+                        effects:
+                            [],
+
+                        weight:
+                            72
+                    },
+
+                    {
+                        id:
+                            "mansion_safe_room_ignore_bad",
+
+                        text:
+                            "La porte commence à se déformer sous des coups de plus en plus violents.",
+
+                        icon:
+                            "💥",
+
+                        effects: [
+                            {
+                                target:
+                                    "others",
+
+                                lives:
+                                    -1
+                            }
+                        ],
+
+                        weight:
+                            28
+                    }
+
+                ]
+            }
+
+        ]
+    },
+
+
+    // =========================================================
+    // 10 - APRÈS LE RITUEL
+    // =========================================================
+
+    {
+        id:
+            "mansion_group_ritual_aftermath",
+
+        type:
+            "group_vs_one",
+
+        baseWeight:
+            1,
+
+        requirements: {
+
+            all: [
+                "mansion_group_ritual_used"
+            ],
+
+            not: [
+                "mansion_group_ritual_destroyed"
+            ]
+
+        },
+
+        title:
+            "Le cercle rituel s'allume de nouveau",
+
+        category:
+            "Suite",
+
+        icon:
+            "🕯️",
+
+        description:
+            "Alors que personne ne touche au cercle, les bougies se rallument toutes seules et une silhouette apparaît au centre.",
+
+        choices: [
+
+            {
+                id:
+                    "mansion_ritual_aftermath_run",
+
+                title:
+                    "🏃 Quitter la pièce",
+
+                description:
+                    "Ne surtout pas recommencer le rituel.",
+
+                consequences: [
+
+                    {
+                        id:
+                            "mansion_ritual_aftermath_run_neutral",
+
+                        text:
+                            "{group} quittent la pièce avant que la silhouette ne réagisse.",
+
+                        icon:
+                            "🚪",
+
+                        effects:
+                            [],
+
+                        weight:
+                            60
+                    },
+
+                    {
+                        id:
+                            "mansion_ritual_aftermath_run_bad",
+
+                        text:
+                            "La silhouette traverse la pièce et atteint {target} avant la sortie.",
+
+                        icon:
+                            "👻",
+
+                        effects: [
+                            {
+                                target:
+                                    "target",
+
+                                lives:
+                                    -2
+                            }
+                        ],
+
+                        weight:
+                            40
+                    }
+
+                ]
+            },
+
+
+            {
+                id:
+                    "mansion_ritual_aftermath_finish",
+
+                title:
+                    "🕯️ Terminer le rituel",
+
+                description:
+                    "Essayer de comprendre ce qu'il réclame.",
+
+                consequences: [
+
+                    {
+                        id:
+                            "mansion_ritual_aftermath_finish_good",
+
+                        text:
+                            "La silhouette disparaît et les bougies s'éteignent définitivement.",
+
+                        icon:
+                            "✨",
+
+                        effects: [
+                            {
+                                target:
+                                    "all",
+
+                                lives:
+                                    1
+                            }
+                        ],
+
+                        weight:
+                            10
+                    },
+
+                    {
+                        id:
+                            "mansion_ritual_aftermath_finish_bad",
+
+                        text:
+                            "Le rituel se retourne contre toutes les personnes présentes.",
+
+                        icon:
+                            "💀",
+
+                        effects: [
+                            {
+                                target:
+                                    "all",
+
+                                lives:
+                                    -2
+                            }
+                        ],
+
+                        weight:
+                            70
+                    },
+
+                    {
+                        id:
+                            "mansion_ritual_aftermath_finish_neutral",
+
+                        text:
+                            "Rien ne se passe pendant plusieurs secondes, puis toutes les bougies s'éteignent.",
+
+                        icon:
+                            "🌑",
+
+                        effects:
+                            [],
+
+                        weight:
+                            20
                     }
 
                 ]
