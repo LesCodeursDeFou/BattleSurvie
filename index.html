@@ -1199,6 +1199,24 @@
 
     </main>
 
+    <script>
+        window.addEventListener("error", function(event) {
+            alert(
+                "ERREUR JS\n\n" +
+                "Message : " + event.message + "\n\n" +
+                "Fichier : " + event.filename + "\n" +
+                "Ligne : " + event.lineno + "\n" +
+                "Colonne : " + event.colno
+            );
+        });
+
+        window.addEventListener("unhandledrejection", function(event) {
+            alert(
+                "ERREUR PROMISE\n\n" +
+                String(event.reason)
+            );
+        });
+    </script>
 
     <!--
         IMPORTANT :
