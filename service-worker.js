@@ -1,5 +1,5 @@
 const CACHE_NAME =
-    "battlesurvie-v7";
+    "battlesurvie-v8";
 
 
 const FILES_TO_CACHE = [
@@ -23,7 +23,22 @@ const FILES_TO_CACHE = [
     "./js/ui/sounds.js",
 
     "./js/data/themes.js",
+    "./js/data/gameModes.js",
     "./js/data/themeData.js",
+
+    "./js/data/desertIsland/situations.js",
+    "./js/data/desertIsland/interactionSituations.js",
+    "./js/data/desertIsland/groupSituations.js",
+    "./js/data/desertIsland/judgeSituations.js",
+    "./js/data/desertIsland/secretSituations.js",
+    "./js/data/desertIsland/prologue.js",
+
+    "./js/data/hauntedMansion/situations.js",
+    "./js/data/hauntedMansion/interactionSituations.js",
+    "./js/data/hauntedMansion/groupSituations.js",
+    "./js/data/hauntedMansion/judgeSituations.js",
+    "./js/data/hauntedMansion/secretSituations.js",
+    "./js/data/hauntedMansion/prologue.js",
 
     "./manifest.json"
 
