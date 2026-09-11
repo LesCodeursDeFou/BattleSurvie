@@ -1,5 +1,5 @@
 const CACHE_NAME =
-    "battlesurvie-v9";
+    "battlesurvie-v10";
 
 
 const FILES_TO_CACHE = [
