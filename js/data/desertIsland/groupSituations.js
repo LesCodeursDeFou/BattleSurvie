@@ -5,9 +5,14 @@ export const GROUP_SITUATIONS = [
     // =========================================================
 
     {
-        id: "group_supplies_exclusion",
-        type: "group_vs_one",
-        baseWeight: 1,
+        id:
+            "group_supplies_exclusion",
+
+        type:
+            "group_vs_one",
+
+        baseWeight:
+            1,
 
         title:
             "{group} trouvent une caisse de provisions",
@@ -19,7 +24,7 @@ export const GROUP_SITUATIONS = [
             "🥫",
 
         description:
-            "{group} découvrent une caisse remplie de nourriture, mais pensent que {target} ne mérite pas d'en avoir.",
+            "{group} découvrent une caisse remplie de nourriture. {target} arrive juste au moment où commence le partage.",
 
         choices: [
 
@@ -28,10 +33,10 @@ export const GROUP_SITUATIONS = [
                     "group_supplies_share",
 
                 title:
-                    "🤝 Partager quand même",
+                    "🤝 Partager avec {target}",
 
                 description:
-                    "Donner une part à {target}.",
+                    "Même sur cette île, il reste quelques règles de civilisation.",
 
                 consequences: [
 
@@ -40,7 +45,7 @@ export const GROUP_SITUATIONS = [
                             "group_supplies_share_good",
 
                         text:
-                            "{target} apprécie le geste et révèle une réserve d'eau qu'il cachait.",
+                            "{target} apprécie le geste et révèle une petite réserve d'eau qu'il avait repérée plus tôt.",
 
                         icon:
                             "💧",
@@ -52,11 +57,19 @@ export const GROUP_SITUATIONS = [
 
                                 lives:
                                     1
+                            },
+
+                            {
+                                target:
+                                    "all",
+
+                                removeStatus:
+                                    "hungry"
                             }
                         ],
 
                         weight:
-                            18
+                            20
                     },
 
                     {
@@ -64,23 +77,28 @@ export const GROUP_SITUATIONS = [
                             "group_supplies_share_bad",
 
                         text:
-                            "{target} prend sa part sans remercier personne. Le groupe regrette son choix.",
+                            "Une partie des conserves était avariée. Le repas collectif tourne rapidement au désastre.",
 
                         icon:
-                            "😒",
+                            "🤢",
 
                         effects: [
                             {
                                 target:
-                                    "others",
+                                    "all",
 
-                                lives:
-                                    -1
+                                status: {
+                                    id:
+                                        "hungry",
+
+                                    duration:
+                                        2
+                                }
                             }
                         ],
 
                         weight:
-                            52
+                            35
                     },
 
                     {
@@ -88,7 +106,7 @@ export const GROUP_SITUATIONS = [
                             "group_supplies_share_neutral",
 
                         text:
-                            "Tout le monde reçoit une petite part, mais les provisions sont trop faibles pour changer réellement la situation.",
+                            "Les provisions sont mangeables, mais trop faibles pour réellement changer la situation.",
 
                         icon:
                             "🥫",
@@ -97,7 +115,7 @@ export const GROUP_SITUATIONS = [
                             [],
 
                         weight:
-                            30
+                            45
                     }
 
                 ]
@@ -109,10 +127,10 @@ export const GROUP_SITUATIONS = [
                     "group_supplies_keep",
 
                 title:
-                    "😈 Tout garder",
+                    "😈 Exclure {target}",
 
                 description:
-                    "Ne rien donner à {target}.",
+                    "Garder la caisse uniquement pour {group}.",
 
                 consequences: [
 
@@ -121,10 +139,10 @@ export const GROUP_SITUATIONS = [
                             "group_supplies_keep_good",
 
                         text:
-                            "{group} se partagent les provisions pendant que {target} repart le ventre vide.",
+                            "{group} mangent suffisamment pour reprendre un peu de force tandis que {target} repart chercher de la nourriture ailleurs.",
 
                         icon:
-                            "🥫",
+                            "😋",
 
                         effects: [
                             {
@@ -137,10 +155,23 @@ export const GROUP_SITUATIONS = [
 
                             {
                                 target:
+                                    "others",
+
+                                removeStatus:
+                                    "hungry"
+                            },
+
+                            {
+                                target:
                                     "target",
 
-                                lives:
-                                    -1
+                                status: {
+                                    id:
+                                        "hungry",
+
+                                    duration:
+                                        2
+                                }
                             }
                         ],
 
@@ -153,7 +184,7 @@ export const GROUP_SITUATIONS = [
                             "group_supplies_keep_bad",
 
                         text:
-                            "{target} revient pendant la nuit et détruit une partie des provisions.",
+                            "{target} revient pendant la nuit et détruit une partie du stock avant de disparaître.",
 
                         icon:
                             "🔥",
@@ -163,13 +194,18 @@ export const GROUP_SITUATIONS = [
                                 target:
                                     "others",
 
-                                lives:
-                                    -1
+                                status: {
+                                    id:
+                                        "hungry",
+
+                                    duration:
+                                        2
+                                }
                             }
                         ],
 
                         weight:
-                            60
+                            50
                     },
 
                     {
@@ -177,7 +213,7 @@ export const GROUP_SITUATIONS = [
                             "group_supplies_keep_neutral",
 
                         text:
-                            "{target} repart sans discuter. Le groupe garde la caisse, mais son contenu est finalement assez médiocre.",
+                            "{target} repart sans discuter. Le contenu de la caisse se révèle finalement assez médiocre.",
 
                         icon:
                             "😐",
@@ -186,7 +222,7 @@ export const GROUP_SITUATIONS = [
                             [],
 
                         weight:
-                            20
+                            30
                     }
 
                 ]
@@ -221,7 +257,7 @@ export const GROUP_SITUATIONS = [
             "🛖",
 
         description:
-            "{group} ont construit un excellent abri. {target} demande à venir dormir avec eux.",
+            "{group} ont construit un abri étonnamment solide. {target} demande à venir dormir avec eux.",
 
         choices: [
 
@@ -230,10 +266,10 @@ export const GROUP_SITUATIONS = [
                     "group_shelter_accept",
 
                 title:
-                    "🤝 Accepter",
+                    "🤝 Accepter {target}",
 
                 description:
-                    "Faire une place à {target}.",
+                    "Faire une place supplémentaire.",
 
                 narrative: {
 
@@ -251,7 +287,7 @@ export const GROUP_SITUATIONS = [
                                 "group_storm_after_shelter",
 
                             weight:
-                                30
+                                32
                         }
                     ]
 
@@ -264,7 +300,7 @@ export const GROUP_SITUATIONS = [
                             "group_shelter_accept_good",
 
                         text:
-                            "{target} améliore la toiture et tout le monde passe une excellente nuit.",
+                            "{target} connaît quelques techniques utiles et renforce la toiture. Tout le monde récupère correctement.",
 
                         icon:
                             "😴",
@@ -274,13 +310,18 @@ export const GROUP_SITUATIONS = [
                                 target:
                                     "all",
 
-                                lives:
-                                    1
+                                gauge: {
+                                    id:
+                                        "fatigue",
+
+                                    amount:
+                                        -1
+                                }
                             }
                         ],
 
                         weight:
-                            18,
+                            25,
 
                         narrative: {
 
@@ -290,7 +331,7 @@ export const GROUP_SITUATIONS = [
                                         "group_storm_after_shelter",
 
                                     weight:
-                                        40
+                                        45
                                 }
                             ]
 
@@ -302,23 +343,28 @@ export const GROUP_SITUATIONS = [
                             "group_shelter_accept_bad",
 
                         text:
-                            "{target} prend toute la place et empêche le groupe de dormir correctement.",
+                            "L'abri devient beaucoup trop serré. Personne ne dort correctement et le réveil est difficile.",
 
                         icon:
-                            "😤",
+                            "🥱",
 
                         effects: [
                             {
                                 target:
-                                    "others",
+                                    "all",
 
-                                lives:
-                                    -1
+                                gauge: {
+                                    id:
+                                        "fatigue",
+
+                                    amount:
+                                        1
+                                }
                             }
                         ],
 
                         weight:
-                            52,
+                            40,
 
                         narrative: {
 
@@ -328,7 +374,7 @@ export const GROUP_SITUATIONS = [
                                         "group_storm_after_shelter",
 
                                     weight:
-                                        7
+                                        12
                                 }
                             ]
 
@@ -340,7 +386,7 @@ export const GROUP_SITUATIONS = [
                             "group_shelter_accept_neutral",
 
                         text:
-                            "Tout le monde trouve finalement une place, même si personne ne dort vraiment bien.",
+                            "Tout le monde trouve une place. Ce n'est pas confortable, mais cela fera l'affaire.",
 
                         icon:
                             "😐",
@@ -349,7 +395,7 @@ export const GROUP_SITUATIONS = [
                             [],
 
                         weight:
-                            30,
+                            35,
 
                         narrative: {
 
@@ -359,7 +405,7 @@ export const GROUP_SITUATIONS = [
                                         "group_storm_after_shelter",
 
                                     weight:
-                                        20
+                                        25
                                 }
                             ]
 
@@ -396,7 +442,7 @@ export const GROUP_SITUATIONS = [
                                 "group_storm_after_shelter",
 
                             weight:
-                                18
+                                22
                         }
                     ]
 
@@ -409,37 +455,28 @@ export const GROUP_SITUATIONS = [
                             "group_shelter_refuse_good",
 
                         text:
-                            "La nuit est calme. {group} dorment parfaitement.",
+                            "La nuit reste parfaitement calme. {group} profitent de tout l'espace disponible.",
 
                         icon:
-                            "🌙",
+                            "😴",
 
                         effects: [
                             {
                                 target:
                                     "others",
 
-                                lives:
-                                    1
+                                gauge: {
+                                    id:
+                                        "fatigue",
+
+                                    amount:
+                                        -1
+                                }
                             }
                         ],
 
                         weight:
-                            16,
-
-                        narrative: {
-
-                            nextSituationBoosts: [
-                                {
-                                    id:
-                                        "group_storm_after_shelter",
-
-                                    weight:
-                                        10
-                                }
-                            ]
-
-                        }
+                            22
                     },
 
                     {
@@ -447,10 +484,10 @@ export const GROUP_SITUATIONS = [
                             "group_shelter_refuse_bad",
 
                         text:
-                            "Une tempête arrive. {target} souffre toute la nuit dehors.",
+                            "Une pluie violente s'abat pendant la nuit. {target} passe des heures dehors sans pouvoir dormir.",
 
                         icon:
-                            "⛈️",
+                            "🌧️",
 
                         effects: [
                             {
@@ -458,12 +495,25 @@ export const GROUP_SITUATIONS = [
                                     "target",
 
                                 lives:
-                                    -2
+                                    -1
+                            },
+
+                            {
+                                target:
+                                    "target",
+
+                                gauge: {
+                                    id:
+                                        "fatigue",
+
+                                    amount:
+                                        2
+                                }
                             }
                         ],
 
                         weight:
-                            54,
+                            48,
 
                         narrative: {
 
@@ -473,7 +523,7 @@ export const GROUP_SITUATIONS = [
                                         "group_storm_after_shelter",
 
                                     weight:
-                                        38
+                                        42
                                 }
                             ]
 
@@ -485,10 +535,10 @@ export const GROUP_SITUATIONS = [
                             "group_shelter_refuse_neutral",
 
                         text:
-                            "{target} trouve un coin relativement sec un peu plus loin. Personne n'y gagne vraiment.",
+                            "{target} trouve un coin relativement sec sous plusieurs palmiers. Personne ne gagne réellement à cette décision.",
 
                         icon:
-                            "😐",
+                            "🌴",
 
                         effects:
                             [],
@@ -528,7 +578,7 @@ export const GROUP_SITUATIONS = [
             "🔥",
 
         description:
-            "{target} arrive frigorifié et demande à rejoindre le feu de {group}.",
+            "{target} arrive frigorifié et demande à rejoindre le feu entretenu par {group}.",
 
         choices: [
 
@@ -549,7 +599,7 @@ export const GROUP_SITUATIONS = [
                             "group_fire_accept_good",
 
                         text:
-                            "{target} apporte du bois sec et maintient le feu toute la nuit.",
+                            "{target} rapporte plusieurs branches parfaitement sèches. Le feu tient toute la nuit.",
 
                         icon:
                             "🪵",
@@ -559,13 +609,18 @@ export const GROUP_SITUATIONS = [
                                 target:
                                     "all",
 
-                                lives:
-                                    1
+                                gauge: {
+                                    id:
+                                        "fatigue",
+
+                                    amount:
+                                        -1
+                                }
                             }
                         ],
 
                         weight:
-                            20
+                            25
                     },
 
                     {
@@ -573,7 +628,7 @@ export const GROUP_SITUATIONS = [
                             "group_fire_accept_bad",
 
                         text:
-                            "{target} renverse accidentellement de l'eau sur le feu.",
+                            "{target} renverse accidentellement une gourde sur les braises. Tout le monde passe une partie de la nuit à reconstruire le feu.",
 
                         icon:
                             "💦",
@@ -583,13 +638,18 @@ export const GROUP_SITUATIONS = [
                                 target:
                                     "all",
 
-                                lives:
-                                    -1
+                                gauge: {
+                                    id:
+                                        "fatigue",
+
+                                    amount:
+                                        1
+                                }
                             }
                         ],
 
                         weight:
-                            50
+                            45
                     },
 
                     {
@@ -597,7 +657,7 @@ export const GROUP_SITUATIONS = [
                             "group_fire_accept_neutral",
 
                         text:
-                            "{target} se réchauffe quelques minutes puis repart. Le feu tient sans problème.",
+                            "{target} se réchauffe quelques minutes puis s'installe tranquillement près du groupe.",
 
                         icon:
                             "🔥",
@@ -621,7 +681,7 @@ export const GROUP_SITUATIONS = [
                     "❄️ Refuser",
 
                 description:
-                    "Garder le feu pour le groupe.",
+                    "Garder le feu pour {group}.",
 
                 consequences: [
 
@@ -630,7 +690,7 @@ export const GROUP_SITUATIONS = [
                             "group_fire_refuse_good",
 
                         text:
-                            "{group} gardent toute la chaleur et passent une bonne nuit.",
+                            "{group} gardent toute la chaleur et profitent d'une nuit étonnamment reposante.",
 
                         icon:
                             "😌",
@@ -640,13 +700,18 @@ export const GROUP_SITUATIONS = [
                                 target:
                                     "others",
 
-                                lives:
-                                    1
+                                gauge: {
+                                    id:
+                                        "fatigue",
+
+                                    amount:
+                                        -1
+                                }
                             }
                         ],
 
                         weight:
-                            17
+                            20
                     },
 
                     {
@@ -654,7 +719,7 @@ export const GROUP_SITUATIONS = [
                             "group_fire_refuse_bad",
 
                         text:
-                            "{target} vole du bois pendant la nuit et affaiblit fortement le feu.",
+                            "{target} revient discrètement dans la nuit et récupère une grande partie du bois sec.",
 
                         icon:
                             "🥷",
@@ -664,27 +729,52 @@ export const GROUP_SITUATIONS = [
                                 target:
                                     "others",
 
-                                lives:
-                                    -1
+                                gauge: {
+                                    id:
+                                        "fatigue",
+
+                                    amount:
+                                        1
+                                }
                             }
                         ],
 
                         weight:
-                            53
+                            50
                     },
 
                     {
                         id:
-                            "group_fire_refuse_neutral",
+                            "group_fire_refuse_target",
 
                         text:
-                            "{target} repart sans insister. Le reste de la nuit se déroule normalement.",
+                            "{target} repart dans le froid et passe une nuit particulièrement difficile.",
 
                         icon:
-                            "🌙",
+                            "🥶",
 
-                        effects:
-                            [],
+                        effects: [
+                            {
+                                target:
+                                    "target",
+
+                                lives:
+                                    -1
+                            },
+
+                            {
+                                target:
+                                    "target",
+
+                                gauge: {
+                                    id:
+                                        "fatigue",
+
+                                    amount:
+                                        1
+                                }
+                            }
+                        ],
 
                         weight:
                             30
@@ -722,7 +812,7 @@ export const GROUP_SITUATIONS = [
             "💧",
 
         description:
-            "{group} découvrent une source d'eau potable. {target} arrive avec sa gourde vide.",
+            "{group} découvrent une source d'eau apparemment potable. {target} arrive avec sa gourde complètement vide.",
 
         choices: [
 
@@ -748,7 +838,7 @@ export const GROUP_SITUATIONS = [
                                 "group_crocodile_at_source",
 
                             weight:
-                                28
+                                30
                         }
                     ]
 
@@ -761,7 +851,7 @@ export const GROUP_SITUATIONS = [
                             "group_water_share_good",
 
                         text:
-                            "{target} aide ensuite à remplir toutes les gourdes.",
+                            "{target} aide ensuite à remplir toutes les gourdes et à sécuriser l'accès à la source.",
 
                         icon:
                             "🤝",
@@ -777,7 +867,7 @@ export const GROUP_SITUATIONS = [
                         ],
 
                         weight:
-                            18,
+                            20,
 
                         narrative: {
 
@@ -787,7 +877,7 @@ export const GROUP_SITUATIONS = [
                                         "group_crocodile_at_source",
 
                                     weight:
-                                        38
+                                        42
                                 }
                             ]
 
@@ -799,23 +889,23 @@ export const GROUP_SITUATIONS = [
                             "group_water_share_bad",
 
                         text:
-                            "{target} boit beaucoup trop et vide presque toute la réserve.",
+                            "L'eau n'était pas aussi pure qu'elle le paraissait. Plusieurs survivants commencent à se sentir mal.",
 
                         icon:
-                            "😬",
+                            "🤢",
 
                         effects: [
                             {
                                 target:
-                                    "others",
+                                    "all",
 
-                                lives:
-                                    -1
+                                status:
+                                    "poisoned"
                             }
                         ],
 
                         weight:
-                            52,
+                            30,
 
                         narrative: {
 
@@ -825,7 +915,7 @@ export const GROUP_SITUATIONS = [
                                         "group_crocodile_at_source",
 
                                     weight:
-                                        6
+                                        8
                                 }
                             ]
 
@@ -837,7 +927,7 @@ export const GROUP_SITUATIONS = [
                             "group_water_share_neutral",
 
                         text:
-                            "{target} boit quelques gorgées puis laisse le groupe tranquille.",
+                            "Tout le monde boit quelques gorgées. Aucun effet particulier, mais personne n'est plus assoiffé.",
 
                         icon:
                             "💧",
@@ -846,7 +936,7 @@ export const GROUP_SITUATIONS = [
                             [],
 
                         weight:
-                            30
+                            50
                     }
 
                 ]
@@ -861,7 +951,7 @@ export const GROUP_SITUATIONS = [
                     "🚫 Interdire l'accès",
 
                 description:
-                    "Garder la source pour le groupe.",
+                    "Garder la source pour {group}.",
 
                 narrative: {
 
@@ -875,7 +965,7 @@ export const GROUP_SITUATIONS = [
                                 "group_crocodile_at_source",
 
                             weight:
-                                20
+                                22
                         }
                     ]
 
@@ -888,7 +978,7 @@ export const GROUP_SITUATIONS = [
                             "group_water_block_good",
 
                         text:
-                            "{group} conservent suffisamment d'eau pour plusieurs jours.",
+                            "{group} conservent suffisamment d'eau pour récupérer tranquillement.",
 
                         icon:
                             "💧",
@@ -904,7 +994,7 @@ export const GROUP_SITUATIONS = [
                         ],
 
                         weight:
-                            16
+                            18
                     },
 
                     {
@@ -912,7 +1002,7 @@ export const GROUP_SITUATIONS = [
                             "group_water_block_bad",
 
                         text:
-                            "{target} trouve une autre source avant tout le monde.",
+                            "{target} trouve une autre source quelques centaines de mètres plus loin et récupère seul.",
 
                         icon:
                             "😏",
@@ -923,12 +1013,12 @@ export const GROUP_SITUATIONS = [
                                     "target",
 
                                 lives:
-                                    2
+                                    1
                             }
                         ],
 
                         weight:
-                            22
+                            25
                     },
 
                     {
@@ -936,7 +1026,7 @@ export const GROUP_SITUATIONS = [
                             "group_water_block_neutral",
 
                         text:
-                            "{target} repart chercher de l'eau ailleurs. La situation reste tendue mais sans conséquence immédiate.",
+                            "{target} repart chercher de l'eau ailleurs. La tension monte, mais rien ne se produit immédiatement.",
 
                         icon:
                             "😐",
@@ -945,7 +1035,7 @@ export const GROUP_SITUATIONS = [
                             [],
 
                         weight:
-                            62
+                            57
                     }
 
                 ]
@@ -991,7 +1081,7 @@ export const GROUP_SITUATIONS = [
                     "🍎 Partager",
 
                 description:
-                    "Donner quelques fruits à {target}.",
+                    "Donner également des fruits à {target}.",
 
                 consequences: [
 
@@ -1000,7 +1090,7 @@ export const GROUP_SITUATIONS = [
                             "group_fruits_share_good",
 
                         text:
-                            "Les fruits sont délicieux et tout le monde reprend des forces.",
+                            "Les fruits sont délicieux et suffisamment nourrissants pour tout le monde.",
 
                         icon:
                             "😋",
@@ -1012,11 +1102,19 @@ export const GROUP_SITUATIONS = [
 
                                 lives:
                                     1
+                            },
+
+                            {
+                                target:
+                                    "all",
+
+                                removeStatus:
+                                    "hungry"
                             }
                         ],
 
                         weight:
-                            18
+                            22
                     },
 
                     {
@@ -1024,7 +1122,7 @@ export const GROUP_SITUATIONS = [
                             "group_fruits_share_bad",
 
                         text:
-                            "Une partie des fruits était pourrie. Tout le monde tombe malade.",
+                            "Plusieurs fruits étaient toxiques. Quelques minutes plus tard, personne ne se sent très bien.",
 
                         icon:
                             "🤢",
@@ -1034,13 +1132,13 @@ export const GROUP_SITUATIONS = [
                                 target:
                                     "all",
 
-                                lives:
-                                    -1
+                                status:
+                                    "poisoned"
                             }
                         ],
 
                         weight:
-                            52
+                            38
                     },
 
                     {
@@ -1048,7 +1146,7 @@ export const GROUP_SITUATIONS = [
                             "group_fruits_share_neutral",
 
                         text:
-                            "Les fruits sont comestibles mais peu nourrissants. Tout le monde mange sans réel bénéfice.",
+                            "Les fruits sont comestibles mais pratiquement sans valeur nutritive.",
 
                         icon:
                             "🍏",
@@ -1057,7 +1155,7 @@ export const GROUP_SITUATIONS = [
                             [],
 
                         weight:
-                            30
+                            40
                     }
 
                 ]
@@ -1081,7 +1179,7 @@ export const GROUP_SITUATIONS = [
                             "group_fruits_keep_good",
 
                         text:
-                            "{group} mangent tous les fruits tranquillement.",
+                            "{group} profitent de toute la récolte tandis que {target} repart le ventre vide.",
 
                         icon:
                             "😋",
@@ -1091,13 +1189,26 @@ export const GROUP_SITUATIONS = [
                                 target:
                                     "others",
 
-                                lives:
-                                    1
+                                removeStatus:
+                                    "hungry"
+                            },
+
+                            {
+                                target:
+                                    "target",
+
+                                status: {
+                                    id:
+                                        "hungry",
+
+                                    duration:
+                                        2
+                                }
                             }
                         ],
 
                         weight:
-                            17
+                            22
                     },
 
                     {
@@ -1105,7 +1216,7 @@ export const GROUP_SITUATIONS = [
                             "group_fruits_keep_bad",
 
                         text:
-                            "{target} attire une bande de singes vers le stock de fruits.",
+                            "{target} attire volontairement une bande de singes vers le stock. La récolte devient le centre d'une bataille chaotique.",
 
                         icon:
                             "🐒",
@@ -1116,12 +1227,16 @@ export const GROUP_SITUATIONS = [
                                     "others",
 
                                 lives:
-                                    -2
+                                    -1,
+
+                                tags: [
+                                    "physical"
+                                ]
                             }
                         ],
 
                         weight:
-                            58
+                            53
                     },
 
                     {
@@ -1129,7 +1244,7 @@ export const GROUP_SITUATIONS = [
                             "group_fruits_keep_neutral",
 
                         text:
-                            "{target} repart vexé. Le groupe garde les fruits mais l'ambiance devient franchement mauvaise.",
+                            "{target} repart vexé. {group} conservent les fruits, mais beaucoup sont déjà trop mûrs.",
 
                         icon:
                             "😒",
@@ -1172,7 +1287,7 @@ export const GROUP_SITUATIONS = [
             "🛶",
 
         description:
-            "{group} ont construit un radeau, mais il n'y a presque plus de place pour {target}.",
+            "{group} viennent d'achever un radeau. Le problème : il reste à peine suffisamment de place pour {target}.",
 
         choices: [
 
@@ -1193,7 +1308,7 @@ export const GROUP_SITUATIONS = [
                             "group_raft_take_good",
 
                         text:
-                            "Le radeau supporte parfaitement tout le monde.",
+                            "Le radeau supporte tout le monde et atteint une autre partie de la côte sans difficulté.",
 
                         icon:
                             "🌊",
@@ -1203,13 +1318,18 @@ export const GROUP_SITUATIONS = [
                                 target:
                                     "all",
 
-                                lives:
-                                    1
+                                status: {
+                                    id:
+                                        "courage",
+
+                                    duration:
+                                        1
+                                }
                             }
                         ],
 
                         weight:
-                            16
+                            18
                     },
 
                     {
@@ -1217,7 +1337,7 @@ export const GROUP_SITUATIONS = [
                             "group_raft_take_bad",
 
                         text:
-                            "Le poids est trop important et le radeau se retourne.",
+                            "Le poids est trop important. Le radeau se retourne et tout le monde doit rejoindre la rive à la nage.",
 
                         icon:
                             "💦",
@@ -1228,12 +1348,29 @@ export const GROUP_SITUATIONS = [
                                     "all",
 
                                 lives:
-                                    -2
+                                    -1,
+
+                                tags: [
+                                    "physical"
+                                ]
+                            },
+
+                            {
+                                target:
+                                    "all",
+
+                                gauge: {
+                                    id:
+                                        "fatigue",
+
+                                    amount:
+                                        1
+                                }
                             }
                         ],
 
                         weight:
-                            59
+                            57
                     },
 
                     {
@@ -1241,13 +1378,25 @@ export const GROUP_SITUATIONS = [
                             "group_raft_take_neutral",
 
                         text:
-                            "Le radeau avance très lentement mais finit par atteindre la rive sans incident.",
+                            "Le radeau avance très lentement, mais finit par atteindre la rive opposée.",
 
                         icon:
                             "🛶",
 
-                        effects:
-                            [],
+                        effects: [
+                            {
+                                target:
+                                    "all",
+
+                                gauge: {
+                                    id:
+                                        "fatigue",
+
+                                    amount:
+                                        1
+                                }
+                            }
+                        ],
 
                         weight:
                             25
@@ -1262,10 +1411,10 @@ export const GROUP_SITUATIONS = [
                     "group_raft_leave",
 
                 title:
-                    "👋 Laisser {target}",
+                    "👋 Partir sans {target}",
 
                 description:
-                    "Partir sans lui.",
+                    "Garantir la stabilité du radeau.",
 
                 consequences: [
 
@@ -1274,23 +1423,16 @@ export const GROUP_SITUATIONS = [
                             "group_raft_leave_good",
 
                         text:
-                            "{group} naviguent sans difficulté.",
+                            "{group} naviguent rapidement et atteignent leur destination sans incident.",
 
                         icon:
                             "😎",
 
-                        effects: [
-                            {
-                                target:
-                                    "others",
-
-                                lives:
-                                    1
-                            }
-                        ],
+                        effects:
+                            [],
 
                         weight:
-                            18
+                            30
                     },
 
                     {
@@ -1298,7 +1440,7 @@ export const GROUP_SITUATIONS = [
                             "group_raft_leave_bad",
 
                         text:
-                            "{target} trouve une barque beaucoup plus solide quelques minutes plus tard.",
+                            "{target} découvre quelques minutes plus tard une vieille barque échouée et rejoint la destination avant eux.",
 
                         icon:
                             "🚤",
@@ -1308,30 +1450,47 @@ export const GROUP_SITUATIONS = [
                                 target:
                                     "target",
 
-                                lives:
-                                    2
+                                status: {
+                                    id:
+                                        "resourceful",
+
+                                    duration:
+                                        2
+                                }
                             }
                         ],
 
                         weight:
-                            22
+                            25
                     },
 
                     {
                         id:
-                            "group_raft_leave_neutral",
+                            "group_raft_leave_storm",
 
                         text:
-                            "{target} reste sur la plage pendant que le groupe s'éloigne. Personne ne sait encore qui a fait le meilleur choix.",
+                            "En mer, {group} rencontrent un courant violent. Une paire de bras supplémentaire aurait peut-être été utile.",
 
                         icon:
-                            "👀",
+                            "🌊",
 
-                        effects:
-                            [],
+                        effects: [
+                            {
+                                target:
+                                    "others",
+
+                                gauge: {
+                                    id:
+                                        "fatigue",
+
+                                    amount:
+                                        1
+                                }
+                            }
+                        ],
 
                         weight:
-                            60
+                            45
                     }
 
                 ]
@@ -1356,7 +1515,7 @@ export const GROUP_SITUATIONS = [
             1,
 
         title:
-            "{group} découvrent une grotte sécurisée",
+            "{group} découvrent une grotte protégée",
 
         category:
             "Conflit de groupe",
@@ -1365,7 +1524,7 @@ export const GROUP_SITUATIONS = [
             "🪨",
 
         description:
-            "{target} veut rejoindre {group} dans une grotte qui semble parfaitement protégée.",
+            "{target} demande à rejoindre {group} dans une grotte qui semble parfaitement protégée du vent et de la pluie.",
 
         choices: [
 
@@ -1386,7 +1545,7 @@ export const GROUP_SITUATIONS = [
                             "group_cave_accept_good",
 
                         text:
-                            "{target} découvre un passage vers une réserve de nourriture.",
+                            "{target} découvre au fond de la grotte un petit passage menant à plusieurs ressources utiles.",
 
                         icon:
                             "🥫",
@@ -1397,12 +1556,12 @@ export const GROUP_SITUATIONS = [
                                     "all",
 
                                 lives:
-                                    2
+                                    1
                             }
                         ],
 
                         weight:
-                            12
+                            18
                     },
 
                     {
@@ -1410,7 +1569,7 @@ export const GROUP_SITUATIONS = [
                             "group_cave_accept_bad",
 
                         text:
-                            "{target} réveille accidentellement une colonie de chauves-souris.",
+                            "{target} dérange accidentellement une colonie de chauves-souris. Tout le monde doit fuir dans l'obscurité.",
 
                         icon:
                             "🦇",
@@ -1420,13 +1579,18 @@ export const GROUP_SITUATIONS = [
                                 target:
                                     "all",
 
-                                lives:
-                                    -1
+                                gauge: {
+                                    id:
+                                        "fatigue",
+
+                                    amount:
+                                        1
+                                }
                             }
                         ],
 
                         weight:
-                            58
+                            47
                     },
 
                     {
@@ -1443,7 +1607,7 @@ export const GROUP_SITUATIONS = [
                             [],
 
                         weight:
-                            30
+                            35
                     }
 
                 ]
@@ -1458,7 +1622,7 @@ export const GROUP_SITUATIONS = [
                     "🚫 Refuser",
 
                 description:
-                    "Fermer l'entrée à {target}.",
+                    "Fermer l'accès à {target}.",
 
                 consequences: [
 
@@ -1467,7 +1631,7 @@ export const GROUP_SITUATIONS = [
                             "group_cave_refuse_good",
 
                         text:
-                            "{group} passent une nuit parfaitement tranquille.",
+                            "{group} passent une nuit parfaitement tranquille et récupèrent correctement.",
 
                         icon:
                             "😴",
@@ -1477,13 +1641,18 @@ export const GROUP_SITUATIONS = [
                                 target:
                                     "others",
 
-                                lives:
-                                    1
+                                gauge: {
+                                    id:
+                                        "fatigue",
+
+                                    amount:
+                                        -1
+                                }
                             }
                         ],
 
                         weight:
-                            18
+                            20
                     },
 
                     {
@@ -1491,23 +1660,28 @@ export const GROUP_SITUATIONS = [
                             "group_cave_refuse_bad",
 
                         text:
-                            "{target} trouve une autre grotte avec davantage de provisions.",
+                            "{target} découvre une seconde grotte contenant d'anciens outils de survie.",
 
                         icon:
-                            "🎉",
+                            "🛠️",
 
                         effects: [
                             {
                                 target:
                                     "target",
 
-                                lives:
-                                    2
+                                status: {
+                                    id:
+                                        "resourceful",
+
+                                    duration:
+                                        2
+                                }
                             }
                         ],
 
                         weight:
-                            22
+                            25
                     },
 
                     {
@@ -1515,7 +1689,7 @@ export const GROUP_SITUATIONS = [
                             "group_cave_refuse_neutral",
 
                         text:
-                            "{target} trouve un autre endroit où dormir. La nuit passe sans incident.",
+                            "{target} trouve un autre endroit pour dormir. La nuit passe sans événement.",
 
                         icon:
                             "🌙",
@@ -1524,7 +1698,7 @@ export const GROUP_SITUATIONS = [
                             [],
 
                         weight:
-                            60
+                            55
                     }
 
                 ]
@@ -1558,7 +1732,7 @@ export const GROUP_SITUATIONS = [
             "🐗",
 
         description:
-            "{group} voient un sanglier foncer vers {target}. Ils peuvent intervenir ou le laisser se débrouiller.",
+            "{group} voient un énorme sanglier foncer droit vers {target}. Ils ont quelques secondes pour décider.",
 
         choices: [
 
@@ -1579,7 +1753,7 @@ export const GROUP_SITUATIONS = [
                             "group_boar_help_good",
 
                         text:
-                            "{group} font fuir le sanglier et sauvent {target}.",
+                            "{group} encerclent le sanglier et réussissent à le faire fuir avant qu'il n'atteigne {target}.",
 
                         icon:
                             "🏆",
@@ -1589,499 +1763,13 @@ export const GROUP_SITUATIONS = [
                                 target:
                                     "all",
 
-                                lives:
-                                    1
-                            }
-                        ],
-
-                        weight:
-                            16
-                    },
-
-                    {
-                        id:
-                            "group_boar_help_bad",
-
-                        text:
-                            "Le sanglier panique et charge tout le monde.",
-
-                        icon:
-                            "💥",
-
-                        effects: [
-                            {
-                                target:
-                                    "all",
-
-                                lives:
-                                    -1
-                            }
-                        ],
-
-                        weight:
-                            54
-                    },
-
-                    {
-                        id:
-                            "group_boar_help_neutral",
-
-                        text:
-                            "Le sanglier hésite devant le nombre et finit par s'éloigner.",
-
-                        icon:
-                            "🐗",
-
-                        effects:
-                            [],
-
-                        weight:
-                            30
-                    }
-
-                ]
-            },
-
-
-            {
-                id:
-                    "group_boar_ignore",
-
-                title:
-                    "👀 Regarder",
-
-                description:
-                    "Laisser {target} gérer.",
-
-                consequences: [
-
-                    {
-                        id:
-                            "group_boar_ignore_bad",
-
-                        text:
-                            "{target} se fait violemment percuter.",
-
-                        icon:
-                            "🐗",
-
-                        effects: [
-                            {
-                                target:
-                                    "target",
-
-                                lives:
-                                    -2
-                            }
-                        ],
-
-                        weight:
-                            70
-                    },
-
-                    {
-                        id:
-                            "group_boar_ignore_good",
-
-                        text:
-                            "{target} esquive parfaitement et impressionne tout le monde.",
-
-                        icon:
-                            "😎",
-
-                        effects: [
-                            {
-                                target:
-                                    "target",
-
-                                lives:
-                                    1
-                            }
-                        ],
-
-                        weight:
-                            15
-                    },
-
-                    {
-                        id:
-                            "group_boar_ignore_neutral",
-
-                        text:
-                            "Le sanglier change de direction au dernier moment. {target} n'a même pas eu besoin de bouger.",
-
-                        icon:
-                            "😐",
-
-                        effects:
-                            [],
-
-                        weight:
-                            15
-                    }
-
-                ]
-            }
-
-        ]
-    },
-
-
-    // =========================================================
-    // 9 - ORAGE
-    // =========================================================
-
-    {
-        id:
-            "group_storm",
-
-        type:
-            "group_vs_one",
-
-        baseWeight:
-            1,
-
-        title:
-            "Une tempête approche du camp",
-
-        category:
-            "Décision de groupe",
-
-        icon:
-            "⛈️",
-
-        description:
-            "{group} sont à l'abri tandis que {target} est encore dehors sous une pluie torrentielle.",
-
-        choices: [
-
-            {
-                id:
-                    "group_storm_help",
-
-                title:
-                    "🛖 Faire entrer {target}",
-
-                description:
-                    "Ouvrir l'abri.",
-
-                consequences: [
-
-                    {
-                        id:
-                            "group_storm_help_good",
-
-                        text:
-                            "Tout le monde trouve suffisamment de place.",
-
-                        icon:
-                            "😌",
-
-                        effects: [
-                            {
-                                target:
-                                    "all",
-
-                                lives:
-                                    1
-                            }
-                        ],
-
-                        weight:
-                            18
-                    },
-
-                    {
-                        id:
-                            "group_storm_help_bad",
-
-                        text:
-                            "L'abri est trop chargé et une partie du toit s'effondre.",
-
-                        icon:
-                            "💥",
-
-                        effects: [
-                            {
-                                target:
-                                    "all",
-
-                                lives:
-                                    -1
-                            }
-                        ],
-
-                        weight:
-                            52
-                    },
-
-                    {
-                        id:
-                            "group_storm_help_neutral",
-
-                        text:
-                            "Tout le monde tient sous l'abri tant bien que mal jusqu'à la fin de l'orage.",
-
-                        icon:
-                            "🌧️",
-
-                        effects:
-                            [],
-
-                        weight:
-                            30
-                    }
-
-                ]
-            },
-
-
-            {
-                id:
-                    "group_storm_leave",
-
-                title:
-                    "🚪 Fermer l'abri",
-
-                description:
-                    "Laisser {target} dehors.",
-
-                consequences: [
-
-                    {
-                        id:
-                            "group_storm_leave_good",
-
-                        text:
-                            "{group} restent parfaitement au sec.",
-
-                        icon:
-                            "😴",
-
-                        effects: [
-                            {
-                                target:
-                                    "others",
-
-                                lives:
-                                    1
-                            }
-                        ],
-
-                        weight:
-                            18
-                    },
-
-                    {
-                        id:
-                            "group_storm_leave_bad",
-
-                        text:
-                            "{target} passe toute la nuit sous la tempête.",
-
-                        icon:
-                            "🌧️",
-
-                        effects: [
-                            {
-                                target:
-                                    "target",
-
-                                lives:
-                                    -2
-                            }
-                        ],
-
-                        weight:
-                            55
-                    },
-
-                    {
-                        id:
-                            "group_storm_leave_neutral",
-
-                        text:
-                            "{target} finit par trouver un rocher sous lequel attendre la fin de la tempête.",
-
-                        icon:
-                            "🪨",
-
-                        effects:
-                            [],
-
-                        weight:
-                            27
-                    }
-
-                ]
-            }
-
-        ]
-    },
-
-
-    // =========================================================
-    // 10 - MÉDICAMENT
-    // =========================================================
-
-    {
-        id:
-            "group_medkit",
-
-        type:
-            "group_vs_one",
-
-        baseWeight:
-            1,
-
-        title:
-            "{group} trouvent une trousse de secours",
-
-        category:
-            "Décision de groupe",
-
-        icon:
-            "🩹",
-
-        description:
-            "{group} trouvent quelques médicaments. {target} demande à en utiliser une partie.",
-
-        choices: [
-
-            {
-                id:
-                    "group_medkit_share",
-
-                title:
-                    "🩹 Donner des médicaments",
-
-                description:
-                    "Soigner {target}.",
-
-                consequences: [
-
-                    {
-                        id:
-                            "group_medkit_share_good",
-
-                        text:
-                            "{target} récupère rapidement.",
-
-                        icon:
-                            "❤️‍🩹",
-
-                        effects: [
-                            {
-                                target:
-                                    "target",
-
-                                lives:
-                                    2
-                            }
-                        ],
-
-                        weight:
-                            15
-                    },
-
-                    {
-                        id:
-                            "group_medkit_share_bad",
-
-                        text:
-                            "Les médicaments étaient périmés.",
-
-                        icon:
-                            "🤢",
-
-                        effects: [
-                            {
-                                target:
-                                    "target",
-
-                                lives:
-                                    -1
-                            }
-                        ],
-
-                        weight:
-                            55
-                    },
-
-                    {
-                        id:
-                            "group_medkit_share_neutral",
-
-                        text:
-                            "Les médicaments n'ont pratiquement aucun effet, mais au moins ils ne provoquent rien de grave.",
-
-                        icon:
-                            "💊",
-
-                        effects:
-                            [],
-
-                        weight:
-                            30
-                    }
-
-                ]
-            },
-
-
-            {
-                id:
-                    "group_medkit_keep",
-
-                title:
-                    "🔒 Garder les médicaments",
-
-                description:
-                    "Les conserver pour le groupe.",
-
-                consequences: [
-
-                    {
-                        id:
-                            "group_medkit_keep_good",
-
-                        text:
-                            "{group} utilisent les médicaments pour récupérer.",
-
-                        icon:
-                            "❤️‍🩹",
-
-                        effects: [
-                            {
-                                target:
-                                    "others",
-
-                                lives:
-                                    1
-                            }
-                        ],
-
-                        weight:
-                            17
-                    },
-
-                    {
-                        id:
-                            "group_medkit_keep_bad",
-
-                        text:
-                            "{target} vole la trousse pendant la nuit.",
-
-                        icon:
-                            "🥷",
-
-                        effects: [
-                            {
-                                target:
-                                    "target",
-
-                                lives:
-                                    2
+                                status: {
+                                    id:
+                                        "courage",
+
+                                    duration:
+                                        1
+                                }
                             }
                         ],
 
@@ -2091,109 +1779,25 @@ export const GROUP_SITUATIONS = [
 
                     {
                         id:
-                            "group_medkit_keep_neutral",
+                            "group_boar_help_bad",
 
                         text:
-                            "La trousse reste intacte mais personne n'en a réellement besoin pour l'instant.",
+                            "Le sanglier change brusquement de direction et traverse le groupe comme une boule de démolition.",
 
                         icon:
-                            "🩹",
-
-                        effects:
-                            [],
-
-                        weight:
-                            63
-                    }
-
-                ]
-            }
-
-        ]
-    },
-
-
-    // =========================================================
-    // 11 - POISSON
-    // =========================================================
-
-    {
-        id:
-            "group_fish",
-
-        type:
-            "group_vs_one",
-
-        baseWeight:
-            1,
-
-        title:
-            "{group} attrapent plusieurs poissons",
-
-        category:
-            "Conflit de groupe",
-
-        icon:
-            "🐟",
-
-        description:
-            "{group} ont pêché suffisamment de poissons. {target} n'a participé à aucun effort.",
-
-        choices: [
-
-            {
-                id:
-                    "group_fish_share",
-
-                title:
-                    "🍽️ Partager",
-
-                description:
-                    "Donner du poisson à {target}.",
-
-                consequences: [
-
-                    {
-                        id:
-                            "group_fish_share_good",
-
-                        text:
-                            "Le repas est excellent et tout le monde reprend des forces.",
-
-                        icon:
-                            "😋",
+                            "💥",
 
                         effects: [
                             {
                                 target:
-                                    "all",
+                                    "others",
 
                                 lives:
-                                    1
-                            }
-                        ],
+                                    -1,
 
-                        weight:
-                            18
-                    },
-
-                    {
-                        id:
-                            "group_fish_share_bad",
-
-                        text:
-                            "Les poissons sont contaminés.",
-
-                        icon:
-                            "🤮",
-
-                        effects: [
-                            {
-                                target:
-                                    "all",
-
-                                lives:
-                                    -1
+                                tags: [
+                                    "physical"
+                                ]
                             }
                         ],
 
@@ -2203,244 +1807,10 @@ export const GROUP_SITUATIONS = [
 
                     {
                         id:
-                            "group_fish_share_neutral",
+                            "group_boar_help_neutral",
 
                         text:
-                            "Les poissons sont mangeables mais franchement mauvais. Personne n'en retire vraiment d'énergie.",
-
-                        icon:
-                            "🐟",
-
-                        effects:
-                            [],
-
-                        weight:
-                            30
-                    }
-
-                ]
-            },
-
-
-            {
-                id:
-                    "group_fish_refuse",
-
-                title:
-                    "🚫 Ne rien donner",
-
-                description:
-                    "Réserver le repas aux pêcheurs.",
-
-                consequences: [
-
-                    {
-                        id:
-                            "group_fish_refuse_good",
-
-                        text:
-                            "{group} se régalent.",
-
-                        icon:
-                            "🍽️",
-
-                        effects: [
-                            {
-                                target:
-                                    "others",
-
-                                lives:
-                                    1
-                            }
-                        ],
-
-                        weight:
-                            16
-                    },
-
-                    {
-                        id:
-                            "group_fish_refuse_bad",
-
-                        text:
-                            "{target} vole plusieurs poissons dès que le groupe tourne le dos.",
-
-                        icon:
-                            "🥷",
-
-                        effects: [
-                            {
-                                target:
-                                    "target",
-
-                                lives:
-                                    1
-                            },
-
-                            {
-                                target:
-                                    "others",
-
-                                lives:
-                                    -1
-                            }
-                        ],
-
-                        weight:
-                            54
-                    },
-
-                    {
-                        id:
-                            "group_fish_refuse_neutral",
-
-                        text:
-                            "{target} repart vexé. Le groupe mange sans être dérangé.",
-
-                        icon:
-                            "😒",
-
-                        effects:
-                            [],
-
-                        weight:
-                            30
-                    }
-
-                ]
-            }
-
-        ]
-    },
-
-
-    // =========================================================
-    // 12 - CROCODILE
-    // =========================================================
-
-    {
-        id:
-            "group_crocodile",
-
-        type:
-            "group_vs_one",
-
-        baseWeight:
-            1,
-
-        title:
-            "{target} est encerclé par un crocodile",
-
-        category:
-            "Décision de groupe",
-
-        icon:
-            "🐊",
-
-        description:
-            "{group} voient {target} bloqué près de la rivière par un énorme crocodile.",
-
-        choices: [
-
-            {
-                id:
-                    "group_crocodile_help",
-
-                title:
-                    "🪨 Attaquer le crocodile",
-
-                description:
-                    "Le distraire tous ensemble.",
-
-                consequences: [
-
-                    {
-                        id:
-                            "group_crocodile_help_good",
-
-                        text:
-                            "Le crocodile fuit et {target} est sauvé.",
-
-                        icon:
-                            "🏃",
-
-                        effects: [
-                            {
-                                target:
-                                    "all",
-
-                                lives:
-                                    1
-                            }
-                        ],
-
-                        weight:
-                            15
-                    },
-
-                    {
-                        id:
-                            "group_crocodile_help_bad",
-
-                        text:
-                            "Le crocodile se retourne contre le groupe.",
-
-                        icon:
-                            "🐊",
-
-                        effects: [
-                            {
-                                target:
-                                    "others",
-
-                                lives:
-                                    -2
-                            }
-                        ],
-
-                        weight:
-                            60
-                    },
-
-                    {
-                        id:
-                            "group_crocodile_help_neutral",
-
-                        text:
-                            "Le crocodile hésite puis retourne lentement dans l'eau.",
-
-                        icon:
-                            "🌊",
-
-                        effects:
-                            [],
-
-                        weight:
-                            25
-                    }
-
-                ]
-            },
-
-
-            {
-                id:
-                    "group_crocodile_leave",
-
-                title:
-                    "🚶 Partir",
-
-                description:
-                    "Laisser {target} trouver une solution.",
-
-                consequences: [
-
-                    {
-                        id:
-                            "group_crocodile_leave_good",
-
-                        text:
-                            "{target} parvient miraculeusement à s'enfuir.",
+                            "Les cris du groupe suffisent à faire hésiter le sanglier, qui finit par repartir dans la forêt.",
 
                         icon:
                             "😮‍💨",
@@ -2449,15 +1819,31 @@ export const GROUP_SITUATIONS = [
                             [],
 
                         weight:
-                            30
-                    },
+                            28
+                    }
+
+                ]
+            },
+
+
+            {
+                id:
+                    "group_boar_leave",
+
+                title:
+                    "👀 Ne pas intervenir",
+
+                description:
+                    "Laisser {target} gérer seul.",
+
+                consequences: [
 
                     {
                         id:
-                            "group_crocodile_leave_bad",
+                            "group_boar_leave_bad",
 
                         text:
-                            "{target} est blessé en tentant de fuir.",
+                            "{target} tente d'esquiver mais se fait violemment percuter.",
 
                         icon:
                             "💥",
@@ -2468,381 +1854,62 @@ export const GROUP_SITUATIONS = [
                                     "target",
 
                                 lives:
-                                    -2
+                                    -2,
+
+                                tags: [
+                                    "physical"
+                                ]
                             }
                         ],
 
                         weight:
-                            70
-                    }
-
-                ]
-            }
-
-        ]
-    },
-
-
-    // =========================================================
-    // 13 - BANANES
-    // =========================================================
-
-    {
-        id:
-            "group_bananas",
-
-        type:
-            "group_vs_one",
-
-        baseWeight:
-            1,
-
-        title:
-            "{group} trouvent un énorme régime de bananes",
-
-        category:
-            "Conflit de groupe",
-
-        icon:
-            "🍌",
-
-        description:
-            "{target} arrive alors que {group} viennent de récupérer une énorme quantité de bananes.",
-
-        choices: [
-
-            {
-                id:
-                    "group_bananas_share",
-
-                title:
-                    "🍌 Partager",
-
-                description:
-                    "Donner quelques bananes à {target}.",
-
-                consequences: [
-
-                    {
-                        id:
-                            "group_bananas_share_good",
-
-                        text:
-                            "Tout le monde mange à sa faim.",
-
-                        icon:
-                            "😋",
-
-                        effects: [
-                            {
-                                target:
-                                    "all",
-
-                                lives:
-                                    1
-                            }
-                        ],
-
-                        weight:
-                            18
+                            65
                     },
 
                     {
                         id:
-                            "group_bananas_share_bad",
+                            "group_boar_leave_good",
 
                         text:
-                            "Des singes repèrent le groupe et attaquent pour récupérer les bananes.",
+                            "{target} réalise une esquive parfaite et le sanglier disparaît dans la végétation.",
 
                         icon:
-                            "🐒",
-
-                        effects: [
-                            {
-                                target:
-                                    "all",
-
-                                lives:
-                                    -1
-                            }
-                        ],
-
-                        weight:
-                            52
-                    },
-
-                    {
-                        id:
-                            "group_bananas_share_neutral",
-
-                        text:
-                            "Les bananes sont petites et peu nourrissantes. Tout le monde mange, sans effet notable.",
-
-                        icon:
-                            "🍌",
-
-                        effects:
-                            [],
-
-                        weight:
-                            30
-                    }
-
-                ]
-            },
-
-
-            {
-                id:
-                    "group_bananas_keep",
-
-                title:
-                    "😈 Tout garder",
-
-                description:
-                    "Ne rien laisser à {target}.",
-
-                consequences: [
-
-                    {
-                        id:
-                            "group_bananas_keep_good",
-
-                        text:
-                            "{group} mangent tranquillement toutes les bananes.",
-
-                        icon:
-                            "🍌",
-
-                        effects: [
-                            {
-                                target:
-                                    "others",
-
-                                lives:
-                                    1
-                            }
-                        ],
-
-                        weight:
-                            17
-                    },
-
-                    {
-                        id:
-                            "group_bananas_keep_bad",
-
-                        text:
-                            "{target} provoque une invasion de singes avant de partir.",
-
-                        icon:
-                            "🐒",
-
-                        effects: [
-                            {
-                                target:
-                                    "others",
-
-                                lives:
-                                    -2
-                            }
-                        ],
-
-                        weight:
-                            58
-                    },
-
-                    {
-                        id:
-                            "group_bananas_keep_neutral",
-
-                        text:
-                            "{target} repart sans discuter. Le groupe garde ses bananes.",
-
-                        icon:
-                            "😐",
-
-                        effects:
-                            [],
-
-                        weight:
-                            25
-                    }
-
-                ]
-            }
-
-        ]
-    },
-
-
-    // =========================================================
-    // 14 - HAMAC
-    // =========================================================
-
-    {
-        id:
-            "group_hammock",
-
-        type:
-            "group_vs_one",
-
-        baseWeight:
-            1,
-
-        title:
-            "{target} dort tranquillement dans un hamac",
-
-        category:
-            "Décision de groupe",
-
-        icon:
-            "😴",
-
-        description:
-            "{group} découvrent {target} endormi dans le meilleur hamac du camp.",
-
-        choices: [
-
-            {
-                id:
-                    "group_hammock_leave",
-
-                title:
-                    "😇 Le laisser dormir",
-
-                description:
-                    "Respecter le repos de {target}.",
-
-                consequences: [
-
-                    {
-                        id:
-                            "group_hammock_leave_good",
-
-                        text:
-                            "{target} se réveille reposé et aide ensuite tout le groupe.",
-
-                        icon:
-                            "🤝",
-
-                        effects: [
-                            {
-                                target:
-                                    "all",
-
-                                lives:
-                                    1
-                            }
-                        ],
-
-                        weight:
-                            18
-                    },
-
-                    {
-                        id:
-                            "group_hammock_leave_bad",
-
-                        text:
-                            "{target} dort toute la journée pendant que les autres travaillent.",
-
-                        icon:
-                            "😤",
-
-                        effects: [
-                            {
-                                target:
-                                    "others",
-
-                                lives:
-                                    -1
-                            }
-                        ],
-
-                        weight:
-                            42
-                    },
-
-                    {
-                        id:
-                            "group_hammock_leave_neutral",
-
-                        text:
-                            "{target} dort encore un moment puis se lève comme si de rien n'était.",
-
-                        icon:
-                            "😴",
-
-                        effects:
-                            [],
-
-                        weight:
-                            40
-                    }
-
-                ]
-            },
-
-
-            {
-                id:
-                    "group_hammock_prank",
-
-                title:
-                    "🐝 Lui faire une blague",
-
-                description:
-                    "Secouer violemment le hamac.",
-
-                consequences: [
-
-                    {
-                        id:
-                            "group_hammock_prank_good",
-
-                        text:
-                            "{target} tombe dans le sable. Le groupe trouve ça extrêmement drôle.",
-
-                        icon:
-                            "😂",
+                            "😎",
 
                         effects: [
                             {
                                 target:
                                     "target",
 
-                                lives:
-                                    -1
+                                status: {
+                                    id:
+                                        "courage",
+
+                                    duration:
+                                        2
+                                }
                             }
                         ],
 
                         weight:
-                            45
+                            20
                     },
 
                     {
                         id:
-                            "group_hammock_prank_bad",
+                            "group_boar_leave_neutral",
 
                         text:
-                            "Le hamac casse et frappe plusieurs membres du groupe.",
+                            "Le sanglier change finalement de direction avant d'atteindre {target}.",
 
                         icon:
-                            "💥",
+                            "🐗",
 
-                        effects: [
-                            {
-                                target:
-                                    "others",
-
-                                lives:
-                                    -1
-                            }
-                        ],
+                        effects:
+                            [],
 
                         weight:
-                            55
+                            15
                     }
 
                 ]
@@ -2853,208 +1920,7 @@ export const GROUP_SITUATIONS = [
 
 
     // =========================================================
-    // 15 - COFFRE
-    // =========================================================
-
-    {
-        id:
-            "group_treasure",
-
-        type:
-            "group_vs_one",
-
-        baseWeight:
-            1,
-
-        title:
-            "{group} trouvent un coffre mystérieux",
-
-        category:
-            "Conflit de groupe",
-
-        icon:
-            "🧰",
-
-        description:
-            "{group} découvrent un coffre rempli de matériel. {target} réclame une part du contenu.",
-
-        choices: [
-
-            {
-                id:
-                    "group_treasure_share",
-
-                title:
-                    "🤝 Partager le contenu",
-
-                description:
-                    "Donner une part à {target}.",
-
-                consequences: [
-
-                    {
-                        id:
-                            "group_treasure_share_good",
-
-                        text:
-                            "Le coffre contient suffisamment de matériel pour tout le monde.",
-
-                        icon:
-                            "🎉",
-
-                        effects: [
-                            {
-                                target:
-                                    "all",
-
-                                lives:
-                                    2
-                            }
-                        ],
-
-                        weight:
-                            10
-                    },
-
-                    {
-                        id:
-                            "group_treasure_share_bad",
-
-                        text:
-                            "Une bouteille à l'intérieur était contaminée. Tout le monde tombe malade.",
-
-                        icon:
-                            "🤢",
-
-                        effects: [
-                            {
-                                target:
-                                    "all",
-
-                                lives:
-                                    -1
-                            }
-                        ],
-
-                        weight:
-                            60
-                    },
-
-                    {
-                        id:
-                            "group_treasure_share_neutral",
-
-                        text:
-                            "Le coffre contient surtout de vieux outils rouillés. Chacun récupère quelque chose, mais rien de réellement utile.",
-
-                        icon:
-                            "🛠️",
-
-                        effects:
-                            [],
-
-                        weight:
-                            30
-                    }
-
-                ]
-            },
-
-
-            {
-                id:
-                    "group_treasure_keep",
-
-                title:
-                    "🔒 Garder le coffre",
-
-                description:
-                    "Exclure complètement {target}.",
-
-                consequences: [
-
-                    {
-                        id:
-                            "group_treasure_keep_good",
-
-                        text:
-                            "{group} gardent tout le matériel et améliorent leur équipement.",
-
-                        icon:
-                            "🛠️",
-
-                        effects: [
-                            {
-                                target:
-                                    "others",
-
-                                lives:
-                                    2
-                            }
-                        ],
-
-                        weight:
-                            10
-                    },
-
-                    {
-                        id:
-                            "group_treasure_keep_bad",
-
-                        text:
-                            "{target} revient pendant la nuit et vole une partie du contenu.",
-
-                        icon:
-                            "🥷",
-
-                        effects: [
-                            {
-                                target:
-                                    "target",
-
-                                lives:
-                                    2
-                            },
-
-                            {
-                                target:
-                                    "others",
-
-                                lives:
-                                    -1
-                            }
-                        ],
-
-                        weight:
-                            55
-                    },
-
-                    {
-                        id:
-                            "group_treasure_keep_neutral",
-
-                        text:
-                            "Le groupe garde tout le coffre, mais le contenu est finalement beaucoup moins intéressant qu'espéré.",
-
-                        icon:
-                            "😐",
-
-                        effects:
-                            [],
-
-                        weight:
-                            35
-                    }
-
-                ]
-            }
-
-        ]
-    },
-
-
-    // =========================================================
-    // 16 - TEMPÊTE APRÈS L'ABRI
+    // 9 - TEMPÊTE APRÈS L'ABRI
     // SUITE DE group_shelter
     // =========================================================
 
@@ -3078,7 +1944,7 @@ export const GROUP_SITUATIONS = [
         },
 
         title:
-            "La tempête met l'abri de {group} à l'épreuve",
+            "La tempête annoncée atteint enfin le camp",
 
         category:
             "Suite",
@@ -3087,28 +1953,28 @@ export const GROUP_SITUATIONS = [
             "⛈️",
 
         description:
-            "Le vent s'est levé brutalement. L'abri construit plus tôt commence à craquer sous les rafales.",
+            "Le vent arrache des branches et la pluie tombe horizontalement. L'abri construit plus tôt est maintenant mis à l'épreuve.",
 
         choices: [
 
             {
                 id:
-                    "group_storm_after_reinforce",
+                    "group_storm_reinforce",
 
                 title:
                     "🪵 Renforcer l'abri",
 
                 description:
-                    "Tout le monde s'active avant que le toit ne cède.",
+                    "Sortir sous la pluie pour consolider la structure.",
 
                 consequences: [
 
                     {
                         id:
-                            "group_storm_after_reinforce_good",
+                            "group_storm_reinforce_good",
 
                         text:
-                            "Les renforts tiennent parfaitement. L'abri résiste à la tempête.",
+                            "Les renforts tiennent. Lorsque la tempête se calme, tout le monde est encore au sec.",
 
                         icon:
                             "🛖",
@@ -3118,21 +1984,141 @@ export const GROUP_SITUATIONS = [
                                 target:
                                     "all",
 
-                                lives:
-                                    1
+                                status: {
+                                    id:
+                                        "courage",
+
+                                    duration:
+                                        1
+                                }
                             }
                         ],
 
                         weight:
-                            18
+                            24
                     },
 
                     {
                         id:
-                            "group_storm_after_reinforce_bad",
+                            "group_storm_reinforce_bad",
 
                         text:
-                            "Une rafale arrache une partie du toit pendant les réparations.",
+                            "Une rafale arrache une partie du toit alors que {group} tentent de le maintenir.",
+
+                        icon:
+                            "🌪️",
+
+                        effects: [
+                            {
+                                target:
+                                    "others",
+
+                                lives:
+                                    -1,
+
+                                tags: [
+                                    "physical"
+                                ]
+                            },
+
+                            {
+                                target:
+                                    "others",
+
+                                gauge: {
+                                    id:
+                                        "fatigue",
+
+                                    amount:
+                                        1
+                                }
+                            }
+                        ],
+
+                        weight:
+                            51
+                    },
+
+                    {
+                        id:
+                            "group_storm_reinforce_neutral",
+
+                        text:
+                            "L'abri tient de justesse, mais l'effort nécessaire laisse tout le monde complètement épuisé.",
+
+                        icon:
+                            "🥵",
+
+                        effects: [
+                            {
+                                target:
+                                    "all",
+
+                                gauge: {
+                                    id:
+                                        "fatigue",
+
+                                    amount:
+                                        1
+                                }
+                            }
+                        ],
+
+                        weight:
+                            25
+                    }
+
+                ]
+            },
+
+
+            {
+                id:
+                    "group_storm_wait",
+
+                title:
+                    "🏠 Rester à l'intérieur",
+
+                description:
+                    "Faire confiance à la construction initiale.",
+
+                consequences: [
+
+                    {
+                        id:
+                            "group_storm_wait_good",
+
+                        text:
+                            "L'abri résiste étonnamment bien. La tempête finit par passer.",
+
+                        icon:
+                            "😌",
+
+                        effects: [
+                            {
+                                target:
+                                    "all",
+
+                                gauge: {
+                                    id:
+                                        "fatigue",
+
+                                    amount:
+                                        -1
+                                }
+                            }
+                        ],
+
+                        weight:
+                            35
+                    },
+
+                    {
+                        id:
+                            "group_storm_wait_bad",
+
+                        text:
+                            "Une partie du toit s'effondre brutalement pendant la nuit.",
 
                         icon:
                             "💥",
@@ -3143,77 +2129,24 @@ export const GROUP_SITUATIONS = [
                                     "all",
 
                                 lives:
-                                    -1
+                                    -1,
+
+                                tags: [
+                                    "physical"
+                                ]
                             }
                         ],
 
                         weight:
-                            52
+                            45
                     },
 
                     {
                         id:
-                            "group_storm_after_reinforce_neutral",
+                            "group_storm_wait_neutral",
 
                         text:
-                            "L'abri tient tant bien que mal jusqu'à la fin de la tempête.",
-
-                        icon:
-                            "🌧️",
-
-                        effects:
-                            [],
-
-                        weight:
-                            30
-                    }
-
-                ]
-            },
-
-
-            {
-                id:
-                    "group_storm_after_abandon",
-
-                title:
-                    "🏃 Abandonner l'abri",
-
-                description:
-                    "Courir chercher un autre endroit avant l'effondrement.",
-
-                consequences: [
-
-                    {
-                        id:
-                            "group_storm_after_abandon_good",
-
-                        text:
-                            "Le groupe trouve rapidement une cavité rocheuse parfaitement protégée.",
-
-                        icon:
-                            "🪨",
-
-                        effects: [
-                            {
-                                target:
-                                    "all",
-
-                                lives:
-                                    1
-                            }
-                        ],
-
-                        weight:
-                            15
-                    },
-
-                    {
-                        id:
-                            "group_storm_after_abandon_bad",
-
-                        text:
-                            "Tout le monde se retrouve sous une pluie torrentielle sans véritable abri.",
+                            "L'abri fuit de partout, mais tient jusqu'au matin.",
 
                         icon:
                             "🌧️",
@@ -3223,30 +2156,18 @@ export const GROUP_SITUATIONS = [
                                 target:
                                     "all",
 
-                                lives:
-                                    -2
+                                gauge: {
+                                    id:
+                                        "fatigue",
+
+                                    amount:
+                                        1
+                                }
                             }
                         ],
 
                         weight:
-                            60
-                    },
-
-                    {
-                        id:
-                            "group_storm_after_abandon_neutral",
-
-                        text:
-                            "Le groupe trouve quelques arbres sous lesquels attendre la fin du mauvais temps.",
-
-                        icon:
-                            "🌳",
-
-                        effects:
-                            [],
-
-                        weight:
-                            25
+                            20
                     }
 
                 ]
@@ -3257,7 +2178,7 @@ export const GROUP_SITUATIONS = [
 
 
     // =========================================================
-    // 17 - CROCODILE À LA SOURCE
+    // 10 - CROCODILE À LA SOURCE
     // SUITE DE group_water_source
     // =========================================================
 
@@ -3289,45 +2210,57 @@ export const GROUP_SITUATIONS = [
             "🐊",
 
         description:
-            "{group} retournent chercher de l'eau lorsque {target} remarque un énorme crocodile caché près de la rive.",
+            "Alors que tout le monde revient chercher de l'eau, un crocodile surgit entre la source et {target}.",
 
         choices: [
 
             {
                 id:
-                    "group_crocodile_source_chase",
+                    "group_crocodile_help",
 
                 title:
-                    "🪨 Le faire fuir",
+                    "🪵 Aider {target}",
 
                 description:
-                    "Lancer des pierres et faire le plus de bruit possible.",
+                    "Faire diversion pour lui permettre de fuir.",
 
                 consequences: [
 
                     {
                         id:
-                            "group_crocodile_source_chase_good",
+                            "group_crocodile_help_good",
 
                         text:
-                            "Le crocodile finit par retourner dans l'eau et abandonne la zone.",
+                            "{group} frappent des branches contre les rochers. Le crocodile hésite suffisamment longtemps pour permettre à {target} de fuir.",
 
                         icon:
-                            "🌊",
+                            "🏃",
 
-                        effects:
-                            [],
+                        effects: [
+                            {
+                                target:
+                                    "all",
+
+                                status: {
+                                    id:
+                                        "courage",
+
+                                    duration:
+                                        1
+                                }
+                            }
+                        ],
 
                         weight:
-                            28
+                            20
                     },
 
                     {
                         id:
-                            "group_crocodile_source_chase_bad",
+                            "group_crocodile_help_bad",
 
                         text:
-                            "Le crocodile charge le groupe au lieu de fuir.",
+                            "Le crocodile se détourne de {target}... et fonce directement vers {group}.",
 
                         icon:
                             "🐊",
@@ -3338,12 +2271,33 @@ export const GROUP_SITUATIONS = [
                                     "others",
 
                                 lives:
-                                    -2
+                                    -2,
+
+                                tags: [
+                                    "physical"
+                                ]
                             }
                         ],
 
                         weight:
-                            72
+                            55
+                    },
+
+                    {
+                        id:
+                            "group_crocodile_help_neutral",
+
+                        text:
+                            "Après quelques secondes de tension, le crocodile retourne lentement dans l'eau.",
+
+                        icon:
+                            "🌊",
+
+                        effects:
+                            [],
+
+                        weight:
+                            25
                     }
 
                 ]
@@ -3352,39 +2306,79 @@ export const GROUP_SITUATIONS = [
 
             {
                 id:
-                    "group_crocodile_source_leave",
+                    "group_crocodile_leave",
 
                 title:
-                    "🚶 Abandonner la source",
+                    "🚶 S'éloigner",
 
                 description:
-                    "Chercher de l'eau ailleurs.",
+                    "Laisser {target} chercher lui-même une sortie.",
 
                 consequences: [
 
                     {
                         id:
-                            "group_crocodile_source_leave_neutral",
+                            "group_crocodile_leave_good",
 
                         text:
-                            "Le groupe quitte les lieux sans incident mais perd sa meilleure source d'eau.",
+                            "{target} parvient miraculeusement à reculer lentement jusqu'à un arbre.",
 
                         icon:
-                            "🏜️",
+                            "😮‍💨",
 
-                        effects:
-                            [],
+                        effects: [
+                            {
+                                target:
+                                    "target",
+
+                                status: {
+                                    id:
+                                        "courage",
+
+                                    duration:
+                                        1
+                                }
+                            }
+                        ],
 
                         weight:
-                            70
+                            30
                     },
 
                     {
                         id:
-                            "group_crocodile_source_leave_bad",
+                            "group_crocodile_leave_bad",
 
                         text:
-                            "Le détour pour trouver une autre source épuise fortement {group}.",
+                            "{target} tente de fuir et le crocodile le rattrape avant qu'il n'atteigne la végétation.",
+
+                        icon:
+                            "💥",
+
+                        effects: [
+                            {
+                                target:
+                                    "target",
+
+                                lives:
+                                    -2,
+
+                                tags: [
+                                    "physical"
+                                ]
+                            }
+                        ],
+
+                        weight:
+                            55
+                    },
+
+                    {
+                        id:
+                            "group_crocodile_leave_tired",
+
+                        text:
+                            "{target} réussit à grimper sur un rocher après une course épuisante.",
 
                         icon:
                             "🥵",
@@ -3392,15 +2386,1797 @@ export const GROUP_SITUATIONS = [
                         effects: [
                             {
                                 target:
-                                    "others",
+                                    "target",
+
+                                gauge: {
+                                    id:
+                                        "fatigue",
+
+                                    amount:
+                                        2
+                                }
+                            }
+                        ],
+
+                        weight:
+                            15
+                    }
+
+                ]
+            }
+
+        ]
+    },
+
+
+    // =========================================================
+    // 11 - BANANES
+    // =========================================================
+
+    {
+        id:
+            "group_bananas",
+
+        type:
+            "group_vs_one",
+
+        baseWeight:
+            1,
+
+        title:
+            "{group} trouvent un énorme régime de bananes",
+
+        category:
+            "Conflit de groupe",
+
+        icon:
+            "🍌",
+
+        description:
+            "{target} arrive alors que {group} viennent de récupérer une quantité impressionnante de bananes.",
+
+        choices: [
+
+            {
+                id:
+                    "group_bananas_share",
+
+                title:
+                    "🍌 Partager",
+
+                description:
+                    "Donner quelques bananes à {target}.",
+
+                consequences: [
+
+                    {
+                        id:
+                            "group_bananas_share_good",
+
+                        text:
+                            "Les bananes sont excellentes. Tout le monde mange suffisamment.",
+
+                        icon:
+                            "😋",
+
+                        effects: [
+                            {
+                                target:
+                                    "all",
+
+                                removeStatus:
+                                    "hungry"
+                            },
+
+                            {
+                                target:
+                                    "all",
 
                                 lives:
-                                    -1
+                                    1
+                            }
+                        ],
+
+                        weight:
+                            20
+                    },
+
+                    {
+                        id:
+                            "group_bananas_share_bad",
+
+                        text:
+                            "L'odeur attire une bande de singes qui revendiquent immédiatement la propriété de la récolte.",
+
+                        icon:
+                            "🐒",
+
+                        effects: [
+                            {
+                                target:
+                                    "all",
+
+                                lives:
+                                    -1,
+
+                                tags: [
+                                    "physical"
+                                ]
+                            }
+                        ],
+
+                        weight:
+                            50
+                    },
+
+                    {
+                        id:
+                            "group_bananas_share_neutral",
+
+                        text:
+                            "Les bananes sont petites et peu nourrissantes. Au moins, personne ne repart complètement affamé.",
+
+                        icon:
+                            "🍌",
+
+                        effects: [
+                            {
+                                target:
+                                    "all",
+
+                                removeStatus:
+                                    "hungry"
                             }
                         ],
 
                         weight:
                             30
+                    }
+
+                ]
+            },
+
+
+            {
+                id:
+                    "group_bananas_keep",
+
+                title:
+                    "🙅 Ne rien donner",
+
+                description:
+                    "Conserver toute la récolte pour {group}.",
+
+                consequences: [
+
+                    {
+                        id:
+                            "group_bananas_keep_good",
+
+                        text:
+                            "{group} se partagent la récolte et récupèrent correctement.",
+
+                        icon:
+                            "😋",
+
+                        effects: [
+                            {
+                                target:
+                                    "others",
+
+                                removeStatus:
+                                    "hungry"
+                            }
+                        ],
+
+                        weight:
+                            28
+                    },
+
+                    {
+                        id:
+                            "group_bananas_keep_bad",
+
+                        text:
+                            "{target} lance une banane dans la forêt. Quelques secondes plus tard, des dizaines de singes apparaissent.",
+
+                        icon:
+                            "🐒",
+
+                        effects: [
+                            {
+                                target:
+                                    "others",
+
+                                lives:
+                                    -2,
+
+                                tags: [
+                                    "physical"
+                                ]
+                            }
+                        ],
+
+                        weight:
+                            47
+                    },
+
+                    {
+                        id:
+                            "group_bananas_keep_neutral",
+
+                        text:
+                            "{target} repart sans discuter. {group} découvrent ensuite que la moitié des bananes est déjà trop mûre.",
+
+                        icon:
+                            "😐",
+
+                        effects:
+                            [],
+
+                        weight:
+                            25
+                    }
+
+                ]
+            }
+
+        ]
+    },
+
+
+    // =========================================================
+    // 12 - NOUVEAU : FIÈVRE DE {target}
+    // =========================================================
+
+    {
+        id:
+            "group_target_fever",
+
+        type:
+            "group_vs_one",
+
+        baseWeight:
+            0.9,
+
+        title:
+            "{target} tombe gravement malade",
+
+        category:
+            "Décision de groupe",
+
+        icon:
+            "🤒",
+
+        description:
+            "{target} tremble, transpire et peine à tenir debout. {group} doivent décider combien de ressources consacrer à son état.",
+
+        choices: [
+
+            {
+                id:
+                    "group_fever_help",
+
+                title:
+                    "🩹 S'occuper de {target}",
+
+                description:
+                    "Sacrifier du temps et des ressources pour l'aider.",
+
+                consequences: [
+
+                    {
+                        id:
+                            "group_fever_help_good",
+
+                        text:
+                            "Le repos, l'eau et les soins fonctionnent. {target} récupère progressivement.",
+
+                        icon:
+                            "❤️‍🩹",
+
+                        effects: [
+                            {
+                                target:
+                                    "target",
+
+                                removeStatus:
+                                    "poisoned"
+                            },
+
+                            {
+                                target:
+                                    "target",
+
+                                removeStatus:
+                                    "hungry"
+                            },
+
+                            {
+                                target:
+                                    "target",
+
+                                lives:
+                                    1
+                            },
+
+                            {
+                                target:
+                                    "others",
+
+                                gauge: {
+                                    id:
+                                        "fatigue",
+
+                                    amount:
+                                        1
+                                }
+                            }
+                        ],
+
+                        weight:
+                            45
+                    },
+
+                    {
+                        id:
+                            "group_fever_help_neutral",
+
+                        text:
+                            "{target} se stabilise, mais les soins demandent presque toute la journée.",
+
+                        icon:
+                            "🤒",
+
+                        effects: [
+                            {
+                                target:
+                                    "others",
+
+                                gauge: {
+                                    id:
+                                        "fatigue",
+
+                                    amount:
+                                        1
+                                }
+                            }
+                        ],
+
+                        weight:
+                            40
+                    },
+
+                    {
+                        id:
+                            "group_fever_help_bad",
+
+                        text:
+                            "Malgré les efforts, l'état de {target} empire temporairement.",
+
+                        icon:
+                            "🤢",
+
+                        effects: [
+                            {
+                                target:
+                                    "target",
+
+                                lives:
+                                    -1
+                            },
+
+                            {
+                                target:
+                                    "others",
+
+                                gauge: {
+                                    id:
+                                        "fatigue",
+
+                                    amount:
+                                        1
+                                }
+                            }
+                        ],
+
+                        weight:
+                            15
+                    }
+
+                ]
+            },
+
+
+            {
+                id:
+                    "group_fever_isolate",
+
+                title:
+                    "🚫 Isoler {target}",
+
+                description:
+                    "Éviter de prendre des risques pour le reste du groupe.",
+
+                consequences: [
+
+                    {
+                        id:
+                            "group_fever_isolate_good",
+
+                        text:
+                            "{target} se repose seul et finit par récupérer sans intervention.",
+
+                        icon:
+                            "😮‍💨",
+
+                        effects: [
+                            {
+                                target:
+                                    "target",
+
+                                gauge: {
+                                    id:
+                                        "fatigue",
+
+                                    amount:
+                                        -1
+                                }
+                            }
+                        ],
+
+                        weight:
+                            30
+                    },
+
+                    {
+                        id:
+                            "group_fever_isolate_bad",
+
+                        text:
+                            "Sans aide, {target} manque d'eau pendant plusieurs heures et son état se dégrade.",
+
+                        icon:
+                            "🏜️",
+
+                        effects: [
+                            {
+                                target:
+                                    "target",
+
+                                lives:
+                                    -2
+                            }
+                        ],
+
+                        weight:
+                            50
+                    },
+
+                    {
+                        id:
+                            "group_fever_isolate_neutral",
+
+                        text:
+                            "{target} passe la journée seul. Son état reste stable mais ne s'améliore pas.",
+
+                        icon:
+                            "😐",
+
+                        effects:
+                            [],
+
+                        weight:
+                            20
+                    }
+
+                ]
+            }
+
+        ]
+    },
+
+
+    // =========================================================
+    // 13 - NOUVEAU : FALAISE ET CORDE
+    // =========================================================
+
+    {
+        id:
+            "group_cliff_rope",
+
+        type:
+            "group_vs_one",
+
+        baseWeight:
+            1,
+
+        title:
+            "{target} doit descendre une falaise",
+
+        category:
+            "Décision de groupe",
+
+        icon:
+            "🪢",
+
+        description:
+            "Une corde improvisée permet d'atteindre une plage située en contrebas. {target} doit descendre en premier pendant que {group} tiennent la corde.",
+
+        choices: [
+
+            {
+                id:
+                    "group_cliff_hold",
+
+                title:
+                    "🪢 Maintenir la corde",
+
+                description:
+                    "Sécuriser sérieusement la descente.",
+
+                consequences: [
+
+                    {
+                        id:
+                            "group_cliff_hold_good",
+
+                        text:
+                            "{group} coordonnent parfaitement leur effort et {target} atteint la plage sans incident.",
+
+                        icon:
+                            "🤝",
+
+                        effects: [
+                            {
+                                target:
+                                    "target",
+
+                                status: {
+                                    id:
+                                        "courage",
+
+                                    duration:
+                                        1
+                                }
+                            },
+
+                            {
+                                target:
+                                    "others",
+
+                                gauge: {
+                                    id:
+                                        "fatigue",
+
+                                    amount:
+                                        1
+                                }
+                            }
+                        ],
+
+                        weight:
+                            40
+                    },
+
+                    {
+                        id:
+                            "group_cliff_hold_bad",
+
+                        text:
+                            "La corde glisse brutalement entre les mains de {group}. {target} chute sur les derniers mètres.",
+
+                        icon:
+                            "💥",
+
+                        effects: [
+                            {
+                                target:
+                                    "target",
+
+                                lives:
+                                    -1,
+
+                                tags: [
+                                    "physical"
+                                ]
+                            },
+
+                            {
+                                target:
+                                    "others",
+
+                                gauge: {
+                                    id:
+                                        "fatigue",
+
+                                    amount:
+                                        1
+                                }
+                            }
+                        ],
+
+                        weight:
+                            40
+                    },
+
+                    {
+                        id:
+                            "group_cliff_hold_neutral",
+
+                        text:
+                            "La descente est très lente mais finit par réussir.",
+
+                        icon:
+                            "🧗",
+
+                        effects: [
+                            {
+                                target:
+                                    "others",
+
+                                gauge: {
+                                    id:
+                                        "fatigue",
+
+                                    amount:
+                                        1
+                                }
+                            }
+                        ],
+
+                        weight:
+                            20
+                    }
+
+                ]
+            },
+
+
+            {
+                id:
+                    "group_cliff_quick",
+
+                title:
+                    "⚡ Faire vite",
+
+                description:
+                    "Laisser filer la corde progressivement pour économiser les forces.",
+
+                consequences: [
+
+                    {
+                        id:
+                            "group_cliff_quick_good",
+
+                        text:
+                            "{target} descend rapidement et touche le sol sans problème.",
+
+                        icon:
+                            "😎",
+
+                        effects:
+                            [],
+
+                        weight:
+                            22
+                    },
+
+                    {
+                        id:
+                            "group_cliff_quick_bad",
+
+                        text:
+                            "La corde part beaucoup trop vite. {target} percute violemment la paroi.",
+
+                        icon:
+                            "💥",
+
+                        effects: [
+                            {
+                                target:
+                                    "target",
+
+                                lives:
+                                    -2,
+
+                                tags: [
+                                    "physical"
+                                ]
+                            }
+                        ],
+
+                        weight:
+                            63
+                    },
+
+                    {
+                        id:
+                            "group_cliff_quick_neutral",
+
+                        text:
+                            "{target} termine la descente en glissant sur les derniers mètres mais s'en sort indemne.",
+
+                        icon:
+                            "😬",
+
+                        effects:
+                            [],
+
+                        weight:
+                            15
+                    }
+
+                ]
+            }
+
+        ]
+    },
+
+
+    // =========================================================
+    // 14 - NOUVEAU : CHAMPIGNONS
+    // =========================================================
+
+    {
+        id:
+            "group_mushrooms",
+
+        type:
+            "group_vs_one",
+
+        baseWeight:
+            0.9,
+
+        title:
+            "{group} trouvent des champignons inconnus",
+
+        category:
+            "Nourriture",
+
+        icon:
+            "🍄",
+
+        description:
+            "{group} ont très faim. {target} affirme reconnaître les champignons et assure qu'ils sont parfaitement comestibles.",
+
+        choices: [
+
+            {
+                id:
+                    "group_mushrooms_trust",
+
+                title:
+                    "🍄 Faire confiance à {target}",
+
+                description:
+                    "Préparer les champignons pour tout le monde.",
+
+                consequences: [
+
+                    {
+                        id:
+                            "group_mushrooms_trust_good",
+
+                        text:
+                            "{target} avait raison. Le repas est parfaitement comestible et assez nourrissant.",
+
+                        icon:
+                            "😋",
+
+                        effects: [
+                            {
+                                target:
+                                    "all",
+
+                                removeStatus:
+                                    "hungry"
+                            },
+
+                            {
+                                target:
+                                    "all",
+
+                                lives:
+                                    1
+                            }
+                        ],
+
+                        weight:
+                            18
+                    },
+
+                    {
+                        id:
+                            "group_mushrooms_trust_bad",
+
+                        text:
+                            "{target} était absolument certain. Malheureusement, il avait absolument tort.",
+
+                        icon:
+                            "☠️",
+
+                        effects: [
+                            {
+                                target:
+                                    "all",
+
+                                status:
+                                    "poisoned"
+                            }
+                        ],
+
+                        weight:
+                            57
+                    },
+
+                    {
+                        id:
+                            "group_mushrooms_trust_neutral",
+
+                        text:
+                            "Les champignons ont un goût terrible mais ne semblent provoquer aucun effet particulier.",
+
+                        icon:
+                            "😖",
+
+                        effects:
+                            [],
+
+                        weight:
+                            25
+                    }
+
+                ]
+            },
+
+
+            {
+                id:
+                    "group_mushrooms_leave",
+
+                title:
+                    "🚫 Ne pas les manger",
+
+                description:
+                    "La confiance a ses limites.",
+
+                consequences: [
+
+                    {
+                        id:
+                            "group_mushrooms_leave_safe",
+
+                        text:
+                            "Quelques minutes plus tard, un petit animal goûte un champignon et s'enfuit immédiatement. Décision probablement raisonnable.",
+
+                        icon:
+                            "🐒",
+
+                        effects:
+                            [],
+
+                        weight:
+                            75
+                    },
+
+                    {
+                        id:
+                            "group_mushrooms_leave_hunger",
+
+                        text:
+                            "Le groupe poursuit sa route le ventre vide.",
+
+                        icon:
+                            "🍖",
+
+                        effects: [
+                            {
+                                target:
+                                    "all",
+
+                                status: {
+                                    id:
+                                        "hungry",
+
+                                    duration:
+                                        2
+                                }
+                            }
+                        ],
+
+                        weight:
+                            25
+                    }
+
+                ]
+            }
+
+        ]
+    },
+
+
+    // =========================================================
+    // 15 - NOUVEAU : SIGNAL DE DÉTRESSE
+    // DÉBUT MINI-HISTOIRE
+    // =========================================================
+
+    {
+        id:
+            "group_signal_fire",
+
+        type:
+            "group_vs_one",
+
+        baseWeight:
+            1,
+
+        title:
+            "{group} aperçoivent un bateau au loin",
+
+        category:
+            "Espoir",
+
+        icon:
+            "🚢",
+
+        description:
+            "Un minuscule bateau apparaît à l'horizon. {target} veut immédiatement utiliser tout le bois sec pour créer un gigantesque signal de fumée.",
+
+        choices: [
+
+            {
+                id:
+                    "group_signal_big",
+
+                title:
+                    "🔥 Utiliser tout le bois",
+
+                description:
+                    "Créer le plus grand signal possible.",
+
+                narrative: {
+
+                    setFlags: [
+                        "group_signal_attempted",
+                        "group_signal_big"
+                    ],
+
+                    removeFlags: [
+                        "group_signal_small"
+                    ],
+
+                    nextSituationBoosts: [
+                        {
+                            id:
+                                "group_signal_aftermath",
+
+                            weight:
+                                35
+                        }
+                    ]
+
+                },
+
+                consequences: [
+
+                    {
+                        id:
+                            "group_signal_big_good",
+
+                        text:
+                            "Le feu produit une immense colonne de fumée. Le bateau semble légèrement modifier sa trajectoire.",
+
+                        icon:
+                            "🚢",
+
+                        effects: [
+                            {
+                                target:
+                                    "all",
+
+                                status: {
+                                    id:
+                                        "courage",
+
+                                    duration:
+                                        2
+                                }
+                            }
+                        ],
+
+                        weight:
+                            15,
+
+                        narrative: {
+
+                            nextSituationBoosts: [
+                                {
+                                    id:
+                                        "group_signal_aftermath",
+
+                                    weight:
+                                        50
+                                }
+                            ]
+
+                        }
+                    },
+
+                    {
+                        id:
+                            "group_signal_big_bad",
+
+                        text:
+                            "Une rafale disperse immédiatement la fumée. Tout le stock de bois sec vient d'être gaspillé.",
+
+                        icon:
+                            "💨",
+
+                        effects: [
+                            {
+                                target:
+                                    "all",
+
+                                gauge: {
+                                    id:
+                                        "fatigue",
+
+                                    amount:
+                                        1
+                                }
+                            }
+                        ],
+
+                        weight:
+                            55,
+
+                        narrative: {
+
+                            nextSituationBoosts: [
+                                {
+                                    id:
+                                        "group_signal_aftermath",
+
+                                    weight:
+                                        10
+                                }
+                            ]
+
+                        }
+                    },
+
+                    {
+                        id:
+                            "group_signal_big_neutral",
+
+                        text:
+                            "La fumée monte correctement, mais le bateau est beaucoup trop loin pour savoir s'il l'a remarquée.",
+
+                        icon:
+                            "🌫️",
+
+                        effects:
+                            [],
+
+                        weight:
+                            30
+                    }
+
+                ]
+            },
+
+
+            {
+                id:
+                    "group_signal_small",
+
+                title:
+                    "🌫️ Économiser le bois",
+
+                description:
+                    "Créer un signal plus faible sans sacrifier toutes les ressources.",
+
+                narrative: {
+
+                    setFlags: [
+                        "group_signal_attempted",
+                        "group_signal_small"
+                    ],
+
+                    removeFlags: [
+                        "group_signal_big"
+                    ],
+
+                    nextSituationBoosts: [
+                        {
+                            id:
+                                "group_signal_aftermath",
+
+                            weight:
+                                22
+                        }
+                    ]
+
+                },
+
+                consequences: [
+
+                    {
+                        id:
+                            "group_signal_small_good",
+
+                        text:
+                            "Le vent est parfait. Malgré sa taille, le signal produit une colonne de fumée visible très loin.",
+
+                        icon:
+                            "🌫️",
+
+                        effects: [
+                            {
+                                target:
+                                    "all",
+
+                                status: {
+                                    id:
+                                        "courage",
+
+                                    duration:
+                                        1
+                                }
+                            }
+                        ],
+
+                        weight:
+                            12
+                    },
+
+                    {
+                        id:
+                            "group_signal_small_bad",
+
+                        text:
+                            "Le signal est beaucoup trop faible. Le bateau continue sa route sans réagir.",
+
+                        icon:
+                            "🚢",
+
+                        effects:
+                            [],
+
+                        weight:
+                            48
+                    },
+
+                    {
+                        id:
+                            "group_signal_small_neutral",
+
+                        text:
+                            "Impossible de savoir si quelqu'un a aperçu la fumée.",
+
+                        icon:
+                            "👀",
+
+                        effects:
+                            [],
+
+                        weight:
+                            40
+                    }
+
+                ]
+            }
+
+        ]
+    },
+
+
+    // =========================================================
+    // 16 - SUITE : SIGNAL DE DÉTRESSE
+    // =========================================================
+
+    {
+        id:
+            "group_signal_aftermath",
+
+        type:
+            "group_vs_one",
+
+        baseWeight:
+            1,
+
+        requirements: {
+
+            all: [
+                "group_signal_attempted"
+            ]
+
+        },
+
+        title:
+            "Un bruit de moteur résonne au large",
+
+        category:
+            "Suite",
+
+        icon:
+            "🔭",
+
+        description:
+            "Plus tard dans la journée, {group} et {target} entendent distinctement un moteur. Un bateau semble être quelque part derrière la côte rocheuse.",
+
+        choices: [
+
+            {
+                id:
+                    "group_signal_run",
+
+                title:
+                    "🏃 Courir jusqu'à la falaise",
+
+                description:
+                    "Essayer d'atteindre un point visible avant que le bateau ne disparaisse.",
+
+                consequences: [
+
+                    {
+                        id:
+                            "group_signal_run_good",
+
+                        text:
+                            "Tout le monde atteint la falaise et distingue clairement le bateau. Pendant quelques secondes, un marin semble regarder vers l'île.",
+
+                        icon:
+                            "🚢",
+
+                        effects: [
+                            {
+                                target:
+                                    "all",
+
+                                status: {
+                                    id:
+                                        "courage",
+
+                                    duration:
+                                        2
+                                }
+                            },
+
+                            {
+                                target:
+                                    "all",
+
+                                gauge: {
+                                    id:
+                                        "fatigue",
+
+                                    amount:
+                                        1
+                                }
+                            }
+                        ],
+
+                        weight:
+                            20
+                    },
+
+                    {
+                        id:
+                            "group_signal_run_bad",
+
+                        text:
+                            "La course est épuisante. Lorsque tout le monde arrive à la falaise, le bruit du moteur a déjà disparu.",
+
+                        icon:
+                            "🥵",
+
+                        effects: [
+                            {
+                                target:
+                                    "all",
+
+                                gauge: {
+                                    id:
+                                        "fatigue",
+
+                                    amount:
+                                        2
+                                }
+                            }
+                        ],
+
+                        weight:
+                            50
+                    },
+
+                    {
+                        id:
+                            "group_signal_run_neutral",
+
+                        text:
+                            "Un bateau est visible très loin, mais impossible de savoir s'il se dirige réellement vers l'île.",
+
+                        icon:
+                            "🔭",
+
+                        effects: [
+                            {
+                                target:
+                                    "all",
+
+                                gauge: {
+                                    id:
+                                        "fatigue",
+
+                                    amount:
+                                        1
+                                }
+                            }
+                        ],
+
+                        weight:
+                            30
+                    }
+
+                ]
+            },
+
+
+            {
+                id:
+                    "group_signal_wait",
+
+                title:
+                    "🛖 Rester au camp",
+
+                description:
+                    "Économiser les forces et espérer que le signal ait été vu.",
+
+                consequences: [
+
+                    {
+                        id:
+                            "group_signal_wait_good",
+
+                        text:
+                            "Le bruit du moteur se rapproche pendant quelques minutes avant de repartir. Quelqu'un a peut-être vu l'île.",
+
+                        icon:
+                            "👀",
+
+                        effects: [
+                            {
+                                target:
+                                    "all",
+
+                                status: {
+                                    id:
+                                        "courage",
+
+                                    duration:
+                                        1
+                                }
+                            }
+                        ],
+
+                        weight:
+                            20
+                    },
+
+                    {
+                        id:
+                            "group_signal_wait_neutral",
+
+                        text:
+                            "Le moteur disparaît progressivement. Personne ne saura jamais exactement où se trouvait le bateau.",
+
+                        icon:
+                            "🌊",
+
+                        effects:
+                            [],
+
+                        weight:
+                            80
+                    }
+
+                ]
+            }
+
+        ]
+    },
+
+
+    // =========================================================
+    // 17 - NOUVEAU : NID DE SERPENTS
+    // =========================================================
+
+    {
+        id:
+            "group_snake_nest",
+
+        type:
+            "group_vs_one",
+
+        baseWeight:
+            0.9,
+
+        title:
+            "{target} marche près d'un nid de serpents",
+
+        category:
+            "Danger",
+
+        icon:
+            "🐍",
+
+        description:
+            "{group} voient plusieurs serpents sortir d'un amas de pierres juste derrière {target}. Lui seul ne semble rien avoir remarqué.",
+
+        choices: [
+
+            {
+                id:
+                    "group_snake_warn",
+
+                title:
+                    "📢 Prévenir {target}",
+
+                description:
+                    "Lui faire signe de ne surtout plus bouger.",
+
+                consequences: [
+
+                    {
+                        id:
+                            "group_snake_warn_good",
+
+                        text:
+                            "{target} reste parfaitement immobile. Les serpents finissent par s'éloigner.",
+
+                        icon:
+                            "😮‍💨",
+
+                        effects: [
+                            {
+                                target:
+                                    "target",
+
+                                status: {
+                                    id:
+                                        "courage",
+
+                                    duration:
+                                        1
+                                }
+                            }
+                        ],
+
+                        weight:
+                            40
+                    },
+
+                    {
+                        id:
+                            "group_snake_warn_bad",
+
+                        text:
+                            "Le cri fait sursauter {target}, qui pose son pied exactement au mauvais endroit.",
+
+                        icon:
+                            "🐍",
+
+                        effects: [
+                            {
+                                target:
+                                    "target",
+
+                                status:
+                                    "poisoned"
+                            }
+                        ],
+
+                        weight:
+                            45
+                    },
+
+                    {
+                        id:
+                            "group_snake_warn_neutral",
+
+                        text:
+                            "{target} s'éloigne très lentement pendant que les serpents restent sous les pierres.",
+
+                        icon:
+                            "🥷",
+
+                        effects:
+                            [],
+
+                        weight:
+                            15
+                    }
+
+                ]
+            },
+
+
+            {
+                id:
+                    "group_snake_distract",
+
+                title:
+                    "🪨 Faire diversion",
+
+                description:
+                    "Lancer plusieurs pierres loin de {target}.",
+
+                consequences: [
+
+                    {
+                        id:
+                            "group_snake_distract_good",
+
+                        text:
+                            "Les serpents réagissent aux vibrations et s'éloignent dans l'autre direction.",
+
+                        icon:
+                            "🎯",
+
+                        effects:
+                            [],
+
+                        weight:
+                            35
+                    },
+
+                    {
+                        id:
+                            "group_snake_distract_bad",
+
+                        text:
+                            "Une pierre tombe beaucoup trop près. Les serpents deviennent agressifs et se dispersent vers tout le monde.",
+
+                        icon:
+                            "😱",
+
+                        effects: [
+                            {
+                                target:
+                                    "all",
+
+                                status:
+                                    "poisoned"
+                            }
+                        ],
+
+                        weight:
+                            40
+                    },
+
+                    {
+                        id:
+                            "group_snake_distract_neutral",
+
+                        text:
+                            "Les serpents restent sur place, mais {target} profite de la diversion pour reculer lentement.",
+
+                        icon:
+                            "🐍",
+
+                        effects:
+                            [],
+
+                        weight:
+                            25
+                    }
+
+                ]
+            }
+
+        ]
+    },
+
+
+    // =========================================================
+    // 18 - NOUVEAU : JOURNÉE DE CONSTRUCTION
+    // RESPIRATION / ÉQUILIBRAGE
+    // =========================================================
+
+    {
+        id:
+            "group_build_day",
+
+        type:
+            "group_vs_one",
+
+        baseWeight:
+            0.8,
+
+        title:
+            "{group} organisent une journée de préparation",
+
+        category:
+            "Survie",
+
+        icon:
+            "🛠️",
+
+        description:
+            "Pour une fois, aucun danger immédiat. {group} veulent profiter de la journée pour améliorer le camp. {target} propose une méthode différente.",
+
+        choices: [
+
+            {
+                id:
+                    "group_build_tools",
+
+                title:
+                    "🛠️ Fabriquer des outils",
+
+                description:
+                    "Préparer du matériel pour les prochains jours.",
+
+                consequences: [
+
+                    {
+                        id:
+                            "group_build_tools_good",
+
+                        text:
+                            "La journée est productive. Plusieurs outils improvisés sont désormais utilisables.",
+
+                        icon:
+                            "🔨",
+
+                        effects: [
+                            {
+                                target:
+                                    "all",
+
+                                status: {
+                                    id:
+                                        "resourceful",
+
+                                    duration:
+                                        2
+                                }
+                            }
+                        ],
+
+                        weight:
+                            55
+                    },
+
+                    {
+                        id:
+                            "group_build_tools_tired",
+
+                        text:
+                            "Les outils sont utilisables, mais la journée entière passée à travailler laisse tout le monde épuisé.",
+
+                        icon:
+                            "🥵",
+
+                        effects: [
+                            {
+                                target:
+                                    "all",
+
+                                status: {
+                                    id:
+                                        "resourceful",
+
+                                    duration:
+                                        1
+                                }
+                            },
+
+                            {
+                                target:
+                                    "all",
+
+                                gauge: {
+                                    id:
+                                        "fatigue",
+
+                                    amount:
+                                        1
+                                }
+                            }
+                        ],
+
+                        weight:
+                            45
+                    }
+
+                ]
+            },
+
+
+            {
+                id:
+                    "group_build_rest",
+
+                title:
+                    "😴 Faire une journée de repos",
+
+                description:
+                    "Les outils attendront demain.",
+
+                consequences: [
+
+                    {
+                        id:
+                            "group_build_rest_good",
+
+                        text:
+                            "Le calme de la journée permet enfin à tout le monde de récupérer correctement.",
+
+                        icon:
+                            "😌",
+
+                        effects: [
+                            {
+                                target:
+                                    "all",
+
+                                gauge: {
+                                    id:
+                                        "fatigue",
+
+                                    amount:
+                                        -2
+                                }
+                            }
+                        ],
+
+                        weight:
+                            75
+                    },
+
+                    {
+                        id:
+                            "group_build_rest_hungry",
+
+                        text:
+                            "Le repos aide, mais le manque de nourriture commence à devenir impossible à ignorer.",
+
+                        icon:
+                            "🍖",
+
+                        effects: [
+                            {
+                                target:
+                                    "all",
+
+                                gauge: {
+                                    id:
+                                        "fatigue",
+
+                                    amount:
+                                        -1
+                                }
+                            },
+
+                            {
+                                target:
+                                    "all",
+
+                                status: {
+                                    id:
+                                        "hungry",
+
+                                    duration:
+                                        2
+                                }
+                            }
+                        ],
+
+                        weight:
+                            25
                     }
 
                 ]

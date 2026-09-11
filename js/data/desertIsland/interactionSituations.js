@@ -2,7 +2,6 @@ export const INTERACTION_SITUATIONS = [
 
     // =========================================================
     // 1 - HAMAC + RUCHE
-    // CLASSIQUE
     // =========================================================
 
     {
@@ -21,28 +20,26 @@ export const INTERACTION_SITUATIONS = [
 
         description:
             "{actor} aperçoit {target} profondément endormi sur un hamac. " +
-            "Juste à côté se trouve une énorme ruche. Lui envoyer dessus ?",
+            "Juste à côté se trouve une énorme ruche. Une idée absolument stupide commence à germer.",
 
         choices: [
 
             {
-                id:
-                    "hammock_bees_yes",
+                id: "hammock_bees_yes",
 
                 title:
-                    "🐝 Oui",
+                    "🐝 Envoyer la ruche",
 
                 description:
-                    "Prendre la ruche et la lancer sur {target}.",
+                    "Une excellente manière de tester votre amitié.",
 
                 consequences: [
 
                     {
-                        id:
-                            "hammock_bees_yes_actor",
+                        id: "hammock_bees_yes_actor",
 
                         text:
-                            "Les abeilles sont dérangées pendant le lancer et se retournent contre {actor}.",
+                            "Les abeilles sont dérangées pendant le lancer et se retournent immédiatement contre {actor}. Karma extrêmement rapide.",
 
                         icon:
                             "🐝",
@@ -50,20 +47,29 @@ export const INTERACTION_SITUATIONS = [
                         effects: [
                             {
                                 target: "actor",
-                                lives: -2
+                                lives: -2,
+                                tags: ["physical"]
+                            },
+
+                            {
+                                target: "actor",
+
+                                relation: {
+                                    trust: -1,
+                                    distrust: 2
+                                }
                             }
                         ],
 
                         weight:
-                            62
+                            57
                     },
 
                     {
-                        id:
-                            "hammock_bees_yes_target",
+                        id: "hammock_bees_yes_target",
 
                         text:
-                            "Lancer parfait ! La ruche atterrit directement sur {target}, qui se fait piquer de partout.",
+                            "Lancer parfait. La ruche atterrit directement sur {target}. Il comprend très vite d'où elle vient.",
 
                         icon:
                             "😱",
@@ -71,29 +77,45 @@ export const INTERACTION_SITUATIONS = [
                         effects: [
                             {
                                 target: "target",
-                                lives: -1
+                                lives: -1,
+                                tags: ["physical"]
+                            },
+
+                            {
+                                target: "actor",
+
+                                relation: {
+                                    trust: -1,
+                                    distrust: 2
+                                }
                             }
                         ],
 
                         weight:
-                            28
+                            30
                     },
 
                     {
-                        id:
-                            "hammock_bees_yes_neutral",
+                        id: "hammock_bees_yes_neutral",
 
                         text:
-                            "La ruche tombe à côté du hamac. {target} se réveille, regarde autour de lui, puis se rendort.",
+                            "La ruche tombe à côté du hamac. {target} se réveille, fixe {actor} quelques secondes avec suspicion, puis se rendort.",
 
                         icon:
-                            "😐",
+                            "👀",
 
-                        effects:
-                            [],
+                        effects: [
+                            {
+                                target: "actor",
+
+                                relation: {
+                                    distrust: 2
+                                }
+                            }
+                        ],
 
                         weight:
-                            10
+                            13
                     }
 
                 ]
@@ -101,40 +123,44 @@ export const INTERACTION_SITUATIONS = [
 
 
             {
-                id:
-                    "hammock_bees_no",
+                id: "hammock_bees_no",
 
                 title:
-                    "😇 Non",
+                    "😇 Le laisser tranquille",
 
                 description:
-                    "Laisser {target} dormir tranquillement.",
+                    "Résister exceptionnellement à l'appel du chaos.",
 
                 consequences: [
 
                     {
-                        id:
-                            "hammock_bees_no_safe",
+                        id: "hammock_bees_no_safe",
 
                         text:
-                            "{actor} laisse {target} tranquille. Pour une fois, personne ne souffre.",
+                            "{actor} éloigne discrètement la ruche du hamac. {target} se réveillera sans jamais savoir ce qui aurait pu arriver.",
 
                         icon:
                             "😌",
 
-                        effects:
-                            [],
+                        effects: [
+                            {
+                                target: "actor",
+
+                                relation: {
+                                    trust: 1
+                                }
+                            }
+                        ],
 
                         weight:
-                            78
+                            72
                     },
 
                     {
-                        id:
-                            "hammock_bees_no_rock",
+                        id: "hammock_bees_no_rock",
 
                         text:
-                            "{target} se réveille en sursaut et balance une pierre sur {actor} en croyant être attaqué.",
+                            "{target} se réveille brusquement et lance une pierre sur {actor} en pensant qu'il préparait quelque chose.",
 
                         icon:
                             "🪨",
@@ -143,11 +169,19 @@ export const INTERACTION_SITUATIONS = [
                             {
                                 target: "actor",
                                 lives: -1
+                            },
+
+                            {
+                                target: "actor",
+
+                                relation: {
+                                    distrust: 1
+                                }
                             }
                         ],
 
                         weight:
-                            22
+                            28
                     }
 
                 ]
@@ -159,7 +193,6 @@ export const INTERACTION_SITUATIONS = [
 
     // =========================================================
     // 2 - DERNIÈRE NOIX DE COCO
-    // CLASSIQUE
     // =========================================================
 
     {
@@ -178,28 +211,26 @@ export const INTERACTION_SITUATIONS = [
 
         description:
             "{actor} meurt de faim et aperçoit {target} avec une magnifique noix de coco. " +
-            "{target} n'a visiblement aucune intention de partager.",
+            "{target} n'a visiblement aucune intention de la partager spontanément.",
 
         choices: [
 
             {
-                id:
-                    "coconut_steal",
+                id: "coconut_steal",
 
                 title:
                     "🥷 La voler",
 
                 description:
-                    "La faim justifie certains crimes.",
+                    "La survie justifie peut-être certains crimes.",
 
                 consequences: [
 
                     {
-                        id:
-                            "coconut_steal_success",
+                        id: "coconut_steal_success",
 
                         text:
-                            "{actor} réalise un vol parfait et dévore une partie de la noix de coco.",
+                            "{actor} réalise un vol parfait et dévore discrètement une partie de la noix de coco.",
 
                         icon:
                             "😎",
@@ -208,6 +239,19 @@ export const INTERACTION_SITUATIONS = [
                             {
                                 target: "actor",
                                 lives: 1
+                            },
+
+                            {
+                                target: "actor",
+                                removeStatus: "hungry"
+                            },
+
+                            {
+                                target: "actor",
+
+                                relation: {
+                                    trust: -1
+                                }
                             }
                         ],
 
@@ -216,11 +260,10 @@ export const INTERACTION_SITUATIONS = [
                     },
 
                     {
-                        id:
-                            "coconut_steal_fail",
+                        id: "coconut_steal_fail",
 
                         text:
-                            "{target} surprend {actor} et lui met une gifle monumentale.",
+                            "{target} surprend {actor} la main sur sa noix de coco. La discussion est courte et très peu diplomatique.",
 
                         icon:
                             "👋",
@@ -229,16 +272,24 @@ export const INTERACTION_SITUATIONS = [
                             {
                                 target: "actor",
                                 lives: -1
+                            },
+
+                            {
+                                target: "actor",
+
+                                relation: {
+                                    trust: -1,
+                                    distrust: 2
+                                }
                             }
                         ],
 
                         weight:
-                            67
+                            62
                     },
 
                     {
-                        id:
-                            "coconut_steal_neutral",
+                        id: "coconut_steal_neutral",
 
                         text:
                             "{actor} approche discrètement, mais {target} se retourne. Le vol est abandonné avant même de commencer.",
@@ -246,11 +297,18 @@ export const INTERACTION_SITUATIONS = [
                         icon:
                             "😬",
 
-                        effects:
-                            [],
+                        effects: [
+                            {
+                                target: "actor",
+
+                                relation: {
+                                    distrust: 1
+                                }
+                            }
+                        ],
 
                         weight:
-                            15
+                            20
                     }
 
                 ]
@@ -258,23 +316,21 @@ export const INTERACTION_SITUATIONS = [
 
 
             {
-                id:
-                    "coconut_ask",
+                id: "coconut_ask",
 
                 title:
                     "🙏 Demander gentiment",
 
                 description:
-                    "Tenter une approche civilisée.",
+                    "Une approche presque civilisée.",
 
                 consequences: [
 
                     {
-                        id:
-                            "coconut_ask_yes",
+                        id: "coconut_ask_yes",
 
                         text:
-                            "{target} accepte de partager. Cette île possède encore un peu d'humanité.",
+                            "{target} accepte finalement de partager. Cette île possède encore un peu d'humanité.",
 
                         icon:
                             "🤝",
@@ -286,30 +342,100 @@ export const INTERACTION_SITUATIONS = [
                             },
 
                             {
-                                target: "target",
-                                lives: 1
+                                target: "actor",
+                                removeStatus: "hungry"
+                            },
+
+                            {
+                                target: "actor",
+
+                                relation: {
+                                    trust: 1
+                                }
                             }
                         ],
 
                         weight:
-                            16
+                            25
                     },
 
                     {
-                        id:
-                            "coconut_ask_no",
+                        id: "coconut_ask_no",
 
                         text:
-                            "{target} refuse et mange lentement la noix de coco devant {actor}.",
+                            "{target} refuse et mange lentement la noix de coco devant {actor}. C'est presque artistique.",
 
                         icon:
                             "😈",
 
-                        effects:
-                            [],
+                        effects: [
+                            {
+                                target: "actor",
+
+                                relation: {
+                                    trust: -1
+                                }
+                            }
+                        ],
 
                         weight:
-                            84
+                            75
+                    }
+
+                ]
+            },
+
+
+            // =================================================
+            // CHOIX DÉBLOQUÉ PAR CONFIANCE
+            // =================================================
+
+            {
+                id: "coconut_share_trusted",
+
+                title:
+                    "🤝 Lui rappeler votre alliance",
+
+                description:
+                    "{target} et {actor} se font suffisamment confiance pour ne pas commencer une guerre pour une noix de coco.",
+
+                condition: {
+                    type: "relation",
+                    field: "trust",
+                    operator: ">=",
+                    value: 2
+                },
+
+                consequences: [
+
+                    {
+                        id: "coconut_share_trusted_success",
+
+                        text:
+                            "{target} soupire puis coupe la noix en deux. Aucun marchandage, aucune bagarre. Presque émouvant.",
+
+                        icon:
+                            "🥥",
+
+                        effects: [
+                            {
+                                target: "actor",
+                                lives: 1
+                            },
+
+                            {
+                                target: "target",
+                                lives: 1
+                            },
+
+                            {
+                                target: "actor",
+                                removeStatus: "hungry"
+                            }
+                        ],
+
+                        weight:
+                            100
                     }
 
                 ]
@@ -321,7 +447,6 @@ export const INTERACTION_SITUATIONS = [
 
     // =========================================================
     // 3 - SERPENT PRÈS DU SAC
-    // CLASSIQUE
     // =========================================================
 
     {
@@ -345,8 +470,7 @@ export const INTERACTION_SITUATIONS = [
         choices: [
 
             {
-                id:
-                    "snake_warn",
+                id: "snake_warn",
 
                 title:
                     "📢 Prévenir {target}",
@@ -357,11 +481,10 @@ export const INTERACTION_SITUATIONS = [
                 consequences: [
 
                     {
-                        id:
-                            "snake_warn_good",
+                        id: "snake_warn_good",
 
                         text:
-                            "{target} remercie {actor}. Ensemble, ils font fuir le serpent.",
+                            "{target} remercie {actor}. Ensemble, ils éloignent le serpent sans prendre de risque.",
 
                         icon:
                             "🤝",
@@ -369,17 +492,20 @@ export const INTERACTION_SITUATIONS = [
                         effects: [
                             {
                                 target: "actor",
-                                lives: 1
+
+                                relation: {
+                                    trust: 1,
+                                    protection: 2
+                                }
                             }
                         ],
 
                         weight:
-                            18
+                            38
                     },
 
                     {
-                        id:
-                            "snake_warn_bad",
+                        id: "snake_warn_bad",
 
                         text:
                             "{actor} hurle tellement fort que le serpent panique et lui mord la cheville.",
@@ -390,29 +516,48 @@ export const INTERACTION_SITUATIONS = [
                         effects: [
                             {
                                 target: "actor",
-                                lives: -2
+                                lives: -1
+                            },
+
+                            {
+                                target: "actor",
+                                status: "poisoned"
+                            },
+
+                            {
+                                target: "actor",
+
+                                relation: {
+                                    trust: 1
+                                }
                             }
                         ],
 
                         weight:
-                            52
+                            42
                     },
 
                     {
-                        id:
-                            "snake_warn_neutral",
+                        id: "snake_warn_neutral",
 
                         text:
-                            "{target} recule lentement et le serpent s'éloigne. Personne n'est blessé.",
+                            "{target} recule lentement. Le serpent s'éloigne sans incident.",
 
                         icon:
                             "😮‍💨",
 
-                        effects:
-                            [],
+                        effects: [
+                            {
+                                target: "actor",
+
+                                relation: {
+                                    trust: 1
+                                }
+                            }
+                        ],
 
                         weight:
-                            30
+                            20
                     }
 
                 ]
@@ -420,23 +565,21 @@ export const INTERACTION_SITUATIONS = [
 
 
             {
-                id:
-                    "snake_ignore",
+                id: "snake_ignore",
 
                 title:
                     "🤫 Ne rien dire",
 
                 description:
-                    "Ce n'est pas le sac de {actor}, après tout.",
+                    "Ce n'est pas ton sac après tout.",
 
                 consequences: [
 
                     {
-                        id:
-                            "snake_ignore_target",
+                        id: "snake_ignore_target",
 
                         text:
-                            "{target} ouvre son sac et se fait mordre par le serpent.",
+                            "{target} ouvre son sac et se fait mordre. Il réalise ensuite que {actor} avait vu le serpent depuis plusieurs secondes.",
 
                         icon:
                             "😱",
@@ -444,29 +587,41 @@ export const INTERACTION_SITUATIONS = [
                         effects: [
                             {
                                 target: "target",
-                                lives: -2
+                                lives: -1
+                            },
+
+                            {
+                                target: "target",
+                                status: "poisoned"
+                            },
+
+                            {
+                                target: "actor",
+
+                                relation: {
+                                    trust: -1,
+                                    distrust: 2
+                                }
                             }
                         ],
 
                         weight:
-                            65
+                            62
                     },
 
                     {
-                        id:
-                            "snake_ignore_escape",
+                        id: "snake_ignore_escape",
 
                         text:
-                            "Le serpent finit par repartir. Personne ne saura jamais que {actor} n'a rien dit.",
+                            "Le serpent finit par repartir. {target} ne saura jamais que {actor} avait envisagé de le laisser se faire mordre.",
 
                         icon:
                             "😶",
 
-                        effects:
-                            [],
+                        effects: [],
 
                         weight:
-                            35
+                            38
                     }
 
                 ]
@@ -496,23 +651,20 @@ export const INTERACTION_SITUATIONS = [
             "🌉",
 
         description:
-            "Le vieux pont en bois semble pouvoir s'effondrer à tout moment. " +
-            "Quelqu'un doit tester le passage.",
+            "Le vieux pont en bois semble pouvoir s'effondrer à tout moment. Quelqu'un doit tester le passage.",
 
         choices: [
 
             {
-                id:
-                    "bridge_actor_first",
+                id: "bridge_actor_first",
 
                 title:
                     "🧗 Passer en premier",
 
                 description:
-                    "{actor} prend le risque.",
+                    "{actor} prend lui-même le risque.",
 
                 narrative: {
-
                     setFlags: [
                         "interaction_bridge_crossed"
                     ],
@@ -523,52 +675,48 @@ export const INTERACTION_SITUATIONS = [
 
                     nextSituationBoosts: [
                         {
-                            id:
-                                "interaction_bridge_return",
-
-                            weight:
-                                24
+                            id: "interaction_bridge_return",
+                            weight: 28
                         }
                     ]
-
                 },
 
                 consequences: [
 
                     {
-                        id:
-                            "bridge_actor_success",
+                        id: "bridge_actor_success",
 
                         text:
-                            "{actor} traverse sans problème. Le pont tient encore debout.",
+                            "{actor} traverse sans problème puis aide {target} à trouver les planches les plus solides.",
 
                         icon:
-                            "😎",
+                            "🤝",
 
-                        effects:
-                            [],
+                        effects: [
+                            {
+                                target: "actor",
+
+                                relation: {
+                                    trust: 1
+                                }
+                            }
+                        ],
 
                         weight:
-                            32,
+                            35,
 
                         narrative: {
-
                             nextSituationBoosts: [
                                 {
-                                    id:
-                                        "interaction_bridge_return",
-
-                                    weight:
-                                        36
+                                    id: "interaction_bridge_return",
+                                    weight: 40
                                 }
                             ]
-
                         }
                     },
 
                     {
-                        id:
-                            "bridge_actor_fail",
+                        id: "bridge_actor_fail",
 
                         text:
                             "Le pont casse sous {actor}, qui termine plusieurs mètres plus bas.",
@@ -579,31 +727,34 @@ export const INTERACTION_SITUATIONS = [
                         effects: [
                             {
                                 target: "actor",
-                                lives: -2
+                                lives: -1,
+                                tags: ["physical"]
+                            },
+
+                            {
+                                target: "actor",
+                                gauge: {
+                                    id: "fatigue",
+                                    amount: 1
+                                }
                             }
                         ],
 
                         weight:
-                            58,
+                            55,
 
                         narrative: {
-
                             nextSituationBoosts: [
                                 {
-                                    id:
-                                        "interaction_bridge_return",
-
-                                    weight:
-                                        4
+                                    id: "interaction_bridge_return",
+                                    weight: 6
                                 }
                             ]
-
                         }
                     },
 
                     {
-                        id:
-                            "bridge_actor_reward",
+                        id: "bridge_actor_reward",
 
                         text:
                             "{actor} traverse et découvre quelques fruits de l'autre côté.",
@@ -622,17 +773,12 @@ export const INTERACTION_SITUATIONS = [
                             10,
 
                         narrative: {
-
                             nextSituationBoosts: [
                                 {
-                                    id:
-                                        "interaction_bridge_return",
-
-                                    weight:
-                                        40
+                                    id: "interaction_bridge_return",
+                                    weight: 44
                                 }
                             ]
-
                         }
                     }
 
@@ -641,8 +787,7 @@ export const INTERACTION_SITUATIONS = [
 
 
             {
-                id:
-                    "bridge_target_first",
+                id: "bridge_target_first",
 
                 title:
                     "👉 Envoyer {target}",
@@ -651,7 +796,6 @@ export const INTERACTION_SITUATIONS = [
                     "Pourquoi prendre le risque soi-même ?",
 
                 narrative: {
-
                     setFlags: [
                         "interaction_target_crossed_bridge"
                     ],
@@ -659,34 +803,38 @@ export const INTERACTION_SITUATIONS = [
                     removeFlags: [
                         "interaction_bridge_crossed"
                     ]
-
                 },
 
                 consequences: [
 
                     {
-                        id:
-                            "bridge_target_success",
+                        id: "bridge_target_success",
 
                         text:
-                            "{target} traverse facilement. Le pont semble finalement assez solide.",
+                            "{target} traverse facilement mais n'oublie pas que {actor} l'a volontairement envoyé tester le pont.",
 
                         icon:
-                            "👍",
+                            "👀",
 
-                        effects:
-                            [],
+                        effects: [
+                            {
+                                target: "actor",
+
+                                relation: {
+                                    trust: -1
+                                }
+                            }
+                        ],
 
                         weight:
-                            40
+                            42
                     },
 
                     {
-                        id:
-                            "bridge_target_fail",
+                        id: "bridge_target_fail",
 
                         text:
-                            "Le pont s'effondre sous {target}, sous le regard légèrement coupable de {actor}.",
+                            "Le pont s'effondre sous {target}. Le regard qu'il adresse à {actor} depuis le ravin est particulièrement clair.",
 
                         icon:
                             "🌊",
@@ -694,12 +842,81 @@ export const INTERACTION_SITUATIONS = [
                         effects: [
                             {
                                 target: "target",
-                                lives: -2
+                                lives: -2,
+                                tags: ["physical"]
+                            },
+
+                            {
+                                target: "actor",
+
+                                relation: {
+                                    trust: -1,
+                                    distrust: 2
+                                }
                             }
                         ],
 
                         weight:
-                            60
+                            58
+                    }
+
+                ]
+            },
+
+
+            {
+                id: "bridge_together",
+
+                title:
+                    "🪢 Sécuriser le passage ensemble",
+
+                description:
+                    "Vous vous faites suffisamment confiance pour utiliser une corde et avancer ensemble.",
+
+                condition: {
+                    type: "relation",
+                    field: "trust",
+                    operator: ">=",
+                    value: 2
+                },
+
+                narrative: {
+                    setFlags: [
+                        "interaction_bridge_crossed",
+                        "interaction_bridge_teamwork"
+                    ],
+
+                    nextSituationBoosts: [
+                        {
+                            id: "interaction_bridge_return",
+                            weight: 45
+                        }
+                    ]
+                },
+
+                consequences: [
+
+                    {
+                        id: "bridge_together_success",
+
+                        text:
+                            "{actor} et {target} sécurisent les planches une par une et traversent sans incident.",
+
+                        icon:
+                            "🪢",
+
+                        effects: [
+                            {
+                                target: "actor",
+
+                                relation: {
+                                    trust: 1
+                                }
+                            }
+                        ],
+
+                        weight:
+                            100
                     }
 
                 ]
@@ -711,7 +928,6 @@ export const INTERACTION_SITUATIONS = [
 
     // =========================================================
     // 5 - POISSON SUSPECT
-    // CLASSIQUE
     // =========================================================
 
     {
@@ -734,8 +950,7 @@ export const INTERACTION_SITUATIONS = [
         choices: [
 
             {
-                id:
-                    "fish_eat",
+                id: "fish_eat",
 
                 title:
                     "🍽️ Accepter",
@@ -746,8 +961,7 @@ export const INTERACTION_SITUATIONS = [
                 consequences: [
 
                     {
-                        id:
-                            "fish_eat_good",
+                        id: "fish_eat_good",
 
                         text:
                             "Contre toute attente, le poisson est excellent. {actor} et {target} reprennent des forces.",
@@ -764,19 +978,36 @@ export const INTERACTION_SITUATIONS = [
                             {
                                 target: "target",
                                 lives: 1
+                            },
+
+                            {
+                                target: "actor",
+                                removeStatus: "hungry"
+                            },
+
+                            {
+                                target: "target",
+                                removeStatus: "hungry"
+                            },
+
+                            {
+                                target: "actor",
+
+                                relation: {
+                                    trust: 1
+                                }
                             }
                         ],
 
                         weight:
-                            14
+                            18
                     },
 
                     {
-                        id:
-                            "fish_eat_bad",
+                        id: "fish_eat_bad",
 
                         text:
-                            "Le poisson était toxique. Très toxique.",
+                            "Le poisson était toxique. Très toxique. Les deux regrettent immédiatement cette décision collective.",
 
                         icon:
                             "🤮",
@@ -784,22 +1015,21 @@ export const INTERACTION_SITUATIONS = [
                         effects: [
                             {
                                 target: "actor",
-                                lives: -1
+                                status: "poisoned"
                             },
 
                             {
                                 target: "target",
-                                lives: -1
+                                status: "poisoned"
                             }
                         ],
 
                         weight:
-                            66
+                            62
                     },
 
                     {
-                        id:
-                            "fish_eat_neutral",
+                        id: "fish_eat_neutral",
 
                         text:
                             "Le poisson est affreusement mauvais mais apparemment comestible.",
@@ -807,8 +1037,7 @@ export const INTERACTION_SITUATIONS = [
                         icon:
                             "😖",
 
-                        effects:
-                            [],
+                        effects: [],
 
                         weight:
                             20
@@ -819,8 +1048,7 @@ export const INTERACTION_SITUATIONS = [
 
 
             {
-                id:
-                    "fish_refuse",
+                id: "fish_refuse",
 
                 title:
                     "❌ Refuser",
@@ -831,11 +1059,10 @@ export const INTERACTION_SITUATIONS = [
                 consequences: [
 
                     {
-                        id:
-                            "fish_refuse_good",
+                        id: "fish_refuse_good",
 
                         text:
-                            "{target} mange seul et tombe malade. Bonne intuition de {actor}.",
+                            "{target} goûte seul et tombe malade. Bonne intuition de {actor}.",
 
                         icon:
                             "🤢",
@@ -843,7 +1070,15 @@ export const INTERACTION_SITUATIONS = [
                         effects: [
                             {
                                 target: "target",
-                                lives: -1
+                                status: "poisoned"
+                            },
+
+                            {
+                                target: "actor",
+
+                                relation: {
+                                    insight: 1
+                                }
                             }
                         ],
 
@@ -852,8 +1087,7 @@ export const INTERACTION_SITUATIONS = [
                     },
 
                     {
-                        id:
-                            "fish_refuse_bad",
+                        id: "fish_refuse_bad",
 
                         text:
                             "Le poisson était parfaitement comestible. {target} se régale seul.",
@@ -873,8 +1107,7 @@ export const INTERACTION_SITUATIONS = [
                     },
 
                     {
-                        id:
-                            "fish_refuse_neutral",
+                        id: "fish_refuse_neutral",
 
                         text:
                             "{target} goûte une bouchée, grimace et jette finalement le poisson.",
@@ -882,8 +1115,15 @@ export const INTERACTION_SITUATIONS = [
                         icon:
                             "🐟",
 
-                        effects:
-                            [],
+                        effects: [
+                            {
+                                target: "actor",
+
+                                relation: {
+                                    insight: 1
+                                }
+                            }
+                        ],
 
                         weight:
                             40
@@ -898,7 +1138,6 @@ export const INTERACTION_SITUATIONS = [
 
     // =========================================================
     // 6 - FEU DE CAMP
-    // CLASSIQUE
     // =========================================================
 
     {
@@ -921,8 +1160,7 @@ export const INTERACTION_SITUATIONS = [
         choices: [
 
             {
-                id:
-                    "campfire_help",
+                id: "campfire_help",
 
                 title:
                     "🧯 Le réveiller",
@@ -933,11 +1171,10 @@ export const INTERACTION_SITUATIONS = [
                 consequences: [
 
                     {
-                        id:
-                            "campfire_help_good",
+                        id: "campfire_help_good",
 
                         text:
-                            "{actor} réveille {target} juste à temps. Reconnaissant, {target} partage quelques provisions.",
+                            "{actor} réveille {target} juste à temps. Reconnaissant, {target} promet de lui rendre la pareille.",
 
                         icon:
                             "🤝",
@@ -945,20 +1182,23 @@ export const INTERACTION_SITUATIONS = [
                         effects: [
                             {
                                 target: "actor",
-                                lives: 1
+
+                                relation: {
+                                    trust: 1,
+                                    debt: true
+                                }
                             }
                         ],
 
                         weight:
-                            18
+                            35
                     },
 
                     {
-                        id:
-                            "campfire_help_bad",
+                        id: "campfire_help_bad",
 
                         text:
-                            "{actor} trébuche en voulant aider et tombe dans les braises.",
+                            "{actor} trébuche en voulant aider et tombe dans les braises, mais {target} comprend parfaitement ce qu'il tentait de faire.",
 
                         icon:
                             "🔥",
@@ -966,29 +1206,44 @@ export const INTERACTION_SITUATIONS = [
                         effects: [
                             {
                                 target: "actor",
-                                lives: -1
+                                lives: -1,
+                                tags: ["physical"]
+                            },
+
+                            {
+                                target: "actor",
+
+                                relation: {
+                                    trust: 1
+                                }
                             }
                         ],
 
                         weight:
-                            42
+                            35
                     },
 
                     {
-                        id:
-                            "campfire_help_neutral",
+                        id: "campfire_help_neutral",
 
                         text:
-                            "{target} se réveille, se décale de quelques mètres et se rendort immédiatement.",
+                            "{target} se réveille, se décale de quelques mètres et remercie rapidement {actor}.",
 
                         icon:
                             "😴",
 
-                        effects:
-                            [],
+                        effects: [
+                            {
+                                target: "actor",
+
+                                relation: {
+                                    trust: 1
+                                }
+                            }
+                        ],
 
                         weight:
-                            40
+                            30
                     }
 
                 ]
@@ -996,8 +1251,7 @@ export const INTERACTION_SITUATIONS = [
 
 
             {
-                id:
-                    "campfire_ignore",
+                id: "campfire_ignore",
 
                 title:
                     "😴 Le laisser dormir",
@@ -1008,28 +1262,25 @@ export const INTERACTION_SITUATIONS = [
                 consequences: [
 
                     {
-                        id:
-                            "campfire_ignore_safe",
+                        id: "campfire_ignore_safe",
 
                         text:
-                            "Le vent change de direction. Finalement, rien ne se passe.",
+                            "Le vent change de direction. Finalement, rien ne se passe et personne ne saura rien.",
 
                         icon:
                             "😌",
 
-                        effects:
-                            [],
+                        effects: [],
 
                         weight:
                             38
                     },
 
                     {
-                        id:
-                            "campfire_ignore_bad",
+                        id: "campfire_ignore_bad",
 
                         text:
-                            "Une braise brûle {target}, qui se réveille en catastrophe.",
+                            "Une braise brûle {target}. Il découvre ensuite que {actor} l'avait vu dormir dangereusement près du feu.",
 
                         icon:
                             "🔥",
@@ -1037,7 +1288,16 @@ export const INTERACTION_SITUATIONS = [
                         effects: [
                             {
                                 target: "target",
-                                lives: -2
+                                lives: -1
+                            },
+
+                            {
+                                target: "actor",
+
+                                relation: {
+                                    trust: -1,
+                                    distrust: 2
+                                }
                             }
                         ],
 
@@ -1054,7 +1314,6 @@ export const INTERACTION_SITUATIONS = [
 
     // =========================================================
     // 7 - PIÈGE À SANGLIER
-    // CLASSIQUE
     // =========================================================
 
     {
@@ -1072,14 +1331,12 @@ export const INTERACTION_SITUATIONS = [
             "🪤",
 
         description:
-            "{actor} aperçoit un vieux piège dissimulé sous les feuilles. " +
-            "{target} fonce droit dessus sans l'avoir remarqué.",
+            "{actor} aperçoit un vieux piège dissimulé sous les feuilles. {target} fonce droit dessus sans l'avoir remarqué.",
 
         choices: [
 
             {
-                id:
-                    "trap_warn",
+                id: "trap_warn",
 
                 title:
                     "⚠️ Prévenir {target}",
@@ -1090,28 +1347,34 @@ export const INTERACTION_SITUATIONS = [
                 consequences: [
 
                     {
-                        id:
-                            "trap_warn_success",
+                        id: "trap_warn_success",
 
                         text:
-                            "{target} s'arrête juste à temps et remercie {actor}.",
+                            "{target} s'arrête juste à temps et remercie franchement {actor}.",
 
                         icon:
                             "😮‍💨",
 
-                        effects:
-                            [],
+                        effects: [
+                            {
+                                target: "actor",
+
+                                relation: {
+                                    trust: 1,
+                                    protection: 1
+                                }
+                            }
+                        ],
 
                         weight:
                             68
                     },
 
                     {
-                        id:
-                            "trap_warn_fail",
+                        id: "trap_warn_fail",
 
                         text:
-                            "{target} sursaute à cause du cri de {actor} et tombe... directement dans le piège.",
+                            "{target} sursaute à cause du cri de {actor} et tombe directement dans le piège. L'intention était bonne, au moins.",
 
                         icon:
                             "🤦",
@@ -1119,7 +1382,16 @@ export const INTERACTION_SITUATIONS = [
                         effects: [
                             {
                                 target: "target",
-                                lives: -1
+                                lives: -1,
+                                tags: ["physical"]
+                            },
+
+                            {
+                                target: "actor",
+
+                                relation: {
+                                    trust: 1
+                                }
                             }
                         ],
 
@@ -1132,8 +1404,7 @@ export const INTERACTION_SITUATIONS = [
 
 
             {
-                id:
-                    "trap_silent",
+                id: "trap_silent",
 
                 title:
                     "🤐 Ne rien dire",
@@ -1144,11 +1415,10 @@ export const INTERACTION_SITUATIONS = [
                 consequences: [
 
                     {
-                        id:
-                            "trap_silent_bad",
+                        id: "trap_silent_bad",
 
                         text:
-                            "{target} marche en plein dans le piège.",
+                            "{target} marche en plein dans le piège puis comprend que {actor} l'avait vu venir.",
 
                         icon:
                             "🪤",
@@ -1156,7 +1426,17 @@ export const INTERACTION_SITUATIONS = [
                         effects: [
                             {
                                 target: "target",
-                                lives: -2
+                                lives: -2,
+                                tags: ["physical"]
+                            },
+
+                            {
+                                target: "actor",
+
+                                relation: {
+                                    trust: -1,
+                                    distrust: 2
+                                }
                             }
                         ],
 
@@ -1165,17 +1445,15 @@ export const INTERACTION_SITUATIONS = [
                     },
 
                     {
-                        id:
-                            "trap_silent_good",
+                        id: "trap_silent_good",
 
                         text:
-                            "{target} remarque le piège tout seul et l'évite au dernier moment.",
+                            "{target} remarque le piège tout seul et l'évite au dernier moment. {actor} garde son silence pour lui.",
 
                         icon:
                             "😎",
 
-                        effects:
-                            [],
+                        effects: [],
 
                         weight:
                             28
@@ -1190,7 +1468,6 @@ export const INTERACTION_SITUATIONS = [
 
     // =========================================================
     // 8 - BANANE
-    // CLASSIQUE
     // =========================================================
 
     {
@@ -1213,8 +1490,7 @@ export const INTERACTION_SITUATIONS = [
         choices: [
 
             {
-                id:
-                    "banana_steal",
+                id: "banana_steal",
 
                 title:
                     "🥷 Voler la banane",
@@ -1225,8 +1501,7 @@ export const INTERACTION_SITUATIONS = [
                 consequences: [
 
                     {
-                        id:
-                            "banana_steal_good",
+                        id: "banana_steal_good",
 
                         text:
                             "{actor} subtilise la banane sans être repéré et la dévore.",
@@ -1238,6 +1513,19 @@ export const INTERACTION_SITUATIONS = [
                             {
                                 target: "actor",
                                 lives: 1
+                            },
+
+                            {
+                                target: "actor",
+                                removeStatus: "hungry"
+                            },
+
+                            {
+                                target: "actor",
+
+                                relation: {
+                                    trust: -1
+                                }
                             }
                         ],
 
@@ -1246,8 +1534,7 @@ export const INTERACTION_SITUATIONS = [
                     },
 
                     {
-                        id:
-                            "banana_steal_bad",
+                        id: "banana_steal_bad",
 
                         text:
                             "{target} surprend {actor}. La dispute se termine assez mal pour le voleur.",
@@ -1258,17 +1545,25 @@ export const INTERACTION_SITUATIONS = [
                         effects: [
                             {
                                 target: "actor",
-                                lives: -2
+                                lives: -1
+                            },
+
+                            {
+                                target: "actor",
+
+                                relation: {
+                                    trust: -1,
+                                    distrust: 2
+                                }
                             }
                         ],
 
                         weight:
-                            67
+                            62
                     },
 
                     {
-                        id:
-                            "banana_steal_neutral",
+                        id: "banana_steal_neutral",
 
                         text:
                             "{actor} abandonne son approche en voyant {target} surveiller constamment sa nourriture.",
@@ -1276,11 +1571,10 @@ export const INTERACTION_SITUATIONS = [
                         icon:
                             "👀",
 
-                        effects:
-                            [],
+                        effects: [],
 
                         weight:
-                            15
+                            20
                     }
 
                 ]
@@ -1288,8 +1582,7 @@ export const INTERACTION_SITUATIONS = [
 
 
             {
-                id:
-                    "banana_trade",
+                id: "banana_trade",
 
                 title:
                     "🤝 Proposer un échange",
@@ -1300,8 +1593,7 @@ export const INTERACTION_SITUATIONS = [
                 consequences: [
 
                     {
-                        id:
-                            "banana_trade_good",
+                        id: "banana_trade_good",
 
                         text:
                             "{target} accepte de partager. Les deux repartent satisfaits.",
@@ -1318,16 +1610,23 @@ export const INTERACTION_SITUATIONS = [
                             {
                                 target: "target",
                                 lives: 1
+                            },
+
+                            {
+                                target: "actor",
+
+                                relation: {
+                                    trust: 1
+                                }
                             }
                         ],
 
                         weight:
-                            15
+                            25
                     },
 
                     {
-                        id:
-                            "banana_trade_bad",
+                        id: "banana_trade_bad",
 
                         text:
                             "{target} refuse catégoriquement. Aucun accord ne sera trouvé aujourd'hui.",
@@ -1335,11 +1634,10 @@ export const INTERACTION_SITUATIONS = [
                         icon:
                             "🙅",
 
-                        effects:
-                            [],
+                        effects: [],
 
                         weight:
-                            85
+                            75
                     }
 
                 ]
@@ -1351,7 +1649,6 @@ export const INTERACTION_SITUATIONS = [
 
     // =========================================================
     // 9 - CHUTE D'UN ARBRE
-    // CLASSIQUE
     // =========================================================
 
     {
@@ -1374,8 +1671,7 @@ export const INTERACTION_SITUATIONS = [
         choices: [
 
             {
-                id:
-                    "tree_save",
+                id: "tree_save",
 
                 title:
                     "🏃 Sauver {target}",
@@ -1386,8 +1682,7 @@ export const INTERACTION_SITUATIONS = [
                 consequences: [
 
                     {
-                        id:
-                            "tree_save_good",
+                        id: "tree_save_good",
 
                         text:
                             "{actor} pousse {target} juste à temps. Sauvetage héroïque.",
@@ -1398,25 +1693,32 @@ export const INTERACTION_SITUATIONS = [
                         effects: [
                             {
                                 target: "actor",
-                                lives: 1
+                                status: {
+                                    id: "courage",
+                                    duration: 2
+                                }
                             },
 
                             {
-                                target: "target",
-                                lives: 1
+                                target: "actor",
+
+                                relation: {
+                                    trust: 1,
+                                    debt: true,
+                                    protection: 2
+                                }
                             }
                         ],
 
                         weight:
-                            12
+                            20
                     },
 
                     {
-                        id:
-                            "tree_save_bad",
+                        id: "tree_save_bad",
 
                         text:
-                            "{actor} sauve {target}, mais reçoit une grosse branche sur le dos.",
+                            "{actor} sauve {target}, mais reçoit une grosse branche sur le dos. {target} n'oubliera probablement pas ça.",
 
                         icon:
                             "💥",
@@ -1424,17 +1726,26 @@ export const INTERACTION_SITUATIONS = [
                         effects: [
                             {
                                 target: "actor",
-                                lives: -2
+                                lives: -2,
+                                tags: ["physical"]
+                            },
+
+                            {
+                                target: "actor",
+
+                                relation: {
+                                    trust: 1,
+                                    debt: true
+                                }
                             }
                         ],
 
                         weight:
-                            58
+                            50
                     },
 
                     {
-                        id:
-                            "tree_save_neutral",
+                        id: "tree_save_neutral",
 
                         text:
                             "{actor} tire {target} par le bras. L'arbre s'écrase juste derrière eux.",
@@ -1442,8 +1753,16 @@ export const INTERACTION_SITUATIONS = [
                         icon:
                             "😮‍💨",
 
-                        effects:
-                            [],
+                        effects: [
+                            {
+                                target: "actor",
+
+                                relation: {
+                                    trust: 1,
+                                    debt: true
+                                }
+                            }
+                        ],
 
                         weight:
                             30
@@ -1454,37 +1773,41 @@ export const INTERACTION_SITUATIONS = [
 
 
             {
-                id:
-                    "tree_shout",
+                id: "tree_shout",
 
                 title:
                     "📢 Crier",
 
                 description:
-                    "Prévenir {target} sans prendre de risque.",
+                    "Prévenir {target} sans se mettre soi-même en danger.",
 
                 consequences: [
 
                     {
-                        id:
-                            "tree_shout_good",
+                        id: "tree_shout_good",
 
                         text:
-                            "{target} entend l'avertissement et plonge sur le côté.",
+                            "{target} entend l'avertissement et plonge sur le côté au dernier moment.",
 
                         icon:
                             "💨",
 
-                        effects:
-                            [],
+                        effects: [
+                            {
+                                target: "actor",
+
+                                relation: {
+                                    trust: 1
+                                }
+                            }
+                        ],
 
                         weight:
                             60
                     },
 
                     {
-                        id:
-                            "tree_shout_bad",
+                        id: "tree_shout_bad",
 
                         text:
                             "{target} regarde {actor} sans comprendre... puis reçoit une branche.",
@@ -1495,7 +1818,8 @@ export const INTERACTION_SITUATIONS = [
                         effects: [
                             {
                                 target: "target",
-                                lives: -2
+                                lives: -2,
+                                tags: ["physical"]
                             }
                         ],
 
@@ -1512,7 +1836,6 @@ export const INTERACTION_SITUATIONS = [
 
     // =========================================================
     // 10 - EAU POTABLE
-    // CLASSIQUE
     // =========================================================
 
     {
@@ -1530,13 +1853,12 @@ export const INTERACTION_SITUATIONS = [
             "💧",
 
         description:
-            "{actor} est assoiffé tandis que {target} possède encore beaucoup d'eau.",
+            "{actor} est complètement déshydraté tandis que {target} possède encore beaucoup d'eau.",
 
         choices: [
 
             {
-                id:
-                    "water_ask",
+                id: "water_ask",
 
                 title:
                     "🙏 Demander de l'eau",
@@ -1547,8 +1869,7 @@ export const INTERACTION_SITUATIONS = [
                 consequences: [
 
                     {
-                        id:
-                            "water_ask_good",
+                        id: "water_ask_good",
 
                         text:
                             "{target} partage généreusement son eau avec {actor}.",
@@ -1560,16 +1881,23 @@ export const INTERACTION_SITUATIONS = [
                             {
                                 target: "actor",
                                 lives: 1
+                            },
+
+                            {
+                                target: "actor",
+
+                                relation: {
+                                    trust: 1
+                                }
                             }
                         ],
 
                         weight:
-                            22
+                            28
                     },
 
                     {
-                        id:
-                            "water_ask_bad",
+                        id: "water_ask_bad",
 
                         text:
                             "{target} refuse. {actor} repart aussi assoiffé qu'avant.",
@@ -1577,11 +1905,18 @@ export const INTERACTION_SITUATIONS = [
                         icon:
                             "🏜️",
 
-                        effects:
-                            [],
+                        effects: [
+                            {
+                                target: "actor",
+
+                                relation: {
+                                    trust: -1
+                                }
+                            }
+                        ],
 
                         weight:
-                            78
+                            72
                     }
 
                 ]
@@ -1589,8 +1924,7 @@ export const INTERACTION_SITUATIONS = [
 
 
             {
-                id:
-                    "water_steal",
+                id: "water_steal",
 
                 title:
                     "🫳 Voler la gourde",
@@ -1601,8 +1935,7 @@ export const INTERACTION_SITUATIONS = [
                 consequences: [
 
                     {
-                        id:
-                            "water_steal_good",
+                        id: "water_steal_good",
 
                         text:
                             "{actor} vole quelques gorgées sans être repéré.",
@@ -1614,6 +1947,14 @@ export const INTERACTION_SITUATIONS = [
                             {
                                 target: "actor",
                                 lives: 1
+                            },
+
+                            {
+                                target: "actor",
+
+                                relation: {
+                                    trust: -1
+                                }
                             }
                         ],
 
@@ -1622,11 +1963,10 @@ export const INTERACTION_SITUATIONS = [
                     },
 
                     {
-                        id:
-                            "water_steal_bad",
+                        id: "water_steal_bad",
 
                         text:
-                            "{target} surprend {actor} et récupère sa gourde à coups de bâton.",
+                            "{target} surprend {actor} et récupère sa gourde. La confiance, elle, ne revient pas.",
 
                         icon:
                             "🪵",
@@ -1634,17 +1974,25 @@ export const INTERACTION_SITUATIONS = [
                         effects: [
                             {
                                 target: "actor",
-                                lives: -2
+                                lives: -1
+                            },
+
+                            {
+                                target: "actor",
+
+                                relation: {
+                                    trust: -1,
+                                    distrust: 2
+                                }
                             }
                         ],
 
                         weight:
-                            69
+                            64
                     },
 
                     {
-                        id:
-                            "water_steal_neutral",
+                        id: "water_steal_neutral",
 
                         text:
                             "{actor} renonce au dernier moment lorsque {target} se retourne.",
@@ -1652,11 +2000,52 @@ export const INTERACTION_SITUATIONS = [
                         icon:
                             "😬",
 
-                        effects:
-                            [],
+                        effects: [],
 
                         weight:
-                            15
+                            20
+                    }
+
+                ]
+            },
+
+
+            {
+                id: "water_trusted",
+
+                title:
+                    "🤝 Demander sans négocier",
+
+                description:
+                    "Votre relation est suffisamment forte pour que cette demande semble évidente.",
+
+                condition: {
+                    type: "relation",
+                    field: "trust",
+                    operator: ">=",
+                    value: 2
+                },
+
+                consequences: [
+
+                    {
+                        id: "water_trusted_success",
+
+                        text:
+                            "{target} tend directement sa gourde à {actor}. Aucun mot n'est nécessaire.",
+
+                        icon:
+                            "🤝",
+
+                        effects: [
+                            {
+                                target: "actor",
+                                lives: 1
+                            }
+                        ],
+
+                        weight:
+                            100
                     }
 
                 ]
@@ -1668,7 +2057,6 @@ export const INTERACTION_SITUATIONS = [
 
     // =========================================================
     // 11 - ROCHER
-    // CLASSIQUE
     // =========================================================
 
     {
@@ -1686,28 +2074,26 @@ export const INTERACTION_SITUATIONS = [
             "🪨",
 
         description:
-            "{actor} se trouve en hauteur et remarque une petite pierre juste au-dessus de {target}.",
+            "{actor} se trouve en hauteur et remarque une pierre instable juste au-dessus de {target}.",
 
         choices: [
 
             {
-                id:
-                    "rock_push",
+                id: "rock_push",
 
                 title:
                     "😈 Faire tomber la pierre",
 
                 description:
-                    "Une blague totalement raisonnable.",
+                    "Une blague extrêmement discutable.",
 
                 consequences: [
 
                     {
-                        id:
-                            "rock_push_target",
+                        id: "rock_push_target",
 
                         text:
-                            "La pierre rebondit et frappe directement {target}.",
+                            "La pierre rebondit et frappe directement {target}. La rivalité prend une tournure très concrète.",
 
                         icon:
                             "🎯",
@@ -1715,7 +2101,17 @@ export const INTERACTION_SITUATIONS = [
                         effects: [
                             {
                                 target: "target",
-                                lives: -2
+                                lives: -2,
+                                tags: ["physical"]
+                            },
+
+                            {
+                                target: "actor",
+
+                                relation: {
+                                    trust: -1,
+                                    distrust: 2
+                                }
                             }
                         ],
 
@@ -1724,11 +2120,10 @@ export const INTERACTION_SITUATIONS = [
                     },
 
                     {
-                        id:
-                            "rock_push_actor",
+                        id: "rock_push_actor",
 
                         text:
-                            "{actor} perd l'équilibre en poussant la pierre et dévale la pente.",
+                            "{actor} perd l'équilibre en poussant la pierre et dévale lui-même la pente.",
 
                         icon:
                             "🫨",
@@ -1736,7 +2131,8 @@ export const INTERACTION_SITUATIONS = [
                         effects: [
                             {
                                 target: "actor",
-                                lives: -2
+                                lives: -2,
+                                tags: ["physical"]
                             }
                         ],
 
@@ -1745,17 +2141,23 @@ export const INTERACTION_SITUATIONS = [
                     },
 
                     {
-                        id:
-                            "rock_push_miss",
+                        id: "rock_push_miss",
 
                         text:
-                            "La pierre roule à côté de {target}, qui ne remarque absolument rien.",
+                            "La pierre roule à côté de {target}, qui remarque tout de même le geste de {actor}.",
 
                         icon:
-                            "😐",
+                            "👀",
 
-                        effects:
-                            [],
+                        effects: [
+                            {
+                                target: "actor",
+
+                                relation: {
+                                    trust: -1
+                                }
+                            }
+                        ],
 
                         weight:
                             10
@@ -1766,8 +2168,7 @@ export const INTERACTION_SITUATIONS = [
 
 
             {
-                id:
-                    "rock_leave",
+                id: "rock_leave",
 
                 title:
                     "😇 Ne rien faire",
@@ -1778,25 +2179,22 @@ export const INTERACTION_SITUATIONS = [
                 consequences: [
 
                     {
-                        id:
-                            "rock_leave_good",
+                        id: "rock_leave_good",
 
                         text:
-                            "{target} passe tranquillement. Rien ne se produit.",
+                            "{target} passe tranquillement. {actor} résiste héroïquement à une idée objectivement stupide.",
 
                         icon:
                             "😌",
 
-                        effects:
-                            [],
+                        effects: [],
 
                         weight:
-                            80
+                            82
                     },
 
                     {
-                        id:
-                            "rock_leave_bad",
+                        id: "rock_leave_bad",
 
                         text:
                             "La pierre tombe toute seule... sur le pied de {actor}. Karma préventif.",
@@ -1807,12 +2205,89 @@ export const INTERACTION_SITUATIONS = [
                         effects: [
                             {
                                 target: "actor",
-                                lives: -1
+                                lives: -1,
+                                tags: ["physical"]
                             }
                         ],
 
                         weight:
-                            20
+                            18
+                    }
+
+                ]
+            },
+
+
+            // =================================================
+            // RIVALITÉ
+            // =================================================
+
+            {
+                id: "rock_revenge",
+
+                title:
+                    "⚔️ Régler un vieux compte",
+
+                description:
+                    "Entre vous, la situation est déjà suffisamment mauvaise.",
+
+                condition: {
+                    type: "relation",
+                    field: "trust",
+                    operator: "<=",
+                    value: -2
+                },
+
+                consequences: [
+
+                    {
+                        id: "rock_revenge_hit",
+
+                        text:
+                            "{actor} fait volontairement tomber la pierre. {target} comprend immédiatement qu'il ne s'agissait pas d'un accident.",
+
+                        icon:
+                            "⚔️",
+
+                        effects: [
+                            {
+                                target: "target",
+                                lives: -2,
+                                tags: ["physical"]
+                            },
+
+                            {
+                                target: "actor",
+
+                                relation: {
+                                    trust: -1
+                                }
+                            }
+                        ],
+
+                        weight:
+                            65
+                    },
+
+                    {
+                        id: "rock_revenge_fail",
+
+                        text:
+                            "{actor} veut se venger, mais la pierre roule dans sa direction. L'univers refuse apparemment de prendre parti.",
+
+                        icon:
+                            "🤡",
+
+                        effects: [
+                            {
+                                target: "actor",
+                                lives: -1,
+                                tags: ["physical"]
+                            }
+                        ],
+
+                        weight:
+                            35
                     }
 
                 ]
@@ -1824,7 +2299,6 @@ export const INTERACTION_SITUATIONS = [
 
     // =========================================================
     // 12 - SANGSUES
-    // CLASSIQUE
     // =========================================================
 
     {
@@ -1847,8 +2321,7 @@ export const INTERACTION_SITUATIONS = [
         choices: [
 
             {
-                id:
-                    "leeches_help",
+                id: "leeches_help",
 
                 title:
                     "🩹 Aider {target}",
@@ -1859,11 +2332,10 @@ export const INTERACTION_SITUATIONS = [
                 consequences: [
 
                     {
-                        id:
-                            "leeches_help_good",
+                        id: "leeches_help_good",
 
                         text:
-                            "{actor} retire toutes les sangsues. {target} récupère rapidement.",
+                            "{actor} retire toutes les sangsues. {target} lui doit clairement une faveur.",
 
                         icon:
                             "❤️‍🩹",
@@ -1872,16 +2344,24 @@ export const INTERACTION_SITUATIONS = [
                             {
                                 target: "target",
                                 lives: 1
+                            },
+
+                            {
+                                target: "actor",
+
+                                relation: {
+                                    trust: 1,
+                                    debt: true
+                                }
                             }
                         ],
 
                         weight:
-                            20
+                            25
                     },
 
                     {
-                        id:
-                            "leeches_help_bad",
+                        id: "leeches_help_bad",
 
                         text:
                             "Une sangsue décide que {actor} semble également très appétissant.",
@@ -1893,28 +2373,43 @@ export const INTERACTION_SITUATIONS = [
                             {
                                 target: "actor",
                                 lives: -1
+                            },
+
+                            {
+                                target: "actor",
+
+                                relation: {
+                                    trust: 1
+                                }
                             }
                         ],
 
                         weight:
-                            42
+                            40
                     },
 
                     {
-                        id:
-                            "leeches_help_neutral",
+                        id: "leeches_help_neutral",
 
                         text:
-                            "Les sangsues sont retirées sans incident, mais {target} reste épuisé.",
+                            "Les sangsues sont retirées sans incident. {target} remercie sérieusement {actor}.",
 
                         icon:
                             "😮‍💨",
 
-                        effects:
-                            [],
+                        effects: [
+                            {
+                                target: "actor",
+
+                                relation: {
+                                    trust: 1,
+                                    debt: true
+                                }
+                            }
+                        ],
 
                         weight:
-                            38
+                            35
                     }
 
                 ]
@@ -1922,8 +2417,7 @@ export const INTERACTION_SITUATIONS = [
 
 
             {
-                id:
-                    "leeches_ignore",
+                id: "leeches_ignore",
 
                 title:
                     "🤫 Ne rien dire",
@@ -1934,11 +2428,10 @@ export const INTERACTION_SITUATIONS = [
                 consequences: [
 
                     {
-                        id:
-                            "leeches_ignore_bad",
+                        id: "leeches_ignore_bad",
 
                         text:
-                            "{target} découvre les sangsues beaucoup trop tard.",
+                            "{target} découvre les sangsues beaucoup trop tard et apprend ensuite que {actor} les avait remarquées.",
 
                         icon:
                             "😱",
@@ -1947,16 +2440,24 @@ export const INTERACTION_SITUATIONS = [
                             {
                                 target: "target",
                                 lives: -2
+                            },
+
+                            {
+                                target: "actor",
+
+                                relation: {
+                                    trust: -1,
+                                    distrust: 2
+                                }
                             }
                         ],
 
                         weight:
-                            68
+                            65
                     },
 
                     {
-                        id:
-                            "leeches_ignore_good",
+                        id: "leeches_ignore_good",
 
                         text:
                             "{target} finit par les remarquer et les retire sans difficulté.",
@@ -1964,11 +2465,10 @@ export const INTERACTION_SITUATIONS = [
                         icon:
                             "👍",
 
-                        effects:
-                            [],
+                        effects: [],
 
                         weight:
-                            32
+                            35
                     }
 
                 ]
@@ -1980,7 +2480,6 @@ export const INTERACTION_SITUATIONS = [
 
     // =========================================================
     // 13 - RÉSERVE SECRÈTE
-    // CLASSIQUE
     // =========================================================
 
     {
@@ -2003,8 +2502,7 @@ export const INTERACTION_SITUATIONS = [
         choices: [
 
             {
-                id:
-                    "fruit_take",
+                id: "fruit_take",
 
                 title:
                     "🍎 Se servir",
@@ -2015,8 +2513,7 @@ export const INTERACTION_SITUATIONS = [
                 consequences: [
 
                     {
-                        id:
-                            "fruit_take_good",
+                        id: "fruit_take_good",
 
                         text:
                             "{actor} mange plusieurs fruits sans être découvert.",
@@ -2027,20 +2524,32 @@ export const INTERACTION_SITUATIONS = [
                         effects: [
                             {
                                 target: "actor",
-                                lives: 2
+                                lives: 1
+                            },
+
+                            {
+                                target: "actor",
+                                removeStatus: "hungry"
+                            },
+
+                            {
+                                target: "actor",
+
+                                relation: {
+                                    trust: -1
+                                }
                             }
                         ],
 
                         weight:
-                            10
+                            15
                     },
 
                     {
-                        id:
-                            "fruit_take_bad",
+                        id: "fruit_take_bad",
 
                         text:
-                            "{target} surprend {actor} en plein festin. Une bagarre éclate.",
+                            "{target} surprend {actor} en plein festin. La dispute laisse une trace durable.",
 
                         icon:
                             "🥊",
@@ -2054,25 +2563,32 @@ export const INTERACTION_SITUATIONS = [
                             {
                                 target: "target",
                                 lives: -1
+                            },
+
+                            {
+                                target: "actor",
+
+                                relation: {
+                                    trust: -1,
+                                    distrust: 2
+                                }
                             }
                         ],
 
                         weight:
-                            65
+                            60
                     },
 
                     {
-                        id:
-                            "fruit_take_neutral",
+                        id: "fruit_take_neutral",
 
                         text:
-                            "{actor} goûte un fruit mais le trouve immangeable. Il remet tout en place.",
+                            "{actor} goûte un fruit mais le trouve immangeable. Il remet tout en place avant d'être vu.",
 
                         icon:
                             "🤢",
 
-                        effects:
-                            [],
+                        effects: [],
 
                         weight:
                             25
@@ -2083,8 +2599,7 @@ export const INTERACTION_SITUATIONS = [
 
 
             {
-                id:
-                    "fruit_confront",
+                id: "fruit_confront",
 
                 title:
                     "🗣️ Confronter {target}",
@@ -2095,11 +2610,10 @@ export const INTERACTION_SITUATIONS = [
                 consequences: [
 
                     {
-                        id:
-                            "fruit_confront_good",
+                        id: "fruit_confront_good",
 
                         text:
-                            "{target} culpabilise et partage une partie de sa réserve avec {actor}.",
+                            "{target} culpabilise et décide de partager une partie de sa réserve.",
 
                         icon:
                             "🤝",
@@ -2108,28 +2622,43 @@ export const INTERACTION_SITUATIONS = [
                             {
                                 target: "actor",
                                 lives: 1
+                            },
+
+                            {
+                                target: "actor",
+
+                                relation: {
+                                    trust: 1
+                                }
                             }
                         ],
 
                         weight:
-                            18
+                            25
                     },
 
                     {
-                        id:
-                            "fruit_confront_bad",
+                        id: "fruit_confront_bad",
 
                         text:
-                            "{target} nie tout en bloc et déplace sa réserve pendant la nuit.",
+                            "{target} nie tout en bloc et déplace sa réserve pendant la nuit. La confiance n'en ressort pas grandie.",
 
                         icon:
                             "🤥",
 
-                        effects:
-                            [],
+                        effects: [
+                            {
+                                target: "actor",
+
+                                relation: {
+                                    trust: -1,
+                                    distrust: 2
+                                }
+                            }
+                        ],
 
                         weight:
-                            82
+                            75
                     }
 
                 ]
@@ -2141,7 +2670,6 @@ export const INTERACTION_SITUATIONS = [
 
     // =========================================================
     // 14 - SABLES MOUVANTS
-    // CLASSIQUE
     // =========================================================
 
     {
@@ -2164,8 +2692,7 @@ export const INTERACTION_SITUATIONS = [
         choices: [
 
             {
-                id:
-                    "quicksand_help",
+                id: "quicksand_help",
 
                 title:
                     "🪢 Sauver {target}",
@@ -2176,32 +2703,35 @@ export const INTERACTION_SITUATIONS = [
                 consequences: [
 
                     {
-                        id:
-                            "quicksand_help_good",
+                        id: "quicksand_help_good",
 
                         text:
-                            "{actor} réussit à sortir {target}. Sauvetage parfait.",
+                            "{actor} réussit à sortir {target}. Celui-ci lui doit littéralement sa survie.",
 
                         icon:
                             "🦸",
 
                         effects: [
                             {
-                                target: "target",
-                                lives: 1
+                                target: "actor",
+
+                                relation: {
+                                    trust: 1,
+                                    debt: true,
+                                    protection: 2
+                                }
                             }
                         ],
 
                         weight:
-                            16
+                            22
                     },
 
                     {
-                        id:
-                            "quicksand_help_bad",
+                        id: "quicksand_help_bad",
 
                         text:
-                            "{actor} s'approche trop près et tombe également dans les sables mouvants.",
+                            "{actor} s'approche trop près et tombe également dans les sables mouvants. Ils réussissent finalement à sortir, complètement épuisés.",
 
                         icon:
                             "😱",
@@ -2209,31 +2739,60 @@ export const INTERACTION_SITUATIONS = [
                         effects: [
                             {
                                 target: "actor",
-                                lives: -1
+                                gauge: {
+                                    id: "fatigue",
+                                    amount: 1
+                                }
                             },
 
                             {
                                 target: "target",
-                                lives: -1
+                                gauge: {
+                                    id: "fatigue",
+                                    amount: 1
+                                }
+                            },
+
+                            {
+                                target: "actor",
+
+                                relation: {
+                                    trust: 1
+                                }
                             }
                         ],
 
                         weight:
-                            54
+                            48
                     },
 
                     {
-                        id:
-                            "quicksand_help_neutral",
+                        id: "quicksand_help_neutral",
 
                         text:
-                            "Après de longues minutes, {actor} parvient à tirer {target} hors du sable. Tout le monde est épuisé mais indemne.",
+                            "Après de longues minutes, {actor} parvient à tirer {target} hors du sable.",
 
                         icon:
                             "🥵",
 
-                        effects:
-                            [],
+                        effects: [
+                            {
+                                target: "actor",
+                                gauge: {
+                                    id: "fatigue",
+                                    amount: 1
+                                }
+                            },
+
+                            {
+                                target: "actor",
+
+                                relation: {
+                                    trust: 1,
+                                    debt: true
+                                }
+                            }
+                        ],
 
                         weight:
                             30
@@ -2244,8 +2803,7 @@ export const INTERACTION_SITUATIONS = [
 
 
             {
-                id:
-                    "quicksand_leave",
+                id: "quicksand_leave",
 
                 title:
                     "🚶 Continuer son chemin",
@@ -2256,11 +2814,10 @@ export const INTERACTION_SITUATIONS = [
                 consequences: [
 
                     {
-                        id:
-                            "quicksand_leave_bad",
+                        id: "quicksand_leave_bad",
 
                         text:
-                            "{target} réussit finalement à sortir seul, mais complètement épuisé.",
+                            "{target} réussit finalement à sortir seul, mais découvre que {actor} l'a délibérément abandonné.",
 
                         icon:
                             "🥵",
@@ -2268,17 +2825,28 @@ export const INTERACTION_SITUATIONS = [
                         effects: [
                             {
                                 target: "target",
-                                lives: -2
+                                gauge: {
+                                    id: "fatigue",
+                                    amount: 2
+                                }
+                            },
+
+                            {
+                                target: "actor",
+
+                                relation: {
+                                    trust: -1,
+                                    distrust: 2
+                                }
                             }
                         ],
 
                         weight:
-                            62
+                            60
                     },
 
                     {
-                        id:
-                            "quicksand_leave_karma",
+                        id: "quicksand_leave_karma",
 
                         text:
                             "{actor} repart fièrement... et tombe dans un second trou quelques mètres plus loin.",
@@ -2289,7 +2857,8 @@ export const INTERACTION_SITUATIONS = [
                         effects: [
                             {
                                 target: "actor",
-                                lives: -2
+                                lives: -2,
+                                tags: ["physical"]
                             }
                         ],
 
@@ -2298,20 +2867,70 @@ export const INTERACTION_SITUATIONS = [
                     },
 
                     {
-                        id:
-                            "quicksand_leave_neutral",
+                        id: "quicksand_leave_neutral",
 
                         text:
-                            "{target} trouve une racine et réussit à sortir seul.",
+                            "{target} trouve une racine et réussit à sortir seul avant que {actor} ne soit trop loin.",
 
                         icon:
                             "🌿",
 
-                        effects:
-                            [],
+                        effects: [
+                            {
+                                target: "actor",
+
+                                relation: {
+                                    trust: -1
+                                }
+                            }
+                        ],
 
                         weight:
-                            10
+                            12
+                    }
+
+                ]
+            },
+
+
+            {
+                id: "quicksand_resourceful",
+
+                title:
+                    "🛠️ Construire un point d'appui",
+
+                description:
+                    "Créer rapidement un système de branches permettant à {target} de répartir son poids.",
+
+                condition: {
+                    type: "status",
+                    id: "resourceful"
+                },
+
+                consequences: [
+
+                    {
+                        id: "quicksand_resourceful_success",
+
+                        text:
+                            "{actor} assemble plusieurs branches et permet à {target} de sortir sans prendre le moindre risque supplémentaire.",
+
+                        icon:
+                            "🛠️",
+
+                        effects: [
+                            {
+                                target: "actor",
+
+                                relation: {
+                                    trust: 1,
+                                    debt: true
+                                }
+                            }
+                        ],
+
+                        weight:
+                            100
                     }
 
                 ]
@@ -2323,7 +2942,6 @@ export const INTERACTION_SITUATIONS = [
 
     // =========================================================
     // 15 - MOUSTIQUAIRE
-    // CLASSIQUE
     // =========================================================
 
     {
@@ -2341,28 +2959,27 @@ export const INTERACTION_SITUATIONS = [
             "🦟",
 
         description:
-            "La nuit tombe et les moustiques envahissent le camp. {target} possède la seule moustiquaire.",
+            "La nuit tombe et une véritable armée de moustiques envahit le camp. " +
+            "{target} possède la seule moustiquaire encore intacte.",
 
         choices: [
 
             {
-                id:
-                    "mosquito_share",
+                id: "mosquito_ask",
 
                 title:
-                    "🙏 Demander à partager",
+                    "🤝 Demander à partager",
 
                 description:
-                    "Essayer de convaincre {target}.",
+                    "Se serrer un peu pour survivre à la nuit.",
 
                 consequences: [
 
                     {
-                        id:
-                            "mosquito_share_good",
+                        id: "mosquito_ask_good",
 
                         text:
-                            "{target} accepte. Les deux passent une excellente nuit.",
+                            "{target} accepte. La nuit est inconfortable mais supportable pour les deux joueurs.",
 
                         icon:
                             "😴",
@@ -2370,25 +2987,30 @@ export const INTERACTION_SITUATIONS = [
                         effects: [
                             {
                                 target: "actor",
-                                lives: 1
+                                gauge: {
+                                    id: "fatigue",
+                                    amount: -1
+                                }
                             },
 
                             {
-                                target: "target",
-                                lives: 1
+                                target: "actor",
+
+                                relation: {
+                                    trust: 1
+                                }
                             }
                         ],
 
                         weight:
-                            15
+                            30
                     },
 
                     {
-                        id:
-                            "mosquito_share_bad",
+                        id: "mosquito_ask_bad",
 
                         text:
-                            "{target} refuse. {actor} passe la nuit à servir de buffet aux moustiques.",
+                            "{target} refuse catégoriquement et referme sa moustiquaire.",
 
                         icon:
                             "🦟",
@@ -2396,29 +3018,23 @@ export const INTERACTION_SITUATIONS = [
                         effects: [
                             {
                                 target: "actor",
-                                lives: -1
+                                gauge: {
+                                    id: "fatigue",
+                                    amount: 1
+                                }
+                            },
+
+                            {
+                                target: "actor",
+
+                                relation: {
+                                    trust: -1
+                                }
                             }
                         ],
 
                         weight:
-                            45
-                    },
-
-                    {
-                        id:
-                            "mosquito_share_neutral",
-
-                        text:
-                            "{target} accepte de partager une partie de la nuit. Personne ne dort vraiment bien.",
-
-                        icon:
-                            "😴",
-
-                        effects:
-                            [],
-
-                        weight:
-                            40
+                            70
                     }
 
                 ]
@@ -2426,11 +3042,10 @@ export const INTERACTION_SITUATIONS = [
 
 
             {
-                id:
-                    "mosquito_steal",
+                id: "mosquito_steal",
 
                 title:
-                    "🥷 La voler",
+                    "🥷 Voler la moustiquaire",
 
                 description:
                     "Attendre que {target} s'endorme.",
@@ -2438,24 +3053,29 @@ export const INTERACTION_SITUATIONS = [
                 consequences: [
 
                     {
-                        id:
-                            "mosquito_steal_good",
+                        id: "mosquito_steal_good",
 
                         text:
-                            "{actor} récupère discrètement la moustiquaire et passe une nuit correcte.",
+                            "{actor} réussit à récupérer la moustiquaire quelques heures sans réveiller {target}.",
 
                         icon:
-                            "😴",
+                            "😏",
 
                         effects: [
                             {
                                 target: "actor",
-                                lives: 1
+                                gauge: {
+                                    id: "fatigue",
+                                    amount: -1
+                                }
                             },
 
                             {
-                                target: "target",
-                                lives: -1
+                                target: "actor",
+
+                                relation: {
+                                    trust: -1
+                                }
                             }
                         ],
 
@@ -2464,11 +3084,10 @@ export const INTERACTION_SITUATIONS = [
                     },
 
                     {
-                        id:
-                            "mosquito_steal_bad",
+                        id: "mosquito_steal_bad",
 
                         text:
-                            "{target} se réveille pendant le vol et repousse violemment {actor}.",
+                            "{target} se réveille pendant le vol. La tentative finit très mal pour {actor}.",
 
                         icon:
                             "💥",
@@ -2477,6 +3096,15 @@ export const INTERACTION_SITUATIONS = [
                             {
                                 target: "actor",
                                 lives: -2
+                            },
+
+                            {
+                                target: "actor",
+
+                                relation: {
+                                    trust: -1,
+                                    distrust: 2
+                                }
                             }
                         ],
 
@@ -2485,20 +3113,63 @@ export const INTERACTION_SITUATIONS = [
                     },
 
                     {
-                        id:
-                            "mosquito_steal_neutral",
+                        id: "mosquito_steal_neutral",
 
                         text:
-                            "{actor} abandonne le vol lorsque {target} bouge dans son sommeil.",
+                            "{actor} abandonne lorsque {target} bouge dans son sommeil.",
 
                         icon:
                             "👀",
 
-                        effects:
-                            [],
+                        effects: [],
 
                         weight:
                             15
+                    }
+
+                ]
+            },
+
+
+            {
+                id: "mosquito_trusted",
+
+                title:
+                    "🤝 Dormir ensemble",
+
+                description:
+                    "Votre confiance mutuelle rend la question presque évidente.",
+
+                condition: {
+                    type: "relation",
+                    field: "trust",
+                    operator: ">=",
+                    value: 2
+                },
+
+                consequences: [
+
+                    {
+                        id: "mosquito_trusted_good",
+
+                        text:
+                            "{target} ouvre directement la moustiquaire. Les deux joueurs passent une nuit étonnamment correcte.",
+
+                        icon:
+                            "😴",
+
+                        effects: [
+                            {
+                                target: "actor",
+                                gauge: {
+                                    id: "fatigue",
+                                    amount: -1
+                                }
+                            }
+                        ],
+
+                        weight:
+                            100
                     }
 
                 ]
@@ -2510,7 +3181,6 @@ export const INTERACTION_SITUATIONS = [
 
     // =========================================================
     // 16 - COFFRE LOURD
-    // CLASSIQUE
     // =========================================================
 
     {
@@ -2533,8 +3203,7 @@ export const INTERACTION_SITUATIONS = [
         choices: [
 
             {
-                id:
-                    "chest_cooperate",
+                id: "chest_cooperate",
 
                 title:
                     "🤝 Coopérer avec {target}",
@@ -2545,11 +3214,10 @@ export const INTERACTION_SITUATIONS = [
                 consequences: [
 
                     {
-                        id:
-                            "chest_cooperate_good",
+                        id: "chest_cooperate_good",
 
                         text:
-                            "Le coffre contient quelques provisions. {actor} et {target} partagent le butin.",
+                            "Le coffre contient plusieurs provisions. {actor} et {target} partagent équitablement le butin.",
 
                         icon:
                             "🎉",
@@ -2563,16 +3231,23 @@ export const INTERACTION_SITUATIONS = [
                             {
                                 target: "target",
                                 lives: 1
+                            },
+
+                            {
+                                target: "actor",
+
+                                relation: {
+                                    trust: 1
+                                }
                             }
                         ],
 
                         weight:
-                            15
+                            20
                     },
 
                     {
-                        id:
-                            "chest_cooperate_bad",
+                        id: "chest_cooperate_bad",
 
                         text:
                             "Le rocher glisse pendant l'effort et blesse les deux joueurs.",
@@ -2583,31 +3258,55 @@ export const INTERACTION_SITUATIONS = [
                         effects: [
                             {
                                 target: "actor",
-                                lives: -1
+                                lives: -1,
+                                tags: ["physical"]
                             },
 
                             {
                                 target: "target",
-                                lives: -1
+                                lives: -1,
+                                tags: ["physical"]
                             }
                         ],
 
                         weight:
-                            55
+                            50
                     },
 
                     {
-                        id:
-                            "chest_cooperate_neutral",
+                        id: "chest_cooperate_neutral",
 
                         text:
-                            "Après de longues minutes d'effort, le coffre refuse toujours de bouger.",
+                            "Après de longues minutes d'effort, le coffre refuse toujours de bouger. Au moins, personne n'a abandonné l'autre.",
 
                         icon:
                             "😮‍💨",
 
-                        effects:
-                            [],
+                        effects: [
+                            {
+                                target: "actor",
+                                gauge: {
+                                    id: "fatigue",
+                                    amount: 1
+                                }
+                            },
+
+                            {
+                                target: "target",
+                                gauge: {
+                                    id: "fatigue",
+                                    amount: 1
+                                }
+                            },
+
+                            {
+                                target: "actor",
+
+                                relation: {
+                                    trust: 1
+                                }
+                            }
+                        ],
 
                         weight:
                             30
@@ -2618,8 +3317,7 @@ export const INTERACTION_SITUATIONS = [
 
 
             {
-                id:
-                    "chest_alone",
+                id: "chest_alone",
 
                 title:
                     "💪 Essayer seul",
@@ -2630,11 +3328,10 @@ export const INTERACTION_SITUATIONS = [
                 consequences: [
 
                     {
-                        id:
-                            "chest_alone_good",
+                        id: "chest_alone_good",
 
                         text:
-                            "Contre toute attente, {actor} réussit seul et garde les provisions.",
+                            "Contre toute attente, {actor} réussit seul et garde les provisions. {target} apprécie assez peu le spectacle.",
 
                         icon:
                             "💪",
@@ -2643,6 +3340,14 @@ export const INTERACTION_SITUATIONS = [
                             {
                                 target: "actor",
                                 lives: 2
+                            },
+
+                            {
+                                target: "actor",
+
+                                relation: {
+                                    trust: -1
+                                }
                             }
                         ],
 
@@ -2651,11 +3356,10 @@ export const INTERACTION_SITUATIONS = [
                     },
 
                     {
-                        id:
-                            "chest_alone_bad",
+                        id: "chest_alone_bad",
 
                         text:
-                            "{actor} se bloque le dos en essayant de soulever le rocher.",
+                            "{actor} se bloque le dos en essayant de soulever le rocher seul.",
 
                         icon:
                             "🤕",
@@ -2663,1498 +3367,16 @@ export const INTERACTION_SITUATIONS = [
                         effects: [
                             {
                                 target: "actor",
-                                lives: -2
-                            }
-                        ],
+                                lives: -2,
+                                tags: ["physical"]
+                            },
 
-                        weight:
-                            77
-                    },
-
-                    {
-                        id:
-                            "chest_alone_neutral",
-
-                        text:
-                            "{actor} pousse de toutes ses forces. Le rocher ne bouge absolument pas.",
-
-                        icon:
-                            "😑",
-
-                        effects:
-                            [],
-
-                        weight:
-                            15
-                    }
-
-                ]
-            }
-
-        ]
-    },
-
-
-    // =========================================================
-    // 17 - ARAIGNÉE
-    // CLASSIQUE
-    // =========================================================
-
-    {
-        id: "interaction_spider",
-        type: "interaction",
-        baseWeight: 1,
-
-        title:
-            "Une énorme araignée est sur le dos de {target}",
-
-        category:
-            "Interaction",
-
-        icon:
-            "🕷️",
-
-        description:
-            "{target} ne remarque absolument pas l'énorme araignée qui grimpe lentement sur son épaule.",
-
-        choices: [
-
-            {
-                id:
-                    "spider_remove",
-
-                title:
-                    "✋ Retirer l'araignée",
-
-                description:
-                    "{actor} tente de l'enlever lui-même.",
-
-                consequences: [
-
-                    {
-                        id:
-                            "spider_remove_good",
-
-                        text:
-                            "{actor} retire l'araignée et la jette au loin. {target} est sauvé.",
-
-                        icon:
-                            "😮‍💨",
-
-                        effects:
-                            [],
-
-                        weight:
-                            58
-                    },
-
-                    {
-                        id:
-                            "spider_remove_bad",
-
-                        text:
-                            "L'araignée saute sur la main de {actor} et le mord.",
-
-                        icon:
-                            "🕷️",
-
-                        effects: [
                             {
                                 target: "actor",
-                                lives: -2
-                            }
-                        ],
-
-                        weight:
-                            42
-                    }
-
-                ]
-            },
-
-
-            {
-                id:
-                    "spider_slap",
-
-                title:
-                    "👋 Frapper l'araignée",
-
-                description:
-                    "Une bonne grosse claque dans le dos de {target}.",
-
-                consequences: [
-
-                    {
-                        id:
-                            "spider_slap_good",
-
-                        text:
-                            "Coup parfait ! L'araignée est projetée au sol.",
-
-                        icon:
-                            "🎯",
-
-                        effects:
-                            [],
-
-                        weight:
-                            42
-                    },
-
-                    {
-                        id:
-                            "spider_slap_bad",
-
-                        text:
-                            "{actor} rate l'araignée mais réussit parfaitement sa claque sur {target}.",
-
-                        icon:
-                            "👋",
-
-                        effects: [
-                            {
-                                target: "target",
-                                lives: -1
-                            }
-                        ],
-
-                        weight:
-                            58
-                    }
-
-                ]
-            }
-
-        ]
-    },
-
-
-    // =========================================================
-    // 18 - RADEAU
-    // DÉBUT MINI-HISTOIRE RADEAU
-    // =========================================================
-
-    {
-        id: "interaction_raft",
-        type: "interaction",
-        baseWeight: 1,
-
-        title:
-            "{actor} et {target} trouvent un petit radeau",
-
-        category:
-            "Interaction",
-
-        icon:
-            "🛶",
-
-        description:
-            "Le radeau semble utilisable mais paraît beaucoup trop fragile pour supporter deux personnes.",
-
-        choices: [
-
-            {
-                id:
-                    "raft_actor",
-
-                title:
-                    "🛶 Prendre le radeau",
-
-                description:
-                    "{actor} monte dessus et laisse {target} sur la plage.",
-
-                narrative: {
-
-                    setFlags: [
-                        "interaction_actor_on_raft"
-                    ],
-
-                    removeFlags: [
-                        "interaction_raft_given_away"
-                    ],
-
-                    nextSituationBoosts: [
-                        {
-                            id:
-                                "interaction_shark_boat",
-
-                            weight:
-                                34
-                        }
-                    ]
-
-                },
-
-                consequences: [
-
-                    {
-                        id:
-                            "raft_actor_good",
-
-                        text:
-                            "Le radeau tient étonnamment bien. {actor} commence à longer la côte.",
-
-                        icon:
-                            "🏝️",
-
-                        effects:
-                            [],
-
-                        weight:
-                            35,
-
-                        narrative: {
-
-                            nextSituationBoosts: [
-                                {
-                                    id:
-                                        "interaction_shark_boat",
-
-                                    weight:
-                                        44
+                                gauge: {
+                                    id: "fatigue",
+                                    amount: 1
                                 }
-                            ]
-
-                        }
-                    },
-
-                    {
-                        id:
-                            "raft_actor_bad",
-
-                        text:
-                            "Le radeau commence à prendre l'eau. {actor} parvient néanmoins à rejoindre une zone peu profonde.",
-
-                        icon:
-                            "🌊",
-
-                        effects: [
-                            {
-                                target: "actor",
-                                lives: -1
-                            }
-                        ],
-
-                        weight:
-                            55,
-
-                        narrative: {
-
-                            nextSituationBoosts: [
-                                {
-                                    id:
-                                        "interaction_shark_boat",
-
-                                    weight:
-                                        5
-                                }
-                            ]
-
-                        }
-                    },
-
-                    {
-                        id:
-                            "raft_actor_reward",
-
-                        text:
-                            "{actor} atteint une petite zone de pêche et récupère quelques ressources.",
-
-                        icon:
-                            "🐟",
-
-                        effects: [
-                            {
-                                target: "actor",
-                                lives: 1
-                            }
-                        ],
-
-                        weight:
-                            10,
-
-                        narrative: {
-
-                            nextSituationBoosts: [
-                                {
-                                    id:
-                                        "interaction_shark_boat",
-
-                                    weight:
-                                        40
-                                }
-                            ]
-
-                        }
-                    }
-
-                ]
-            },
-
-
-            {
-                id:
-                    "raft_target",
-
-                title:
-                    "👉 Laisser {target} partir",
-
-                description:
-                    "Donner le radeau à {target}.",
-
-                narrative: {
-
-                    setFlags: [
-                        "interaction_raft_given_away"
-                    ],
-
-                    removeFlags: [
-                        "interaction_actor_on_raft"
-                    ]
-
-                },
-
-                consequences: [
-
-                    {
-                        id:
-                            "raft_target_good",
-
-                        text:
-                            "{target} revient plus tard avec quelques provisions et remercie {actor}.",
-
-                        icon:
-                            "🤝",
-
-                        effects: [
-                            {
-                                target: "actor",
-                                lives: 1
-                            }
-                        ],
-
-                        weight:
-                            15
-                    },
-
-                    {
-                        id:
-                            "raft_target_bad",
-
-                        text:
-                            "Le radeau casse en mer. {target} doit revenir à la nage.",
-
-                        icon:
-                            "🌊",
-
-                        effects: [
-                            {
-                                target: "target",
-                                lives: -2
-                            }
-                        ],
-
-                        weight:
-                            60
-                    },
-
-                    {
-                        id:
-                            "raft_target_neutral",
-
-                        text:
-                            "{target} longe la côte puis revient sans rien avoir trouvé.",
-
-                        icon:
-                            "🛶",
-
-                        effects:
-                            [],
-
-                        weight:
-                            25
-                    }
-
-                ]
-            }
-
-        ]
-    },
-
-
-    // =========================================================
-    // 19 - PLANTE MÉDICINALE
-    // CLASSIQUE
-    // =========================================================
-
-    {
-        id: "interaction_medicine",
-        type: "interaction",
-        baseWeight: 1,
-
-        title:
-            "{actor} trouve une étrange plante médicinale",
-
-        category:
-            "Interaction",
-
-        icon:
-            "🌿",
-
-        description:
-            "{actor} pense avoir reconnu une plante médicinale. {target} se trouve juste à côté.",
-
-        choices: [
-
-            {
-                id:
-                    "medicine_self",
-
-                title:
-                    "🌿 La tester",
-
-                description:
-                    "{actor} l'utilise sur lui-même.",
-
-                consequences: [
-
-                    {
-                        id:
-                            "medicine_self_good",
-
-                        text:
-                            "C'était bien une plante médicinale. {actor} se sent immédiatement mieux.",
-
-                        icon:
-                            "❤️‍🩹",
-
-                        effects: [
-                            {
-                                target: "actor",
-                                lives: 2
-                            }
-                        ],
-
-                        weight:
-                            10
-                    },
-
-                    {
-                        id:
-                            "medicine_self_bad",
-
-                        text:
-                            "Ce n'était absolument pas une plante médicinale.",
-
-                        icon:
-                            "🤢",
-
-                        effects: [
-                            {
-                                target: "actor",
-                                lives: -2
-                            }
-                        ],
-
-                        weight:
-                            75
-                    },
-
-                    {
-                        id:
-                            "medicine_self_neutral",
-
-                        text:
-                            "La plante ne semble avoir absolument aucun effet.",
-
-                        icon:
-                            "🌿",
-
-                        effects:
-                            [],
-
-                        weight:
-                            15
-                    }
-
-                ]
-            },
-
-
-            {
-                id:
-                    "medicine_target",
-
-                title:
-                    "🧪 La faire tester à {target}",
-
-                description:
-                    "La science demande parfois des sacrifices.",
-
-                consequences: [
-
-                    {
-                        id:
-                            "medicine_target_good",
-
-                        text:
-                            "{target} récupère immédiatement de l'énergie. La plante fonctionne !",
-
-                        icon:
-                            "✨",
-
-                        effects: [
-                            {
-                                target: "target",
-                                lives: 2
-                            }
-                        ],
-
-                        weight:
-                            10
-                    },
-
-                    {
-                        id:
-                            "medicine_target_bad",
-
-                        text:
-                            "{target} devient tout pâle après avoir testé la plante.",
-
-                        icon:
-                            "🤮",
-
-                        effects: [
-                            {
-                                target: "target",
-                                lives: -2
-                            }
-                        ],
-
-                        weight:
-                            75
-                    },
-
-                    {
-                        id:
-                            "medicine_target_neutral",
-
-                        text:
-                            "{target} attend plusieurs minutes. Rien ne se passe.",
-
-                        icon:
-                            "😐",
-
-                        effects:
-                            [],
-
-                        weight:
-                            15
-                    }
-
-                ]
-            }
-
-        ]
-    },
-
-
-    // =========================================================
-    // 20 - CROCODILE
-    // CLASSIQUE
-    // =========================================================
-
-    {
-        id: "interaction_crocodile",
-        type: "interaction",
-        baseWeight: 1,
-
-        title:
-            "Un crocodile approche derrière {target}",
-
-        category:
-            "Interaction",
-
-        icon:
-            "🐊",
-
-        description:
-            "{target} remplit tranquillement sa gourde au bord de l'eau. " +
-            "{actor} voit un crocodile se rapprocher lentement derrière lui.",
-
-        choices: [
-
-            {
-                id:
-                    "crocodile_warn",
-
-                title:
-                    "📢 Prévenir {target}",
-
-                description:
-                    "Crier avant que le crocodile attaque.",
-
-                consequences: [
-
-                    {
-                        id:
-                            "crocodile_warn_good",
-
-                        text:
-                            "{target} réagit immédiatement et s'éloigne de l'eau.",
-
-                        icon:
-                            "🏃",
-
-                        effects:
-                            [],
-
-                        weight:
-                            62
-                    },
-
-                    {
-                        id:
-                            "crocodile_warn_bad",
-
-                        text:
-                            "{target} panique, trébuche et se blesse en essayant de fuir.",
-
-                        icon:
-                            "🤕",
-
-                        effects: [
-                            {
-                                target: "target",
-                                lives: -1
-                            }
-                        ],
-
-                        weight:
-                            38
-                    }
-
-                ]
-            },
-
-
-            {
-                id:
-                    "crocodile_distract",
-
-                title:
-                    "🪨 Distraire le crocodile",
-
-                description:
-                    "{actor} lui lance une pierre pour attirer son attention.",
-
-                consequences: [
-
-                    {
-                        id:
-                            "crocodile_distract_good",
-
-                        text:
-                            "Le crocodile change de direction. {target} peut s'échapper.",
-
-                        icon:
-                            "🎯",
-
-                        effects: [
-                            {
-                                target: "actor",
-                                lives: 1
-                            }
-                        ],
-
-                        weight:
-                            15
-                    },
-
-                    {
-                        id:
-                            "crocodile_distract_bad",
-
-                        text:
-                            "Excellent lancer : le crocodile se retourne maintenant vers {actor}.",
-
-                        icon:
-                            "🐊",
-
-                        effects: [
-                            {
-                                target: "actor",
-                                lives: -2
-                            }
-                        ],
-
-                        weight:
-                            70
-                    },
-
-                    {
-                        id:
-                            "crocodile_distract_neutral",
-
-                        text:
-                            "La pierre tombe dans l'eau. Le crocodile s'immobilise suffisamment longtemps pour que les deux s'éloignent.",
-
-                        icon:
-                            "🌊",
-
-                        effects:
-                            [],
-
-                        weight:
-                            15
-                    }
-
-                ]
-            }
-
-        ]
-    },
-
-
-    // =========================================================
-    // 21 - ORAGE
-    // CLASSIQUE
-    // =========================================================
-
-    {
-        id: "interaction_storm_shelter",
-        type: "interaction",
-        baseWeight: 1,
-
-        title:
-            "{target} possède le meilleur abri du camp",
-
-        category:
-            "Interaction",
-
-        icon:
-            "⛈️",
-
-        description:
-            "Un violent orage arrive. L'abri de {actor} est catastrophique, tandis que celui de {target} semble parfaitement solide.",
-
-        choices: [
-
-            {
-                id:
-                    "storm_ask",
-
-                title:
-                    "🙏 Demander refuge",
-
-                description:
-                    "Demander à {target} de partager son abri.",
-
-                consequences: [
-
-                    {
-                        id:
-                            "storm_ask_good",
-
-                        text:
-                            "{target} accepte. Les deux passent la tempête bien au sec.",
-
-                        icon:
-                            "🛖",
-
-                        effects: [
-                            {
-                                target: "actor",
-                                lives: 1
-                            },
-
-                            {
-                                target: "target",
-                                lives: 1
-                            }
-                        ],
-
-                        weight:
-                            16
-                    },
-
-                    {
-                        id:
-                            "storm_ask_bad",
-
-                        text:
-                            "{target} refuse. {actor} passe plusieurs heures sous une pluie torrentielle.",
-
-                        icon:
-                            "🌧️",
-
-                        effects: [
-                            {
-                                target: "actor",
-                                lives: -1
-                            }
-                        ],
-
-                        weight:
-                            44
-                    },
-
-                    {
-                        id:
-                            "storm_ask_neutral",
-
-                        text:
-                            "{target} accepte à condition que {actor} reste à l'entrée. La nuit est longue mais supportable.",
-
-                        icon:
-                            "😐",
-
-                        effects:
-                            [],
-
-                        weight:
-                            40
-                    }
-
-                ]
-            },
-
-
-            {
-                id:
-                    "storm_force",
-
-                title:
-                    "🚪 S'imposer dans l'abri",
-
-                description:
-                    "Pas besoin de demander.",
-
-                consequences: [
-
-                    {
-                        id:
-                            "storm_force_good",
-
-                        text:
-                            "{actor} entre de force. {target} râle, mais l'abri tient.",
-
-                        icon:
-                            "😤",
-
-                        effects: [
-                            {
-                                target: "actor",
-                                lives: 1
-                            }
-                        ],
-
-                        weight:
-                            12
-                    },
-
-                    {
-                        id:
-                            "storm_force_bad",
-
-                        text:
-                            "La dispute dégénère et détruit une partie de l'abri.",
-
-                        icon:
-                            "💥",
-
-                        effects: [
-                            {
-                                target: "actor",
-                                lives: -1
-                            },
-
-                            {
-                                target: "target",
-                                lives: -1
-                            }
-                        ],
-
-                        weight:
-                            68
-                    },
-
-                    {
-                        id:
-                            "storm_force_neutral",
-
-                        text:
-                            "Après quelques insultes, {target} finit par céder une petite place à {actor}.",
-
-                        icon:
-                            "🙄",
-
-                        effects:
-                            [],
-
-                        weight:
-                            20
-                    }
-
-                ]
-            }
-
-        ]
-    },
-
-
-    // =========================================================
-    // 22 - FAUSSE ARAIGNÉE
-    // CLASSIQUE
-    // =========================================================
-
-    {
-        id: "interaction_fake_spider",
-        type: "interaction",
-        baseWeight: 1,
-
-        title:
-            "{target} dort profondément",
-
-        category:
-            "Interaction",
-
-        icon:
-            "😴",
-
-        description:
-            "{actor} trouve une énorme araignée apparemment morte juste à côté de {target}. " +
-            "L'occasion d'une excellente blague se présente.",
-
-        choices: [
-
-            {
-                id:
-                    "fake_spider_prank",
-
-                title:
-                    "🕷️ Poser l'araignée sur {target}",
-
-                description:
-                    "Qu'est-ce qui pourrait mal tourner ?",
-
-                consequences: [
-
-                    {
-                        id:
-                            "fake_spider_prank_good",
-
-                        text:
-                            "{target} se réveille, hurle et tombe de son hamac.",
-
-                        icon:
-                            "😂",
-
-                        effects: [
-                            {
-                                target: "target",
-                                lives: -1
-                            }
-                        ],
-
-                        weight:
-                            40
-                    },
-
-                    {
-                        id:
-                            "fake_spider_prank_bad",
-
-                        text:
-                            "L'araignée n'était finalement pas morte. Elle mord {actor} pendant la manipulation.",
-
-                        icon:
-                            "😱",
-
-                        effects: [
-                            {
-                                target: "actor",
-                                lives: -2
-                            }
-                        ],
-
-                        weight:
-                            50
-                    },
-
-                    {
-                        id:
-                            "fake_spider_prank_neutral",
-
-                        text:
-                            "{target} ouvre un œil, regarde l'araignée et la jette tranquillement au sol.",
-
-                        icon:
-                            "😐",
-
-                        effects:
-                            [],
-
-                        weight:
-                            10
-                    }
-
-                ]
-            },
-
-
-            {
-                id:
-                    "fake_spider_leave",
-
-                title:
-                    "😇 Être raisonnable",
-
-                description:
-                    "Jeter l'araignée loin du camp.",
-
-                consequences: [
-
-                    {
-                        id:
-                            "fake_spider_leave_good",
-
-                        text:
-                            "{actor} jette l'araignée au loin. Tout le monde dort tranquillement.",
-
-                        icon:
-                            "😌",
-
-                        effects:
-                            [],
-
-                        weight:
-                            82
-                    },
-
-                    {
-                        id:
-                            "fake_spider_leave_bad",
-
-                        text:
-                            "{actor} lance l'araignée... directement sur ses propres affaires.",
-
-                        icon:
-                            "🤦",
-
-                        effects: [
-                            {
-                                target: "actor",
-                                lives: -1
-                            }
-                        ],
-
-                        weight:
-                            18
-                    }
-
-                ]
-            }
-
-        ]
-    },
-
-
-    // =========================================================
-    // 23 - REQUIN ET RADEAU
-    // SUITE DE interaction_raft
-    // =========================================================
-
-    {
-        id: "interaction_shark_boat",
-        type: "interaction",
-        baseWeight: 1,
-
-        requirements: {
-
-            all: [
-                "interaction_actor_on_raft"
-            ],
-
-            not: [
-                "interaction_raft_given_away"
-            ]
-
-        },
-
-        title:
-            "{actor} aperçoit {target} dans l'eau",
-
-        category:
-            "Suite",
-
-        icon:
-            "🦈",
-
-        description:
-            "{actor} navigue encore avec le petit radeau trouvé plus tôt. " +
-            "{target} nage à proximité lorsqu'un aileron apparaît derrière lui.",
-
-        choices: [
-
-            {
-                id:
-                    "shark_rescue",
-
-                title:
-                    "🛟 Aller sauver {target}",
-
-                description:
-                    "Ramer immédiatement vers lui.",
-
-                narrative: {
-
-                    setFlags: [
-                        "interaction_shark_rescue_attempted"
-                    ],
-
-                    nextSituationBoosts: [
-                        {
-                            id:
-                                "interaction_raft_damaged",
-
-                            weight:
-                                24
-                        }
-                    ]
-
-                },
-
-                consequences: [
-
-                    {
-                        id:
-                            "shark_rescue_good",
-
-                        text:
-                            "{actor} récupère {target} juste avant l'arrivée du requin.",
-
-                        icon:
-                            "🦸",
-
-                        effects:
-                            [],
-
-                        weight:
-                            28,
-
-                        narrative: {
-
-                            nextSituationBoosts: [
-                                {
-                                    id:
-                                        "interaction_raft_damaged",
-
-                                    weight:
-                                        30
-                                }
-                            ]
-
-                        }
-                    },
-
-                    {
-                        id:
-                            "shark_rescue_bad",
-
-                        text:
-                            "En remontant {target}, le radeau se fissure violemment et les deux tombent dans l'eau.",
-
-                        icon:
-                            "🌊",
-
-                        effects: [
-                            {
-                                target: "actor",
-                                lives: -1
-                            },
-
-                            {
-                                target: "target",
-                                lives: -1
-                            }
-                        ],
-
-                        weight:
-                            62,
-
-                        narrative: {
-
-                            setFlags: [
-                                "interaction_raft_cracked"
-                            ],
-
-                            nextSituationBoosts: [
-                                {
-                                    id:
-                                        "interaction_raft_damaged",
-
-                                    weight:
-                                        45
-                                }
-                            ]
-
-                        }
-                    },
-
-                    {
-                        id:
-                            "shark_rescue_reward",
-
-                        text:
-                            "{actor} remonte {target} à bord. En réalité, l'aileron appartenait à un dauphin.",
-
-                        icon:
-                            "🐬",
-
-                        effects: [
-                            {
-                                target: "actor",
-                                lives: 1
-                            }
-                        ],
-
-                        weight:
-                            10
-                    }
-
-                ]
-            },
-
-
-            {
-                id:
-                    "shark_leave",
-
-                title:
-                    "🚣 Ramer vers la plage",
-
-                description:
-                    "{actor} choisit sa propre survie.",
-
-                narrative: {
-
-                    setFlags: [
-                        "interaction_shark_abandoned_target"
-                    ]
-
-                },
-
-                consequences: [
-
-                    {
-                        id:
-                            "shark_leave_target",
-
-                        text:
-                            "{target} parvient à rejoindre la plage mais ressort complètement épuisé.",
-
-                        icon:
-                            "🥵",
-
-                        effects: [
-                            {
-                                target: "target",
-                                lives: -2
-                            }
-                        ],
-
-                        weight:
-                            58
-                    },
-
-                    {
-                        id:
-                            "shark_leave_twist",
-
-                        text:
-                            "Le prétendu requin était un dauphin. {target} rejoint tranquillement la plage pendant que {actor} fuit au loin.",
-
-                        icon:
-                            "🐬",
-
-                        effects:
-                            [],
-
-                        weight:
-                            42
-                    }
-
-                ]
-            }
-
-        ]
-    },
-
-
-    // =========================================================
-    // 24 - DERNIÈRES PROVISIONS
-    // CLASSIQUE
-    // =========================================================
-
-    {
-        id: "interaction_last_supplies",
-        type: "interaction",
-        baseWeight: 1,
-
-        title:
-            "{actor} et {target} trouvent les dernières provisions",
-
-        category:
-            "Interaction",
-
-        icon:
-            "🥫",
-
-        description:
-            "Une petite caisse contient les dernières provisions visibles dans la zone. " +
-            "Il n'y en a pas énormément et les deux joueurs ont faim.",
-
-        choices: [
-
-            {
-                id:
-                    "supplies_share",
-
-                title:
-                    "🤝 Partager avec {target}",
-
-                description:
-                    "Diviser équitablement les provisions.",
-
-                consequences: [
-
-                    {
-                        id:
-                            "supplies_share_good",
-
-                        text:
-                            "{actor} et {target} trouvent suffisamment de nourriture encore comestible.",
-
-                        icon:
-                            "🥫",
-
-                        effects: [
-                            {
-                                target: "actor",
-                                lives: 1
-                            },
-
-                            {
-                                target: "target",
-                                lives: 1
-                            }
-                        ],
-
-                        weight:
-                            15
-                    },
-
-                    {
-                        id:
-                            "supplies_share_bad",
-
-                        text:
-                            "Une partie des conserves était périmée. Les deux joueurs passent un mauvais moment.",
-
-                        icon:
-                            "🤢",
-
-                        effects: [
-                            {
-                                target: "actor",
-                                lives: -1
-                            },
-
-                            {
-                                target: "target",
-                                lives: -1
-                            }
-                        ],
-
-                        weight:
-                            55
-                    },
-
-                    {
-                        id:
-                            "supplies_share_neutral",
-
-                        text:
-                            "Les quelques aliments encore corrects suffisent à peine à calmer la faim.",
-
-                        icon:
-                            "😐",
-
-                        effects:
-                            [],
-
-                        weight:
-                            30
-                    }
-
-                ]
-            },
-
-
-            {
-                id:
-                    "supplies_keep",
-
-                title:
-                    "😈 Tout garder",
-
-                description:
-                    "{actor} tente de partir avec toute la caisse.",
-
-                consequences: [
-
-                    {
-                        id:
-                            "supplies_keep_good",
-
-                        text:
-                            "{actor} réussit à partir avec les provisions avant que {target} ne réagisse.",
-
-                        icon:
-                            "🏃",
-
-                        effects: [
-                            {
-                                target: "actor",
-                                lives: 2
-                            }
-                        ],
-
-                        weight:
-                            8
-                    },
-
-                    {
-                        id:
-                            "supplies_keep_bad",
-
-                        text:
-                            "{target} rattrape {actor}. La dispute pour la caisse se transforme en bagarre.",
-
-                        icon:
-                            "🥊",
-
-                        effects: [
-                            {
-                                target: "actor",
-                                lives: -2
-                            },
-
-                            {
-                                target: "target",
-                                lives: -1
                             }
                         ],
 
@@ -4163,20 +3385,73 @@ export const INTERACTION_SITUATIONS = [
                     },
 
                     {
-                        id:
-                            "supplies_keep_neutral",
+                        id: "chest_alone_neutral",
 
                         text:
-                            "{actor} ouvre la caisse avant de partir et découvre que presque tout est inutilisable.",
+                            "{actor} pousse de toutes ses forces mais le coffre ne bouge pas d'un centimètre.",
 
                         icon:
-                            "😑",
+                            "🥵",
 
-                        effects:
-                            [],
+                        effects: [
+                            {
+                                target: "actor",
+                                gauge: {
+                                    id: "fatigue",
+                                    amount: 1
+                                }
+                            }
+                        ],
 
                         weight:
                             20
+                    }
+
+                ]
+            },
+
+
+            {
+                id: "chest_trusted",
+
+                title:
+                    "🤝 Organiser l'effort",
+
+                description:
+                    "Votre confiance permet de coordonner parfaitement le déplacement du rocher.",
+
+                condition: {
+                    type: "relation",
+                    field: "trust",
+                    operator: ">=",
+                    value: 2
+                },
+
+                consequences: [
+
+                    {
+                        id: "chest_trusted_success",
+
+                        text:
+                            "{actor} et {target} synchronisent parfaitement leurs efforts. Le rocher bascule et le coffre s'ouvre.",
+
+                        icon:
+                            "🧰",
+
+                        effects: [
+                            {
+                                target: "actor",
+                                lives: 1
+                            },
+
+                            {
+                                target: "target",
+                                lives: 1
+                            }
+                        ],
+
+                        weight:
+                            100
                     }
 
                 ]
@@ -4187,34 +3462,23 @@ export const INTERACTION_SITUATIONS = [
 
 
     // =========================================================
-    // 25 - RETOUR AU PONT
+    // 17 - RETOUR AU PONT
     // SUITE DE interaction_bridge
     // =========================================================
 
     {
-        id:
-            "interaction_bridge_return",
-
-        type:
-            "interaction",
-
-        baseWeight:
-            1,
+        id: "interaction_bridge_return",
+        type: "interaction",
+        baseWeight: 1,
 
         requirements: {
-
             all: [
                 "interaction_bridge_crossed"
-            ],
-
-            not: [
-                "interaction_bridge_abandoned"
             ]
-
         },
 
         title:
-            "{actor} doit repasser par le vieux pont",
+            "{actor} et {target} doivent retraverser le pont",
 
         category:
             "Suite",
@@ -4223,195 +3487,49 @@ export const INTERACTION_SITUATIONS = [
             "🌉",
 
         description:
-            "{actor} retrouve le pont fragile traversé précédemment. " +
-            "Cette fois, {target} est juste derrière et plusieurs planches semblent avoir bougé.",
+            "Le vieux pont est toujours là, mais plusieurs planches ont disparu depuis votre premier passage.",
 
         choices: [
 
             {
-                id:
-                    "bridge_return_cross",
+                id: "bridge_return_actor",
 
                 title:
-                    "🌉 Traverser encore",
+                    "🧗 Ouvrir la voie",
 
                 description:
-                    "Le pont a déjà tenu une fois.",
+                    "{actor} traverse en premier pour montrer le chemin.",
 
                 consequences: [
 
                     {
-                        id:
-                            "bridge_return_cross_good",
+                        id: "bridge_return_actor_good",
 
                         text:
-                            "Le pont tient encore suffisamment longtemps pour laisser passer {actor}.",
+                            "{actor} repère les points solides et permet à {target} de traverser sans incident.",
 
                         icon:
-                            "😮‍💨",
-
-                        effects:
-                            [],
-
-                        weight:
-                            35
-                    },
-
-                    {
-                        id:
-                            "bridge_return_cross_bad",
-
-                        text:
-                            "Cette fois, le pont a décidé qu'il en avait assez. Une planche cède sous {actor}.",
-
-                        icon:
-                            "💥",
+                            "🤝",
 
                         effects: [
                             {
                                 target: "actor",
-                                lives: -2
+
+                                relation: {
+                                    trust: 1
+                                }
                             }
                         ],
-
-                        weight:
-                            65
-                    }
-
-                ]
-            },
-
-
-            {
-                id:
-                    "bridge_return_target",
-
-                title:
-                    "👉 Demander à {target} de tester",
-
-                description:
-                    "Une expérience scientifique parfaitement éthique.",
-
-                consequences: [
-
-                    {
-                        id:
-                            "bridge_return_target_safe",
-
-                        text:
-                            "{target} avance très lentement et réussit à traverser.",
-
-                        icon:
-                            "😌",
-
-                        effects:
-                            [],
-
-                        weight:
-                            38
-                    },
-
-                    {
-                        id:
-                            "bridge_return_target_bad",
-
-                        text:
-                            "Le pont s'effondre sous {target}.",
-
-                        icon:
-                            "🌊",
-
-                        effects: [
-                            {
-                                target: "target",
-                                lives: -2
-                            }
-                        ],
-
-                        weight:
-                            62
-                    }
-
-                ]
-            }
-
-        ]
-    },
-
-
-    // =========================================================
-    // 26 - RADEAU ENDOMMAGÉ
-    // FIN MINI-HISTOIRE RADEAU
-    // =========================================================
-
-    {
-        id:
-            "interaction_raft_damaged",
-
-        type:
-            "interaction",
-
-        baseWeight:
-            1,
-
-        requirements: {
-
-            all: [
-                "interaction_shark_rescue_attempted"
-            ]
-
-        },
-
-        title:
-            "Le radeau de {actor} commence à céder",
-
-        category:
-            "Suite",
-
-        icon:
-            "🛶",
-
-        description:
-            "Après les événements précédents, plusieurs liens du radeau sont détendus. " +
-            "{actor} et {target} doivent décider rapidement quoi faire.",
-
-        choices: [
-
-            {
-                id:
-                    "raft_damaged_repair",
-
-                title:
-                    "🪢 Le réparer",
-
-                description:
-                    "Tenter de renforcer les cordes avant que tout se démonte.",
-
-                consequences: [
-
-                    {
-                        id:
-                            "raft_damaged_repair_good",
-
-                        text:
-                            "{actor} et {target} renforcent suffisamment le radeau pour atteindre la plage.",
-
-                        icon:
-                            "🏖️",
-
-                        effects:
-                            [],
 
                         weight:
                             48
                     },
 
                     {
-                        id:
-                            "raft_damaged_repair_bad",
+                        id: "bridge_return_actor_bad",
 
                         text:
-                            "Une corde casse pendant la réparation et le radeau se disloque.",
+                            "Une planche casse et {actor} manque de tomber dans le vide.",
 
                         icon:
                             "💥",
@@ -4419,12 +3537,8 @@ export const INTERACTION_SITUATIONS = [
                         effects: [
                             {
                                 target: "actor",
-                                lives: -1
-                            },
-
-                            {
-                                target: "target",
-                                lives: -1
+                                lives: -1,
+                                tags: ["physical"]
                             }
                         ],
 
@@ -4437,53 +3551,655 @@ export const INTERACTION_SITUATIONS = [
 
 
             {
-                id:
-                    "raft_damaged_swim",
+                id: "bridge_return_target",
 
                 title:
-                    "🏊 Abandonner le radeau",
+                    "👉 Envoyer encore {target}",
 
                 description:
-                    "Rejoindre la plage à la nage avant qu'il ne soit trop tard.",
+                    "Visiblement, certaines habitudes restent.",
 
                 consequences: [
 
                     {
-                        id:
-                            "raft_damaged_swim_good",
+                        id: "bridge_return_target_bad",
 
                         text:
-                            "Les deux atteignent finalement la plage complètement épuisés mais indemnes.",
+                            "{target} manque de tomber et commence sérieusement à comprendre le fonctionnement de votre relation.",
 
                         icon:
-                            "😮‍💨",
-
-                        effects:
-                            [],
-
-                        weight:
-                            35
-                    },
-
-                    {
-                        id:
-                            "raft_damaged_swim_bad",
-
-                        text:
-                            "Le courant est plus fort que prévu et sépare rapidement les deux nageurs.",
-
-                        icon:
-                            "🌊",
+                            "😡",
 
                         effects: [
                             {
+                                target: "target",
+                                lives: -1,
+                                tags: ["physical"]
+                            },
+
+                            {
                                 target: "actor",
-                                lives: -2
+
+                                relation: {
+                                    trust: -1,
+                                    distrust: 2
+                                }
                             }
                         ],
 
                         weight:
-                            65
+                            60
+                    },
+
+                    {
+                        id: "bridge_return_target_safe",
+
+                        text:
+                            "{target} traverse sans problème, mais se retourne immédiatement pour demander pourquoi c'est toujours lui qui teste les ponts.",
+
+                        icon:
+                            "🙄",
+
+                        effects: [
+                            {
+                                target: "actor",
+
+                                relation: {
+                                    trust: -1
+                                }
+                            }
+                        ],
+
+                        weight:
+                            40
+                    }
+
+                ]
+            },
+
+
+            {
+                id: "bridge_return_team",
+
+                title:
+                    "🪢 Traverser attachés",
+
+                description:
+                    "Votre confiance permet de progresser en vous assurant mutuellement.",
+
+                condition: {
+                    type: "relation",
+                    field: "trust",
+                    operator: ">=",
+                    value: 2
+                },
+
+                consequences: [
+
+                    {
+                        id: "bridge_return_team_good",
+
+                        text:
+                            "Vous traversez lentement, attachés à la même corde. Le pont tient jusqu'au dernier pas.",
+
+                        icon:
+                            "🪢",
+
+                        effects: [],
+
+                        weight:
+                            100
+                    }
+
+                ]
+            }
+
+        ]
+    },
+
+
+    // =========================================================
+    // 18 - NOUVEAU : NUIT DE GARDE
+    // =========================================================
+
+    {
+        id: "interaction_night_watch",
+        type: "interaction",
+        baseWeight: 1,
+
+        title:
+            "{target} s'endort pendant son tour de garde",
+
+        category:
+            "Interaction",
+
+        icon:
+            "🌙",
+
+        description:
+            "{actor} découvre {target} profondément endormi alors qu'il devait surveiller le camp.",
+
+        choices: [
+
+            {
+                id: "night_watch_replace",
+
+                title:
+                    "🛡️ Prendre sa place",
+
+                description:
+                    "Laisser {target} dormir et assurer la garde.",
+
+                consequences: [
+
+                    {
+                        id: "night_watch_replace_good",
+
+                        text:
+                            "{actor} assure le reste de la garde. Au réveil, {target} réalise ce qu'il a fait et lui promet de lui rendre la pareille.",
+
+                        icon:
+                            "🤝",
+
+                        effects: [
+                            {
+                                target: "actor",
+                                gauge: {
+                                    id: "fatigue",
+                                    amount: 1
+                                }
+                            },
+
+                            {
+                                target: "actor",
+
+                                relation: {
+                                    trust: 1,
+                                    debt: true,
+                                    protection: 2
+                                }
+                            }
+                        ],
+
+                        weight:
+                            75
+                    },
+
+                    {
+                        id: "night_watch_replace_danger",
+
+                        text:
+                            "En remplaçant {target}, {actor} doit faire fuir un animal attiré par le camp.",
+
+                        icon:
+                            "🐗",
+
+                        effects: [
+                            {
+                                target: "actor",
+                                lives: -1,
+                                tags: ["physical"]
+                            },
+
+                            {
+                                target: "actor",
+
+                                relation: {
+                                    trust: 1,
+                                    debt: true
+                                }
+                            }
+                        ],
+
+                        weight:
+                            25
+                    }
+
+                ]
+            },
+
+
+            {
+                id: "night_watch_wake",
+
+                title:
+                    "📢 Réveiller {target}",
+
+                description:
+                    "Il avait une mission, qu'il l'assume.",
+
+                consequences: [
+
+                    {
+                        id: "night_watch_wake_neutral",
+
+                        text:
+                            "{target} se réveille en sursaut et reprend sa garde, légèrement honteux.",
+
+                        icon:
+                            "😬",
+
+                        effects: [],
+
+                        weight:
+                            70
+                    },
+
+                    {
+                        id: "night_watch_wake_argument",
+
+                        text:
+                            "{target} prend très mal le réveil brutal et une dispute éclate.",
+
+                        icon:
+                            "😡",
+
+                        effects: [
+                            {
+                                target: "actor",
+
+                                relation: {
+                                    trust: -1
+                                }
+                            }
+                        ],
+
+                        weight:
+                            30
+                    }
+
+                ]
+            }
+
+        ]
+    },
+
+
+    // =========================================================
+    // 19 - NOUVEAU : ANTIDOTE UNIQUE
+    // =========================================================
+
+    {
+        id: "interaction_antidote",
+        type: "interaction",
+        baseWeight: 0.8,
+
+        title:
+            "{actor} trouve une dose d'antidote",
+
+        category:
+            "Interaction",
+
+        icon:
+            "💉",
+
+        description:
+            "{actor} découvre une petite trousse contenant une seule dose d'un produit pouvant neutraliser certains poisons. " +
+            "{target} semble en avoir sérieusement besoin.",
+
+        choices: [
+
+            {
+                id: "antidote_give",
+
+                title:
+                    "💉 Donner l'antidote à {target}",
+
+                description:
+                    "Utiliser la seule dose pour l'aider.",
+
+                consequences: [
+
+                    {
+                        id: "antidote_give_good",
+
+                        text:
+                            "Le produit fonctionne. {target} récupère progressivement et n'oublie pas le geste de {actor}.",
+
+                        icon:
+                            "❤️‍🩹",
+
+                        effects: [
+                            {
+                                target: "target",
+                                removeStatus: "poisoned"
+                            },
+
+                            {
+                                target: "actor",
+
+                                relation: {
+                                    trust: 1,
+                                    debt: true
+                                }
+                            }
+                        ],
+
+                        weight:
+                            85
+                    },
+
+                    {
+                        id: "antidote_give_neutral",
+
+                        text:
+                            "Le produit ne semble pas très efficace, mais {target} apprécie l'intention.",
+
+                        icon:
+                            "💉",
+
+                        effects: [
+                            {
+                                target: "actor",
+
+                                relation: {
+                                    trust: 1
+                                }
+                            }
+                        ],
+
+                        weight:
+                            15
+                    }
+
+                ]
+            },
+
+
+            {
+                id: "antidote_keep",
+
+                title:
+                    "🎒 Garder l'antidote",
+
+                description:
+                    "Il pourrait servir à {actor} plus tard.",
+
+                consequences: [
+
+                    {
+                        id: "antidote_keep_seen",
+
+                        text:
+                            "{target} voit clairement {actor} ranger l'antidote alors qu'il aurait pu l'aider.",
+
+                        icon:
+                            "😡",
+
+                        effects: [
+                            {
+                                target: "actor",
+
+                                relation: {
+                                    trust: -1,
+                                    distrust: 2
+                                }
+                            }
+                        ],
+
+                        weight:
+                            60
+                    },
+
+                    {
+                        id: "antidote_keep_secret",
+
+                        text:
+                            "{actor} cache discrètement l'antidote. {target} ne remarque rien.",
+
+                        icon:
+                            "🤫",
+
+                        effects: [],
+
+                        weight:
+                            40
+                    }
+
+                ]
+            }
+
+        ]
+    },
+
+
+    // =========================================================
+    // 20 - NOUVEAU : CORDE AU-DESSUS DU RAVIN
+    // =========================================================
+
+    {
+        id: "interaction_ravine_rope",
+        type: "interaction",
+        baseWeight: 1,
+
+        title:
+            "{target} est suspendu au-dessus d'un ravin",
+
+        category:
+            "Interaction",
+
+        icon:
+            "🪢",
+
+        description:
+            "Une vieille corde a cédé pendant la traversée. {target} est maintenant suspendu quelques mètres plus bas. " +
+            "{actor} est la seule personne suffisamment proche pour intervenir.",
+
+        choices: [
+
+            {
+                id: "ravine_pull",
+
+                title:
+                    "💪 Tirer {target}",
+
+                description:
+                    "Utiliser toute ta force pour le remonter.",
+
+                consequences: [
+
+                    {
+                        id: "ravine_pull_good",
+
+                        text:
+                            "{actor} réussit à remonter {target}. Le sauvetage crée forcément un lien entre eux.",
+
+                        icon:
+                            "🦸",
+
+                        effects: [
+                            {
+                                target: "actor",
+                                gauge: {
+                                    id: "fatigue",
+                                    amount: 1
+                                }
+                            },
+
+                            {
+                                target: "actor",
+
+                                relation: {
+                                    trust: 1,
+                                    debt: true,
+                                    protection: 2
+                                }
+                            }
+                        ],
+
+                        weight:
+                            38
+                    },
+
+                    {
+                        id: "ravine_pull_bad",
+
+                        text:
+                            "{actor} parvient à sauver {target}, mais se blesse sérieusement pendant l'effort.",
+
+                        icon:
+                            "🤕",
+
+                        effects: [
+                            {
+                                target: "actor",
+                                lives: -1,
+                                tags: ["physical"]
+                            },
+
+                            {
+                                target: "actor",
+                                gauge: {
+                                    id: "fatigue",
+                                    amount: 1
+                                }
+                            },
+
+                            {
+                                target: "actor",
+
+                                relation: {
+                                    trust: 1,
+                                    debt: true
+                                }
+                            }
+                        ],
+
+                        weight:
+                            47
+                    },
+
+                    {
+                        id: "ravine_pull_fail",
+
+                        text:
+                            "La corde glisse encore. {target} chute quelques mètres avant de s'accrocher à une corniche.",
+
+                        icon:
+                            "😱",
+
+                        effects: [
+                            {
+                                target: "target",
+                                lives: -1,
+                                tags: ["physical"]
+                            }
+                        ],
+
+                        weight:
+                            15
+                    }
+
+                ]
+            },
+
+
+            {
+                id: "ravine_leave",
+
+                title:
+                    "🚶 Ne pas prendre le risque",
+
+                description:
+                    "Une chute supplémentaire pourrait entraîner {actor} avec lui.",
+
+                consequences: [
+
+                    {
+                        id: "ravine_leave_escape",
+
+                        text:
+                            "{target} réussit finalement à remonter par une autre paroi. Son premier regard vers {actor} suffit à résumer la situation.",
+
+                        icon:
+                            "😠",
+
+                        effects: [
+                            {
+                                target: "actor",
+
+                                relation: {
+                                    trust: -1,
+                                    distrust: 2
+                                }
+                            }
+                        ],
+
+                        weight:
+                            55
+                    },
+
+                    {
+                        id: "ravine_leave_bad",
+
+                        text:
+                            "{target} chute sur une corniche plus basse avant de trouver une sortie.",
+
+                        icon:
+                            "💥",
+
+                        effects: [
+                            {
+                                target: "target",
+                                lives: -2,
+                                tags: ["physical"]
+                            },
+
+                            {
+                                target: "actor",
+
+                                relation: {
+                                    trust: -1
+                                }
+                            }
+                        ],
+
+                        weight:
+                            45
+                    }
+
+                ]
+            },
+
+
+            {
+                id: "ravine_resourceful",
+
+                title:
+                    "🛠️ Créer un système de poulie",
+
+                description:
+                    "Utiliser un arbre et une seconde corde pour réduire fortement l'effort.",
+
+                condition: {
+                    type: "status",
+                    id: "resourceful"
+                },
+
+                consequences: [
+
+                    {
+                        id: "ravine_resourceful_success",
+
+                        text:
+                            "Le système improvisé fonctionne. {actor} remonte {target} progressivement et sans danger.",
+
+                        icon:
+                            "🪢",
+
+                        effects: [
+                            {
+                                target: "actor",
+
+                                relation: {
+                                    trust: 1,
+                                    debt: true
+                                }
+                            }
+                        ],
+
+                        weight:
+                            100
                     }
 
                 ]

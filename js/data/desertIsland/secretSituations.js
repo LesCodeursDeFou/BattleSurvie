@@ -2,7 +2,6 @@ export const SECRET_SITUATIONS = [
 
     // =====================================================
     // 1 - RÉSERVE DE NOURRITURE
-    // CLASSIQUE
     // =====================================================
 
     {
@@ -90,7 +89,7 @@ export const SECRET_SITUATIONS = [
                 "Qu'a choisi {actor} ?",
 
             description:
-                "Les autres survivants doivent maintenant deviner la décision de {actor}.",
+                "Les autres survivants doivent deviner si {actor} a pensé au groupe... ou uniquement à lui-même.",
 
             choices: [
 
@@ -129,10 +128,6 @@ export const SECRET_SITUATIONS = [
 
         outcomes: {
 
-            // =================================================
-            // GARDE + GROUPE DEVINE
-            // =================================================
-
             keep_correct: {
 
                 icon:
@@ -151,7 +146,7 @@ export const SECRET_SITUATIONS = [
                             "😡",
 
                         text:
-                            "Le groupe comprend immédiatement que {actor} voulait cacher les provisions. La confrontation tourne mal pour lui.",
+                            "Le groupe découvre la cachette de {actor}. La confrontation dégénère et {actor} ressort assez mal de l'histoire.",
 
                         effects: [
                             {
@@ -159,12 +154,25 @@ export const SECRET_SITUATIONS = [
                                     "actor",
 
                                 lives:
-                                    -2
+                                    -1
+                            },
+
+                            {
+                                target:
+                                    "actor",
+
+                                status: {
+                                    id:
+                                        "hungry",
+
+                                    duration:
+                                        2
+                                }
                             }
                         ],
 
                         weight:
-                            68
+                            52
                     },
 
                     {
@@ -175,37 +183,37 @@ export const SECRET_SITUATIONS = [
                             "😬",
 
                         text:
-                            "{actor} est démasqué, mais rend la nourriture avant que la dispute ne dégénère.",
+                            "{actor} est démasqué mais restitue immédiatement la nourriture avant que la situation ne dégénère.",
 
                         effects:
                             [],
 
                         weight:
-                            27
+                            38
                     },
 
                     {
                         id:
-                            "food_keep_correct_twist",
+                            "food_keep_correct_group",
 
                         icon:
                             "🥫",
 
                         text:
-                            "Le groupe trouve la cachette de {actor}. Une petite partie des provisions reste néanmoins exploitable par tout le monde.",
+                            "Le groupe récupère les provisions cachées et découvre qu'une petite partie est encore parfaitement consommable.",
 
                         effects: [
                             {
                                 target:
                                     "others",
 
-                                lives:
-                                    1
+                                removeStatus:
+                                    "hungry"
                             }
                         ],
 
                         weight:
-                            5
+                            10
                     }
 
                 ]
@@ -213,17 +221,13 @@ export const SECRET_SITUATIONS = [
             },
 
 
-            // =================================================
-            // GARDE + GROUPE SE TROMPE
-            // =================================================
-
             keep_wrong: {
 
                 icon:
                     "😏",
 
                 title:
-                    "Bluff réussi !",
+                    "Bluff réussi",
 
                 variants: [
 
@@ -232,36 +236,20 @@ export const SECRET_SITUATIONS = [
                             "food_keep_wrong_good",
 
                         icon:
-                            "😏",
+                            "😋",
 
                         text:
-                            "Personne ne soupçonne {actor}, qui profite discrètement de sa réserve.",
+                            "Personne ne soupçonne {actor}, qui profite discrètement de plusieurs conserves encore parfaitement consommables.",
 
                         effects: [
                             {
                                 target:
                                     "actor",
 
-                                lives:
-                                    2
-                            }
-                        ],
+                                removeStatus:
+                                    "hungry"
+                            },
 
-                        weight:
-                            12
-                    },
-
-                    {
-                        id:
-                            "food_keep_wrong_small",
-
-                        icon:
-                            "🥫",
-
-                        text:
-                            "{actor} réussit son bluff, mais une bonne partie de la nourriture est déjà périmée.",
-
-                        effects: [
                             {
                                 target:
                                     "actor",
@@ -277,19 +265,67 @@ export const SECRET_SITUATIONS = [
 
                     {
                         id:
+                            "food_keep_wrong_small",
+
+                        icon:
+                            "🥫",
+
+                        text:
+                            "{actor} garde la caisse pour lui, mais les portions sont beaucoup plus petites que prévu.",
+
+                        effects: [
+                            {
+                                target:
+                                    "actor",
+
+                                removeStatus:
+                                    "hungry"
+                            }
+                        ],
+
+                        weight:
+                            25
+                    },
+
+                    {
+                        id:
+                            "food_keep_wrong_bad",
+
+                        icon:
+                            "🤢",
+
+                        text:
+                            "Le secret fonctionne parfaitement. La nourriture, beaucoup moins : plusieurs conserves sont avariées.",
+
+                        effects: [
+                            {
+                                target:
+                                    "actor",
+
+                                status:
+                                    "poisoned"
+                            }
+                        ],
+
+                        weight:
+                            20
+                    },
+
+                    {
+                        id:
                             "food_keep_wrong_neutral",
 
                         icon:
                             "😐",
 
                         text:
-                            "Le groupe ne découvre rien, mais la nourriture cachée se révèle presque inutilisable.",
+                            "Personne ne découvre la cachette, mais la plupart des provisions sont déjà inutilisables.",
 
                         effects:
                             [],
 
                         weight:
-                            68
+                            35
                     }
 
                 ]
@@ -297,17 +333,13 @@ export const SECRET_SITUATIONS = [
             },
 
 
-            // =================================================
-            // PARTAGE + GROUPE DEVINE
-            // =================================================
-
             share_correct: {
 
                 icon:
                     "🤝",
 
                 title:
-                    "Confiance !",
+                    "Confiance méritée",
 
                 variants: [
 
@@ -319,9 +351,17 @@ export const SECRET_SITUATIONS = [
                             "😋",
 
                         text:
-                            "Le groupe avait raison de faire confiance à {actor}. Quelques bonnes conserves permettent à tout le monde de reprendre des forces.",
+                            "Le groupe avait raison de faire confiance à {actor}. Les meilleures conserves sont partagées équitablement.",
 
                         effects: [
+                            {
+                                target:
+                                    "all",
+
+                                removeStatus:
+                                    "hungry"
+                            },
+
                             {
                                 target:
                                     "all",
@@ -332,7 +372,7 @@ export const SECRET_SITUATIONS = [
                         ],
 
                         weight:
-                            18
+                            20
                     },
 
                     {
@@ -343,13 +383,20 @@ export const SECRET_SITUATIONS = [
                             "🥫",
 
                         text:
-                            "{actor} partage bien la caisse, mais il reste trop peu de nourriture pour réellement améliorer la situation.",
+                            "{actor} partage réellement la caisse, mais les quantités sont trop faibles pour faire une différence importante.",
 
-                        effects:
-                            [],
+                        effects: [
+                            {
+                                target:
+                                    "all",
+
+                                removeStatus:
+                                    "hungry"
+                            }
+                        ],
 
                         weight:
-                            67
+                            50
                     },
 
                     {
@@ -360,20 +407,20 @@ export const SECRET_SITUATIONS = [
                             "🤢",
 
                         text:
-                            "La bonne intention de {actor} ne suffit pas : plusieurs conserves étaient périmées.",
+                            "La bonne intention de {actor} ne suffit pas : une partie des conserves était avariée.",
 
                         effects: [
                             {
                                 target:
                                     "all",
 
-                                lives:
-                                    -1
+                                status:
+                                    "poisoned"
                             }
                         ],
 
                         weight:
-                            15
+                            30
                     }
 
                 ]
@@ -381,17 +428,13 @@ export const SECRET_SITUATIONS = [
             },
 
 
-            // =================================================
-            // PARTAGE + GROUPE SE TROMPE
-            // =================================================
-
             share_wrong: {
 
                 icon:
                     "💔",
 
                 title:
-                    "Accusé à tort !",
+                    "Accusé à tort",
 
                 variants: [
 
@@ -403,28 +446,25 @@ export const SECRET_SITUATIONS = [
                             "😡",
 
                         text:
-                            "{actor} voulait réellement partager, mais la méfiance provoque une énorme dispute.",
+                            "{actor} voulait réellement partager, mais les accusations provoquent une dispute interminable et épuisante.",
 
                         effects: [
                             {
                                 target:
-                                    "actor",
+                                    "all",
 
-                                lives:
-                                    -1
-                            },
+                                gauge: {
+                                    id:
+                                        "fatigue",
 
-                            {
-                                target:
-                                    "others",
-
-                                lives:
-                                    -1
+                                    amount:
+                                        1
+                                }
                             }
                         ],
 
                         weight:
-                            55
+                            52
                     },
 
                     {
@@ -435,13 +475,13 @@ export const SECRET_SITUATIONS = [
                             "😒",
 
                         text:
-                            "Après de longues accusations, le groupe comprend finalement que {actor} disait la vérité.",
+                            "Après de longues explications, le groupe comprend finalement que {actor} disait la vérité.",
 
                         effects:
                             [],
 
                         weight:
-                            45
+                            48
                     }
 
                 ]
@@ -455,7 +495,6 @@ export const SECRET_SITUATIONS = [
 
     // =====================================================
     // 2 - SOURCE D'EAU
-    // CLASSIQUE
     // =====================================================
 
     {
@@ -469,7 +508,7 @@ export const SECRET_SITUATIONS = [
             1,
 
         title:
-            "{actor} découvre une source d'eau potable",
+            "{actor} découvre une source d'eau",
 
         category:
             "Choix secret",
@@ -478,7 +517,7 @@ export const SECRET_SITUATIONS = [
             "💧",
 
         description:
-            "Derrière plusieurs rochers, {actor} découvre une petite source d'eau parfaitement claire.",
+            "Derrière plusieurs rochers, {actor} découvre une petite source à l'eau parfaitement claire.",
 
         choices: [
 
@@ -540,10 +579,10 @@ export const SECRET_SITUATIONS = [
         guess: {
 
             title:
-                "{actor} vous a-t-il parlé de la source ?",
+                "{actor} vous aurait-il réellement parlé de la source ?",
 
             description:
-                "À vous de deviner ce que {actor} a réellement décidé.",
+                "À vous de deviner sa décision.",
 
             choices: [
 
@@ -572,7 +611,7 @@ export const SECRET_SITUATIONS = [
                         "💧 Il voulait partager",
 
                     description:
-                        "{actor} comptait vous montrer la source."
+                        "{actor} comptait montrer la source."
                 }
 
             ]
@@ -597,7 +636,7 @@ export const SECRET_SITUATIONS = [
                             "water_hide_correct_bad",
 
                         text:
-                            "Les autres retrouvent {actor} près de la source et comprennent immédiatement son plan.",
+                            "Les autres retrouvent {actor} en train de boire près de la source. La discussion est particulièrement tendue.",
 
                         icon:
                             "😡",
@@ -607,13 +646,18 @@ export const SECRET_SITUATIONS = [
                                 target:
                                     "actor",
 
-                                lives:
-                                    -2
+                                gauge: {
+                                    id:
+                                        "fatigue",
+
+                                    amount:
+                                        1
+                                }
                             }
                         ],
 
                         weight:
-                            70
+                            55
                     },
 
                     {
@@ -621,7 +665,7 @@ export const SECRET_SITUATIONS = [
                             "water_hide_correct_neutral",
 
                         text:
-                            "{actor} est démasqué avant d'avoir réellement profité de la source.",
+                            "{actor} est démasqué avant d'avoir réellement profité de la source et accepte finalement de la partager.",
 
                         icon:
                             "😬",
@@ -630,7 +674,7 @@ export const SECRET_SITUATIONS = [
                             [],
 
                         weight:
-                            30
+                            45
                     }
 
                 ]
@@ -653,7 +697,7 @@ export const SECRET_SITUATIONS = [
                             "water_hide_wrong_good",
 
                         text:
-                            "{actor} profite tranquillement de sa source secrète et récupère des forces.",
+                            "{actor} profite seul de la source et récupère après plusieurs heures sous le soleil.",
 
                         icon:
                             "💧",
@@ -663,26 +707,15 @@ export const SECRET_SITUATIONS = [
                                 target:
                                     "actor",
 
-                                lives:
-                                    2
-                            }
-                        ],
+                                gauge: {
+                                    id:
+                                        "fatigue",
 
-                        weight:
-                            12
-                    },
+                                    amount:
+                                        -2
+                                }
+                            },
 
-                    {
-                        id:
-                            "water_hide_wrong_small",
-
-                        text:
-                            "{actor} réussit à garder l'endroit secret et boit suffisamment pour se sentir un peu mieux.",
-
-                        icon:
-                            "😌",
-
-                        effects: [
                             {
                                 target:
                                     "actor",
@@ -693,7 +726,60 @@ export const SECRET_SITUATIONS = [
                         ],
 
                         weight:
-                            22
+                            15
+                    },
+
+                    {
+                        id:
+                            "water_hide_wrong_small",
+
+                        text:
+                            "{actor} boit tranquillement et reprend un peu d'énergie.",
+
+                        icon:
+                            "😌",
+
+                        effects: [
+                            {
+                                target:
+                                    "actor",
+
+                                gauge: {
+                                    id:
+                                        "fatigue",
+
+                                    amount:
+                                        -1
+                                }
+                            }
+                        ],
+
+                        weight:
+                            30
+                    },
+
+                    {
+                        id:
+                            "water_hide_wrong_poison",
+
+                        text:
+                            "Personne ne découvre la source... mais quelques heures plus tard, {actor} commence à se sentir sérieusement malade.",
+
+                        icon:
+                            "🤢",
+
+                        effects: [
+                            {
+                                target:
+                                    "actor",
+
+                                status:
+                                    "poisoned"
+                            }
+                        ],
+
+                        weight:
+                            20
                     },
 
                     {
@@ -701,7 +787,7 @@ export const SECRET_SITUATIONS = [
                             "water_hide_wrong_neutral",
 
                         text:
-                            "Personne ne découvre la source, mais son débit est beaucoup trop faible pour être réellement utile.",
+                            "Le secret est parfaitement gardé, mais le débit est trop faible pour que la source soit réellement utile.",
 
                         icon:
                             "💧",
@@ -710,7 +796,7 @@ export const SECRET_SITUATIONS = [
                             [],
 
                         weight:
-                            66
+                            35
                     }
 
                 ]
@@ -733,7 +819,7 @@ export const SECRET_SITUATIONS = [
                             "water_reveal_correct_good",
 
                         text:
-                            "{actor} comptait bien partager l'eau. La source permet à tout le monde de reprendre un peu de force.",
+                            "{actor} comptait effectivement partager. Tout le monde peut boire et récupérer.",
 
                         icon:
                             "💧",
@@ -743,13 +829,18 @@ export const SECRET_SITUATIONS = [
                                 target:
                                     "all",
 
-                                lives:
-                                    1
+                                gauge: {
+                                    id:
+                                        "fatigue",
+
+                                    amount:
+                                        -1
+                                }
                             }
                         ],
 
                         weight:
-                            18
+                            28
                     },
 
                     {
@@ -757,7 +848,7 @@ export const SECRET_SITUATIONS = [
                             "water_reveal_correct_neutral",
 
                         text:
-                            "Le groupe suit {actor}, mais la source produit juste assez d'eau pour remplir quelques gourdes.",
+                            "La source produit juste assez d'eau pour remplir les gourdes. C'est peu, mais cela reste précieux.",
 
                         icon:
                             "😐",
@@ -766,7 +857,7 @@ export const SECRET_SITUATIONS = [
                             [],
 
                         weight:
-                            67
+                            52
                     },
 
                     {
@@ -774,7 +865,7 @@ export const SECRET_SITUATIONS = [
                             "water_reveal_correct_bad",
 
                         text:
-                            "En approchant tous ensemble de la source, le groupe dérange un énorme nid d'insectes.",
+                            "En approchant tous ensemble, le groupe dérange un immense nid d'insectes.",
 
                         icon:
                             "🐝",
@@ -785,12 +876,16 @@ export const SECRET_SITUATIONS = [
                                     "all",
 
                                 lives:
-                                    -1
+                                    -1,
+
+                                tags: [
+                                    "physical"
+                                ]
                             }
                         ],
 
                         weight:
-                            15
+                            20
                     }
 
                 ]
@@ -813,7 +908,7 @@ export const SECRET_SITUATIONS = [
                             "water_reveal_wrong_bad",
 
                         text:
-                            "Les accusations font perdre beaucoup de temps au groupe alors que {actor} voulait réellement partager.",
+                            "Les accusations font perdre beaucoup de temps alors que {actor} voulait réellement partager sa découverte.",
 
                         icon:
                             "😤",
@@ -821,10 +916,15 @@ export const SECRET_SITUATIONS = [
                         effects: [
                             {
                                 target:
-                                    "others",
+                                    "all",
 
-                                lives:
-                                    -1
+                                gauge: {
+                                    id:
+                                        "fatigue",
+
+                                    amount:
+                                        1
+                                }
                             }
                         ],
 
@@ -837,7 +937,7 @@ export const SECRET_SITUATIONS = [
                             "water_reveal_wrong_neutral",
 
                         text:
-                            "Le groupe finit par comprendre que {actor} disait vrai. Personne n'en tire cependant de bénéfice immédiat.",
+                            "Le groupe finit par comprendre que {actor} disait vrai et rejoint finalement la source.",
 
                         icon:
                             "😐",
@@ -907,7 +1007,7 @@ export const SECRET_SITUATIONS = [
                     ],
 
                     removeFlags: [
-                        "secret_backpack_left"
+                        "secret_backpack_shared"
                     ],
 
                     nextSituationBoosts: [
@@ -916,7 +1016,7 @@ export const SECRET_SITUATIONS = [
                                 "desert_secret_medicine",
 
                             weight:
-                                24
+                                28
                         }
                     ]
 
@@ -958,7 +1058,7 @@ export const SECRET_SITUATIONS = [
                 "Qu'a fait {actor} avec le sac ?",
 
             description:
-                "Le groupe doit décider s'il fait confiance à {actor}.",
+                "Le groupe doit décider s'il lui fait confiance.",
 
             choices: [
 
@@ -973,7 +1073,7 @@ export const SECRET_SITUATIONS = [
                         "🎒 Il l'a fouillé",
 
                     description:
-                        "Vous pensez que {actor} s'est servi avant vous."
+                        "Vous pensez que {actor} s'est servi avant les autres."
                 },
 
                 {
@@ -1003,7 +1103,7 @@ export const SECRET_SITUATIONS = [
                     "🫵",
 
                 title:
-                    "Grillé !",
+                    "Grillé",
 
                 variants: [
 
@@ -1012,7 +1112,7 @@ export const SECRET_SITUATIONS = [
                             "backpack_search_correct_bad",
 
                         text:
-                            "Le groupe comprend que {actor} a fouillé le sac avant tout le monde et récupère ce qu'il avait pris.",
+                            "Le groupe comprend que {actor} a fouillé le sac seul et récupère presque tout ce qu'il avait pris.",
 
                         icon:
                             "😡",
@@ -1022,13 +1122,18 @@ export const SECRET_SITUATIONS = [
                                 target:
                                     "actor",
 
-                                lives:
-                                    -2
+                                gauge: {
+                                    id:
+                                        "fatigue",
+
+                                    amount:
+                                        1
+                                }
                             }
                         ],
 
                         weight:
-                            65,
+                            55,
 
                         narrative: {
 
@@ -1050,7 +1155,7 @@ export const SECRET_SITUATIONS = [
                             "backpack_search_correct_neutral",
 
                         text:
-                            "{actor} avoue immédiatement avoir fouillé le sac. Le groupe laisse tomber l'affaire.",
+                            "{actor} avoue immédiatement et rend les objets. Le groupe laisse tomber l'affaire.",
 
                         icon:
                             "😬",
@@ -1059,7 +1164,7 @@ export const SECRET_SITUATIONS = [
                             [],
 
                         weight:
-                            35,
+                            45,
 
                         narrative: {
 
@@ -1093,26 +1198,31 @@ export const SECRET_SITUATIONS = [
 
                     {
                         id:
-                            "backpack_search_wrong_good",
+                            "backpack_search_wrong_tools",
 
                         text:
-                            "Personne ne soupçonne {actor}, qui récupère discrètement du matériel encore utile.",
+                            "Personne ne soupçonne {actor}, qui récupère quelques outils encore utilisables.",
 
                         icon:
-                            "🎒",
+                            "🛠️",
 
                         effects: [
                             {
                                 target:
                                     "actor",
 
-                                lives:
-                                    2
+                                status: {
+                                    id:
+                                        "resourceful",
+
+                                    duration:
+                                        2
+                                }
                             }
                         ],
 
                         weight:
-                            10,
+                            25,
 
                         narrative: {
 
@@ -1131,21 +1241,21 @@ export const SECRET_SITUATIONS = [
 
                     {
                         id:
-                            "backpack_search_wrong_small",
+                            "backpack_search_wrong_food",
 
                         text:
-                            "{actor} trouve seulement quelques objets utiles au fond du sac.",
+                            "{actor} trouve une petite ration protégée de l'humidité.",
 
                         icon:
-                            "🔦",
+                            "🥫",
 
                         effects: [
                             {
                                 target:
                                     "actor",
 
-                                lives:
-                                    1
+                                removeStatus:
+                                    "hungry"
                             }
                         ],
 
@@ -1160,7 +1270,45 @@ export const SECRET_SITUATIONS = [
                                         "desert_secret_medicine",
 
                                     weight:
-                                        34
+                                        32
+                                }
+                            ]
+
+                        }
+                    },
+
+                    {
+                        id:
+                            "backpack_search_wrong_bad",
+
+                        text:
+                            "Une araignée s'était installée au fond du sac et mord {actor} lorsqu'il plonge la main à l'intérieur.",
+
+                        icon:
+                            "🕷️",
+
+                        effects: [
+                            {
+                                target:
+                                    "actor",
+
+                                status:
+                                    "poisoned"
+                            }
+                        ],
+
+                        weight:
+                            20,
+
+                        narrative: {
+
+                            nextSituationBoosts: [
+                                {
+                                    id:
+                                        "desert_secret_medicine",
+
+                                    weight:
+                                        36
                                 }
                             ]
 
@@ -1172,7 +1320,7 @@ export const SECRET_SITUATIONS = [
                             "backpack_search_wrong_neutral",
 
                         text:
-                            "Personne ne soupçonne {actor}, mais le sac contient surtout des vêtements détruits par l'humidité.",
+                            "Le sac contient surtout des vêtements détruits par l'humidité.",
 
                         icon:
                             "😐",
@@ -1181,7 +1329,7 @@ export const SECRET_SITUATIONS = [
                             [],
 
                         weight:
-                            70,
+                            35,
 
                         narrative: {
 
@@ -1218,23 +1366,52 @@ export const SECRET_SITUATIONS = [
                             "backpack_call_correct_good",
 
                         text:
-                            "Le groupe avait raison de faire confiance à {actor}. Quelques objets sont encore utilisables.",
+                            "Le groupe avait raison de faire confiance à {actor}. Plusieurs outils sont encore utilisables.",
 
                         icon:
-                            "🎁",
+                            "🛠️",
 
                         effects: [
                             {
                                 target:
                                     "all",
 
-                                lives:
-                                    1
+                                status: {
+                                    id:
+                                        "resourceful",
+
+                                    duration:
+                                        1
+                                }
                             }
                         ],
 
                         weight:
-                            16
+                            22
+                    },
+
+                    {
+                        id:
+                            "backpack_call_correct_food",
+
+                        text:
+                            "Une petite ration est partagée entre les survivants.",
+
+                        icon:
+                            "🥫",
+
+                        effects: [
+                            {
+                                target:
+                                    "all",
+
+                                removeStatus:
+                                    "hungry"
+                            }
+                        ],
+
+                        weight:
+                            18
                     },
 
                     {
@@ -1251,7 +1428,7 @@ export const SECRET_SITUATIONS = [
                             [],
 
                         weight:
-                            84
+                            60
                     }
 
                 ]
@@ -1274,7 +1451,7 @@ export const SECRET_SITUATIONS = [
                             "backpack_call_wrong_bad",
 
                         text:
-                            "{actor} n'avait rien pris, mais les accusations déclenchent une dispute inutile.",
+                            "{actor} n'avait rien pris, mais les accusations font perdre une bonne partie de la journée.",
 
                         icon:
                             "😤",
@@ -1282,10 +1459,15 @@ export const SECRET_SITUATIONS = [
                         effects: [
                             {
                                 target:
-                                    "actor",
+                                    "all",
 
-                                lives:
-                                    -1
+                                gauge: {
+                                    id:
+                                        "fatigue",
+
+                                    amount:
+                                        1
+                                }
                             }
                         ],
 
@@ -1298,7 +1480,7 @@ export const SECRET_SITUATIONS = [
                             "backpack_call_wrong_neutral",
 
                         text:
-                            "Le malentendu est finalement dissipé avant que la situation ne dégénère.",
+                            "Le malentendu est dissipé avant que la situation ne dégénère.",
 
                         icon:
                             "😐",
@@ -1378,7 +1560,7 @@ export const SECRET_SITUATIONS = [
                                 "desert_secret_flare",
 
                             weight:
-                                20
+                                22
                         }
                     ]
 
@@ -1415,7 +1597,7 @@ export const SECRET_SITUATIONS = [
                                 "desert_secret_flare",
 
                             weight:
-                                16
+                                18
                         }
                     ]
 
@@ -1428,10 +1610,10 @@ export const SECRET_SITUATIONS = [
         guess: {
 
             title:
-                "Quel était le plan de {actor} ?",
+                "Quel était le véritable plan de {actor} ?",
 
             description:
-                "Tentative d'évasion en solitaire ou véritable projet collectif ?",
+                "Tentative d'évasion en solitaire ou projet collectif ?",
 
             choices: [
 
@@ -1446,7 +1628,7 @@ export const SECRET_SITUATIONS = [
                         "🏃 Partir seul",
 
                     description:
-                        "{actor} comptait vous abandonner."
+                        "{actor} comptait abandonner le groupe."
                 },
 
                 {
@@ -1460,7 +1642,7 @@ export const SECRET_SITUATIONS = [
                         "🤝 Construire ensemble",
 
                     description:
-                        "{actor} comptait proposer son idée au groupe."
+                        "{actor} comptait proposer son idée à tout le monde."
                 }
 
             ]
@@ -1485,7 +1667,7 @@ export const SECRET_SITUATIONS = [
                             "raft_escape_correct_bad",
 
                         text:
-                            "Le groupe découvre le projet d'évasion de {actor} et démonte une partie de son radeau.",
+                            "Le groupe découvre le radeau secret et démonte une partie de la construction.",
 
                         icon:
                             "💥",
@@ -1495,13 +1677,18 @@ export const SECRET_SITUATIONS = [
                                 target:
                                     "actor",
 
-                                lives:
-                                    -2
+                                gauge: {
+                                    id:
+                                        "fatigue",
+
+                                    amount:
+                                        1
+                                }
                             }
                         ],
 
                         weight:
-                            68,
+                            60,
 
                         narrative: {
 
@@ -1532,7 +1719,7 @@ export const SECRET_SITUATIONS = [
                             [],
 
                         weight:
-                            32,
+                            40,
 
                         narrative: {
 
@@ -1560,7 +1747,7 @@ export const SECRET_SITUATIONS = [
                     "⛵",
 
                 title:
-                    "Plan parfait",
+                    "Plan secret",
 
                 variants: [
 
@@ -1569,7 +1756,7 @@ export const SECRET_SITUATIONS = [
                             "raft_escape_wrong_good",
 
                         text:
-                            "Personne ne soupçonne les véritables intentions de {actor}. Le radeau commence réellement à prendre forme.",
+                            "Personne ne soupçonne {actor}. Le radeau commence réellement à prendre forme.",
 
                         icon:
                             "🛶",
@@ -1579,13 +1766,18 @@ export const SECRET_SITUATIONS = [
                                 target:
                                     "actor",
 
-                                lives:
-                                    1
+                                status: {
+                                    id:
+                                        "resourceful",
+
+                                    duration:
+                                        2
+                                }
                             }
                         ],
 
                         weight:
-                            16,
+                            20,
 
                         narrative: {
 
@@ -1595,7 +1787,50 @@ export const SECRET_SITUATIONS = [
                                         "desert_secret_flare",
 
                                     weight:
-                                        34
+                                        36
+                                }
+                            ]
+
+                        }
+                    },
+
+                    {
+                        id:
+                            "raft_escape_wrong_tired",
+
+                        text:
+                            "Construire seul prend énormément de temps. Le projet avance, mais {actor} termine épuisé.",
+
+                        icon:
+                            "🥵",
+
+                        effects: [
+                            {
+                                target:
+                                    "actor",
+
+                                gauge: {
+                                    id:
+                                        "fatigue",
+
+                                    amount:
+                                        2
+                                }
+                            }
+                        ],
+
+                        weight:
+                            45,
+
+                        narrative: {
+
+                            nextSituationBoosts: [
+                                {
+                                    id:
+                                        "desert_secret_flare",
+
+                                    weight:
+                                        24
                                 }
                             ]
 
@@ -1607,7 +1842,7 @@ export const SECRET_SITUATIONS = [
                             "raft_escape_wrong_neutral",
 
                         text:
-                            "Le secret reste intact, mais construire seul un radeau s'avère beaucoup plus compliqué que prévu.",
+                            "Le secret reste intact, mais la construction est beaucoup plus complexe que prévu.",
 
                         icon:
                             "🪵",
@@ -1616,7 +1851,7 @@ export const SECRET_SITUATIONS = [
                             [],
 
                         weight:
-                            84,
+                            35,
 
                         narrative: {
 
@@ -1653,7 +1888,7 @@ export const SECRET_SITUATIONS = [
                             "raft_team_correct_good",
 
                         text:
-                            "Le groupe avait raison de faire confiance à {actor}. Le projet avance rapidement.",
+                            "Le groupe avait raison de faire confiance à {actor}. En travaillant ensemble, le radeau progresse très rapidement.",
 
                         icon:
                             "🤝",
@@ -1663,13 +1898,18 @@ export const SECRET_SITUATIONS = [
                                 target:
                                     "all",
 
-                                lives:
-                                    1
+                                status: {
+                                    id:
+                                        "resourceful",
+
+                                    duration:
+                                        1
+                                }
                             }
                         ],
 
                         weight:
-                            18
+                            25
                     },
 
                     {
@@ -1677,7 +1917,7 @@ export const SECRET_SITUATIONS = [
                             "raft_team_correct_neutral",
 
                         text:
-                            "Tout le monde accepte de travailler sur le radeau. La construction progresse lentement mais sûrement.",
+                            "Tout le monde accepte de travailler. La construction progresse lentement mais sûrement.",
 
                         icon:
                             "🛶",
@@ -1686,7 +1926,36 @@ export const SECRET_SITUATIONS = [
                             [],
 
                         weight:
-                            82
+                            55
+                    },
+
+                    {
+                        id:
+                            "raft_team_correct_tired",
+
+                        text:
+                            "Le travail collectif fonctionne, mais plusieurs heures sont nécessaires pour assembler la structure.",
+
+                        icon:
+                            "🥵",
+
+                        effects: [
+                            {
+                                target:
+                                    "all",
+
+                                gauge: {
+                                    id:
+                                        "fatigue",
+
+                                    amount:
+                                        1
+                                }
+                            }
+                        ],
+
+                        weight:
+                            20
                     }
 
                 ]
@@ -1709,7 +1978,7 @@ export const SECRET_SITUATIONS = [
                             "raft_team_wrong_bad",
 
                         text:
-                            "{actor} voulait aider tout le monde, mais les accusations font perdre une grande partie de la journée.",
+                            "{actor} voulait réellement aider tout le monde, mais les accusations font perdre une grande partie de la journée.",
 
                         icon:
                             "😤",
@@ -1717,10 +1986,15 @@ export const SECRET_SITUATIONS = [
                         effects: [
                             {
                                 target:
-                                    "others",
+                                    "all",
 
-                                lives:
-                                    -1
+                                gauge: {
+                                    id:
+                                        "fatigue",
+
+                                    amount:
+                                        1
+                                }
                             }
                         ],
 
@@ -1733,7 +2007,7 @@ export const SECRET_SITUATIONS = [
                             "raft_team_wrong_neutral",
 
                         text:
-                            "Après de longues explications, tout le monde finit par comprendre le véritable projet de {actor}.",
+                            "Après de longues explications, tout le monde comprend finalement le véritable projet de {actor}.",
 
                         icon:
                             "😐",
@@ -1756,7 +2030,6 @@ export const SECRET_SITUATIONS = [
 
     // =====================================================
     // 5 - FRUITS ÉTRANGES
-    // CLASSIQUE
     // =====================================================
 
     {
@@ -1779,7 +2052,7 @@ export const SECRET_SITUATIONS = [
             "🍈",
 
         description:
-            "Un arbre porte de gros fruits inconnus. Ils semblent délicieux... mais personne ne sait s'ils sont comestibles.",
+            "Un arbre porte de gros fruits inconnus. Ils semblent délicieux, mais personne ne sait s'ils sont comestibles.",
 
         choices: [
 
@@ -1791,10 +2064,10 @@ export const SECRET_SITUATIONS = [
                     "eat",
 
                 title:
-                    "😋 En manger",
+                    "😋 Les tester soi-même",
 
                 description:
-                    "Tester personnellement les fruits."
+                    "Prendre personnellement le risque."
             },
 
             {
@@ -1808,7 +2081,7 @@ export const SECRET_SITUATIONS = [
                     "😈 Les proposer aux autres",
 
                 description:
-                    "Laisser quelqu'un d'autre servir de cobaye."
+                    "Laisser le groupe servir de cobaye."
             }
 
         ],
@@ -1835,7 +2108,7 @@ export const SECRET_SITUATIONS = [
                         "😋 Lui-même",
 
                     description:
-                        "{actor} comptait goûter les fruits."
+                        "{actor} comptait goûter le fruit."
                 },
 
                 {
@@ -1874,7 +2147,7 @@ export const SECRET_SITUATIONS = [
                             "fruit_eat_correct_good",
 
                         text:
-                            "{actor} avait réellement décidé de tester les fruits. Contre toute attente, ils sont délicieux.",
+                            "{actor} avait réellement décidé de servir de cobaye. Les fruits sont excellents.",
 
                         icon:
                             "😋",
@@ -1884,13 +2157,26 @@ export const SECRET_SITUATIONS = [
                                 target:
                                     "actor",
 
-                                lives:
-                                    2
+                                removeStatus:
+                                    "hungry"
+                            },
+
+                            {
+                                target:
+                                    "actor",
+
+                                status: {
+                                    id:
+                                        "courage",
+
+                                    duration:
+                                        2
+                                }
                             }
                         ],
 
                         weight:
-                            10
+                            18
                     },
 
                     {
@@ -1898,7 +2184,7 @@ export const SECRET_SITUATIONS = [
                             "fruit_eat_correct_bad",
 
                         text:
-                            "{actor} avait réellement décidé de servir de cobaye. Malheureusement, les fruits sont toxiques.",
+                            "{actor} avait réellement décidé de prendre le risque. Malheureusement, le fruit est toxique.",
 
                         icon:
                             "🤢",
@@ -1908,13 +2194,13 @@ export const SECRET_SITUATIONS = [
                                 target:
                                     "actor",
 
-                                lives:
-                                    -2
+                                status:
+                                    "poisoned"
                             }
                         ],
 
                         weight:
-                            70
+                            55
                     },
 
                     {
@@ -1922,16 +2208,28 @@ export const SECRET_SITUATIONS = [
                             "fruit_eat_correct_neutral",
 
                         text:
-                            "Les fruits ont un goût terrible mais ne semblent provoquer aucun effet.",
+                            "Le fruit a un goût terrible mais ne semble provoquer aucun effet.",
 
                         icon:
                             "😖",
 
-                        effects:
-                            [],
+                        effects: [
+                            {
+                                target:
+                                    "actor",
+
+                                status: {
+                                    id:
+                                        "courage",
+
+                                    duration:
+                                        1
+                                }
+                            }
+                        ],
 
                         weight:
-                            20
+                            27
                     }
 
                 ]
@@ -1945,7 +2243,7 @@ export const SECRET_SITUATIONS = [
                     "😤",
 
                 title:
-                    "Injustement soupçonné",
+                    "Soupçonné à tort",
 
                 variants: [
 
@@ -1954,7 +2252,7 @@ export const SECRET_SITUATIONS = [
                             "fruit_eat_wrong_bad",
 
                         text:
-                            "{actor} était prêt à prendre le risque lui-même, mais la méfiance du groupe provoque une dispute.",
+                            "{actor} était prêt à prendre le risque lui-même. La méfiance du groupe provoque une longue dispute.",
 
                         icon:
                             "😒",
@@ -1962,10 +2260,15 @@ export const SECRET_SITUATIONS = [
                         effects: [
                             {
                                 target:
-                                    "others",
+                                    "all",
 
-                                lives:
-                                    -1
+                                gauge: {
+                                    id:
+                                        "fatigue",
+
+                                    amount:
+                                        1
+                                }
                             }
                         ],
 
@@ -1978,7 +2281,7 @@ export const SECRET_SITUATIONS = [
                             "fruit_eat_wrong_neutral",
 
                         text:
-                            "Le groupe découvre finalement que {actor} disait vrai. Personne ne goûte aux fruits.",
+                            "Le groupe découvre finalement que {actor} disait vrai. Personne ne touche aux fruits.",
 
                         icon:
                             "😐",
@@ -2010,7 +2313,7 @@ export const SECRET_SITUATIONS = [
                             "fruit_others_correct_bad",
 
                         text:
-                            "Tout le monde comprend que {actor} cherchait un cobaye. Personne n'apprécie vraiment l'idée.",
+                            "Tout le monde comprend immédiatement que {actor} cherchait un cobaye. Personne ne touche au fruit.",
 
                         icon:
                             "😡",
@@ -2020,13 +2323,18 @@ export const SECRET_SITUATIONS = [
                                 target:
                                     "actor",
 
-                                lives:
-                                    -2
+                                gauge: {
+                                    id:
+                                        "fatigue",
+
+                                    amount:
+                                        1
+                                }
                             }
                         ],
 
                         weight:
-                            70
+                            55
                     },
 
                     {
@@ -2034,7 +2342,7 @@ export const SECRET_SITUATIONS = [
                             "fruit_others_correct_neutral",
 
                         text:
-                            "{actor} est démasqué avant que quelqu'un ne goûte au fruit.",
+                            "{actor} est démasqué avant que quelqu'un ne mange quoi que ce soit.",
 
                         icon:
                             "😬",
@@ -2043,7 +2351,7 @@ export const SECRET_SITUATIONS = [
                             [],
 
                         weight:
-                            30
+                            45
                     }
 
                 ]
@@ -2076,13 +2384,37 @@ export const SECRET_SITUATIONS = [
                                 target:
                                     "others",
 
-                                lives:
-                                    -2
+                                status:
+                                    "poisoned"
                             }
                         ],
 
                         weight:
-                            75
+                            62
+                    },
+
+                    {
+                        id:
+                            "fruit_others_wrong_good",
+
+                        text:
+                            "Le groupe goûte prudemment. Contre toute attente, les fruits sont parfaitement comestibles.",
+
+                        icon:
+                            "😋",
+
+                        effects: [
+                            {
+                                target:
+                                    "others",
+
+                                removeStatus:
+                                    "hungry"
+                            }
+                        ],
+
+                        weight:
+                            15
                     },
 
                     {
@@ -2090,7 +2422,7 @@ export const SECRET_SITUATIONS = [
                             "fruit_others_wrong_neutral",
 
                         text:
-                            "Le groupe goûte les fruits avec confiance. Ils sont infects, mais heureusement sans effet.",
+                            "Les fruits sont infects mais heureusement sans danger.",
 
                         icon:
                             "😖",
@@ -2099,7 +2431,7 @@ export const SECRET_SITUATIONS = [
                             [],
 
                         weight:
-                            25
+                            23
                     }
 
                 ]
@@ -2113,7 +2445,6 @@ export const SECRET_SITUATIONS = [
 
     // =====================================================
     // 6 - FUSÉE DE DÉTRESSE
-    // PEUT ÊTRE BOOSTÉE PAR LE RADEAU
     // =====================================================
 
     {
@@ -2177,7 +2508,7 @@ export const SECRET_SITUATIONS = [
                     "🤫 La conserver",
 
                 description:
-                    "La cacher pour attendre une meilleure occasion.",
+                    "Attendre une meilleure occasion.",
 
                 narrative: {
 
@@ -2195,7 +2526,7 @@ export const SECRET_SITUATIONS = [
                                 "desert_secret_flare_night",
 
                             weight:
-                                34
+                                38
                         }
                     ]
 
@@ -2211,7 +2542,7 @@ export const SECRET_SITUATIONS = [
                 "Qu'a décidé {actor} ?",
 
             description:
-                "Utiliser la seule fusée ou la conserver ?",
+                "Utiliser l'unique fusée immédiatement ou la conserver ?",
 
             choices: [
 
@@ -2240,7 +2571,7 @@ export const SECRET_SITUATIONS = [
                         "📦 La conserver",
 
                     description:
-                        "{actor} voulait la garder pour plus tard."
+                        "{actor} voulait attendre."
                 }
 
             ]
@@ -2265,7 +2596,7 @@ export const SECRET_SITUATIONS = [
                             "flare_now_correct_good",
 
                         text:
-                            "La fusée monte très haut dans le ciel. Au loin, une lumière semble répondre au signal.",
+                            "La fusée monte très haut dans le ciel. Au loin, une lumière semble brièvement répondre.",
 
                         icon:
                             "🚢",
@@ -2275,8 +2606,13 @@ export const SECRET_SITUATIONS = [
                                 target:
                                     "all",
 
-                                lives:
-                                    1
+                                status: {
+                                    id:
+                                        "courage",
+
+                                    duration:
+                                        2
+                                }
                             }
                         ],
 
@@ -2289,7 +2625,7 @@ export const SECRET_SITUATIONS = [
                             "flare_now_correct_neutral",
 
                         text:
-                            "La fusée illumine parfaitement le ciel, mais personne ne semble l'avoir remarquée.",
+                            "La fusée illumine parfaitement le ciel, mais personne ne semble avoir remarqué le signal.",
 
                         icon:
                             "🚨",
@@ -2298,7 +2634,7 @@ export const SECRET_SITUATIONS = [
                             [],
 
                         weight:
-                            70
+                            68
                     },
 
                     {
@@ -2306,7 +2642,7 @@ export const SECRET_SITUATIONS = [
                             "flare_now_correct_bad",
 
                         text:
-                            "La fusée retombe beaucoup trop près du camp et déclenche un petit incendie.",
+                            "La fusée retombe beaucoup trop près du camp et oblige tout le monde à éteindre un départ de feu.",
 
                         icon:
                             "🔥",
@@ -2316,13 +2652,18 @@ export const SECRET_SITUATIONS = [
                                 target:
                                     "all",
 
-                                lives:
-                                    -1
+                                gauge: {
+                                    id:
+                                        "fatigue",
+
+                                    amount:
+                                        1
+                                }
                             }
                         ],
 
                         weight:
-                            18
+                            20
                     }
 
                 ]
@@ -2336,7 +2677,7 @@ export const SECRET_SITUATIONS = [
                     "💥",
 
                 title:
-                    "Surprise !",
+                    "Surprise",
 
                 variants: [
 
@@ -2345,7 +2686,7 @@ export const SECRET_SITUATIONS = [
                             "flare_now_wrong_bad",
 
                         text:
-                            "La fusée surprend tout le monde et provoque un départ de feu près du camp.",
+                            "Personne ne s'attendait au tir. La fusée retombe près du camp et déclenche un petit incendie.",
 
                         icon:
                             "🔥",
@@ -2357,11 +2698,24 @@ export const SECRET_SITUATIONS = [
 
                                 lives:
                                     -1
+                            },
+
+                            {
+                                target:
+                                    "others",
+
+                                gauge: {
+                                    id:
+                                        "fatigue",
+
+                                    amount:
+                                        1
+                                }
                             }
                         ],
 
                         weight:
-                            40
+                            35
                     },
 
                     {
@@ -2369,7 +2723,7 @@ export const SECRET_SITUATIONS = [
                             "flare_now_wrong_neutral",
 
                         text:
-                            "Alors que personne ne s'y attendait, {actor} tire la fusée. Aucun bateau ne répond.",
+                            "{actor} tire la fusée alors que personne ne s'y attendait. Aucun bateau ne répond.",
 
                         icon:
                             "🚨",
@@ -2378,7 +2732,7 @@ export const SECRET_SITUATIONS = [
                             [],
 
                         weight:
-                            60
+                            65
                     }
 
                 ]
@@ -2401,7 +2755,7 @@ export const SECRET_SITUATIONS = [
                             "flare_save_correct_neutral",
 
                         text:
-                            "Le groupe avait compris que {actor} préférait conserver la fusée pour une meilleure occasion.",
+                            "Le groupe avait compris que {actor} préférait attendre une occasion plus favorable.",
 
                         icon:
                             "📦",
@@ -2410,7 +2764,7 @@ export const SECRET_SITUATIONS = [
                             [],
 
                         weight:
-                            90,
+                            82,
 
                         narrative: {
 
@@ -2420,7 +2774,7 @@ export const SECRET_SITUATIONS = [
                                         "desert_secret_flare_night",
 
                                     weight:
-                                        30
+                                        34
                                 }
                             ]
 
@@ -2432,7 +2786,7 @@ export const SECRET_SITUATIONS = [
                             "flare_save_correct_good",
 
                         text:
-                            "Le groupe approuve l'idée de conserver la fusée et la protège soigneusement.",
+                            "Le groupe approuve la prudence de {actor} et protège soigneusement la fusée.",
 
                         icon:
                             "🤝",
@@ -2442,13 +2796,18 @@ export const SECRET_SITUATIONS = [
                                 target:
                                     "actor",
 
-                                lives:
-                                    1
+                                status: {
+                                    id:
+                                        "courage",
+
+                                    duration:
+                                        1
+                                }
                             }
                         ],
 
                         weight:
-                            10,
+                            18,
 
                         narrative: {
 
@@ -2458,7 +2817,7 @@ export const SECRET_SITUATIONS = [
                                         "desert_secret_flare_night",
 
                                     weight:
-                                        42
+                                        45
                                 }
                             ]
 
@@ -2485,7 +2844,7 @@ export const SECRET_SITUATIONS = [
                             "flare_save_wrong_neutral",
 
                         text:
-                            "Personne ne sait que {actor} possède désormais la seule fusée de détresse.",
+                            "Personne ne sait que {actor} possède désormais l'unique fusée de détresse.",
 
                         icon:
                             "🤫",
@@ -2494,7 +2853,7 @@ export const SECRET_SITUATIONS = [
                             [],
 
                         weight:
-                            82,
+                            80,
 
                         narrative: {
 
@@ -2504,7 +2863,7 @@ export const SECRET_SITUATIONS = [
                                         "desert_secret_flare_night",
 
                                     weight:
-                                        38
+                                        40
                                 }
                             ]
 
@@ -2516,7 +2875,7 @@ export const SECRET_SITUATIONS = [
                             "flare_save_wrong_good",
 
                         text:
-                            "{actor} cache parfaitement la fusée dans un endroit sûr.",
+                            "{actor} cache parfaitement la fusée dans un endroit protégé de l'humidité.",
 
                         icon:
                             "📦",
@@ -2526,13 +2885,18 @@ export const SECRET_SITUATIONS = [
                                 target:
                                     "actor",
 
-                                lives:
-                                    1
+                                status: {
+                                    id:
+                                        "resourceful",
+
+                                    duration:
+                                        1
+                                }
                             }
                         ],
 
                         weight:
-                            18,
+                            20,
 
                         narrative: {
 
@@ -2542,7 +2906,7 @@ export const SECRET_SITUATIONS = [
                                         "desert_secret_flare_night",
 
                                     weight:
-                                        45
+                                        48
                                 }
                             ]
 
@@ -2560,7 +2924,6 @@ export const SECRET_SITUATIONS = [
 
     // =====================================================
     // 7 - ABRI
-    // CLASSIQUE
     // =====================================================
 
     {
@@ -2678,7 +3041,7 @@ export const SECRET_SITUATIONS = [
                             "shelter_keep_correct_bad",
 
                         text:
-                            "Le groupe retrouve l'abri secret de {actor}. La confrontation l'empêche complètement de profiter de sa trouvaille.",
+                            "Le groupe retrouve l'abri secret de {actor}. La confrontation empêche finalement tout le monde de dormir correctement.",
 
                         icon:
                             "😤",
@@ -2686,15 +3049,20 @@ export const SECRET_SITUATIONS = [
                         effects: [
                             {
                                 target:
-                                    "actor",
+                                    "all",
 
-                                lives:
-                                    -1
+                                gauge: {
+                                    id:
+                                        "fatigue",
+
+                                    amount:
+                                        1
+                                }
                             }
                         ],
 
                         weight:
-                            55
+                            52
                     },
 
                     {
@@ -2711,7 +3079,7 @@ export const SECRET_SITUATIONS = [
                             [],
 
                         weight:
-                            45
+                            48
                     }
 
                 ]
@@ -2744,37 +3112,18 @@ export const SECRET_SITUATIONS = [
                                 target:
                                     "actor",
 
-                                lives:
-                                    2
+                                gauge: {
+                                    id:
+                                        "fatigue",
+
+                                    amount:
+                                        -2
+                                }
                             }
                         ],
 
                         weight:
-                            12
-                    },
-
-                    {
-                        id:
-                            "shelter_keep_wrong_small",
-
-                        text:
-                            "{actor} dort tranquillement plusieurs heures avant que l'humidité ne devienne gênante.",
-
-                        icon:
-                            "🌙",
-
-                        effects: [
-                            {
-                                target:
-                                    "actor",
-
-                                lives:
-                                    1
-                            }
-                        ],
-
-                        weight:
-                            20
+                            35
                     },
 
                     {
@@ -2782,16 +3131,45 @@ export const SECRET_SITUATIONS = [
                             "shelter_keep_wrong_neutral",
 
                         text:
-                            "L'abri est calme, mais beaucoup moins confortable que prévu.",
+                            "{actor} profite seul de l'abri, mais le vent devient si fort que la nuit reste assez mauvaise.",
 
                         icon:
-                            "😐",
+                            "🌬️",
 
                         effects:
                             [],
 
                         weight:
-                            68
+                            45
+                    },
+
+                    {
+                        id:
+                            "shelter_keep_wrong_bad",
+
+                        text:
+                            "Une infiltration transforme rapidement l'abri parfait en piège humide.",
+
+                        icon:
+                            "🌧️",
+
+                        effects: [
+                            {
+                                target:
+                                    "actor",
+
+                                gauge: {
+                                    id:
+                                        "fatigue",
+
+                                    amount:
+                                        1
+                                }
+                            }
+                        ],
+
+                        weight:
+                            20
                     }
 
                 ]
@@ -2814,7 +3192,7 @@ export const SECRET_SITUATIONS = [
                             "shelter_group_correct_good",
 
                         text:
-                            "{actor} comptait bien inviter tout le monde. Le groupe passe une excellente nuit.",
+                            "{actor} comptait réellement inviter tout le monde. L'abri permet à chacun de récupérer.",
 
                         icon:
                             "😴",
@@ -2824,13 +3202,18 @@ export const SECRET_SITUATIONS = [
                                 target:
                                     "all",
 
-                                lives:
-                                    1
+                                gauge: {
+                                    id:
+                                        "fatigue",
+
+                                    amount:
+                                        -1
+                                }
                             }
                         ],
 
                         weight:
-                            18
+                            60
                     },
 
                     {
@@ -2838,7 +3221,7 @@ export const SECRET_SITUATIONS = [
                             "shelter_group_correct_neutral",
 
                         text:
-                            "Tout le monde trouve une place, même si l'abri est rapidement beaucoup moins confortable.",
+                            "Tout le monde trouve une place. C'est serré, mais beaucoup mieux que de dormir dehors.",
 
                         icon:
                             "⛺",
@@ -2847,7 +3230,7 @@ export const SECRET_SITUATIONS = [
                             [],
 
                         weight:
-                            82
+                            40
                     }
 
                 ]
@@ -2870,23 +3253,28 @@ export const SECRET_SITUATIONS = [
                             "shelter_group_wrong_bad",
 
                         text:
-                            "{actor} voulait partager, mais les accusations font perdre un temps précieux avant la nuit.",
+                            "{actor} voulait réellement partager l'abri. Le temps perdu à l'accuser oblige finalement tout le monde à s'installer en pleine nuit.",
 
                         icon:
-                            "😤",
+                            "🥱",
 
                         effects: [
                             {
                                 target:
-                                    "others",
+                                    "all",
 
-                                lives:
-                                    -1
+                                gauge: {
+                                    id:
+                                        "fatigue",
+
+                                    amount:
+                                        1
+                                }
                             }
                         ],
 
                         weight:
-                            42
+                            45
                     },
 
                     {
@@ -2894,7 +3282,7 @@ export const SECRET_SITUATIONS = [
                             "shelter_group_wrong_neutral",
 
                         text:
-                            "Le malentendu finit par être dissipé et le groupe rejoint finalement l'abri.",
+                            "Le malentendu est dissipé et tout le monde finit par rejoindre l'abri.",
 
                         icon:
                             "😐",
@@ -2903,7 +3291,7 @@ export const SECRET_SITUATIONS = [
                             [],
 
                         weight:
-                            58
+                            55
                     }
 
                 ]
@@ -2917,7 +3305,7 @@ export const SECRET_SITUATIONS = [
 
     // =====================================================
     // 8 - DERNIER MÉDICAMENT
-    // PEUT ÊTRE BOOSTÉ PAR LE SAC À DOS
+    // BOOST POSSIBLE DEPUIS LE SAC
     // =====================================================
 
     {
@@ -2929,11 +3317,6 @@ export const SECRET_SITUATIONS = [
 
         baseWeight:
             1,
-
-        // Volontairement PAS de requirements.
-        //
-        // Le médicament peut apparaître normalement.
-        // Le sac à dos augmente seulement sa probabilité.
 
         title:
             "{actor} trouve le dernier médicament",
@@ -2971,7 +3354,7 @@ export const SECRET_SITUATIONS = [
                     "give",
 
                 title:
-                    "❤️ Le réserver aux autres",
+                    "❤️ Le réserver au groupe",
 
                 description:
                     "Le conserver pour quelqu'un qui en aurait davantage besoin."
@@ -3015,7 +3398,7 @@ export const SECRET_SITUATIONS = [
                         "❤️ Le réserver",
 
                     description:
-                        "{actor} le garderait pour quelqu'un d'autre."
+                        "{actor} le garderait pour une urgence collective."
                 }
 
             ]
@@ -3040,23 +3423,40 @@ export const SECRET_SITUATIONS = [
                             "medicine_take_correct_bad",
 
                         text:
-                            "Le groupe avait vu juste. {actor} comptait effectivement garder le médicament et doit maintenant se justifier.",
+                            "Le groupe avait vu juste. {actor} comptait effectivement garder le médicament et doit maintenant le restituer.",
 
                         icon:
                             "😡",
+
+                        effects:
+                            [],
+
+                        weight:
+                            60
+                    },
+
+                    {
+                        id:
+                            "medicine_take_correct_poison",
+
+                        text:
+                            "{actor} avoue vouloir le garder, puis découvre que le produit était périmé depuis des années.",
+
+                        icon:
+                            "🤢",
 
                         effects: [
                             {
                                 target:
                                     "actor",
 
-                                lives:
-                                    -1
+                                status:
+                                    "poisoned"
                             }
                         ],
 
                         weight:
-                            55
+                            15
                     },
 
                     {
@@ -3064,7 +3464,7 @@ export const SECRET_SITUATIONS = [
                             "medicine_take_correct_neutral",
 
                         text:
-                            "{actor} est démasqué mais accepte finalement de remettre le médicament dans la trousse.",
+                            "{actor} est démasqué avant d'utiliser quoi que ce soit. Le médicament retourne dans la trousse.",
 
                         icon:
                             "💊",
@@ -3073,7 +3473,7 @@ export const SECRET_SITUATIONS = [
                             [],
 
                         weight:
-                            45
+                            25
                     }
 
                 ]
@@ -3096,7 +3496,7 @@ export const SECRET_SITUATIONS = [
                             "medicine_take_wrong_good",
 
                         text:
-                            "Le groupe faisait confiance à {actor}, qui garde discrètement le médicament et l'utilise au meilleur moment.",
+                            "Le groupe faisait confiance à {actor}, qui garde discrètement le médicament et l'utilise pour récupérer.",
 
                         icon:
                             "❤️‍🩹",
@@ -3107,12 +3507,20 @@ export const SECRET_SITUATIONS = [
                                     "actor",
 
                                 lives:
-                                    2
+                                    1
+                            },
+
+                            {
+                                target:
+                                    "actor",
+
+                                removeStatus:
+                                    "poisoned"
                             }
                         ],
 
                         weight:
-                            10
+                            18
                     },
 
                     {
@@ -3120,7 +3528,7 @@ export const SECRET_SITUATIONS = [
                             "medicine_take_wrong_small",
 
                         text:
-                            "{actor} garde le médicament. Il est utile, mais beaucoup moins puissant qu'espéré.",
+                            "{actor} garde le produit. Il est assez efficace pour neutraliser un éventuel poison.",
 
                         icon:
                             "💊",
@@ -3130,13 +3538,13 @@ export const SECRET_SITUATIONS = [
                                 target:
                                     "actor",
 
-                                lives:
-                                    1
+                                removeStatus:
+                                    "poisoned"
                             }
                         ],
 
                         weight:
-                            20
+                            27
                     },
 
                     {
@@ -3153,7 +3561,7 @@ export const SECRET_SITUATIONS = [
                             [],
 
                         weight:
-                            70
+                            55
                     }
 
                 ]
@@ -3176,7 +3584,7 @@ export const SECRET_SITUATIONS = [
                             "medicine_give_correct_good",
 
                         text:
-                            "Le groupe avait raison : {actor} voulait réserver le médicament à quelqu'un qui en aurait besoin.",
+                            "Le groupe avait raison : {actor} voulait conserver le médicament pour une urgence. Un survivant empoisonné peut en profiter immédiatement.",
 
                         icon:
                             "❤️‍🩹",
@@ -3186,13 +3594,13 @@ export const SECRET_SITUATIONS = [
                                 target:
                                     "others",
 
-                                lives:
-                                    1
+                                removeStatus:
+                                    "poisoned"
                             }
                         ],
 
                         weight:
-                            18
+                            28
                     },
 
                     {
@@ -3200,7 +3608,7 @@ export const SECRET_SITUATIONS = [
                             "medicine_give_correct_neutral",
 
                         text:
-                            "Le médicament est conservé pour une urgence future. Pour l'instant, personne ne l'utilise.",
+                            "Le médicament est conservé collectivement pour une future urgence.",
 
                         icon:
                             "💊",
@@ -3209,7 +3617,7 @@ export const SECRET_SITUATIONS = [
                             [],
 
                         weight:
-                            82
+                            72
                     }
 
                 ]
@@ -3220,10 +3628,10 @@ export const SECRET_SITUATIONS = [
             give_wrong: {
 
                 title:
-                    "Quelle réputation...",
+                    "Soupçonné à tort",
 
                 icon:
-                    "🥺",
+                    "😒",
 
                 variants: [
 
@@ -3232,18 +3640,23 @@ export const SECRET_SITUATIONS = [
                             "medicine_give_wrong_bad",
 
                         text:
-                            "{actor} voulait aider, mais les accusations provoquent une dispute inutile.",
+                            "{actor} voulait aider le groupe, mais les accusations font perdre un temps précieux.",
 
                         icon:
-                            "😒",
+                            "😤",
 
                         effects: [
                             {
                                 target:
-                                    "actor",
+                                    "all",
 
-                                lives:
-                                    -1
+                                gauge: {
+                                    id:
+                                        "fatigue",
+
+                                    amount:
+                                        1
+                                }
                             }
                         ],
 
@@ -3256,7 +3669,7 @@ export const SECRET_SITUATIONS = [
                             "medicine_give_wrong_neutral",
 
                         text:
-                            "Le groupe réalise finalement que {actor} avait réellement de bonnes intentions.",
+                            "Le groupe finit par comprendre que {actor} comptait réellement garder le médicament pour une urgence.",
 
                         icon:
                             "😐",
@@ -3278,8 +3691,8 @@ export const SECRET_SITUATIONS = [
 
 
     // =====================================================
-    // 9 - FUSÉE CONSERVÉE POUR LA NUIT
-    // SUITE CONDITIONNELLE DE desert_secret_flare
+    // 9 - FUSÉE CONSERVÉE : BATEAU DE NUIT
+    // SUITE DE LA FUSÉE
     // =====================================================
 
     {
@@ -3314,8 +3727,7 @@ export const SECRET_SITUATIONS = [
             "🌌",
 
         description:
-            "En pleine nuit, {actor} distingue une lumière qui semble appartenir à un bateau. " +
-            "La fusée de détresse conservée plus tôt est toujours disponible.",
+            "En pleine nuit, une lumière se déplace lentement à l'horizon. Cela pourrait être un bateau. {actor} possède toujours la fusée de détresse.",
 
         choices: [
 
@@ -3330,12 +3742,13 @@ export const SECRET_SITUATIONS = [
                     "🚨 Tirer la fusée",
 
                 description:
-                    "Cette occasion est peut-être la bonne.",
+                    "Cette occasion semble meilleure que la précédente.",
 
                 narrative: {
 
                     setFlags: [
-                        "secret_flare_used"
+                        "secret_flare_used",
+                        "secret_flare_night_fired"
                     ],
 
                     removeFlags: [
@@ -3347,21 +3760,25 @@ export const SECRET_SITUATIONS = [
 
             {
                 id:
-                    "desert_flare_night_wait",
+                    "desert_flare_night_keep",
 
                 secretValue:
-                    "wait",
+                    "keep",
 
                 title:
-                    "🤫 Attendre encore",
+                    "🤫 Encore attendre",
 
                 description:
-                    "La lumière pourrait ne pas être un bateau.",
+                    "La lumière est trop éloignée pour être certain qu'il s'agit d'un bateau.",
 
                 narrative: {
 
                     setFlags: [
                         "secret_flare_saved_again"
+                    ],
+
+                    removeFlags: [
+                        "secret_flare_night_fired"
                     ]
 
                 }
@@ -3373,10 +3790,10 @@ export const SECRET_SITUATIONS = [
         guess: {
 
             title:
-                "Qu'a décidé {actor} en voyant la lumière ?",
+                "{actor} a-t-il enfin utilisé la fusée ?",
 
             description:
-                "A-t-il enfin utilisé la fusée conservée ?",
+                "Le groupe doit deviner s'il a saisi cette occasion.",
 
             choices: [
 
@@ -3388,24 +3805,24 @@ export const SECRET_SITUATIONS = [
                         "fire",
 
                     title:
-                        "🚨 La tirer",
+                        "🚨 Il l'a tirée",
 
                     description:
-                        "{actor} a tenté sa chance."
+                        "Vous pensez que {actor} a utilisé la fusée."
                 },
 
                 {
                     id:
-                        "desert_flare_night_guess_wait",
+                        "desert_flare_night_guess_keep",
 
                     secretValue:
-                        "wait",
+                        "keep",
 
                     title:
-                        "🤫 La conserver encore",
+                        "📦 Il l'a encore gardée",
 
                     description:
-                        "{actor} n'a toujours pas utilisé la fusée."
+                        "Vous pensez que {actor} a préféré attendre."
                 }
 
             ]
@@ -3418,7 +3835,7 @@ export const SECRET_SITUATIONS = [
             fire_correct: {
 
                 title:
-                    "Le signal part",
+                    "Maintenant ou jamais",
 
                 icon:
                     "🚨",
@@ -3430,7 +3847,7 @@ export const SECRET_SITUATIONS = [
                             "flare_night_fire_correct_good",
 
                         text:
-                            "La lumière au large change immédiatement de direction après le signal.",
+                            "La fusée éclaire tout le ciel. Quelques secondes plus tard, la lumière au large change clairement de direction.",
 
                         icon:
                             "🚢",
@@ -3440,13 +3857,18 @@ export const SECRET_SITUATIONS = [
                                 target:
                                     "all",
 
-                                lives:
-                                    2
+                                status: {
+                                    id:
+                                        "courage",
+
+                                    duration:
+                                        2
+                                }
                             }
                         ],
 
                         weight:
-                            8
+                            20
                     },
 
                     {
@@ -3454,7 +3876,7 @@ export const SECRET_SITUATIONS = [
                             "flare_night_fire_correct_neutral",
 
                         text:
-                            "La fusée illumine toute la zone, mais la lumière au loin continue sa route.",
+                            "La fusée est parfaitement visible. La lumière continue cependant sa trajectoire sans réaction évidente.",
 
                         icon:
                             "🌌",
@@ -3463,7 +3885,7 @@ export const SECRET_SITUATIONS = [
                             [],
 
                         weight:
-                            72
+                            65
                     },
 
                     {
@@ -3471,49 +3893,10 @@ export const SECRET_SITUATIONS = [
                             "flare_night_fire_correct_bad",
 
                         text:
-                            "La fusée tombe dans la végétation sèche et provoque un départ de feu.",
+                            "La vieille fusée fonctionne mal et explose presque immédiatement après son lancement.",
 
                         icon:
-                            "🔥",
-
-                        effects: [
-                            {
-                                target:
-                                    "all",
-
-                                lives:
-                                    -1
-                            }
-                        ],
-
-                        weight:
-                            20
-                    }
-
-                ]
-
-            },
-
-
-            fire_wrong: {
-
-                title:
-                    "Personne ne s'y attendait",
-
-                icon:
-                    "💥",
-
-                variants: [
-
-                    {
-                        id:
-                            "flare_night_fire_wrong_bad",
-
-                        text:
-                            "La fusée surprend complètement le groupe et retombe dangereusement près du camp.",
-
-                        icon:
-                            "🔥",
+                            "💥",
 
                         effects: [
                             {
@@ -3521,80 +3904,11 @@ export const SECRET_SITUATIONS = [
                                     "actor",
 
                                 lives:
-                                    -1
-                            }
-                        ],
+                                    -1,
 
-                        weight:
-                            45
-                    },
-
-                    {
-                        id:
-                            "flare_night_fire_wrong_neutral",
-
-                        text:
-                            "Le signal part dans le ciel mais ne reçoit aucune réponse.",
-
-                        icon:
-                            "🚨",
-
-                        effects:
-                            [],
-
-                        weight:
-                            55
-                    }
-
-                ]
-
-            },
-
-
-            wait_correct: {
-
-                title:
-                    "Encore un peu de patience",
-
-                icon:
-                    "🌙",
-
-                variants: [
-
-                    {
-                        id:
-                            "flare_night_wait_correct_neutral",
-
-                        text:
-                            "La lumière finit par disparaître derrière l'horizon. Impossible de savoir s'il s'agissait réellement d'un bateau.",
-
-                        icon:
-                            "🌌",
-
-                        effects:
-                            [],
-
-                        weight:
-                            85
-                    },
-
-                    {
-                        id:
-                            "flare_night_wait_correct_bad",
-
-                        text:
-                            "Au lever du jour, {actor} réalise que la lumière provenait probablement d'un bateau passé à proximité.",
-
-                        icon:
-                            "🚢",
-
-                        effects: [
-                            {
-                                target:
-                                    "actor",
-
-                                lives:
-                                    -1
+                                tags: [
+                                    "physical"
+                                ]
                             }
                         ],
 
@@ -3607,10 +3921,71 @@ export const SECRET_SITUATIONS = [
             },
 
 
-            wait_wrong: {
+            fire_wrong: {
 
                 title:
-                    "La fusée est toujours là",
+                    "Il l'a vraiment fait",
+
+                icon:
+                    "😮",
+
+                variants: [
+
+                    {
+                        id:
+                            "flare_night_fire_wrong_good",
+
+                        text:
+                            "Personne ne pensait que {actor} utiliserait la fusée. Pourtant, le signal semble être repéré au loin.",
+
+                        icon:
+                            "🚢",
+
+                        effects: [
+                            {
+                                target:
+                                    "all",
+
+                                status: {
+                                    id:
+                                        "courage",
+
+                                    duration:
+                                        1
+                                }
+                            }
+                        ],
+
+                        weight:
+                            15
+                    },
+
+                    {
+                        id:
+                            "flare_night_fire_wrong_neutral",
+
+                        text:
+                            "{actor} tire la fusée sans prévenir. Elle illumine l'horizon, mais aucune réponse n'arrive.",
+
+                        icon:
+                            "🚨",
+
+                        effects:
+                            [],
+
+                        weight:
+                            85
+                    }
+
+                ]
+
+            },
+
+
+            keep_correct: {
+
+                title:
+                    "Toujours prudent",
 
                 icon:
                     "📦",
@@ -3619,43 +3994,109 @@ export const SECRET_SITUATIONS = [
 
                     {
                         id:
-                            "flare_night_wait_wrong_neutral",
+                            "flare_night_keep_correct_neutral",
 
                         text:
-                            "Le groupe pensait que {actor} avait utilisé la fusée. Elle est pourtant toujours parfaitement cachée.",
+                            "{actor} conserve encore la fusée. Quelques minutes plus tard, la lumière disparaît derrière l'horizon.",
 
                         icon:
-                            "🤫",
+                            "🌌",
 
                         effects:
                             [],
 
                         weight:
-                            88
+                            75
                     },
 
                     {
                         id:
-                            "flare_night_wait_wrong_good",
+                            "flare_night_keep_correct_bad",
 
                         text:
-                            "En inspectant la fusée conservée, {actor} remarque qu'elle est encore en excellent état.",
+                            "La lumière disparaît. Personne ne saura si le groupe vient de manquer sa meilleure occasion de secours.",
 
                         icon:
-                            "🚨",
+                            "💔",
 
                         effects: [
                             {
                                 target:
-                                    "actor",
+                                    "all",
 
-                                lives:
-                                    1
+                                gauge: {
+                                    id:
+                                        "fatigue",
+
+                                    amount:
+                                        1
+                                }
                             }
                         ],
 
                         weight:
-                            12
+                            25
+                    }
+
+                ]
+
+            },
+
+
+            keep_wrong: {
+
+                title:
+                    "Il n'a toujours pas tiré",
+
+                icon:
+                    "🤐",
+
+                variants: [
+
+                    {
+                        id:
+                            "flare_night_keep_wrong_neutral",
+
+                        text:
+                            "Alors que tout le monde pensait que {actor} utiliserait la fusée, il décide encore d'attendre.",
+
+                        icon:
+                            "📦",
+
+                        effects:
+                            [],
+
+                        weight:
+                            70
+                    },
+
+                    {
+                        id:
+                            "flare_night_keep_wrong_bad",
+
+                        text:
+                            "Les autres découvrent finalement que {actor} possédait toujours la fusée. La discussion dure une bonne partie de la nuit.",
+
+                        icon:
+                            "😡",
+
+                        effects: [
+                            {
+                                target:
+                                    "all",
+
+                                gauge: {
+                                    id:
+                                        "fatigue",
+
+                                    amount:
+                                        1
+                                }
+                            }
+                        ],
+
+                        weight:
+                            30
                     }
 
                 ]
@@ -3668,60 +4109,59 @@ export const SECRET_SITUATIONS = [
 
 
     // =====================================================
-    // 10 - BOÎTE ÉTANCHE
-    // CLASSIQUE
+    // 10 - NOUVEAU : COUTEAU DE SURVIE
     // =====================================================
 
     {
         id:
-            "desert_secret_locked_box",
+            "desert_secret_knife",
 
         type:
             "secret_choice",
 
         baseWeight:
-            1,
+            0.9,
 
         title:
-            "{actor} trouve une petite boîte étanche",
+            "{actor} découvre un excellent couteau de survie",
 
         category:
             "Choix secret",
 
         icon:
-            "📦",
+            "🔪",
 
         description:
-            "Une petite boîte métallique est coincée entre deux rochers. Elle est encore parfaitement fermée.",
+            "Sous plusieurs débris, {actor} trouve un couteau robuste encore en excellent état. Sur l'île, cet objet peut valoir extrêmement cher.",
 
         choices: [
 
             {
                 id:
-                    "desert_box_open",
+                    "desert_knife_hide",
 
                 secretValue:
-                    "open",
+                    "hide",
 
                 title:
-                    "🔓 L'ouvrir seul",
+                    "🤫 Le garder secret",
 
                 description:
-                    "Découvrir son contenu avant tout le monde."
+                    "Conserver l'outil pour soi."
             },
 
             {
                 id:
-                    "desert_box_group",
+                    "desert_knife_share",
 
                 secretValue:
-                    "group",
+                    "share",
 
                 title:
-                    "📣 Appeler les autres",
+                    "🛠️ Le mettre en commun",
 
                 description:
-                    "Ouvrir la boîte devant tout le groupe."
+                    "L'utiliser comme outil collectif."
             }
 
         ],
@@ -3730,39 +4170,39 @@ export const SECRET_SITUATIONS = [
         guess: {
 
             title:
-                "Qu'a fait {actor} avec la boîte ?",
+                "Qu'a fait {actor} du couteau ?",
 
             description:
-                "Le groupe doit maintenant deviner s'il a attendu les autres.",
+                "Objet personnel ou outil du camp ?",
 
             choices: [
 
                 {
                     id:
-                        "desert_box_guess_open",
+                        "desert_knife_guess_hide",
 
                     secretValue:
-                        "open",
+                        "hide",
 
                     title:
-                        "🔓 Il l'a ouverte",
+                        "🤫 Il l'a gardé",
 
                     description:
-                        "{actor} a regardé le contenu en secret."
+                        "{actor} a certainement caché l'outil."
                 },
 
                 {
                     id:
-                        "desert_box_guess_group",
+                        "desert_knife_guess_share",
 
                     secretValue:
-                        "group",
+                        "share",
 
                     title:
-                        "📣 Il vous a attendus",
+                        "🛠️ Il l'a partagé",
 
                     description:
-                        "{actor} a laissé la boîte fermée."
+                        "{actor} l'a probablement mis à disposition du groupe."
                 }
 
             ]
@@ -3772,33 +4212,87 @@ export const SECRET_SITUATIONS = [
 
         outcomes: {
 
-            open_correct: {
+            hide_correct: {
 
                 title:
-                    "Pris la main dans la boîte",
+                    "Encore une cachette",
 
                 icon:
-                    "🫵",
+                    "👀",
 
                 variants: [
 
                     {
                         id:
-                            "box_open_correct_bad",
+                            "knife_hide_correct_bad",
 
                         text:
-                            "Le groupe retrouve {actor} devant la boîte ouverte et récupère immédiatement son contenu.",
+                            "Le groupe retrouve le couteau dans les affaires de {actor}. L'objet est immédiatement récupéré.",
 
                         icon:
                             "😡",
+
+                        effects:
+                            [],
+
+                        weight:
+                            65
+                    },
+
+                    {
+                        id:
+                            "knife_hide_correct_neutral",
+
+                        text:
+                            "{actor} admet l'avoir caché et accepte finalement de le mettre en commun.",
+
+                        icon:
+                            "😬",
+
+                        effects:
+                            [],
+
+                        weight:
+                            35
+                    }
+
+                ]
+
+            },
+
+
+            hide_wrong: {
+
+                title:
+                    "Un excellent outil personnel",
+
+                icon:
+                    "🔪",
+
+                variants: [
+
+                    {
+                        id:
+                            "knife_hide_wrong_good",
+
+                        text:
+                            "Personne ne découvre le couteau. {actor} l'utilise discrètement pour améliorer plusieurs outils improvisés.",
+
+                        icon:
+                            "🛠️",
 
                         effects: [
                             {
                                 target:
                                     "actor",
 
-                                lives:
-                                    -1
+                                status: {
+                                    id:
+                                        "resourceful",
+
+                                    duration:
+                                        2
+                                }
                             }
                         ],
 
@@ -3808,13 +4302,13 @@ export const SECRET_SITUATIONS = [
 
                     {
                         id:
-                            "box_open_correct_neutral",
+                            "knife_hide_wrong_neutral",
 
                         text:
-                            "La boîte était presque vide. La découverte de la tricherie ne provoque finalement qu'une dispute.",
+                            "{actor} cache parfaitement le couteau mais n'a pas encore l'occasion de s'en servir.",
 
                         icon:
-                            "😐",
+                            "🤫",
 
                         effects:
                             [],
@@ -3828,90 +4322,10 @@ export const SECRET_SITUATIONS = [
             },
 
 
-            open_wrong: {
+            share_correct: {
 
                 title:
-                    "Secret parfait",
-
-                icon:
-                    "😏",
-
-                variants: [
-
-                    {
-                        id:
-                            "box_open_wrong_good",
-
-                        text:
-                            "La boîte contient une petite trousse de survie encore intacte.",
-
-                        icon:
-                            "🎁",
-
-                        effects: [
-                            {
-                                target:
-                                    "actor",
-
-                                lives:
-                                    2
-                            }
-                        ],
-
-                        weight:
-                            10
-                    },
-
-                    {
-                        id:
-                            "box_open_wrong_small",
-
-                        text:
-                            "{actor} récupère quelques objets utiles sans être repéré.",
-
-                        icon:
-                            "🔦",
-
-                        effects: [
-                            {
-                                target:
-                                    "actor",
-
-                                lives:
-                                    1
-                            }
-                        ],
-
-                        weight:
-                            18
-                    },
-
-                    {
-                        id:
-                            "box_open_wrong_neutral",
-
-                        text:
-                            "Personne ne découvre ce qu'a fait {actor}. Malheureusement, la boîte ne contenait presque rien.",
-
-                        icon:
-                            "📦",
-
-                        effects:
-                            [],
-
-                        weight:
-                            72
-                    }
-
-                ]
-
-            },
-
-
-            group_correct: {
-
-                title:
-                    "Bonne réputation",
+                    "Outil collectif",
 
                 icon:
                     "🤝",
@@ -3920,18 +4334,832 @@ export const SECRET_SITUATIONS = [
 
                     {
                         id:
-                            "box_group_correct_good",
+                            "knife_share_correct_good",
 
                         text:
-                            "La boîte contient quelques ressources qui sont réparties équitablement.",
+                            "Grâce au couteau, le groupe améliore plusieurs outils et prépare plus efficacement le camp.",
 
                         icon:
-                            "🎁",
+                            "🛠️",
 
                         effects: [
                             {
                                 target:
                                     "all",
+
+                                status: {
+                                    id:
+                                        "resourceful",
+
+                                    duration:
+                                        2
+                                }
+                            }
+                        ],
+
+                        weight:
+                            45
+                    },
+
+                    {
+                        id:
+                            "knife_share_correct_neutral",
+
+                        text:
+                            "Le couteau est rangé avec le matériel commun et servira lorsque ce sera nécessaire.",
+
+                        icon:
+                            "🔪",
+
+                        effects:
+                            [],
+
+                        weight:
+                            55
+                    }
+
+                ]
+
+            },
+
+
+            share_wrong: {
+
+                title:
+                    "Encore accusé",
+
+                icon:
+                    "🙄",
+
+                variants: [
+
+                    {
+                        id:
+                            "knife_share_wrong_bad",
+
+                        text:
+                            "{actor} voulait réellement partager le couteau. La dispute autour de sa supposée cachette fait perdre un temps précieux.",
+
+                        icon:
+                            "😤",
+
+                        effects: [
+                            {
+                                target:
+                                    "all",
+
+                                gauge: {
+                                    id:
+                                        "fatigue",
+
+                                    amount:
+                                        1
+                                }
+                            }
+                        ],
+
+                        weight:
+                            40
+                    },
+
+                    {
+                        id:
+                            "knife_share_wrong_neutral",
+
+                        text:
+                            "Le groupe réalise finalement que le couteau était bien destiné au matériel collectif.",
+
+                        icon:
+                            "😐",
+
+                        effects:
+                            [],
+
+                        weight:
+                            60
+                    }
+
+                ]
+
+            }
+
+        }
+
+    },
+
+
+    // =====================================================
+    // 11 - NOUVEAU : CARTE DE L'ÎLE
+    // DÉBUT MINI-HISTOIRE
+    // =====================================================
+
+    {
+        id:
+            "desert_secret_map",
+
+        type:
+            "secret_choice",
+
+        baseWeight:
+            0.9,
+
+        title:
+            "{actor} trouve une vieille carte de l'île",
+
+        category:
+            "Choix secret",
+
+        icon:
+            "🗺️",
+
+        description:
+            "Une carte très abîmée indique plusieurs zones de l'île, dont un symbole mystérieux près d'une falaise.",
+
+        choices: [
+
+            {
+                id:
+                    "desert_map_secret",
+
+                secretValue:
+                    "secret",
+
+                title:
+                    "🤫 Garder la carte",
+
+                description:
+                    "Explorer seul les informations qu'elle contient.",
+
+                narrative: {
+
+                    setFlags: [
+                        "secret_map_hidden"
+                    ],
+
+                    removeFlags: [
+                        "secret_map_shared"
+                    ],
+
+                    nextSituationBoosts: [
+                        {
+                            id:
+                                "desert_secret_map_cache",
+
+                            weight:
+                                34
+                        }
+                    ]
+
+                }
+            },
+
+            {
+                id:
+                    "desert_map_share",
+
+                secretValue:
+                    "share",
+
+                title:
+                    "🗺️ Montrer la carte",
+
+                description:
+                    "Étudier les indications avec tout le groupe.",
+
+                narrative: {
+
+                    setFlags: [
+                        "secret_map_shared"
+                    ],
+
+                    removeFlags: [
+                        "secret_map_hidden"
+                    ],
+
+                    nextSituationBoosts: [
+                        {
+                            id:
+                                "desert_secret_map_cache",
+
+                            weight:
+                                24
+                        }
+                    ]
+
+                }
+            }
+
+        ],
+
+
+        guess: {
+
+            title:
+                "Qu'a fait {actor} de la carte ?",
+
+            description:
+                "A-t-il partagé cette découverte ?",
+
+            choices: [
+
+                {
+                    id:
+                        "desert_map_guess_secret",
+
+                    secretValue:
+                        "secret",
+
+                    title:
+                        "🤫 Il l'a gardée",
+
+                    description:
+                        "{actor} compte certainement explorer seul."
+                },
+
+                {
+                    id:
+                        "desert_map_guess_share",
+
+                    secretValue:
+                        "share",
+
+                    title:
+                        "🗺️ Il l'a montrée",
+
+                    description:
+                        "{actor} compte sûrement utiliser la carte avec vous."
+                }
+
+            ]
+
+        },
+
+
+        outcomes: {
+
+            secret_correct: {
+
+                title:
+                    "Secret découvert",
+
+                icon:
+                    "🗺️",
+
+                variants: [
+
+                    {
+                        id:
+                            "map_secret_correct_bad",
+
+                        text:
+                            "Le groupe découvre la carte cachée et décide de la conserver collectivement.",
+
+                        icon:
+                            "😒",
+
+                        effects:
+                            [],
+
+                        weight:
+                            70,
+
+                        narrative: {
+
+                            nextSituationBoosts: [
+                                {
+                                    id:
+                                        "desert_secret_map_cache",
+
+                                    weight:
+                                        8
+                                }
+                            ]
+
+                        }
+                    },
+
+                    {
+                        id:
+                            "map_secret_correct_neutral",
+
+                        text:
+                            "{actor} est démasqué mais réussit tout de même à mémoriser une partie des indications.",
+
+                        icon:
+                            "🧠",
+
+                        effects: [
+                            {
+                                target:
+                                    "actor",
+
+                                status: {
+                                    id:
+                                        "resourceful",
+
+                                    duration:
+                                        1
+                                }
+                            }
+                        ],
+
+                        weight:
+                            30,
+
+                        narrative: {
+
+                            nextSituationBoosts: [
+                                {
+                                    id:
+                                        "desert_secret_map_cache",
+
+                                    weight:
+                                        18
+                                }
+                            ]
+
+                        }
+                    }
+
+                ]
+
+            },
+
+
+            secret_wrong: {
+
+                title:
+                    "Une longueur d'avance",
+
+                icon:
+                    "🤫",
+
+                variants: [
+
+                    {
+                        id:
+                            "map_secret_wrong_good",
+
+                        text:
+                            "Personne ne soupçonne {actor}. Il étudie longuement la carte et mémorise plusieurs itinéraires.",
+
+                        icon:
+                            "🧭",
+
+                        effects: [
+                            {
+                                target:
+                                    "actor",
+
+                                status: {
+                                    id:
+                                        "resourceful",
+
+                                    duration:
+                                        2
+                                }
+                            }
+                        ],
+
+                        weight:
+                            50,
+
+                        narrative: {
+
+                            nextSituationBoosts: [
+                                {
+                                    id:
+                                        "desert_secret_map_cache",
+
+                                    weight:
+                                        46
+                                }
+                            ]
+
+                        }
+                    },
+
+                    {
+                        id:
+                            "map_secret_wrong_neutral",
+
+                        text:
+                            "La carte est difficile à lire, mais le symbole près de la falaise semble suffisamment clair.",
+
+                        icon:
+                            "🗺️",
+
+                        effects:
+                            [],
+
+                        weight:
+                            50,
+
+                        narrative: {
+
+                            nextSituationBoosts: [
+                                {
+                                    id:
+                                        "desert_secret_map_cache",
+
+                                    weight:
+                                        38
+                                }
+                            ]
+
+                        }
+                    }
+
+                ]
+
+            },
+
+
+            share_correct: {
+
+                title:
+                    "Exploration collective",
+
+                icon:
+                    "🤝",
+
+                variants: [
+
+                    {
+                        id:
+                            "map_share_correct_good",
+
+                        text:
+                            "En étudiant la carte ensemble, le groupe repère plusieurs passages utiles à travers l'île.",
+
+                        icon:
+                            "🧭",
+
+                        effects: [
+                            {
+                                target:
+                                    "all",
+
+                                status: {
+                                    id:
+                                        "resourceful",
+
+                                    duration:
+                                        1
+                                }
+                            }
+                        ],
+
+                        weight:
+                            40,
+
+                        narrative: {
+
+                            nextSituationBoosts: [
+                                {
+                                    id:
+                                        "desert_secret_map_cache",
+
+                                    weight:
+                                        36
+                                }
+                            ]
+
+                        }
+                    },
+
+                    {
+                        id:
+                            "map_share_correct_neutral",
+
+                        text:
+                            "Une grande partie de la carte est effacée, mais le symbole près de la falaise reste visible.",
+
+                        icon:
+                            "🗺️",
+
+                        effects:
+                            [],
+
+                        weight:
+                            60,
+
+                        narrative: {
+
+                            nextSituationBoosts: [
+                                {
+                                    id:
+                                        "desert_secret_map_cache",
+
+                                    weight:
+                                        28
+                                }
+                            ]
+
+                        }
+                    }
+
+                ]
+
+            },
+
+
+            share_wrong: {
+
+                title:
+                    "Paranoïa inutile",
+
+                icon:
+                    "😑",
+
+                variants: [
+
+                    {
+                        id:
+                            "map_share_wrong_bad",
+
+                        text:
+                            "{actor} voulait réellement partager. Les accusations retardent l'expédition jusqu'à la fin de la journée.",
+
+                        icon:
+                            "🌅",
+
+                        effects: [
+                            {
+                                target:
+                                    "all",
+
+                                gauge: {
+                                    id:
+                                        "fatigue",
+
+                                    amount:
+                                        1
+                                }
+                            }
+                        ],
+
+                        weight:
+                            45
+                    },
+
+                    {
+                        id:
+                            "map_share_wrong_neutral",
+
+                        text:
+                            "Le groupe finit par examiner la carte avec {actor}.",
+
+                        icon:
+                            "🗺️",
+
+                        effects:
+                            [],
+
+                        weight:
+                            55
+                    }
+
+                ]
+
+            }
+
+        }
+
+    },
+
+
+    // =====================================================
+    // 12 - NOUVEAU : CACHE DE LA CARTE
+    // SUITE DE LA CARTE
+    // =====================================================
+
+    {
+        id:
+            "desert_secret_map_cache",
+
+        type:
+            "secret_choice",
+
+        baseWeight:
+            1,
+
+        requirements: {
+
+            any: [
+                "secret_map_hidden",
+                "secret_map_shared"
+            ]
+
+        },
+
+        title:
+            "{actor} trouve l'endroit indiqué sur la carte",
+
+        category:
+            "Suite",
+
+        icon:
+            "❌",
+
+        description:
+            "Sous un amas de pierres près de la falaise, {actor} découvre une vieille boîte métallique correspondant exactement au symbole de la carte.",
+
+        choices: [
+
+            {
+                id:
+                    "desert_cache_open",
+
+                secretValue:
+                    "open",
+
+                title:
+                    "🔓 L'ouvrir immédiatement",
+
+                description:
+                    "Découvrir seul ce qu'elle contient."
+            },
+
+            {
+                id:
+                    "desert_cache_wait",
+
+                secretValue:
+                    "wait",
+
+                title:
+                    "📣 Attendre le groupe",
+
+                description:
+                    "Ne pas ouvrir la boîte sans les autres."
+            }
+
+        ],
+
+
+        guess: {
+
+            title:
+                "Qu'a fait {actor} devant la cache ?",
+
+            description:
+                "A-t-il résisté à la curiosité ?",
+
+            choices: [
+
+                {
+                    id:
+                        "desert_cache_guess_open",
+
+                    secretValue:
+                        "open",
+
+                    title:
+                        "🔓 Il l'a ouverte",
+
+                    description:
+                        "{actor} a probablement regardé seul."
+                },
+
+                {
+                    id:
+                        "desert_cache_guess_wait",
+
+                    secretValue:
+                        "wait",
+
+                    title:
+                        "📣 Il a attendu",
+
+                    description:
+                        "{actor} a probablement attendu tout le monde."
+                }
+
+            ]
+
+        },
+
+
+        outcomes: {
+
+            open_correct: {
+
+                title:
+                    "Curiosité prévisible",
+
+                icon:
+                    "👀",
+
+                variants: [
+
+                    {
+                        id:
+                            "cache_open_correct_bad",
+
+                        text:
+                            "Le groupe arrive au moment où {actor} ouvre la boîte. À l'intérieur, un vieux mécanisme libère une nuée d'insectes agressifs.",
+
+                        icon:
+                            "🐝",
+
+                        effects: [
+                            {
+                                target:
+                                    "actor",
+
+                                lives:
+                                    -1
+                            }
+                        ],
+
+                        weight:
+                            45
+                    },
+
+                    {
+                        id:
+                            "cache_open_correct_neutral",
+
+                        text:
+                            "Le groupe surprend {actor} juste avant qu'il ne puisse inspecter le contenu.",
+
+                        icon:
+                            "😬",
+
+                        effects:
+                            [],
+
+                        weight:
+                            55
+                    }
+
+                ]
+
+            },
+
+
+            open_wrong: {
+
+                title:
+                    "Personne n'a rien vu",
+
+                icon:
+                    "🎁",
+
+                variants: [
+
+                    {
+                        id:
+                            "cache_open_wrong_tools",
+
+                        text:
+                            "La boîte contient plusieurs petits outils protégés de l'humidité.",
+
+                        icon:
+                            "🛠️",
+
+                        effects: [
+                            {
+                                target:
+                                    "actor",
+
+                                status: {
+                                    id:
+                                        "resourceful",
+
+                                    duration:
+                                        2
+                                }
+                            }
+                        ],
+
+                        weight:
+                            28
+                    },
+
+                    {
+                        id:
+                            "cache_open_wrong_medicine",
+
+                        text:
+                            "Une petite trousse médicale est encore intacte dans la boîte.",
+
+                        icon:
+                            "💊",
+
+                        effects: [
+                            {
+                                target:
+                                    "actor",
+
+                                removeStatus:
+                                    "poisoned"
+                            },
+
+                            {
+                                target:
+                                    "actor",
 
                                 lives:
                                     1
@@ -3944,19 +5172,43 @@ export const SECRET_SITUATIONS = [
 
                     {
                         id:
-                            "box_group_correct_neutral",
+                            "cache_open_wrong_poison",
 
                         text:
-                            "Tout le monde ouvre la boîte ensemble. Elle ne contient que quelques objets sans grande utilité.",
+                            "La boîte contenait d'anciens produits chimiques. Une fiole se brise lorsque {actor} l'ouvre.",
 
                         icon:
-                            "😐",
+                            "☠️",
+
+                        effects: [
+                            {
+                                target:
+                                    "actor",
+
+                                status:
+                                    "poisoned"
+                            }
+                        ],
+
+                        weight:
+                            22
+                    },
+
+                    {
+                        id:
+                            "cache_open_wrong_neutral",
+
+                        text:
+                            "La boîte contient principalement des papiers détruits par l'humidité.",
+
+                        icon:
+                            "📜",
 
                         effects:
                             [],
 
                         weight:
-                            85
+                            35
                     }
 
                 ]
@@ -3964,10 +5216,71 @@ export const SECRET_SITUATIONS = [
             },
 
 
-            group_wrong: {
+            wait_correct: {
 
                 title:
-                    "Toujours cette confiance",
+                    "Patience récompensée",
+
+                icon:
+                    "🤝",
+
+                variants: [
+
+                    {
+                        id:
+                            "cache_wait_correct_good",
+
+                        text:
+                            "En ouvrant la boîte ensemble, le groupe récupère plusieurs outils utilisables.",
+
+                        icon:
+                            "🛠️",
+
+                        effects: [
+                            {
+                                target:
+                                    "all",
+
+                                status: {
+                                    id:
+                                        "resourceful",
+
+                                    duration:
+                                        1
+                                }
+                            }
+                        ],
+
+                        weight:
+                            30
+                    },
+
+                    {
+                        id:
+                            "cache_wait_correct_neutral",
+
+                        text:
+                            "La boîte contient surtout de vieux documents, mais quelques indications pourraient servir plus tard.",
+
+                        icon:
+                            "📜",
+
+                        effects:
+                            [],
+
+                        weight:
+                            70
+                    }
+
+                ]
+
+            },
+
+
+            wait_wrong: {
+
+                title:
+                    "Vous l'avez mal jugé",
 
                 icon:
                     "🙄",
@@ -3976,21 +5289,26 @@ export const SECRET_SITUATIONS = [
 
                     {
                         id:
-                            "box_group_wrong_bad",
+                            "cache_wait_wrong_bad",
 
                         text:
-                            "{actor} avait attendu tout le monde mais personne ne le croyait. La dispute fait perdre un temps précieux.",
+                            "{actor} avait attendu le groupe, mais les accusations provoquent une dispute en plein soleil.",
 
                         icon:
-                            "😤",
+                            "🥵",
 
                         effects: [
                             {
                                 target:
-                                    "others",
+                                    "all",
 
-                                lives:
-                                    -1
+                                gauge: {
+                                    id:
+                                        "fatigue",
+
+                                    amount:
+                                        1
+                                }
                             }
                         ],
 
@@ -4000,13 +5318,13 @@ export const SECRET_SITUATIONS = [
 
                     {
                         id:
-                            "box_group_wrong_neutral",
+                            "cache_wait_wrong_neutral",
 
                         text:
-                            "Le groupe découvre finalement que la boîte était toujours fermée.",
+                            "Le malentendu est finalement dissipé et la boîte est ouverte collectivement.",
 
                         icon:
-                            "📦",
+                            "😐",
 
                         effects:
                             [],

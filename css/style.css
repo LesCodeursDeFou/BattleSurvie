@@ -2301,3 +2301,289 @@ select:focus {
     }
 
 }
+
+/* =========================================================
+   ÉTATS DU JOUEUR
+========================================================= */
+
+.player-status-badges {
+
+    display:
+        flex;
+
+    flex-wrap:
+        wrap;
+
+    gap:
+        7px;
+
+    margin-top:
+        8px;
+
+}
+
+
+.status-badge {
+
+    min-width:
+        38px;
+
+    min-height:
+        32px;
+
+    padding:
+        5px
+        9px;
+
+    border:
+        1px solid
+        var(--border);
+
+    border-radius:
+        999px;
+
+    background:
+        var(--card-light);
+
+    color:
+        var(--text);
+
+    font-size:
+        15px;
+
+    font-weight:
+        800;
+
+    cursor:
+        pointer;
+
+}
+
+
+.status-badge:active {
+
+    transform:
+        scale(
+            0.95
+        );
+
+}
+
+
+.gauge-badge {
+
+    color:
+        var(--warning);
+
+}
+
+
+/* =========================================================
+   CHANGEMENTS D'ÉTATS
+========================================================= */
+
+.effect-update-card {
+
+    text-align:
+        center;
+
+}
+
+
+.effect-update-list {
+
+    display:
+        flex;
+
+    flex-direction:
+        column;
+
+    gap:
+        10px;
+
+    margin-top:
+        20px;
+
+    text-align:
+        left;
+
+}
+
+
+.effect-update-item {
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    gap:
+        14px;
+
+    padding:
+        14px;
+
+    border:
+        1px solid
+        var(--border);
+
+    border-radius:
+        var(--radius-medium);
+
+    background:
+        var(--card-light);
+
+    animation:
+        effectUpdateAppear
+        0.45s
+        ease
+        both;
+
+}
+
+
+.effect-update-item-icon {
+
+    flex-shrink:
+        0;
+
+    font-size:
+        30px;
+
+}
+
+
+.effect-update-item strong {
+
+    display:
+        block;
+
+    margin-bottom:
+        3px;
+
+}
+
+
+.effect-update-item p {
+
+    margin:
+        0;
+
+    color:
+        var(--text-secondary);
+
+    font-size:
+        13px;
+
+    line-height:
+        1.4;
+
+}
+
+.consequence-state-changes {
+
+    display:
+        flex;
+
+    flex-direction:
+        column;
+
+    gap:
+        7px;
+
+    margin-top:
+        15px;
+
+}
+
+
+.consequence-state-line {
+
+    padding:
+        9px
+        12px;
+
+    border-radius:
+        12px;
+
+    background:
+        var(--primary-ultra-soft);
+
+    color:
+        var(--text);
+
+    font-size:
+        13px;
+
+    font-weight:
+        700;
+
+}
+
+
+.panic-timer {
+
+    margin-bottom:
+        14px;
+
+    padding:
+        10px;
+
+    border:
+        1px solid
+        var(--danger);
+
+    border-radius:
+        12px;
+
+    color:
+        var(--danger);
+
+    font-weight:
+        900;
+
+    animation:
+        panicPulse
+        0.8s
+        ease-in-out
+        infinite;
+
+}
+
+
+@keyframes panicPulse {
+
+    50% {
+
+        transform:
+            scale(
+                1.03
+            );
+
+    }
+
+}
+
+
+.lucidity-hint {
+
+    display:
+        block;
+
+    margin-top:
+        9px;
+
+    color:
+        var(--primary);
+
+    font-size:
+        11px;
+
+    line-height:
+        1.4;
+
+    opacity:
+        0.9;
+
+}

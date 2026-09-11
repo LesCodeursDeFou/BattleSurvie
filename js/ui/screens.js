@@ -12,9 +12,18 @@ import {
     getThemeData
 } from "../data/themeData.js";
 
-// =====================================
+
+// =====================================================
+// TIMER DES CHOIX
+// =====================================================
+
+let activeChoiceTimer =
+    null;
+
+
+// =====================================================
 // ÉCRANS
-// =====================================
+// =====================================================
 
 const screens = {
 
@@ -53,6 +62,11 @@ const screens = {
             "screenConsequence"
         ),
 
+    effects:
+        document.getElementById(
+            "screenEffects"
+        ),
+
     recap:
         document.getElementById(
             "screenRecap"
@@ -66,9 +80,14 @@ const screens = {
     secretIntro:
         document.getElementById(
             "screenSecretIntro"
-        ),
-    
+        )
+
 };
+
+
+// =====================================================
+// SECRET CHOICE : INTRO
+// =====================================================
 
 export function displaySecretIntro(
     game,
@@ -131,6 +150,11 @@ export function displaySecretIntro(
 
 }
 
+
+// =====================================================
+// PROLOGUE DU MODE
+// =====================================================
+
 export function displayModePrologue(
     game,
     onComplete
@@ -146,7 +170,9 @@ export function displayModePrologue(
         !mode ||
         !Array.isArray(
             mode.prologue
-        )
+        ) ||
+        mode.prologue.length ===
+            0
     ) {
 
         onComplete();
@@ -186,6 +212,21 @@ export function displayModePrologue(
         );
 
 
+    if (
+        !screen ||
+        !visual ||
+        !chapter ||
+        !text ||
+        !skipButton
+    ) {
+
+        onComplete();
+
+        return;
+
+    }
+
+
     const scenes =
         mode.prologue.map(
             scene => ({
@@ -194,12 +235,14 @@ export function displayModePrologue(
 
                 text:
                     (
-                        scene.text ?? ""
+                        scene.text ??
+                        ""
                     )
                     .replaceAll(
                         "{rounds}",
                         String(
-                            game.maxRounds ?? ""
+                            game.maxRounds ??
+                            ""
                         )
                     )
 
@@ -232,9 +275,15 @@ export function displayModePrologue(
             true;
 
 
-        clearTimeout(
+        if (
             timeout
-        );
+        ) {
+
+            clearTimeout(
+                timeout
+            );
+
+        }
 
 
         screen.classList.remove(
@@ -248,6 +297,15 @@ export function displayModePrologue(
 
 
     function showScene() {
+
+        if (
+            finished
+        ) {
+
+            return;
+
+        }
+
 
         if (
             currentScene >=
@@ -284,13 +342,16 @@ export function displayModePrologue(
 
 
         visual.textContent =
-            scene.visual ?? "";
+            scene.visual ??
+            "";
 
         chapter.textContent =
-            scene.chapter ?? "";
+            scene.chapter ??
+            "";
 
         text.textContent =
-            scene.text ?? "";
+            scene.text ??
+            "";
 
 
         visual.classList.add(
@@ -322,7 +383,8 @@ export function displayModePrologue(
                 showScene,
                 Number(
                     scene.duration
-                ) || 2500
+                ) ||
+                2500
             );
 
     }
@@ -342,9 +404,9 @@ export function displayModePrologue(
 }
 
 
-// =====================================
+// =====================================================
 // GÉNÉRATION DES THÈMES
-// =====================================
+// =====================================================
 
 export function renderThemeOptions() {
 
@@ -365,206 +427,167 @@ export function renderThemeOptions() {
     }
 
 
-    // On supprime les cartes
-    // écrites en dur dans le HTML.
-    container.innerHTML = "";
+    container.innerHTML =
+        "";
 
 
     Object.values(
         THEMES
-    ).forEach(theme => {
+    ).forEach(
+        theme => {
+
+            const button =
+                document.createElement(
+                    "button"
+                );
 
 
-        // =====================================
-        // CARTE
-        // =====================================
+            button.type =
+                "button";
 
-        const button =
-            document.createElement(
-                "button"
+
+            button.className =
+                "theme-card";
+
+
+            button.dataset.theme =
+                theme.id;
+
+
+            if (
+                theme.available
+            ) {
+
+                button.classList.add(
+                    "available"
+                );
+
+            }
+
+            else {
+
+                button.classList.add(
+                    "disabled"
+                );
+
+                button.disabled =
+                    true;
+
+            }
+
+
+            if (
+                theme.id ===
+                "desert_island"
+            ) {
+
+                button.classList.add(
+                    "active"
+                );
+
+            }
+
+
+            const icon =
+                document.createElement(
+                    "div"
+                );
+
+
+            icon.className =
+                "theme-icon";
+
+
+            icon.textContent =
+                theme.icon;
+
+
+            const title =
+                document.createElement(
+                    "strong"
+                );
+
+
+            title.textContent =
+                theme.name;
+
+
+            const description =
+                document.createElement(
+                    "p"
+                );
+
+
+            description.textContent =
+                theme.description;
+
+
+            const status =
+                document.createElement(
+                    "span"
+                );
+
+
+            status.className =
+                "option-status";
+
+
+            if (
+                theme.available
+            ) {
+
+                status.classList.add(
+                    "available"
+                );
+
+                status.textContent =
+                    "Disponible";
+
+            }
+
+            else {
+
+                status.textContent =
+                    "Bientôt";
+
+            }
+
+
+            button.appendChild(
+                icon
+            );
+
+            button.appendChild(
+                title
+            );
+
+            button.appendChild(
+                description
+            );
+
+            button.appendChild(
+                status
             );
 
 
-        button.type =
-            "button";
-
-
-        button.className =
-            "theme-card";
-
-
-        button.dataset.theme =
-            theme.id;
-
-
-        // =====================================
-        // DISPONIBILITÉ
-        // =====================================
-
-        if (
-            theme.available
-        ) {
-
-            button.classList.add(
-                "available"
+            container.appendChild(
+                button
             );
 
         }
-
-        else {
-
-            button.classList.add(
-                "disabled"
-            );
-
-            button.disabled =
-                true;
-
-        }
-
-
-        // =====================================
-        // THÈME PAR DÉFAUT
-        // =====================================
-
-        if (
-            theme.id ===
-            "desert_island"
-        ) {
-
-            button.classList.add(
-                "active"
-            );
-
-        }
-
-
-        // =====================================
-        // ICÔNE
-        // =====================================
-
-        const icon =
-            document.createElement(
-                "div"
-            );
-
-
-        icon.className =
-            "theme-icon";
-
-
-        icon.textContent =
-            theme.icon;
-
-
-        // =====================================
-        // TITRE
-        // =====================================
-
-        const title =
-            document.createElement(
-                "strong"
-            );
-
-
-        title.textContent =
-            theme.name;
-
-
-        // =====================================
-        // DESCRIPTION
-        // =====================================
-
-        const description =
-            document.createElement(
-                "p"
-            );
-
-
-        description.textContent =
-            theme.description;
-
-
-        // =====================================
-        // STATUT
-        // =====================================
-
-        const status =
-            document.createElement(
-                "span"
-            );
-
-
-        status.className =
-            "option-status";
-
-
-        if (
-            theme.available
-        ) {
-
-            status.classList.add(
-                "available"
-            );
-
-            status.textContent =
-                "Disponible";
-
-        }
-
-        else {
-
-            status.textContent =
-                "Bientôt";
-
-        }
-
-
-        // =====================================
-        // ASSEMBLAGE
-        // =====================================
-
-        button.appendChild(
-            icon
-        );
-
-
-        button.appendChild(
-            title
-        );
-
-
-        button.appendChild(
-            description
-        );
-
-
-        button.appendChild(
-            status
-        );
-
-
-        container.appendChild(
-            button
-        );
-
-    });
+    );
 
 }
 
 
-// =====================================
-// PROLOGUE
-// =====================================
+// =====================================================
+// PROLOGUE DU THÈME
+// =====================================================
 
 export function displayPrologue(
     game,
     onComplete
 ) {
-
-    // =====================================
-    // ÉLÉMENTS HTML
-    // =====================================
 
     const screen =
         document.getElementById(
@@ -596,10 +619,6 @@ export function displayPrologue(
         );
 
 
-    // =====================================
-    // VÉRIFICATION HTML
-    // =====================================
-
     if (
         !screen ||
         !visual ||
@@ -609,25 +628,15 @@ export function displayPrologue(
     ) {
 
         console.error(
-            "Éléments du prologue introuvables.",
-            {
-                screen,
-                visual,
-                chapter,
-                text,
-                skipButton
-            }
+            "Éléments du prologue introuvables."
         );
 
         onComplete();
 
         return;
+
     }
 
-
-    // =====================================
-    // DONNÉES DU THÈME
-    // =====================================
 
     const themeData =
         getThemeData(
@@ -640,23 +649,21 @@ export function displayPrologue(
         !Array.isArray(
             themeData.prologue
         ) ||
-        themeData.prologue.length === 0
+        themeData.prologue.length ===
+            0
     ) {
 
         console.error(
-            "Aucun prologue disponible pour le thème :",
+            "Aucun prologue disponible pour :",
             game.theme
         );
 
         onComplete();
 
         return;
+
     }
 
-
-    // =====================================
-    // NOMS DES JOUEURS
-    // =====================================
 
     const playerNames =
         game.players
@@ -664,54 +671,39 @@ export function displayPrologue(
                 player =>
                     player.name
             )
-            .join("\n");
+            .join(
+                "\n"
+            );
 
-
-    // =====================================
-    // SCÈNES DU THÈME
-    // =====================================
 
     const scenes =
         themeData.prologue.map(
-            scene => {
+            scene => ({
 
-                return {
+                ...scene,
 
-                    ...scene,
+                text:
+                    (
+                        scene.text ??
+                        ""
+                    ).replaceAll(
+                        "{players}",
+                        playerNames
+                    )
 
-                    text:
-                        (
-                            scene.text ?? ""
-                        ).replaceAll(
-                            "{players}",
-                            playerNames
-                        )
-
-                };
-
-            }
+            })
         );
 
-
-    // =====================================
-    // ÉTAT DU PROLOGUE
-    // =====================================
 
     let currentScene =
         0;
 
-
     let timeout =
         null;
-
 
     let finished =
         false;
 
-
-    // =====================================
-    // TERMINER LE PROLOGUE
-    // =====================================
 
     function finishPrologue() {
 
@@ -720,6 +712,7 @@ export function displayPrologue(
         ) {
 
             return;
+
         }
 
 
@@ -748,10 +741,6 @@ export function displayPrologue(
     }
 
 
-    // =====================================
-    // AFFICHER UNE SCÈNE
-    // =====================================
-
     function showScene() {
 
         if (
@@ -759,6 +748,7 @@ export function displayPrologue(
         ) {
 
             return;
+
         }
 
 
@@ -770,6 +760,7 @@ export function displayPrologue(
             finishPrologue();
 
             return;
+
         }
 
 
@@ -779,68 +770,47 @@ export function displayPrologue(
             ];
 
 
-        // =====================================
-        // RESET ANIMATION
-        // =====================================
-
         visual.classList.remove(
             "prologue-appear"
         );
 
-
         chapter.classList.remove(
             "prologue-appear"
         );
-
 
         text.classList.remove(
             "prologue-appear"
         );
 
 
-        // Force le navigateur
-        // à recalculer l'animation
         void text.offsetWidth;
 
 
-        // =====================================
-        // CONTENU
-        // =====================================
-
         visual.textContent =
-            scene.visual ?? "";
-
+            scene.visual ??
+            "";
 
         chapter.textContent =
-            scene.chapter ?? "";
-
+            scene.chapter ??
+            "";
 
         text.textContent =
-            scene.text ?? "";
+            scene.text ??
+            "";
 
-
-        // =====================================
-        // ANIMATION
-        // =====================================
 
         visual.classList.add(
             "prologue-appear"
         );
 
-
         chapter.classList.add(
             "prologue-appear"
         );
-
 
         text.classList.add(
             "prologue-appear"
         );
 
-
-        // =====================================
-        // SCÈNE FINALE
-        // =====================================
 
         if (
             scene.final
@@ -861,39 +831,24 @@ export function displayPrologue(
         }
 
 
-        // =====================================
-        // SCÈNE SUIVANTE
-        // =====================================
-
         currentScene++;
-
-
-        const duration =
-            Number(
-                scene.duration
-            ) || 2800;
 
 
         timeout =
             setTimeout(
                 showScene,
-                duration
+                Number(
+                    scene.duration
+                ) ||
+                2800
             );
 
     }
 
 
-    // =====================================
-    // BOUTON PASSER
-    // =====================================
-
     skipButton.onclick =
         finishPrologue;
 
-
-    // =====================================
-    // LANCEMENT
-    // =====================================
 
     screen.classList.remove(
         "prologue-final"
@@ -905,37 +860,43 @@ export function displayPrologue(
     );
 
 
-    console.log(
-        "Prologue lancé :",
-        {
-            theme:
-                game.theme,
-
-            scenes:
-                scenes.length
-        }
-    );
-
-
     showScene();
 
 }
 
 
-// =====================================
+// =====================================================
 // CHANGEMENT D'ÉCRAN
-// =====================================
+// =====================================================
 
 export function showScreen(
     screenName
 ) {
+
+    if (
+        screenName !==
+            "game" &&
+        activeChoiceTimer
+    ) {
+
+        clearInterval(
+            activeChoiceTimer
+        );
+
+        activeChoiceTimer =
+            null;
+
+    }
+
 
     Object.values(
         screens
     ).forEach(
         screen => {
 
-            if (screen) {
+            if (
+                screen
+            ) {
 
                 screen.classList.remove(
                     "active"
@@ -953,7 +914,9 @@ export function showScreen(
         ];
 
 
-    if (!targetScreen) {
+    if (
+        !targetScreen
+    ) {
 
         console.error(
             `Écran introuvable : ${screenName}`
@@ -963,10 +926,6 @@ export function showScreen(
 
     }
 
-
-    // =====================================
-    // OPTIONS DE PARTIE
-    // =====================================
 
     if (
         screenName ===
@@ -985,9 +944,9 @@ export function showScreen(
 }
 
 
-// =====================================
+// =====================================================
 // CRÉATION DES JOUEURS
-// =====================================
+// =====================================================
 
 export function createPlayerInputs(
     count
@@ -1026,10 +985,6 @@ export function createPlayerInputs(
             "form-group";
 
 
-        // =====================================
-        // LABEL
-        // =====================================
-
         const label =
             document.createElement(
                 "label"
@@ -1039,10 +994,6 @@ export function createPlayerInputs(
         label.textContent =
             `Nom du joueur ${i}`;
 
-
-        // =====================================
-        // INPUT
-        // =====================================
 
         const input =
             document.createElement(
@@ -1066,19 +1017,13 @@ export function createPlayerInputs(
             "off";
 
 
-        // Champ réellement vide
         input.value =
             "";
 
 
-        // Nom par défaut visuel
         input.placeholder =
             `Joueur ${i}`;
 
-
-        // =====================================
-        // ASSEMBLAGE
-        // =====================================
 
         group.appendChild(
             label
@@ -1099,9 +1044,9 @@ export function createPlayerInputs(
 }
 
 
-// =====================================
+// =====================================================
 // RÉCUPÉRATION DES NOMS
-// =====================================
+// =====================================================
 
 export function getPlayerNames() {
 
@@ -1124,7 +1069,8 @@ export function getPlayerNames() {
 
 
             if (
-                value !== ""
+                value !==
+                ""
             ) {
 
                 return value;
@@ -1142,26 +1088,378 @@ export function getPlayerNames() {
 }
 
 
-// =====================================
+// =====================================================
+// BADGES D'ÉTAT DU JOUEUR
+// =====================================================
+
+function displayPlayerStatusBadges(
+    game,
+    player
+) {
+
+    const container =
+        document.getElementById(
+            "playerStatusBadges"
+        );
+
+
+    if (
+        !container
+    ) {
+
+        return;
+
+    }
+
+
+    container.innerHTML =
+        "";
+
+
+    if (
+        !player
+    ) {
+
+        return;
+
+    }
+
+
+    // =================================================
+    // ÉTATS ACTIFS
+    // =================================================
+
+    if (
+        Array.isArray(
+            player.statuses
+        )
+    ) {
+
+        player.statuses.forEach(
+            status => {
+
+                const definition =
+                    game.statusManager
+                        ?.getDefinition(
+                            status.id
+                        );
+
+
+                if (
+                    !definition
+                ) {
+
+                    return;
+
+                }
+
+
+                const badge =
+                    document.createElement(
+                        "button"
+                    );
+
+
+                badge.type =
+                    "button";
+
+
+                badge.className =
+                    "status-badge";
+
+
+                badge.textContent =
+                    definition.icon;
+
+
+                let details =
+                    `${definition.name}\n${definition.description}`;
+
+
+                if (
+                    typeof status
+                        .turnsRemaining ===
+                    "number"
+                ) {
+
+                    details +=
+                        `\nEncore ${status.turnsRemaining} tour(s)`;
+
+                }
+
+                else if (
+                    definition
+                        .permanentUntilRemoved
+                ) {
+
+                    details +=
+                        "\nDurée : jusqu'à dissipation";
+
+                }
+
+
+                badge.title =
+                    details;
+
+
+                badge.setAttribute(
+                    "aria-label",
+                    definition.name
+                );
+
+
+                badge.addEventListener(
+                    "click",
+                    () => {
+
+                        alert(
+                            details
+                        );
+
+                    }
+                );
+
+
+                container.appendChild(
+                    badge
+                );
+
+            }
+        );
+
+    }
+
+
+    // =================================================
+    // FATIGUE — ÎLE DÉSERTE
+    // =================================================
+
+    if (
+        game.theme ===
+        "desert_island"
+    ) {
+
+        const level =
+            player.getGauge(
+                "fatigue"
+            );
+
+
+        const badge =
+            document.createElement(
+                "button"
+            );
+
+
+        badge.type =
+            "button";
+
+
+        badge.className =
+            "status-badge gauge-badge";
+
+
+        badge.textContent =
+            `🥱 ${level}/3`;
+
+
+        badge.title =
+            game.statusManager
+                .getGaugeLabel(
+                    "fatigue",
+                    level
+                );
+
+
+        badge.addEventListener(
+            "click",
+            () => {
+
+                alert(
+                    `Fatigue : ${
+                        game.statusManager
+                            .getGaugeLabel(
+                                "fatigue",
+                                level
+                            )
+                    }\nNiveau : ${level}/3`
+                );
+
+            }
+        );
+
+
+        container.appendChild(
+            badge
+        );
+
+    }
+
+
+    // =================================================
+    // PEUR — MANOIR HANTÉ
+    // =================================================
+
+    if (
+        game.theme ===
+        "haunted_mansion"
+    ) {
+
+        const level =
+            player.getGauge(
+                "fear"
+            );
+
+
+        const badge =
+            document.createElement(
+                "button"
+            );
+
+
+        badge.type =
+            "button";
+
+
+        badge.className =
+            "status-badge gauge-badge";
+
+
+        badge.textContent =
+            `😰 ${level}/3`;
+
+
+        badge.title =
+            game.statusManager
+                .getGaugeLabel(
+                    "fear",
+                    level
+                );
+
+
+        badge.addEventListener(
+            "click",
+            () => {
+
+                alert(
+                    `Peur : ${
+                        game.statusManager
+                            .getGaugeLabel(
+                                "fear",
+                                level
+                            )
+                    }\nNiveau : ${level}/3`
+                );
+
+            }
+        );
+
+
+        container.appendChild(
+            badge
+        );
+
+    }
+
+}
+
+
+// =====================================================
+// INFO : QUI PREND LA DÉCISION ?
+// =====================================================
+
+function displayDecisionPlayerInfo(
+    game,
+    player
+) {
+
+    const container =
+        document.getElementById(
+            "decisionPlayerInfo"
+        );
+
+
+    if (
+        !container
+    ) {
+
+        return;
+
+    }
+
+
+    container.textContent =
+        "";
+
+
+    container.classList.remove(
+        "active"
+    );
+
+
+    if (
+        !player
+    ) {
+
+        return;
+
+    }
+
+
+    const decisionPlayer =
+        game.getDecisionPlayer(
+            player
+        );
+
+
+    if (
+        !decisionPlayer ||
+        decisionPlayer.id ===
+            player.id
+    ) {
+
+        return;
+
+    }
+
+
+    container.textContent =
+        `👿 ${decisionPlayer.name} prend la décision à la place de ${player.name}`;
+
+
+    container.classList.add(
+        "active"
+    );
+
+}
+
+
+// =====================================================
 // ÉCRAN DE JEU
-// =====================================
+// =====================================================
 
 export function displayGame(
     game,
     onChoice
 ) {
 
-    // =====================================
-    // JOUEUR
-    // =====================================
+    if (
+        activeChoiceTimer
+    ) {
+
+        clearInterval(
+            activeChoiceTimer
+        );
+
+        activeChoiceTimer =
+            null;
+
+    }
+
 
     const player =
         game.getCurrentPlayer();
 
-
-    // =====================================
-    // SITUATION
-    // =====================================
 
     const situation =
         game.getCurrentSituation();
@@ -1185,9 +1483,9 @@ export function displayGame(
     }
 
 
-    // =====================================
+    // =================================================
     // CIBLE
-    // =====================================
+    // =================================================
 
     let targetPlayer =
         null;
@@ -1195,24 +1493,22 @@ export function displayGame(
 
     if (
         situation.type ===
-        "interaction" ||
+            "interaction" ||
         situation.type ===
-        "group_vs_one"
+            "group_vs_one"
     ) {
 
         targetPlayer =
-            game.players.find(
-                item =>
-                    item.id ===
-                    situation.targetPlayerId
-            ) ?? null;
+            game.getSituationTargetPlayer(
+                situation
+            );
 
     }
 
 
-    // =====================================
+    // =================================================
     // GROUPE
-    // =====================================
+    // =================================================
 
     let groupPlayers =
         [];
@@ -1236,34 +1532,42 @@ export function displayGame(
     ) {
 
         groupPlayers =
-            game.players.filter(
-                otherPlayer =>
-                    otherPlayer.alive &&
-                    otherPlayer.id !==
-                    player.id
+            game.getOtherAlivePlayers(
+                player
             );
 
     }
 
 
-    // =====================================
+    // =================================================
     // TOUR
-    // =====================================
+    // =================================================
 
-    document.getElementById(
-        "roundNumber"
-    ).textContent =
-        game.roundNumber;
+    const roundNumber =
+        document.getElementById(
+            "roundNumber"
+        );
 
 
-    // =====================================
+    if (
+        roundNumber
+    ) {
+
+        roundNumber.textContent =
+            game.roundNumber;
+
+    }
+
+
+    // =================================================
     // PARTICIPATION
-    // =====================================
+    // =================================================
 
     const alreadyPlayed =
         game.currentRound
-            .playedPlayerIds
-            .length;
+            ?.playedPlayerIds
+            ?.length ??
+        0;
 
 
     let currentParticipants =
@@ -1284,21 +1588,30 @@ export function displayGame(
     const participatedCount =
         Math.min(
             alreadyPlayed +
-            currentParticipants,
-
+                currentParticipants,
             game.players.length
         );
 
 
-    document.getElementById(
-        "playerPosition"
-    ).textContent =
-        `${participatedCount} / ${game.players.length}`;
+    const playerPosition =
+        document.getElementById(
+            "playerPosition"
+        );
 
 
-    // =====================================
-    // NOM
-    // =====================================
+    if (
+        playerPosition
+    ) {
+
+        playerPosition.textContent =
+            `${participatedCount} / ${game.players.length}`;
+
+    }
+
+
+    // =================================================
+    // NOM DU JOUEUR / GROUPE
+    // =================================================
 
     const currentPlayerName =
         document.getElementById(
@@ -1307,28 +1620,96 @@ export function displayGame(
 
 
     if (
+        currentPlayerName
+    ) {
+
+        if (
+            situation.type ===
+            "group_vs_one"
+        ) {
+
+            currentPlayerName.textContent =
+                game.formatPlayerGroup(
+                    groupPlayers
+                );
+
+        }
+
+        else {
+
+            currentPlayerName.textContent =
+                player.name;
+
+        }
+
+    }
+
+
+    // =================================================
+    // BADGES + POSSESSION
+    // =================================================
+
+    if (
         situation.type ===
         "group_vs_one"
     ) {
 
-        currentPlayerName.textContent =
-            game.formatPlayerGroup(
-                groupPlayers
+        const badges =
+            document.getElementById(
+                "playerStatusBadges"
             );
+
+
+        const decisionInfo =
+            document.getElementById(
+                "decisionPlayerInfo"
+            );
+
+
+        if (
+            badges
+        ) {
+
+            badges.innerHTML =
+                "";
+
+        }
+
+
+        if (
+            decisionInfo
+        ) {
+
+            decisionInfo.textContent =
+                "";
+
+            decisionInfo.classList.remove(
+                "active"
+            );
+
+        }
 
     }
 
     else {
 
-        currentPlayerName.textContent =
-            player.name;
+        displayPlayerStatusBadges(
+            game,
+            player
+        );
+
+
+        displayDecisionPlayerInfo(
+            game,
+            player
+        );
 
     }
 
 
-    // =====================================
+    // =================================================
     // VIES
-    // =====================================
+    // =================================================
 
     const livesElement =
         document.getElementById(
@@ -1336,7 +1717,9 @@ export function displayGame(
         );
 
 
-    if (livesElement) {
+    if (
+        livesElement
+    ) {
 
         const livesContainer =
             livesElement.closest(
@@ -1380,62 +1763,100 @@ export function displayGame(
     }
 
 
-    // =====================================
-    // ICÔNE
-    // =====================================
+    // =================================================
+    // SITUATION
+    // =================================================
 
-    document.getElementById(
-        "situationIcon"
-    ).textContent =
-        situation.icon;
-
-
-    // =====================================
-    // CATÉGORIE
-    // =====================================
-
-    document.getElementById(
-        "situationCategory"
-    ).textContent =
-        situation.category;
-
-
-    // =====================================
-    // TITRE
-    // =====================================
-
-    document.getElementById(
-        "situationTitle"
-    ).textContent =
-        game.renderPlayerText(
-            situation.title,
-            player,
-            targetPlayer,
-            groupPlayers
+    const situationIcon =
+        document.getElementById(
+            "situationIcon"
         );
 
 
-    // =====================================
-    // DESCRIPTION
-    // =====================================
+    if (
+        situationIcon
+    ) {
 
-    document.getElementById(
-        "situationDescription"
-    ).textContent =
-        game.renderPlayerText(
-            situation.description,
-            player,
-            targetPlayer,
-            groupPlayers
+        situationIcon.textContent =
+            situation.icon ??
+            "🎲";
+
+    }
+
+
+    const situationCategory =
+        document.getElementById(
+            "situationCategory"
         );
 
 
-    // =====================================
-    // CHOIX
-    // =====================================
+    if (
+        situationCategory
+    ) {
+
+        situationCategory.textContent =
+            situation.category ??
+            "Situation";
+
+    }
+
+
+    const situationTitle =
+        document.getElementById(
+            "situationTitle"
+        );
+
+
+    if (
+        situationTitle
+    ) {
+
+        situationTitle.textContent =
+            game.renderPlayerText(
+                situation.title,
+                player,
+                targetPlayer,
+                groupPlayers
+            );
+
+    }
+
+
+    const situationDescription =
+        document.getElementById(
+            "situationDescription"
+        );
+
+
+    if (
+        situationDescription
+    ) {
+
+        situationDescription.textContent =
+            game.renderPlayerText(
+                situation.description,
+                player,
+                targetPlayer,
+                groupPlayers
+            );
+
+    }
+
+
+    // =================================================
+    // CHOIX CONDITIONNELS
+    // =================================================
+
+    const availableChoices =
+        game.getAvailableChoices(
+            situation,
+            player,
+            targetPlayer
+        );
+
 
     displayChoices(
-        situation.choices,
+        availableChoices,
         onChoice,
         game,
         player,
@@ -1444,20 +1865,24 @@ export function displayGame(
     );
 
 
-    // =====================================
-    // ÉCRAN
-    // =====================================
-
     showScreen(
         "game"
+    );
+
+
+    startPanicTimerIfNeeded(
+        game,
+        player,
+        availableChoices,
+        onChoice
     );
 
 }
 
 
-// =====================================
+// =====================================================
 // AFFICHAGE DES CHOIX
-// =====================================
+// =====================================================
 
 function displayChoices(
     choices,
@@ -1474,8 +1899,49 @@ function displayChoices(
         );
 
 
+    if (
+        !container
+    ) {
+
+        console.error(
+            "choicesContainer introuvable."
+        );
+
+        return;
+
+    }
+
+
     container.innerHTML =
         "";
+
+
+    if (
+        !Array.isArray(
+            choices
+        ) ||
+        choices.length ===
+            0
+    ) {
+
+        const message =
+            document.createElement(
+                "p"
+            );
+
+
+        message.textContent =
+            "Aucun choix n'est actuellement disponible.";
+
+
+        container.appendChild(
+            message
+        );
+
+
+        return;
+
+    }
 
 
     choices.forEach(
@@ -1495,10 +1961,6 @@ function displayChoices(
                 "choice-button";
 
 
-            // =====================================
-            // TITRE
-            // =====================================
-
             const title =
                 document.createElement(
                     "strong"
@@ -1514,10 +1976,6 @@ function displayChoices(
                 );
 
 
-            // =====================================
-            // DESCRIPTION
-            // =====================================
-
             const description =
                 document.createElement(
                     "span"
@@ -1526,7 +1984,8 @@ function displayChoices(
 
             description.textContent =
                 game.renderPlayerText(
-                    choice.description,
+                    choice.description ??
+                        "",
                     actorPlayer,
                     targetPlayer,
                     groupPlayers
@@ -1538,23 +1997,91 @@ function displayChoices(
             );
 
 
-            button.appendChild(
-                description
-            );
+            if (
+                description.textContent !==
+                ""
+            ) {
+
+                button.appendChild(
+                    description
+                );
+
+            }
 
 
-            // =====================================
-            // CLIC
-            // =====================================
+            // =================================================
+            // LUCIDITÉ
+            // =================================================
+
+            if (
+                actorPlayer
+                    ?.hasStatus(
+                        "lucid"
+                    ) &&
+                Array.isArray(
+                    choice.consequences
+                ) &&
+                choice.consequences.length >
+                    0
+            ) {
+
+                const possible =
+                    choice.consequences[
+                        Math.floor(
+                            Math.random() *
+                            choice.consequences.length
+                        )
+                    ];
+
+
+                const hint =
+                    document.createElement(
+                        "small"
+                    );
+
+
+                hint.className =
+                    "lucidity-hint";
+
+
+                hint.textContent =
+                    `👁️ Vision possible : ${
+                        possible.icon ??
+                        "?"
+                    } ${
+                        game.renderPlayerText(
+                            possible.text ??
+                                "",
+                            actorPlayer,
+                            targetPlayer,
+                            groupPlayers
+                        )
+                    }`;
+
+
+                button.appendChild(
+                    hint
+                );
+
+            }
+
 
             button.addEventListener(
                 "click",
                 () => {
 
-                    console.log(
-                        "Choix sélectionné :",
-                        choice.id
-                    );
+                    if (
+                        activeChoiceTimer
+                    ) {
+
+                        clearInterval(
+                            activeChoiceTimer
+                        );
+
+                        activeChoiceTimer =
+                            null;
+
+                    }
 
 
                     onChoice(
@@ -1575,9 +2102,173 @@ function displayChoices(
 }
 
 
-// =====================================
+// =====================================================
+// TIMER PANIQUE
+// =====================================================
+
+function startPanicTimerIfNeeded(
+    game,
+    player,
+    availableChoices,
+    onChoice
+) {
+
+    const timerElement =
+        document.getElementById(
+            "panicTimer"
+        );
+
+
+    if (
+        !timerElement
+    ) {
+
+        return;
+
+    }
+
+
+    timerElement.classList.add(
+        "hidden"
+    );
+
+
+    timerElement.textContent =
+        "";
+
+
+    if (
+        !player ||
+        !player.hasStatus(
+            "panic"
+        )
+    ) {
+
+        return;
+
+    }
+
+
+    if (
+        !Array.isArray(
+            availableChoices
+        ) ||
+        availableChoices.length ===
+            0
+    ) {
+
+        return;
+
+    }
+
+
+    const panicStatus =
+        player.getStatus(
+            "panic"
+        );
+
+
+    const panicDefinition =
+        game.statusManager
+            ?.getDefinition(
+                "panic"
+            );
+
+
+    let seconds =
+        Number(
+            panicDefinition
+                ?.timedChoice ??
+            panicStatus
+                ?.metadata
+                ?.timedChoice ??
+            5
+        );
+
+
+    if (
+        !Number.isFinite(
+            seconds
+        ) ||
+        seconds <= 0
+    ) {
+
+        seconds =
+            5;
+
+    }
+
+
+    timerElement.classList.remove(
+        "hidden"
+    );
+
+
+    timerElement.textContent =
+        `😱 Panique : ${seconds}s`;
+
+
+    activeChoiceTimer =
+        setInterval(
+            () => {
+
+                seconds--;
+
+
+                timerElement.textContent =
+                    `😱 Panique : ${Math.max(seconds, 0)}s`;
+
+
+                if (
+                    seconds <=
+                    0
+                ) {
+
+                    clearInterval(
+                        activeChoiceTimer
+                    );
+
+
+                    activeChoiceTimer =
+                        null;
+
+
+                    timerElement.classList.add(
+                        "hidden"
+                    );
+
+
+                    const randomChoice =
+                        availableChoices[
+                            Math.floor(
+                                Math.random() *
+                                availableChoices.length
+                            )
+                        ];
+
+
+                    if (
+                        randomChoice
+                    ) {
+
+                        onChoice(
+                            randomChoice.id
+                        );
+
+                    }
+
+                }
+
+            },
+            1000
+        );
+
+}
+
+
+// =====================================================
 // SECRET CHOICE : PASSAGE DU TÉLÉPHONE
-// =====================================
+// =====================================================
 
 export function displaySecretHandoff(
     data,
@@ -1611,7 +2302,8 @@ export function displaySecretHandoff(
 
 
     const otherPlayers =
-        data.otherPlayers ?? [];
+        data.otherPlayers ??
+        [];
 
 
     const names =
@@ -1626,7 +2318,8 @@ export function displaySecretHandoff(
 
 
     if (
-        names.length === 1
+        names.length ===
+        1
     ) {
 
         groupText =
@@ -1635,7 +2328,8 @@ export function displaySecretHandoff(
     }
 
     else if (
-        names.length === 2
+        names.length ===
+        2
     ) {
 
         groupText =
@@ -1644,17 +2338,24 @@ export function displaySecretHandoff(
     }
 
     else if (
-        names.length > 2
+        names.length >
+        2
     ) {
 
         groupText =
             `à ${
                 names
-                    .slice(0, -1)
-                    .join(", ")
+                    .slice(
+                        0,
+                        -1
+                    )
+                    .join(
+                        ", "
+                    )
             } et ${
                 names[
-                    names.length - 1
+                    names.length -
+                    1
                 ]
             }`;
 
@@ -1676,9 +2377,9 @@ export function displaySecretHandoff(
 }
 
 
-// =====================================
+// =====================================================
 // SECRET CHOICE : DEVINETTE
-// =====================================
+// =====================================================
 
 export function displaySecretGuess(
     game,
@@ -1765,7 +2466,8 @@ export function displaySecretGuess(
 
     description.textContent =
         game.renderPlayerText(
-            situation.guess?.description ??
+            situation.guess
+                ?.description ??
                 "À vous de deviner.",
             player,
             null,
@@ -1778,7 +2480,8 @@ export function displaySecretGuess(
 
 
     const guesses =
-        situation.guess?.choices ??
+        situation.guess
+            ?.choices ??
         [];
 
 
@@ -1822,7 +2525,8 @@ export function displaySecretGuess(
 
             buttonDescription.textContent =
                 game.renderPlayerText(
-                    guess.description ?? "",
+                    guess.description ??
+                        "",
                     player,
                     null,
                     otherPlayers
@@ -1873,15 +2577,17 @@ export function displaySecretGuess(
 }
 
 
-// =====================================
+// =====================================================
 // CONSÉQUENCE
-// =====================================
+// =====================================================
 
 export function displayConsequence(
     data
 ) {
 
-    if (!data) {
+    if (
+        !data
+    ) {
 
         console.error(
             "displayConsequence : aucune donnée reçue"
@@ -1915,9 +2621,9 @@ export function displayConsequence(
     }
 
 
-    // =====================================
+    // =================================================
     // ICÔNE
-    // =====================================
+    // =================================================
 
     const consequenceIcon =
         document.getElementById(
@@ -1936,9 +2642,9 @@ export function displayConsequence(
     }
 
 
-    // =====================================
+    // =================================================
     // TEXTE
-    // =====================================
+    // =================================================
 
     const consequenceText =
         document.getElementById(
@@ -1958,9 +2664,9 @@ export function displayConsequence(
     }
 
 
-    // =====================================
-    // CHANGEMENTS DE VIE
-    // =====================================
+    // =================================================
+    // CHANGEMENTS DE VIES
+    // =================================================
 
     const lifeChange =
         document.getElementById(
@@ -1976,14 +2682,21 @@ export function displayConsequence(
             "";
 
 
+        const lifeEffects =
+            effects.filter(
+                effect =>
+                    typeof effect
+                        ?.difference ===
+                    "number"
+            );
+
+
         if (
-            Array.isArray(
-                effects
-            ) &&
-            effects.length > 0
+            lifeEffects.length >
+            0
         ) {
 
-            effects.forEach(
+            lifeEffects.forEach(
                 effect => {
 
                     const line =
@@ -1993,7 +2706,8 @@ export function displayConsequence(
 
 
                     if (
-                        effect.difference > 0
+                        effect.difference >
+                        0
                     ) {
 
                         line.textContent =
@@ -2002,7 +2716,8 @@ export function displayConsequence(
                     }
 
                     else if (
-                        effect.difference < 0
+                        effect.difference <
+                        0
                     ) {
 
                         line.textContent =
@@ -2037,9 +2752,9 @@ export function displayConsequence(
     }
 
 
-    // =====================================
+    // =================================================
     // VIES RESTANTES
-    // =====================================
+    // =================================================
 
     const newLifeCount =
         document.getElementById(
@@ -2059,29 +2774,37 @@ export function displayConsequence(
             [];
 
 
-        effects.forEach(
-            effect => {
+        effects
+            .filter(
+                effect =>
+                    typeof effect
+                        ?.difference ===
+                    "number"
+            )
+            .forEach(
+                effect => {
 
-                if (
-                    !affectedPlayers.some(
-                        item =>
-                            item.playerId ===
-                            effect.playerId
-                    )
-                ) {
+                    if (
+                        !affectedPlayers.some(
+                            item =>
+                                item.playerId ===
+                                effect.playerId
+                        )
+                    ) {
 
-                    affectedPlayers.push(
-                        effect
-                    );
+                        affectedPlayers.push(
+                            effect
+                        );
+
+                    }
 
                 }
-
-            }
-        );
+            );
 
 
         if (
-            affectedPlayers.length > 0
+            affectedPlayers.length >
+            0
         ) {
 
             affectedPlayers.forEach(
@@ -2137,6 +2860,18 @@ export function displayConsequence(
     }
 
 
+    // =================================================
+    // NOUVEAUX ÉTATS / JAUGES / RELATIONS
+    // =================================================
+
+    displayConsequenceStateChanges(
+        data.stateEvents ??
+        result.stateEvents ??
+        [],
+        data
+    );
+
+
     showScreen(
         "consequence"
     );
@@ -2144,18 +2879,491 @@ export function displayConsequence(
 }
 
 
-// =====================================
+// =====================================================
+// RÉCUPÉRER LE NOM DU JOUEUR D'UN ÉVÉNEMENT
+// =====================================================
+
+function getEventPlayerName(
+    event,
+    context = {}
+) {
+
+    // =================================================
+    // FORMAT DIRECT
+    // =================================================
+
+    if (
+        event?.playerName
+    ) {
+
+        return event.playerName;
+
+    }
+
+
+    // =================================================
+    // OBJET PLAYER DIRECT
+    // =================================================
+
+    if (
+        event?.player?.name
+    ) {
+
+        return event.player.name;
+
+    }
+
+
+    // =================================================
+    // PAS D'ID = IMPOSSIBLE DE RETROUVER LE JOUEUR
+    // =================================================
+
+    if (
+        !event?.playerId
+    ) {
+
+        return "";
+
+    }
+
+
+    // =================================================
+    // RECHERCHE DANS LES JOUEURS CONNUS DU CONTEXTE
+    // =================================================
+
+    const knownPlayers =
+        [
+            context.player,
+            context.targetPlayer,
+
+            ...(
+                Array.isArray(
+                    context.groupPlayers
+                )
+                    ? context.groupPlayers
+                    : []
+            ),
+
+            ...(
+                Array.isArray(
+                    context.players
+                )
+                    ? context.players
+                    : []
+            )
+        ]
+        .filter(
+            Boolean
+        );
+
+
+    const matchingPlayer =
+        knownPlayers.find(
+            player =>
+                player.id ===
+                event.playerId
+        );
+
+
+    return (
+        matchingPlayer?.name ??
+        ""
+    );
+
+}
+
+
+// =====================================================
+// ÉVÉNEMENTS LIÉS À LA CONSÉQUENCE
+// =====================================================
+
+function displayConsequenceStateChanges(
+    events,
+    context = {}
+) {
+
+    const container =
+        document.getElementById(
+            "consequenceStateChanges"
+        );
+
+
+    if (
+        !container
+    ) {
+
+        return;
+
+    }
+
+
+    container.innerHTML =
+        "";
+
+
+    if (
+        !Array.isArray(
+            events
+        ) ||
+        events.length ===
+            0
+    ) {
+
+        return;
+
+    }
+
+
+    events.forEach(
+        event => {
+
+            const line =
+                document.createElement(
+                    "div"
+                );
+
+
+            line.className =
+                "consequence-state-line";
+
+
+            const playerName =
+                getEventPlayerName(
+                    event,
+                    context
+                );
+
+
+            const icon =
+                event.icon ??
+                "✨";
+
+
+            const title =
+                event.title ??
+                "";
+
+
+            // =================================================
+            // AVEC NOM DU JOUEUR
+            //
+            // Exemple :
+            // Nico — 😥 Très fatigué
+            // =================================================
+
+            if (
+                playerName
+            ) {
+
+                line.textContent =
+                    `${playerName} — ${icon} ${title}`;
+
+            }
+
+
+            // =================================================
+            // ANCIEN FORMAT
+            //
+            // Certains événements ont le nom du joueur
+            // directement dans event.text.
+            // =================================================
+
+            else if (
+                event.text
+            ) {
+
+                line.textContent =
+                    `${icon} ${event.text}`;
+
+            }
+
+
+            // =================================================
+            // FALLBACK
+            // =================================================
+
+            else {
+
+                line.textContent =
+                    `${icon} ${title}`;
+
+            }
+
+
+            if (
+                event.text
+            ) {
+
+                line.title =
+                    event.text;
+
+            }
+
+
+            container.appendChild(
+                line
+            );
+
+        }
+    );
+
+}
+
+
+// =====================================================
+// ÉCRAN D'ÉVOLUTION APRÈS LE TOUR
+// =====================================================
+
+export function displayEffectUpdates(
+    events,
+    onContinue
+) {
+
+    if (
+        !Array.isArray(
+            events
+        ) ||
+        events.length ===
+            0
+    ) {
+
+        if (
+            typeof onContinue ===
+            "function"
+        ) {
+
+            onContinue();
+
+        }
+
+
+        return;
+
+    }
+
+
+    const icon =
+        document.getElementById(
+            "effectUpdateIcon"
+        );
+
+
+    const title =
+        document.getElementById(
+            "effectUpdateTitle"
+        );
+
+
+    const container =
+        document.getElementById(
+            "effectUpdateList"
+        );
+
+
+    const button =
+        document.getElementById(
+            "btnEffectContinue"
+        );
+
+
+    if (
+        !icon ||
+        !title ||
+        !container ||
+        !button
+    ) {
+
+        console.error(
+            "Écran screenEffects incomplet."
+        );
+
+
+        if (
+            typeof onContinue ===
+            "function"
+        ) {
+
+            onContinue();
+
+        }
+
+
+        return;
+
+    }
+
+
+    icon.textContent =
+        events[0].icon ??
+        "✨";
+
+
+    title.textContent =
+        events.length ===
+        1
+            ? (
+                events[0].title ??
+                "Évolution"
+            )
+            : "Plusieurs choses évoluent";
+
+
+    container.innerHTML =
+        "";
+
+
+    events.forEach(
+        (
+            event,
+            index
+        ) => {
+
+            const item =
+                document.createElement(
+                    "div"
+                );
+
+
+            item.className =
+                "effect-update-item";
+
+
+            item.style.animationDelay =
+                `${index * 90}ms`;
+
+
+            const itemIcon =
+                document.createElement(
+                    "span"
+                );
+
+
+            itemIcon.className =
+                "effect-update-item-icon";
+
+
+            itemIcon.textContent =
+                event.icon ??
+                "✨";
+
+
+            const content =
+                document.createElement(
+                    "div"
+                );
+
+
+            const itemTitle =
+                document.createElement(
+                    "strong"
+                );
+
+
+            const eventPlayerName =
+                getEventPlayerName(
+                    event
+                );
+
+
+            itemTitle.textContent =
+                eventPlayerName
+                    ? `${eventPlayerName} — ${event.title ?? "Évolution"}`
+                    : (
+                        event.title ??
+                        "Évolution"
+                    );
+
+
+            const itemText =
+                document.createElement(
+                    "p"
+                );
+
+
+            itemText.textContent =
+                event.text ??
+                "";
+
+
+            content.appendChild(
+                itemTitle
+            );
+
+
+            if (
+                itemText.textContent !==
+                ""
+            ) {
+
+                content.appendChild(
+                    itemText
+                );
+
+            }
+
+
+            item.appendChild(
+                itemIcon
+            );
+
+
+            item.appendChild(
+                content
+            );
+
+
+            container.appendChild(
+                item
+            );
+
+        }
+    );
+
+
+    button.onclick =
+        () => {
+
+            if (
+                typeof onContinue ===
+                "function"
+            ) {
+
+                onContinue();
+
+            }
+
+        };
+
+
+    showScreen(
+        "effects"
+    );
+
+}
+
+
+// =====================================================
 // RÉCAPITULATIF
-// =====================================
+// =====================================================
 
 export function displayRecap(
     game
 ) {
 
-    document.getElementById(
-        "recapTitle"
-    ).textContent =
-        `📊 Récapitulatif — Tour ${game.roundNumber}`;
+    const recapTitle =
+        document.getElementById(
+            "recapTitle"
+        );
+
+
+    if (
+        recapTitle
+    ) {
+
+        recapTitle.textContent =
+            `📊 Récapitulatif — Tour ${game.roundNumber}`;
+
+    }
 
 
     const container =
@@ -2164,13 +3372,22 @@ export function displayRecap(
         );
 
 
+    if (
+        !container
+    ) {
+
+        return;
+
+    }
+
+
     container.innerHTML =
         "";
 
 
-    // =====================================
-    // SURVIVANTS
-    // =====================================
+    // =================================================
+    // ÉTAT DES JOUEURS
+    // =================================================
 
     const survivorsSection =
         document.createElement(
@@ -2193,7 +3410,10 @@ export function displayRecap(
 
 
     survivorsTitle.textContent =
-        "❤️ État des survivants";
+        game.gameMode ===
+            "survival_party"
+            ? "❤️ État des joueurs"
+            : "❤️ État des survivants";
 
 
     const survivorsGrid =
@@ -2206,14 +3426,17 @@ export function displayRecap(
         "survivors-grid";
 
 
-    const alivePlayers =
-        game.players.filter(
-            player =>
-                player.alive
-        );
+    const visiblePlayers =
+        game.gameMode ===
+            "survival_party"
+            ? game.players
+            : game.players.filter(
+                player =>
+                    player.alive
+            );
 
 
-    alivePlayers.forEach(
+    visiblePlayers.forEach(
         (
             player,
             index
@@ -2305,6 +3528,78 @@ export function displayRecap(
             );
 
 
+            // =============================================
+            // PETIT RÉSUMÉ DES ÉTATS
+            // =============================================
+
+            const statuses =
+                document.createElement(
+                    "div"
+                );
+
+
+            statuses.className =
+                "recap-statuses";
+
+
+            if (
+                Array.isArray(
+                    player.statuses
+                )
+            ) {
+
+                player.statuses.forEach(
+                    status => {
+
+                        const definition =
+                            game.statusManager
+                                ?.getDefinition(
+                                    status.id
+                                );
+
+
+                        if (
+                            definition
+                        ) {
+
+                            const icon =
+                                document.createElement(
+                                    "span"
+                                );
+
+
+                            icon.textContent =
+                                definition.icon;
+
+
+                            icon.title =
+                                definition.name;
+
+
+                            statuses.appendChild(
+                                icon
+                            );
+
+                        }
+
+                    }
+                );
+
+            }
+
+
+            if (
+                statuses.children.length >
+                0
+            ) {
+
+                card.appendChild(
+                    statuses
+                );
+
+            }
+
+
             survivorsGrid.appendChild(
                 card
             );
@@ -2328,9 +3623,9 @@ export function displayRecap(
     );
 
 
-    // =====================================
+    // =================================================
     // HISTORIQUE
-    // =====================================
+    // =================================================
 
     const historyTitle =
         document.createElement(
@@ -2353,12 +3648,6 @@ export function displayRecap(
 
     const results =
         game.getRoundResults();
-
-
-    console.log(
-        "Récapitulatif du tour :",
-        results
-    );
 
 
     results.forEach(
@@ -2387,10 +3676,6 @@ export function displayRecap(
                 );
 
 
-            // =====================================
-            // QUI A JOUÉ
-            // =====================================
-
             const name =
                 document.createElement(
                     "div"
@@ -2403,19 +3688,19 @@ export function displayRecap(
 
             if (
                 result.situationType ===
-                "group_vs_one" &&
-
+                    "group_vs_one" &&
                 Array.isArray(
                     result.playedPlayerNames
                 ) &&
-
-                result.playedPlayerNames.length > 0
+                result.playedPlayerNames.length >
+                    0
             ) {
 
                 name.textContent =
-                    result.playedPlayerNames.join(
-                        ", "
-                    );
+                    result.playedPlayerNames
+                        .join(
+                            ", "
+                        );
 
             }
 
@@ -2426,10 +3711,6 @@ export function displayRecap(
 
             }
 
-
-            // =====================================
-            // SITUATION
-            // =====================================
 
             const situation =
                 document.createElement(
@@ -2442,12 +3723,8 @@ export function displayRecap(
 
 
             situation.textContent =
-                `${result.situationIcon} ${result.situationTitle}`;
+                `${result.situationIcon ?? "🎲"} ${result.situationTitle ?? ""}`;
 
-
-            // =====================================
-            // CHOIX
-            // =====================================
 
             const choice =
                 document.createElement(
@@ -2460,7 +3737,8 @@ export function displayRecap(
 
 
             choice.textContent =
-                result.choiceTitle;
+                result.choiceTitle ??
+                "";
 
 
             left.appendChild(
@@ -2478,56 +3756,128 @@ export function displayRecap(
             );
 
 
-            // =====================================
-            // EFFETS
-            // =====================================
+            // =============================================
+            // VIES
+            // =============================================
 
             if (
                 Array.isArray(
                     result.effects
-                ) &&
-                result.effects.length > 0
+                )
             ) {
 
-                const effectsContainer =
+                const lifeEffects =
+                    result.effects.filter(
+                        effect =>
+                            typeof effect
+                                ?.difference ===
+                            "number" &&
+                            effect.difference !==
+                            0
+                    );
+
+
+                if (
+                    lifeEffects.length >
+                    0
+                ) {
+
+                    const effectsContainer =
+                        document.createElement(
+                            "div"
+                        );
+
+
+                    effectsContainer.className =
+                        "recap-effects";
+
+
+                    lifeEffects.forEach(
+                        effect => {
+
+                            const effectLine =
+                                document.createElement(
+                                    "div"
+                                );
+
+
+                            const sign =
+                                effect.difference >
+                                    0
+                                    ? "+"
+                                    : "";
+
+
+                            effectLine.textContent =
+                                `${effect.playerName} : ${sign}${effect.difference} ❤️`;
+
+
+                            effectsContainer.appendChild(
+                                effectLine
+                            );
+
+                        }
+                    );
+
+
+                    left.appendChild(
+                        effectsContainer
+                    );
+
+                }
+
+            }
+
+
+            // =============================================
+            // ÉTATS / RELATIONS
+            // =============================================
+
+            if (
+                Array.isArray(
+                    result.stateEvents
+                ) &&
+                result.stateEvents.length >
+                    0
+            ) {
+
+                const eventsContainer =
                     document.createElement(
                         "div"
                     );
 
 
-                effectsContainer.className =
-                    "recap-effects";
+                eventsContainer.className =
+                    "recap-state-events";
 
 
-                result.effects.forEach(
-                    effect => {
+                result.stateEvents.forEach(
+                    event => {
 
-                        const effectLine =
+                        const line =
                             document.createElement(
                                 "div"
                             );
 
 
-                        let sign =
-                            "";
+                        const eventPlayerName =
+                            getEventPlayerName(
+                                event
+                            );
 
 
-                        if (
-                            effect.difference > 0
-                        ) {
-
-                            sign =
-                                "+";
-
-                        }
-
-
-                        effectLine.textContent =
-                            `${effect.playerName} : ${sign}${effect.difference} ❤️`;
+                        line.textContent =
+                            eventPlayerName
+                                ? `${eventPlayerName} — ${event.icon ?? "✨"} ${event.title ?? ""}`
+                                : (
+                                    event.text
+                                        ? `${event.icon ?? "✨"} ${event.text}`
+                                        : `${event.icon ?? "✨"} ${event.title ?? ""}`
+                                );
 
 
-                        effectsContainer.appendChild(
-                            effectLine
+                        eventsContainer.appendChild(
+                            line
                         );
 
                     }
@@ -2535,7 +3885,7 @@ export function displayRecap(
 
 
                 left.appendChild(
-                    effectsContainer
+                    eventsContainer
                 );
 
             }
@@ -2561,9 +3911,9 @@ export function displayRecap(
 }
 
 
-// =====================================
+// =====================================================
 // FIN DE PARTIE
-// =====================================
+// =====================================================
 
 export function displayGameOver(
     game
@@ -2579,59 +3929,58 @@ export function displayGameOver(
         game.getAlivePlayers();
 
 
-    // =====================================
-    // QUESTIONS ÉPUISÉES
-    // =====================================
-
     if (
-        game.areQuestionsExhausted()
+        text
     ) {
 
-        text.textContent =
-            `Toutes les ${game.getUsedSituationCount()} situations ont été jouées. La survie est terminée !`;
+        if (
+            game.gameMode ===
+            "survival_party"
+        ) {
+
+            text.textContent =
+                `Les ${game.maxRounds} tours sont terminés. Voici le classement final !`;
+
+        }
+
+        else if (
+            game.areQuestionsExhausted()
+        ) {
+
+            text.textContent =
+                `La réserve de situations ne permet plus de lancer un tour complet. La survie est terminée !`;
+
+        }
+
+        else if (
+            game.players.length ===
+            1
+        ) {
+
+            text.textContent =
+                `${game.players[0].name} a survécu ${game.roundNumber} tour(s).`;
+
+        }
+
+        else if (
+            alivePlayers.length ===
+            1
+        ) {
+
+            text.textContent =
+                `${alivePlayers[0].name} est le dernier survivant !`;
+
+        }
+
+        else {
+
+            text.textContent =
+                "La partie est terminée.";
+
+        }
 
     }
 
-
-    // =====================================
-    // SOLO
-    // =====================================
-
-    else if (
-        game.players.length === 1
-    ) {
-
-        text.textContent =
-            `${game.players[0].name} a survécu ${game.roundNumber} tour(s).`;
-
-    }
-
-
-    // =====================================
-    // DERNIER SURVIVANT
-    // =====================================
-
-    else if (
-        alivePlayers.length === 1
-    ) {
-
-        text.textContent =
-            `${alivePlayers[0].name} est le dernier survivant !`;
-
-    }
-
-
-    else {
-
-        text.textContent =
-            "La partie est terminée.";
-
-    }
-
-
-    // =====================================
-    // CLASSEMENT
-    // =====================================
 
     const ranking =
         game.getRanking();
@@ -2641,6 +3990,15 @@ export function displayGameOver(
         document.getElementById(
             "finalRanking"
         );
+
+
+    if (
+        !container
+    ) {
+
+        return;
+
+    }
 
 
     container.innerHTML =
@@ -2664,7 +4022,8 @@ export function displayGameOver(
 
 
             if (
-                index === 0
+                index ===
+                0
             ) {
 
                 item.classList.add(
@@ -2685,7 +4044,8 @@ export function displayGameOver(
 
 
             if (
-                index === 0
+                index ===
+                0
             ) {
 
                 medal =
@@ -2694,7 +4054,8 @@ export function displayGameOver(
             }
 
             else if (
-                index === 1
+                index ===
+                1
             ) {
 
                 medal =
@@ -2703,7 +4064,8 @@ export function displayGameOver(
             }
 
             else if (
-                index === 2
+                index ===
+                2
             ) {
 
                 medal =

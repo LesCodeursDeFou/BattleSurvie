@@ -1,6 +1,26 @@
-import { Player } from "./player.js";
-import { Round } from "./round.js";
-import { applyConsequence } from "./effects.js";
+import {
+    Player
+} from "./player.js";
+
+import {
+    Round
+} from "./round.js";
+
+import {
+    applyConsequence
+} from "./effects.js";
+
+import {
+    StatusManager
+} from "./statusManager.js";
+
+import {
+    RelationshipManager
+} from "./relationshipManager.js";
+
+import {
+    ConditionManager
+} from "./conditionManager.js";
 
 import {
     getThemeData
@@ -10,13 +30,16 @@ import {
 // =====================================================
 // MODE TEST
 // =====================================================
-
+//
 // null      = toutes les catégories
 // "classic" = uniquement situations.js
 // "judge"   = uniquement judgeSituations.js
 // "secret"  = uniquement secretSituations.js
+// "interaction" = uniquement interactions
+// "group"       = uniquement group_vs_one
 //
-// Pendant le développement du nouveau système :
+// =====================================================
+
 const TEST_POOL =
     null;
 
@@ -74,14 +97,10 @@ export class Game {
         // =================================================
         // HISTOIRE PERSONNELLE
         //
-        // Exemple :
-        //
         // {
         //     1: {
-        //         flags: ["hut_entered"],
-        //         boosts: {
-        //             hut_inside: 25
-        //         }
+        //         flags: [],
+        //         boosts: {}
         //     }
         // }
         // =================================================
@@ -96,6 +115,36 @@ export class Game {
 
         this.pendingSecretChoice =
             null;
+
+
+        // =================================================
+        // ÉTATS / RELATIONS
+        // =================================================
+
+        this.notifications =
+            [];
+
+
+        this.lastResolvedPlayerIds =
+            [];
+
+
+        this.statusManager =
+            new StatusManager(
+                this
+            );
+
+
+        this.relationshipManager =
+            new RelationshipManager(
+                this
+            );
+
+
+        this.conditionManager =
+            new ConditionManager(
+                this
+            );
 
     }
 
@@ -114,13 +163,17 @@ export class Game {
         this.gameMode =
             gameMode;
 
+
         this.theme =
             theme;
 
 
         this.maxRounds =
-            gameMode === "survival_party"
-                ? Number(maxRounds) || 5
+            gameMode ===
+                "survival_party"
+                ? Number(
+                    maxRounds
+                ) || 5
                 : null;
 
 
@@ -143,7 +196,7 @@ export class Game {
 
 
         // =================================================
-        // POOL DE TEST
+        // POOL DE QUESTIONS
         // =================================================
 
         if (
@@ -152,7 +205,46 @@ export class Game {
         ) {
 
             this.availableSituations = [
-                ...(themeData.situations ?? [])
+
+                ...(
+                    themeData.situations ??
+                    []
+                )
+
+            ];
+
+        }
+
+        else if (
+            TEST_POOL ===
+            "interaction"
+        ) {
+
+            this.availableSituations = [
+
+                ...(
+                    themeData
+                        .interactionSituations ??
+                    []
+                )
+
+            ];
+
+        }
+
+        else if (
+            TEST_POOL ===
+            "group"
+        ) {
+
+            this.availableSituations = [
+
+                ...(
+                    themeData
+                        .groupSituations ??
+                    []
+                )
+
             ];
 
         }
@@ -163,7 +255,13 @@ export class Game {
         ) {
 
             this.availableSituations = [
-                ...(themeData.judgeSituations ?? [])
+
+                ...(
+                    themeData
+                        .judgeSituations ??
+                    []
+                )
+
             ];
 
         }
@@ -174,7 +272,13 @@ export class Game {
         ) {
 
             this.availableSituations = [
-                ...(themeData.secretSituations ?? [])
+
+                ...(
+                    themeData
+                        .secretSituations ??
+                    []
+                )
+
             ];
 
         }
@@ -183,15 +287,35 @@ export class Game {
 
             this.availableSituations = [
 
-                ...(themeData.situations ?? []),
+                ...(
+                    themeData
+                        .situations ??
+                    []
+                ),
 
-                ...(themeData.interactionSituations ?? []),
+                ...(
+                    themeData
+                        .interactionSituations ??
+                    []
+                ),
 
-                ...(themeData.groupSituations ?? []),
+                ...(
+                    themeData
+                        .groupSituations ??
+                    []
+                ),
 
-                ...(themeData.secretSituations ?? []),
+                ...(
+                    themeData
+                        .secretSituations ??
+                    []
+                ),
 
-                ...(themeData.judgeSituations ?? [])
+                ...(
+                    themeData
+                        .judgeSituations ??
+                    []
+                )
 
             ];
 
@@ -218,7 +342,10 @@ export class Game {
 
         this.players =
             playerNames.map(
-                (name, index) =>
+                (
+                    name,
+                    index
+                ) =>
                     new Player(
                         index + 1,
                         name
@@ -240,9 +367,10 @@ export class Game {
                     "function"
                 ) {
 
-                    player.setEliminationEnabled(
-                        eliminationEnabled
-                    );
+                    player
+                        .setEliminationEnabled(
+                            eliminationEnabled
+                        );
 
                 }
 
@@ -251,7 +379,7 @@ export class Game {
 
 
         // =================================================
-        // RESET
+        // RESET PARTIE
         // =================================================
 
         this.currentPlayerIndex =
@@ -271,6 +399,16 @@ export class Game {
 
         this.playerNarratives =
             {};
+
+        this.notifications =
+            [];
+
+        this.lastResolvedPlayerIds =
+            [];
+
+
+        this.relationshipManager
+            .reset();
 
 
         // =================================================
@@ -297,8 +435,9 @@ export class Game {
 
 
         console.log(
-            "Partie créée",
+            "🎮 Partie créée",
             {
+
                 mode:
                     this.gameMode,
 
@@ -306,10 +445,12 @@ export class Game {
                     this.theme,
 
                 questions:
-                    this.availableSituations.length,
+                    this.availableSituations
+                        .length,
 
                 testPool:
                     TEST_POOL
+
             }
         );
 
@@ -320,7 +461,7 @@ export class Game {
 
 
     // =====================================================
-    // TOUR
+    // NOUVEAU TOUR
     // =====================================================
 
     startNewRound() {
@@ -329,11 +470,17 @@ export class Game {
             this.getAlivePlayers();
 
 
+        // =================================================
+        // SURVIVAL PARTY :
+        // LIMITE DE TOURS
+        // =================================================
+
         if (
             this.gameMode ===
                 "survival_party" &&
 
-            this.maxRounds !== null &&
+            this.maxRounds !==
+                null &&
 
             this.roundNumber >=
                 this.maxRounds
@@ -344,6 +491,10 @@ export class Game {
         }
 
 
+        // =================================================
+        // PLUS AUCUN JOUEUR
+        // =================================================
+
         if (
             alivePlayers.length ===
             0
@@ -353,6 +504,11 @@ export class Game {
 
         }
 
+
+        // =================================================
+        // BATTLE ROYAL :
+        // ASSEZ DE QUESTIONS POUR UN TOUR COMPLET
+        // =================================================
 
         if (
             this.gameMode !==
@@ -396,7 +552,7 @@ export class Game {
 
 
     // =====================================================
-    // QUESTIONS
+    // QUESTIONS RESTANTES
     // =====================================================
 
     getRemainingSituationCount() {
@@ -416,7 +572,8 @@ export class Game {
 
     getUsedSituationCount() {
 
-        return this.usedSituationIds.length;
+        return this.usedSituationIds
+            .length;
 
     }
 
@@ -432,8 +589,13 @@ export class Game {
         if (!player) {
 
             return {
-                flags: [],
-                boosts: {}
+
+                flags:
+                    [],
+
+                boosts:
+                    {}
+
             };
 
         }
@@ -448,8 +610,13 @@ export class Game {
             this.playerNarratives[
                 player.id
             ] = {
-                flags: [],
-                boosts: {}
+
+                flags:
+                    [],
+
+                boosts:
+                    {}
+
             };
 
         }
@@ -463,7 +630,13 @@ export class Game {
 
 
     // =====================================================
-    // CONDITIONS NARRATIVES
+    // CONDITIONS NARRATIVES DES SITUATIONS
+    //
+    // requirements: {
+    //     all: [],
+    //     any: [],
+    //     not: []
+    // }
     // =====================================================
 
     meetsNarrativeRequirements(
@@ -472,7 +645,8 @@ export class Game {
     ) {
 
         const requirements =
-            situation.requirements;
+            situation
+                ?.requirements;
 
 
         if (!requirements) {
@@ -494,7 +668,6 @@ export class Game {
 
         // =================================================
         // ALL
-        // Toutes les conditions sont obligatoires
         // =================================================
 
         if (
@@ -504,12 +677,13 @@ export class Game {
         ) {
 
             const valid =
-                requirements.all.every(
-                    flag =>
-                        flags.includes(
-                            flag
-                        )
-                );
+                requirements.all
+                    .every(
+                        flag =>
+                            flags.includes(
+                                flag
+                            )
+                    );
 
 
             if (!valid) {
@@ -523,23 +697,24 @@ export class Game {
 
         // =================================================
         // ANY
-        // Au moins une condition
         // =================================================
 
         if (
             Array.isArray(
                 requirements.any
             ) &&
-            requirements.any.length > 0
+            requirements.any.length >
+                0
         ) {
 
             const valid =
-                requirements.any.some(
-                    flag =>
-                        flags.includes(
-                            flag
-                        )
-                );
+                requirements.any
+                    .some(
+                        flag =>
+                            flags.includes(
+                                flag
+                            )
+                    );
 
 
             if (!valid) {
@@ -553,7 +728,6 @@ export class Game {
 
         // =================================================
         // NOT
-        // Ces flags rendent la situation impossible
         // =================================================
 
         if (
@@ -563,12 +737,13 @@ export class Game {
         ) {
 
             const blocked =
-                requirements.not.some(
-                    flag =>
-                        flags.includes(
-                            flag
-                        )
-                );
+                requirements.not
+                    .some(
+                        flag =>
+                            flags.includes(
+                                flag
+                            )
+                    );
 
 
             if (blocked) {
@@ -586,14 +761,15 @@ export class Game {
 
 
     // =====================================================
-    // COMPATIBILITÉ
+    // COMPATIBILITÉ D'UNE SITUATION
     // =====================================================
 
     isSituationCompatible(
         situation,
         alivePlayers,
         unplayedPlayers,
-        player = this.getCurrentPlayer()
+        player =
+            this.getCurrentPlayer()
     ) {
 
         if (
@@ -608,6 +784,13 @@ export class Game {
         }
 
 
+        // =================================================
+        // GROUP VS ONE
+        //
+        // Minimum 4 joueurs encore disponibles
+        // dans le tour.
+        // =================================================
+
         if (
             situation.type ===
             "group_vs_one"
@@ -620,6 +803,10 @@ export class Game {
 
         }
 
+
+        // =================================================
+        // TYPES MULTIJOUEURS
+        // =================================================
 
         if (
             situation.type ===
@@ -651,12 +838,18 @@ export class Game {
 
     getWeightedRandomItem(
         items,
-        weightGetter
+        weightGetter =
+            item =>
+                item?.weight ??
+                1
     ) {
 
         if (
-            !Array.isArray(items) ||
-            items.length === 0
+            !Array.isArray(
+                items
+            ) ||
+            items.length ===
+                0
         ) {
 
             return null;
@@ -690,8 +883,11 @@ export class Game {
 
 
                     return {
+
                         item,
+
                         weight
+
                     };
 
                 }
@@ -709,6 +905,10 @@ export class Game {
                 0
             );
 
+
+        // =================================================
+        // TOUS LES POIDS À 0
+        // =================================================
 
         if (
             totalWeight <=
@@ -740,7 +940,8 @@ export class Game {
 
 
             if (
-                random <= 0
+                random <=
+                0
             ) {
 
                 return entry.item;
@@ -751,7 +952,8 @@ export class Game {
 
 
         return entries[
-            entries.length - 1
+            entries.length -
+            1
         ].item;
 
     }
@@ -780,7 +982,9 @@ export class Game {
 
 
         if (
-            !Number.isFinite(weight) ||
+            !Number.isFinite(
+                weight
+            ) ||
             weight <= 0
         ) {
 
@@ -824,7 +1028,8 @@ export class Game {
     // =====================================================
 
     getRandomUnusedSituation(
-        player = this.getCurrentPlayer()
+        player =
+            this.getCurrentPlayer()
     ) {
 
         if (!player) {
@@ -844,6 +1049,7 @@ export class Game {
 
         let candidates =
             this.availableSituations
+
                 .filter(
                     situation =>
                         !this.usedSituationIds
@@ -851,6 +1057,7 @@ export class Game {
                                 situation.id
                             )
                 )
+
                 .filter(
                     situation =>
                         this.isSituationCompatible(
@@ -864,6 +1071,9 @@ export class Game {
 
         // =================================================
         // SURVIVAL PARTY
+        //
+        // Les questions peuvent être remises
+        // dans le pool si toutes ont été utilisées.
         // =================================================
 
         if (
@@ -927,8 +1137,9 @@ export class Game {
 
 
         console.log(
-            "🎲 Situation",
+            "🎲 Situation tirée",
             {
+
                 player:
                     player.name,
 
@@ -945,6 +1156,7 @@ export class Game {
                     this.getPlayerNarrative(
                         player
                     )
+
             }
         );
 
@@ -963,7 +1175,8 @@ export class Game {
     ) {
 
         if (
-            typeof consequence.weight ===
+            typeof consequence
+                ?.weight ===
             "number"
         ) {
 
@@ -976,10 +1189,7 @@ export class Game {
 
 
         // =================================================
-        // FALLBACK AUTOMATIQUE
-        //
-        // Si on adapte plus tard un ancien fichier
-        // sans lui mettre de weight.
+        // ANCIEN FORMAT
         //
         // Gain    = rare
         // Neutre  = moyen
@@ -988,7 +1198,7 @@ export class Game {
 
         const lives =
             Number(
-                consequence.lives ??
+                consequence?.lives ??
                 0
             );
 
@@ -1032,7 +1242,7 @@ export class Game {
 
 
     // =====================================================
-    // APPLIQUER UNE TRANSITION NARRATIVE
+    // TRANSITION NARRATIVE
     // =====================================================
 
     applyNarrativeTransition(
@@ -1073,9 +1283,9 @@ export class Game {
         sources.forEach(
             source => {
 
-                // -----------------------------------------
+                // =========================================
                 // AJOUT
-                // -----------------------------------------
+                // =========================================
 
                 if (
                     Array.isArray(
@@ -1083,31 +1293,34 @@ export class Game {
                     )
                 ) {
 
-                    source.setFlags.forEach(
-                        flag => {
+                    source.setFlags
+                        .forEach(
+                            flag => {
 
-                            if (
-                                !narrative.flags
-                                    .includes(
-                                        flag
-                                    )
-                            ) {
+                                if (
+                                    !narrative.flags
+                                        .includes(
+                                            flag
+                                        )
+                                ) {
 
-                                narrative.flags.push(
-                                    flag
-                                );
+                                    narrative
+                                        .flags
+                                        .push(
+                                            flag
+                                        );
+
+                                }
 
                             }
-
-                        }
-                    );
+                        );
 
                 }
 
 
-                // -----------------------------------------
+                // =========================================
                 // SUPPRESSION
-                // -----------------------------------------
+                // =========================================
 
                 if (
                     Array.isArray(
@@ -1116,13 +1329,15 @@ export class Game {
                 ) {
 
                     narrative.flags =
-                        narrative.flags.filter(
-                            flag =>
-                                !source.removeFlags
-                                    .includes(
-                                        flag
-                                    )
-                        );
+                        narrative.flags
+                            .filter(
+                                flag =>
+                                    !source
+                                        .removeFlags
+                                        .includes(
+                                            flag
+                                        )
+                            );
 
                 }
 
@@ -1131,10 +1346,10 @@ export class Game {
 
 
         // =================================================
-        // LES BOOSTS CONCERNENT LA PROCHAINE
-        // ÉTAPE DE L'HISTOIRE.
+        // BOOSTS POUR LA PROCHAINE SITUATION
         //
-        // On repart donc d'une carte vide.
+        // Conséquence > choix > situation
+        // grâce à l'ordre des sources.
         // =================================================
 
         const newBoosts =
@@ -1146,7 +1361,8 @@ export class Game {
 
                 if (
                     !Array.isArray(
-                        source.nextSituationBoosts
+                        source
+                            .nextSituationBoosts
                     )
                 ) {
 
@@ -1155,7 +1371,8 @@ export class Game {
                 }
 
 
-                source.nextSituationBoosts
+                source
+                    .nextSituationBoosts
                     .forEach(
                         boost => {
 
@@ -1186,18 +1403,6 @@ export class Game {
                             }
 
 
-                            // IMPORTANT :
-                            // La source suivante remplace
-                            // la précédente.
-                            //
-                            // Situation
-                            // ↓
-                            // Choice
-                            // ↓
-                            // Consequence
-                            //
-                            // Donc une conséquence peut
-                            // passer un boost de 25 à 3.
                             newBoosts[
                                 boost.id
                             ] =
@@ -1217,6 +1422,7 @@ export class Game {
         console.log(
             "🧭 Narration mise à jour",
             {
+
                 player:
                     player.name,
 
@@ -1234,6 +1440,7 @@ export class Game {
 
                 boosts:
                     narrative.boosts
+
             }
         );
 
@@ -1241,7 +1448,7 @@ export class Game {
 
 
     // =====================================================
-    // ATTRIBUTION
+    // ATTRIBUTION D'UNE SITUATION
     // =====================================================
 
     assignSituationToCurrentPlayer() {
@@ -1289,7 +1496,9 @@ export class Game {
 
 
         const assignedSituation = {
+
             ...situation
+
         };
 
 
@@ -1323,7 +1532,10 @@ export class Game {
 
 
         // =================================================
-        // GROUPE VS 1
+        // GROUP VS ONE
+        //
+        // Tous les joueurs encore disponibles
+        // sauf la cible = groupe.
         // =================================================
 
         else if (
@@ -1346,11 +1558,12 @@ export class Game {
 
 
             const possibleTargets =
-                unplayedPlayers.filter(
-                    candidate =>
-                        candidate.id !==
-                        player.id
-                );
+                unplayedPlayers
+                    .filter(
+                        candidate =>
+                            candidate.id !==
+                            player.id
+                    );
 
 
             if (
@@ -1373,11 +1586,12 @@ export class Game {
 
 
             const groupPlayers =
-                unplayedPlayers.filter(
-                    groupPlayer =>
-                        groupPlayer.id !==
-                        targetPlayer.id
-                );
+                unplayedPlayers
+                    .filter(
+                        groupPlayer =>
+                            groupPlayer.id !==
+                            targetPlayer.id
+                    );
 
 
             assignedSituation
@@ -1387,10 +1601,11 @@ export class Game {
 
             assignedSituation
                 .groupPlayerIds =
-                groupPlayers.map(
-                    groupPlayer =>
-                        groupPlayer.id
-                );
+                groupPlayers
+                    .map(
+                        groupPlayer =>
+                            groupPlayer.id
+                    );
 
         }
 
@@ -1408,7 +1623,7 @@ export class Game {
 
 
     // =====================================================
-    // JOUEURS
+    // JOUEUR ACTUEL
     // =====================================================
 
     getCurrentPlayer() {
@@ -1416,11 +1631,16 @@ export class Game {
         return (
             this.players[
                 this.currentPlayerIndex
-            ] ?? null
+            ] ??
+            null
         );
 
     }
 
+
+    // =====================================================
+    // SITUATION ACTUELLE
+    // =====================================================
 
     getCurrentSituation() {
 
@@ -1449,6 +1669,42 @@ export class Game {
 
     }
 
+
+    // =====================================================
+    // CIBLE D'UNE SITUATION
+    // =====================================================
+
+    getSituationTargetPlayer(
+        situation =
+            this.getCurrentSituation()
+    ) {
+
+        if (
+            !situation
+                ?.targetPlayerId
+        ) {
+
+            return null;
+
+        }
+
+
+        return (
+            this.players.find(
+                player =>
+                    player.id ===
+                    situation
+                        .targetPlayerId
+            ) ??
+            null
+        );
+
+    }
+
+
+    // =====================================================
+    // CIBLE ALÉATOIRE
+    // =====================================================
 
     getRandomTargetPlayer(
         actorPlayer
@@ -1483,6 +1739,10 @@ export class Game {
     }
 
 
+    // =====================================================
+    // GROUPE D'UNE SITUATION
+    // =====================================================
+
     getSituationGroupPlayers(
         situation
     ) {
@@ -1499,7 +1759,8 @@ export class Game {
         }
 
 
-        return situation.groupPlayerIds
+        return situation
+            .groupPlayerIds
             .map(
                 id =>
                     this.players.find(
@@ -1523,6 +1784,100 @@ export class Game {
                 otherPlayer.id !==
                 player.id
         );
+
+    }
+
+
+    // =====================================================
+    // QUI PREND LA DÉCISION ?
+    //
+    // Normal :
+    // le joueur joue lui-même.
+    //
+    // Possédé :
+    // un autre joueur prend sa décision.
+    // =====================================================
+
+    getDecisionPlayer(
+        player
+    ) {
+
+        if (
+            !player ||
+            typeof player.hasStatus !==
+                "function" ||
+            !player.hasStatus(
+                "possessed"
+            )
+        ) {
+
+            return player;
+
+        }
+
+
+        const candidates =
+            this.players.filter(
+                candidate =>
+                    candidate.alive &&
+                    candidate.id !==
+                    player.id
+            );
+
+
+        if (
+            candidates.length ===
+            0
+        ) {
+
+            return player;
+
+        }
+
+
+        const status =
+            player.getStatus(
+                "possessed"
+            );
+
+
+        let controller =
+            candidates.find(
+                candidate =>
+                    candidate.id ===
+                    status
+                        ?.metadata
+                        ?.controllerPlayerId
+            );
+
+
+        if (!controller) {
+
+            controller =
+                candidates[
+                    Math.floor(
+                        Math.random() *
+                        candidates.length
+                    )
+                ];
+
+
+            status.metadata = {
+
+                ...(
+                    status.metadata ??
+                    {}
+                ),
+
+                controllerPlayerId:
+                    controller.id
+
+            };
+
+        }
+
+
+        return controller;
 
     }
 
@@ -1595,7 +1950,8 @@ export class Game {
 
 
         if (
-            names.length === 0
+            names.length ===
+            0
         ) {
 
             return "Les autres joueurs";
@@ -1604,7 +1960,8 @@ export class Game {
 
 
         if (
-            names.length === 1
+            names.length ===
+            1
         ) {
 
             return names[0];
@@ -1613,23 +1970,32 @@ export class Game {
 
 
         if (
-            names.length === 2
+            names.length ===
+            2
         ) {
 
-            return `${names[0]} et ${names[1]}`;
+            return (
+                `${names[0]} et ${names[1]}`
+            );
 
         }
 
 
         return (
             names
-                .slice(0, -1)
-                .join(", ")
+                .slice(
+                    0,
+                    -1
+                )
+                .join(
+                    ", "
+                )
             +
             " et "
             +
             names[
-                names.length - 1
+                names.length -
+                1
             ]
         );
 
@@ -1637,7 +2003,59 @@ export class Game {
 
 
     // =====================================================
-    // CHOIX
+    // CHOIX CONDITIONNELS
+    //
+    // choice.condition peut tester :
+    // - status
+    // - gauge
+    // - relation
+    // - vies
+    // =====================================================
+
+    getAvailableChoices(
+        situation,
+        actorPlayer,
+        targetPlayer = null
+    ) {
+
+        if (
+            !Array.isArray(
+                situation
+                    ?.choices
+            )
+        ) {
+
+            return [];
+
+        }
+
+
+        return situation
+            .choices
+            .filter(
+                choice =>
+                    this.conditionManager
+                        .evaluate(
+                            choice.condition,
+                            {
+
+                                actor:
+                                    actorPlayer,
+
+                                target:
+                                    targetPlayer,
+
+                                situation
+
+                            }
+                        )
+            );
+
+    }
+
+
+    // =====================================================
+    // FAIRE UN CHOIX
     // =====================================================
 
     makeChoice(
@@ -1657,6 +2075,10 @@ export class Game {
             !situation ||
             !player.alive
         ) {
+
+            console.error(
+                "makeChoice : joueur ou situation invalide."
+            );
 
             return null;
 
@@ -1680,17 +2102,15 @@ export class Game {
         ) {
 
             targetPlayer =
-                this.players.find(
-                    player =>
-                        player.id ===
-                        situation.targetPlayerId
-                ) ?? null;
+                this.getSituationTargetPlayer(
+                    situation
+                );
 
         }
 
 
         // =================================================
-        // GROUP
+        // GROUPE
         // =================================================
 
         let groupPlayers =
@@ -1722,16 +2142,33 @@ export class Game {
         }
 
 
+        // =================================================
+        // SEULEMENT LES CHOIX AUTORISÉS
+        // =================================================
+
+        const availableChoices =
+            this.getAvailableChoices(
+                situation,
+                player,
+                targetPlayer
+            );
+
+
         const choice =
-            situation.choices
-                ?.find(
-                    choice =>
-                        choice.id ===
+            availableChoices
+                .find(
+                    item =>
+                        item.id ===
                         choiceId
                 );
 
 
         if (!choice) {
+
+            console.warn(
+                "Choix introuvable ou verrouillé :",
+                choiceId
+            );
 
             return null;
 
@@ -1739,7 +2176,7 @@ export class Game {
 
 
         // =================================================
-        // SECRET
+        // SECRET CHOICE
         // =================================================
 
         if (
@@ -1760,9 +2197,15 @@ export class Game {
             !Array.isArray(
                 choice.consequences
             ) ||
-            choice.consequences.length ===
+            choice.consequences
+                .length ===
                 0
         ) {
+
+            console.error(
+                "Aucune conséquence pour :",
+                choice.id
+            );
 
             return null;
 
@@ -1787,7 +2230,13 @@ export class Game {
 
 
         // =================================================
-        // JUDGE = TOUS SAUF X
+        // JUDGE
+        //
+        // Pour "others", effects.js exclut
+        // targetPlayer.
+        //
+        // On passe donc l'acteur comme target
+        // afin que "others" = tout le monde sauf X.
         // =================================================
 
         const effectTargetPlayer =
@@ -1797,17 +2246,31 @@ export class Game {
                 : targetPlayer;
 
 
+        // =================================================
+        // EFFETS
+        // =================================================
+
         const effects =
             applyConsequence(
                 player,
                 effectTargetPlayer,
                 consequence,
-                this.players
+                this.players,
+                {
+
+                    statusManager:
+                        this.statusManager,
+
+                    relationshipManager:
+                        this
+                            .relationshipManager
+
+                }
             );
 
 
         // =================================================
-        // QUI A JOUÉ ?
+        // QUI CONSOMME SON TOUR ?
         // =================================================
 
         let playedPlayerIds;
@@ -1820,17 +2283,19 @@ export class Game {
         ) {
 
             playedPlayerIds =
-                groupPlayers.map(
-                    item =>
-                        item.id
-                );
+                groupPlayers
+                    .map(
+                        item =>
+                            item.id
+                    );
 
 
             playedPlayerNames =
-                groupPlayers.map(
-                    item =>
-                        item.name
-                );
+                groupPlayers
+                    .map(
+                        item =>
+                            item.name
+                    );
 
         }
 
@@ -1840,12 +2305,17 @@ export class Game {
                 player.id
             ];
 
+
             playedPlayerNames = [
                 player.name
             ];
 
         }
 
+
+        // =================================================
+        // STATS
+        // =================================================
 
         this.updateChoiceStats(
             playedPlayerIds
@@ -1859,10 +2329,6 @@ export class Game {
 
         // =================================================
         // NARRATION
-        //
-        // IMPORTANT :
-        // choix + conséquence
-        // modifient les suites possibles.
         // =================================================
 
         this.applyNarrativeTransition(
@@ -1873,6 +2339,24 @@ export class Game {
         );
 
 
+        // =================================================
+        // NOTIFICATIONS PRODUITES PAR :
+        //
+        // - nouvel état
+        // - jauge
+        // - relation
+        // - protection
+        // etc.
+        // =================================================
+
+        const stateEvents =
+            this.consumeNotifications();
+
+
+        // =================================================
+        // RÉSULTAT
+        // =================================================
+
         const result = {
 
             playerId:
@@ -1881,9 +2365,11 @@ export class Game {
             playerName:
                 player.name,
 
+
             playedPlayerIds,
 
             playedPlayerNames,
+
 
             targetPlayerId:
                 targetPlayer?.id ??
@@ -1893,23 +2379,28 @@ export class Game {
                 targetPlayer?.name ??
                 null,
 
+
             groupPlayerIds:
-                groupPlayers.map(
-                    player =>
-                        player.id
-                ),
+                groupPlayers
+                    .map(
+                        groupPlayer =>
+                            groupPlayer.id
+                    ),
 
             groupPlayerNames:
-                groupPlayers.map(
-                    player =>
-                        player.name
-                ),
+                groupPlayers
+                    .map(
+                        groupPlayer =>
+                            groupPlayer.name
+                    ),
+
 
             gameMode:
                 this.gameMode,
 
             theme:
                 this.theme,
+
 
             situationId:
                 situation.id,
@@ -1940,6 +2431,7 @@ export class Game {
             situationCategory:
                 situation.category,
 
+
             choiceId:
                 choice.id,
 
@@ -1958,6 +2450,7 @@ export class Game {
                     targetPlayer,
                     groupPlayers
                 ),
+
 
             consequenceId:
                 consequence.id,
@@ -1978,7 +2471,11 @@ export class Game {
                     consequence
                 ),
 
+
             effects,
+
+            stateEvents,
+
 
             remainingLives:
                 player.lives,
@@ -1994,6 +2491,10 @@ export class Game {
                 result
             );
 
+
+        // =================================================
+        // MARQUER LES JOUEURS COMME AYANT JOUÉ
+        // =================================================
 
         if (
             situation.type ===
@@ -2017,6 +2518,17 @@ export class Game {
         }
 
 
+        // =================================================
+        // JOUEURS POUR LES EFFETS DE FIN DE TOUR
+        // =================================================
+
+        this.lastResolvedPlayerIds = [
+
+            ...playedPlayerIds
+
+        ];
+
+
         return {
 
             player,
@@ -2032,6 +2544,8 @@ export class Game {
             consequence,
 
             effects,
+
+            stateEvents,
 
             result
 
@@ -2087,10 +2601,11 @@ export class Game {
                 choice.secretValue,
 
             otherPlayerIds:
-                otherPlayers.map(
-                    player =>
-                        player.id
-                )
+                otherPlayers
+                    .map(
+                        otherPlayer =>
+                            otherPlayer.id
+                    )
 
         };
 
@@ -2113,6 +2628,10 @@ export class Game {
     }
 
 
+    // =====================================================
+    // RÉSOLUTION SECRET CHOICE
+    // =====================================================
+
     resolveSecretGuess(
         guessId
     ) {
@@ -2130,8 +2649,8 @@ export class Game {
 
         const player =
             this.players.find(
-                player =>
-                    player.id ===
+                item =>
+                    item.id ===
                     pending.playerId
             );
 
@@ -2174,8 +2693,8 @@ export class Game {
             situation.guess
                 ?.choices
                 ?.find(
-                    guess =>
-                        guess.id ===
+                    guessChoice =>
+                        guessChoice.id ===
                         guessId
                 );
 
@@ -2189,6 +2708,10 @@ export class Game {
 
         }
 
+
+        // =================================================
+        // BONNE / MAUVAISE DEVINETTE
+        // =================================================
 
         const correct =
             guess.secretValue ===
@@ -2207,6 +2730,11 @@ export class Game {
 
         if (!outcome) {
 
+            console.error(
+                "Outcome secret introuvable :",
+                outcomeKey
+            );
+
             return null;
 
         }
@@ -2224,7 +2752,8 @@ export class Game {
             Array.isArray(
                 outcome.variants
             ) &&
-            outcome.variants.length > 0
+            outcome.variants.length >
+                0
         ) {
 
             const variant =
@@ -2243,6 +2772,7 @@ export class Game {
                 resolvedOutcome = {
 
                     ...outcome,
+
                     ...variant,
 
                     title:
@@ -2265,8 +2795,8 @@ export class Game {
                 .map(
                     id =>
                         this.players.find(
-                            player =>
-                                player.id ===
+                            candidate =>
+                                candidate.id ===
                                 id
                         )
                 )
@@ -2275,6 +2805,10 @@ export class Game {
 
         // =================================================
         // EFFETS
+        //
+        // targetPlayer = actor
+        // permet à "others" de signifier
+        // tous sauf le joueur secret.
         // =================================================
 
         const effects =
@@ -2282,12 +2816,28 @@ export class Game {
                 player,
                 player,
                 resolvedOutcome,
-                this.players
+                this.players,
+                {
+
+                    statusManager:
+                        this.statusManager,
+
+                    relationshipManager:
+                        this
+                            .relationshipManager
+
+                }
             );
 
 
+        // =================================================
+        // STATS
+        // =================================================
+
         this.updateChoiceStats(
-            [player.id]
+            [
+                player.id
+            ]
         );
 
 
@@ -2309,6 +2859,14 @@ export class Game {
 
 
         // =================================================
+        // NOTIFICATIONS
+        // =================================================
+
+        const stateEvents =
+            this.consumeNotifications();
+
+
+        // =================================================
         // RÉSULTAT
         // =================================================
 
@@ -2320,6 +2878,7 @@ export class Game {
             playerName:
                 player.name,
 
+
             playedPlayerIds: [
                 player.id
             ],
@@ -2328,23 +2887,28 @@ export class Game {
                 player.name
             ],
 
+
             groupPlayerIds:
-                otherPlayers.map(
-                    player =>
-                        player.id
-                ),
+                otherPlayers
+                    .map(
+                        item =>
+                            item.id
+                    ),
 
             groupPlayerNames:
-                otherPlayers.map(
-                    player =>
-                        player.name
-                ),
+                otherPlayers
+                    .map(
+                        item =>
+                            item.name
+                    ),
+
 
             gameMode:
                 this.gameMode,
 
             theme:
                 this.theme,
+
 
             situationId:
                 situation.id,
@@ -2374,6 +2938,7 @@ export class Game {
             situationCategory:
                 situation.category,
 
+
             choiceId:
                 secretChoice.id,
 
@@ -2384,6 +2949,7 @@ export class Game {
                     null,
                     otherPlayers
                 ),
+
 
             guessId:
                 guess.id,
@@ -2398,6 +2964,7 @@ export class Game {
 
             guessCorrect:
                 correct,
+
 
             consequenceId:
                 resolvedOutcome.id ??
@@ -2418,7 +2985,11 @@ export class Game {
                 resolvedOutcome.weight ??
                 null,
 
+
             effects,
+
+            stateEvents,
+
 
             remainingLives:
                 player.lives,
@@ -2441,8 +3012,17 @@ export class Game {
             );
 
 
+        // =================================================
+        // FIN SECRET
+        // =================================================
+
         this.pendingSecretChoice =
             null;
+
+
+        this.lastResolvedPlayerIds = [
+            player.id
+        ];
 
 
         return {
@@ -2466,11 +3046,132 @@ export class Game {
 
             effects,
 
+            stateEvents,
+
             result
 
         };
 
     }
+
+
+    // =====================================================
+    // NOTIFICATIONS DE GAMEPLAY
+    // =====================================================
+
+    pushNotification(
+        notification
+    ) {
+
+        if (!notification) {
+
+            return;
+
+        }
+
+
+        this.notifications.push(
+            notification
+        );
+
+    }
+
+
+    consumeNotifications() {
+
+        const notifications = [
+
+            ...this.notifications
+
+        ];
+
+
+        this.notifications =
+            [];
+
+
+        return notifications;
+
+    }
+
+
+    // =====================================================
+    // EFFETS APRÈS LE TOUR D'UN JOUEUR
+    //
+    // Poison
+    // Malédiction
+    // Durée des états
+    // Relations temporaires
+    // etc.
+    // =====================================================
+
+    processAfterCurrentTurn() {
+
+        if (
+            !Array.isArray(
+                this.lastResolvedPlayerIds
+            ) ||
+            this.lastResolvedPlayerIds
+                .length ===
+                0
+        ) {
+
+            return [];
+
+        }
+
+
+        // Éviter deux traitements du même joueur.
+        const uniquePlayerIds = [
+
+            ...new Set(
+                this.lastResolvedPlayerIds
+            )
+
+        ];
+
+
+        uniquePlayerIds.forEach(
+            playerId => {
+
+                const player =
+                    this.players.find(
+                        item =>
+                            item.id ===
+                            playerId
+                    );
+
+
+                if (!player) {
+
+                    return;
+
+                }
+
+
+                this.statusManager
+                    .processEndTurn(
+                        player
+                    );
+
+
+                this.relationshipManager
+                    .processPlayerTurn(
+                        player
+                    );
+
+            }
+        );
+
+
+        this.lastResolvedPlayerIds =
+            [];
+
+
+        return this.consumeNotifications();
+
+    }
+
 
     // =====================================================
     // STATS
@@ -2480,20 +3181,32 @@ export class Game {
         playerIds
     ) {
 
+        if (
+            !Array.isArray(
+                playerIds
+            )
+        ) {
+
+            return;
+
+        }
+
+
         playerIds.forEach(
             playerId => {
 
                 const player =
                     this.players.find(
-                        player =>
-                            player.id ===
+                        item =>
+                            item.id ===
                             playerId
                     );
 
 
                 if (
                     player?.stats &&
-                    typeof player.stats
+                    typeof player
+                        .stats
                         .choicesMade ===
                         "number"
                 ) {
@@ -2527,10 +3240,24 @@ export class Game {
         effects.forEach(
             effect => {
 
+                // Un effet d'état ou de relation
+                // peut ne pas avoir difference.
+
+                if (
+                    typeof effect
+                        ?.difference !==
+                    "number"
+                ) {
+
+                    return;
+
+                }
+
+
                 const player =
                     this.players.find(
-                        player =>
-                            player.id ===
+                        item =>
+                            item.id ===
                             effect.playerId
                     );
 
@@ -2543,7 +3270,8 @@ export class Game {
 
 
                 if (
-                    effect.difference > 0
+                    effect.difference >
+                    0
                 ) {
 
                     player.stats
@@ -2554,7 +3282,8 @@ export class Game {
 
 
                 if (
-                    effect.difference < 0
+                    effect.difference <
+                    0
                 ) {
 
                     player.stats
@@ -2597,7 +3326,9 @@ export class Game {
 
         if (!nextPlayer) {
 
-            this.currentRound.complete();
+            this.currentRound
+                .complete();
+
 
             return false;
 
@@ -2605,18 +3336,21 @@ export class Game {
 
 
         this.currentPlayerIndex =
-            this.players.findIndex(
-                player =>
-                    player.id ===
-                    nextPlayer.id
-            );
+            this.players
+                .findIndex(
+                    player =>
+                        player.id ===
+                        nextPlayer.id
+                );
 
 
         if (
             !this.assignSituationToCurrentPlayer()
         ) {
 
-            this.currentRound.complete();
+            this.currentRound
+                .complete();
+
 
             return false;
 
@@ -2629,7 +3363,7 @@ export class Game {
 
 
     // =====================================================
-    // UTILITAIRES
+    // JOUEURS NON JOUÉS
     // =====================================================
 
     getUnplayedPlayers() {
@@ -2653,25 +3387,39 @@ export class Game {
     }
 
 
+    // =====================================================
+    // PREMIER JOUEUR VIVANT
+    // =====================================================
+
     getFirstAlivePlayerIndex() {
 
-        return this.players.findIndex(
-            player =>
-                player.alive
-        );
+        return this.players
+            .findIndex(
+                player =>
+                    player.alive
+            );
 
     }
 
+
+    // =====================================================
+    // JOUEURS VIVANTS
+    // =====================================================
 
     getAlivePlayers() {
 
-        return this.players.filter(
-            player =>
-                player.alive
-        );
+        return this.players
+            .filter(
+                player =>
+                    player.alive
+            );
 
     }
 
+
+    // =====================================================
+    // QUESTIONS ÉPUISÉES
+    // =====================================================
 
     areQuestionsExhausted() {
 
@@ -2693,11 +3441,19 @@ export class Game {
     }
 
 
+    // =====================================================
+    // FIN DE PARTIE
+    // =====================================================
+
     isGameOver() {
 
         const alivePlayers =
             this.getAlivePlayers();
 
+
+        // =================================================
+        // SURVIVAL PARTY
+        // =================================================
 
         if (
             this.gameMode ===
@@ -2705,15 +3461,24 @@ export class Game {
         ) {
 
             return (
-                this.maxRounds !== null &&
+
+                this.maxRounds !==
+                    null &&
+
                 this.roundNumber >=
                     this.maxRounds &&
+
                 this.currentRound
                     ?.isCompleted()
+
             );
 
         }
 
+
+        // =================================================
+        // QUESTIONS INSUFFISANTES
+        // =================================================
 
         if (
             this.getRemainingSituationCount() <
@@ -2725,18 +3490,27 @@ export class Game {
         }
 
 
+        // =================================================
+        // SOLO
+        // =================================================
+
         if (
             this.players.length ===
             1
         ) {
 
             return (
-                this.players[0].lives <=
+                this.players[0]
+                    .lives <=
                 0
             );
 
         }
 
+
+        // =================================================
+        // MULTI
+        // =================================================
 
         return (
             alivePlayers.length <=
@@ -2745,6 +3519,10 @@ export class Game {
 
     }
 
+
+    // =====================================================
+    // RÉSULTATS DU TOUR
+    // =====================================================
 
     getRoundResults() {
 
@@ -2757,12 +3535,21 @@ export class Game {
     }
 
 
+    // =====================================================
+    // CLASSEMENT
+    // =====================================================
+
     getRanking() {
 
         return [
+
             ...this.players
+
         ].sort(
-            (a, b) =>
+            (
+                a,
+                b
+            ) =>
                 b.lives -
                 a.lives
         );
@@ -2788,6 +3575,7 @@ export class Game {
         this.roundNumber =
             0;
 
+
         this.gameMode =
             "battle_royal";
 
@@ -2797,17 +3585,31 @@ export class Game {
         this.theme =
             "desert_island";
 
+
         this.availableSituations =
             [];
 
         this.usedSituationIds =
             [];
 
+
         this.playerNarratives =
             {};
 
+
         this.pendingSecretChoice =
             null;
+
+
+        this.notifications =
+            [];
+
+        this.lastResolvedPlayerIds =
+            [];
+
+
+        this.relationshipManager
+            .reset();
 
     }
 

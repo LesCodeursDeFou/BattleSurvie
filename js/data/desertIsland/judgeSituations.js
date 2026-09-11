@@ -55,7 +55,7 @@ export const JUDGE_SITUATIONS = [
                                 "desert_judge_night_watch",
 
                             weight:
-                                28
+                                30
                         }
                     ]
 
@@ -78,13 +78,18 @@ export const JUDGE_SITUATIONS = [
                                 target:
                                     "others",
 
-                                lives:
-                                    1
+                                gauge: {
+                                    id:
+                                        "fatigue",
+
+                                    amount:
+                                        -1
+                                }
                             }
                         ],
 
                         weight:
-                            16,
+                            18,
 
                         narrative: {
 
@@ -94,7 +99,7 @@ export const JUDGE_SITUATIONS = [
                                         "desert_judge_night_watch",
 
                                     weight:
-                                        38
+                                        42
                                 }
                             ]
 
@@ -109,7 +114,7 @@ export const JUDGE_SITUATIONS = [
                             "💥",
 
                         text:
-                            "Une rafale projette des braises partout. Le camp prend feu et {group} doivent évacuer en catastrophe.",
+                            "Une rafale projette les braises dans le camp. {group} doivent évacuer en catastrophe et lutter pour éteindre les flammes.",
 
                         effects: [
                             {
@@ -117,12 +122,29 @@ export const JUDGE_SITUATIONS = [
                                     "others",
 
                                 lives:
-                                    -2
+                                    -1,
+
+                                tags: [
+                                    "physical"
+                                ]
+                            },
+
+                            {
+                                target:
+                                    "others",
+
+                                gauge: {
+                                    id:
+                                        "fatigue",
+
+                                    amount:
+                                        1
+                                }
                             }
                         ],
 
                         weight:
-                            64,
+                            57,
 
                         narrative: {
 
@@ -132,7 +154,7 @@ export const JUDGE_SITUATIONS = [
                                         "desert_judge_night_watch",
 
                                     weight:
-                                        5
+                                        6
                                 }
                             ]
 
@@ -141,19 +163,19 @@ export const JUDGE_SITUATIONS = [
 
                     {
                         id:
-                            "desert_fire_large_neutral",
+                            "desert_fire_large_wood",
 
                         icon:
-                            "🔥",
+                            "🪵",
 
                         text:
-                            "Le feu reste impressionnant mais consomme presque tout le bois disponible. {group} passent la nuit sans incident.",
+                            "Le feu tient parfaitement, mais consomme presque tout le bois sec disponible. {group} dorment sans incident.",
 
                         effects:
                             [],
 
                         weight:
-                            20,
+                            25,
 
                         narrative: {
 
@@ -163,7 +185,7 @@ export const JUDGE_SITUATIONS = [
                                         "desert_judge_night_watch",
 
                                     weight:
-                                        18
+                                        20
                                 }
                             ]
 
@@ -201,7 +223,7 @@ export const JUDGE_SITUATIONS = [
                                 "desert_judge_night_watch",
 
                             weight:
-                                22
+                                24
                         }
                     ]
 
@@ -219,11 +241,23 @@ export const JUDGE_SITUATIONS = [
                         text:
                             "La discrétion fonctionne parfaitement. Aucun danger ne remarque le camp et {group} récupèrent tranquillement.",
 
-                        effects:
-                            [],
+                        effects: [
+                            {
+                                target:
+                                    "others",
+
+                                gauge: {
+                                    id:
+                                        "fatigue",
+
+                                    amount:
+                                        -1
+                                }
+                            }
+                        ],
 
                         weight:
-                            48,
+                            43,
 
                         narrative: {
 
@@ -233,7 +267,7 @@ export const JUDGE_SITUATIONS = [
                                         "desert_judge_night_watch",
 
                                     weight:
-                                        30
+                                        34
                                 }
                             ]
 
@@ -248,7 +282,7 @@ export const JUDGE_SITUATIONS = [
                             "🐗",
 
                         text:
-                            "Le petit feu n'impressionne pas du tout les sangliers qui traversent le camp de {group}.",
+                            "Le petit feu n'impressionne pas du tout les sangliers qui traversent le camp en pleine nuit.",
 
                         effects: [
                             {
@@ -256,7 +290,24 @@ export const JUDGE_SITUATIONS = [
                                     "others",
 
                                 lives:
-                                    -2
+                                    -1,
+
+                                tags: [
+                                    "physical"
+                                ]
+                            },
+
+                            {
+                                target:
+                                    "others",
+
+                                gauge: {
+                                    id:
+                                        "fatigue",
+
+                                    amount:
+                                        1
+                                }
                             }
                         ],
 
@@ -271,7 +322,7 @@ export const JUDGE_SITUATIONS = [
                                         "desert_judge_night_watch",
 
                                     weight:
-                                        6
+                                        8
                                 }
                             ]
 
@@ -280,26 +331,31 @@ export const JUDGE_SITUATIONS = [
 
                     {
                         id:
-                            "desert_fire_small_good",
+                            "desert_fire_small_courage",
 
                         icon:
                             "😌",
 
                         text:
-                            "Le petit feu tient toute la nuit avec très peu de bois. {group} récupèrent un peu mieux que prévu.",
+                            "Le petit feu tient jusqu'au matin. {group} se réveillent étonnamment reposés et rassurés.",
 
                         effects: [
                             {
                                 target:
                                     "others",
 
-                                lives:
-                                    1
+                                status: {
+                                    id:
+                                        "courage",
+
+                                    duration:
+                                        1
+                                }
                             }
                         ],
 
                         weight:
-                            10,
+                            15,
 
                         narrative: {
 
@@ -309,7 +365,7 @@ export const JUDGE_SITUATIONS = [
                                         "desert_judge_night_watch",
 
                                     weight:
-                                        34
+                                        36
                                 }
                             ]
 
@@ -327,7 +383,6 @@ export const JUDGE_SITUATIONS = [
 
     // =========================================================
     // 2 - BAIES
-    // CLASSIQUE
     // =========================================================
 
     {
@@ -362,7 +417,7 @@ export const JUDGE_SITUATIONS = [
                     "🔴 Prendre les baies rouges",
 
                 description:
-                    "Elles sont très appétissantes.",
+                    "Elles ressemblent vaguement à quelque chose de comestible.",
 
                 consequences: [
 
@@ -374,7 +429,7 @@ export const JUDGE_SITUATIONS = [
                             "😋",
 
                         text:
-                            "Excellent choix. Les baies sont nutritives et redonnent un peu de force à {group}.",
+                            "Excellent choix. Les baies sont nutritives et permettent à {group} de manger correctement.",
 
                         effects: [
                             {
@@ -383,11 +438,19 @@ export const JUDGE_SITUATIONS = [
 
                                 lives:
                                     1
+                            },
+
+                            {
+                                target:
+                                    "others",
+
+                                removeStatus:
+                                    "hungry"
                             }
                         ],
 
                         weight:
-                            18
+                            22
                     },
 
                     {
@@ -398,20 +461,20 @@ export const JUDGE_SITUATIONS = [
                             "🤢",
 
                         text:
-                            "Les baies étaient toxiques. {group} passent les prochaines heures dans un état lamentable.",
+                            "Les baies étaient toxiques. Plusieurs membres de {group} commencent rapidement à avoir des vertiges.",
 
                         effects: [
                             {
                                 target:
                                     "others",
 
-                                lives:
-                                    -2
+                                status:
+                                    "poisoned"
                             }
                         ],
 
                         weight:
-                            62
+                            48
                     },
 
                     {
@@ -422,13 +485,25 @@ export const JUDGE_SITUATIONS = [
                             "🫐",
 
                         text:
-                            "Les baies sont comestibles mais presque sans goût et peu nourrissantes.",
+                            "Les baies sont comestibles mais presque sans goût et beaucoup trop peu nourrissantes.",
 
-                        effects:
-                            [],
+                        effects: [
+                            {
+                                target:
+                                    "others",
+
+                                status: {
+                                    id:
+                                        "hungry",
+
+                                    duration:
+                                        2
+                                }
+                            }
+                        ],
 
                         weight:
-                            20
+                            30
                     }
 
                 ]
@@ -444,7 +519,7 @@ export const JUDGE_SITUATIONS = [
                     "🔵 Prendre les baies bleues",
 
                 description:
-                    "Elles semblent beaucoup plus étranges, mais sentent très bon.",
+                    "Elles sont très étranges, mais sentent incroyablement bon.",
 
                 consequences: [
 
@@ -464,12 +539,33 @@ export const JUDGE_SITUATIONS = [
                                     "others",
 
                                 lives:
-                                    2
+                                    1
+                            },
+
+                            {
+                                target:
+                                    "others",
+
+                                removeStatus:
+                                    "hungry"
+                            },
+
+                            {
+                                target:
+                                    "others",
+
+                                gauge: {
+                                    id:
+                                        "fatigue",
+
+                                    amount:
+                                        -1
+                                }
                             }
                         ],
 
                         weight:
-                            10
+                            12
                     },
 
                     {
@@ -477,23 +573,31 @@ export const JUDGE_SITUATIONS = [
                             "desert_berries_blue_bad",
 
                         icon:
-                            "🥴",
+                            "☠️",
 
                         text:
-                            "{group} comprennent rapidement pourquoi aucun animal de l'île ne mange ces baies.",
+                            "{group} comprennent rapidement pourquoi aucun animal de l'île ne semble toucher à ces baies.",
 
                         effects: [
                             {
                                 target:
                                     "others",
 
+                                status:
+                                    "poisoned"
+                            },
+
+                            {
+                                target:
+                                    "others",
+
                                 lives:
-                                    -3
+                                    -1
                             }
                         ],
 
                         weight:
-                            75
+                            63
                     },
 
                     {
@@ -504,10 +608,95 @@ export const JUDGE_SITUATIONS = [
                             "😐",
 
                         text:
-                            "Le goût est étrange mais personne ne semble ressentir le moindre effet.",
+                            "Le goût est étrange, mais personne ne ressent le moindre effet. Positif ou négatif.",
 
                         effects:
                             [],
+
+                        weight:
+                            25
+                    }
+
+                ]
+
+            },
+
+
+            // =================================================
+            // DÉBROUILLARDISE DE L'ACTEUR
+            // =================================================
+
+            {
+                id:
+                    "desert_berries_test",
+
+                title:
+                    "🧪 Tester les baies avant",
+
+                description:
+                    "Observer la sève, les graines et les traces laissées par les animaux avant de les donner au groupe.",
+
+                condition: {
+                    type:
+                        "status",
+
+                    id:
+                        "resourceful"
+                },
+
+                consequences: [
+
+                    {
+                        id:
+                            "desert_berries_test_safe",
+
+                        icon:
+                            "🧠",
+
+                        text:
+                            "{actor} identifie les baies les moins risquées et évite les fruits les plus suspects. {group} mangent sans problème.",
+
+                        effects: [
+                            {
+                                target:
+                                    "others",
+
+                                removeStatus:
+                                    "hungry"
+                            }
+                        ],
+
+                        weight:
+                            85
+                    },
+
+                    {
+                        id:
+                            "desert_berries_test_reward",
+
+                        icon:
+                            "😋",
+
+                        text:
+                            "{actor} trouve même une variété particulièrement nourrissante. {group} récupèrent mieux que prévu.",
+
+                        effects: [
+                            {
+                                target:
+                                    "others",
+
+                                lives:
+                                    1
+                            },
+
+                            {
+                                target:
+                                    "others",
+
+                                removeStatus:
+                                    "hungry"
+                            }
+                        ],
 
                         weight:
                             15
@@ -559,7 +748,7 @@ export const JUDGE_SITUATIONS = [
                     "🪵 Faire un radeau léger",
 
                 description:
-                    "Rapide et facile à manœuvrer.",
+                    "Rapide à construire et facile à manœuvrer.",
 
                 narrative: {
 
@@ -569,7 +758,8 @@ export const JUDGE_SITUATIONS = [
                     ],
 
                     removeFlags: [
-                        "judge_raft_heavy"
+                        "judge_raft_heavy",
+                        "judge_raft_reinforced"
                     ],
 
                     nextSituationBoosts: [
@@ -578,7 +768,7 @@ export const JUDGE_SITUATIONS = [
                                 "desert_judge_raft_route",
 
                             weight:
-                                30
+                                32
                         }
                     ]
 
@@ -594,13 +784,13 @@ export const JUDGE_SITUATIONS = [
                             "🌊",
 
                         text:
-                            "Le radeau glisse parfaitement sur l'eau. {group} avancent rapidement.",
+                            "Le radeau glisse parfaitement sur l'eau. {group} avancent rapidement et sans trop d'effort.",
 
                         effects:
                             [],
 
                         weight:
-                            34,
+                            32,
 
                         narrative: {
 
@@ -610,7 +800,7 @@ export const JUDGE_SITUATIONS = [
                                         "desert_judge_raft_route",
 
                                     weight:
-                                        42
+                                        44
                                 }
                             ]
 
@@ -625,7 +815,7 @@ export const JUDGE_SITUATIONS = [
                             "🦈",
 
                         text:
-                            "Le radeau commence à se désassembler en pleine mer. {group} doivent lutter pour rester à flot.",
+                            "Le radeau commence à se désassembler en pleine mer. {group} doivent nager et maintenir les morceaux ensemble.",
 
                         effects: [
                             {
@@ -633,12 +823,29 @@ export const JUDGE_SITUATIONS = [
                                     "others",
 
                                 lives:
-                                    -2
+                                    -1,
+
+                                tags: [
+                                    "physical"
+                                ]
+                            },
+
+                            {
+                                target:
+                                    "others",
+
+                                gauge: {
+                                    id:
+                                        "fatigue",
+
+                                    amount:
+                                        2
+                                }
                             }
                         ],
 
                         weight:
-                            56,
+                            53,
 
                         narrative: {
 
@@ -663,20 +870,20 @@ export const JUDGE_SITUATIONS = [
                             "🐟",
 
                         text:
-                            "La légèreté du radeau permet à {group} d'atteindre une zone de pêche riche en poissons.",
+                            "La légèreté du radeau permet à {group} d'atteindre une zone où les poissons sont particulièrement nombreux.",
 
                         effects: [
                             {
                                 target:
                                     "others",
 
-                                lives:
-                                    1
+                                removeStatus:
+                                    "hungry"
                             }
                         ],
 
                         weight:
-                            10,
+                            15,
 
                         narrative: {
 
@@ -706,7 +913,7 @@ export const JUDGE_SITUATIONS = [
                     "⚓ Faire un radeau très solide",
 
                 description:
-                    "Utiliser un maximum de bois pour sécuriser l'embarcation.",
+                    "Utiliser beaucoup plus de bois pour maximiser la résistance.",
 
                 narrative: {
 
@@ -716,7 +923,8 @@ export const JUDGE_SITUATIONS = [
                     ],
 
                     removeFlags: [
-                        "judge_raft_light"
+                        "judge_raft_light",
+                        "judge_raft_reinforced"
                     ],
 
                     nextSituationBoosts: [
@@ -725,7 +933,7 @@ export const JUDGE_SITUATIONS = [
                                 "desert_judge_raft_route",
 
                             weight:
-                                26
+                                28
                         }
                     ]
 
@@ -741,13 +949,25 @@ export const JUDGE_SITUATIONS = [
                             "💪",
 
                         text:
-                            "Le radeau résiste parfaitement aux vagues et garde {group} au sec.",
+                            "Le radeau résiste parfaitement aux vagues. {group} restent au sec malgré une mer agitée.",
 
-                        effects:
-                            [],
+                        effects: [
+                            {
+                                target:
+                                    "others",
+
+                                status: {
+                                    id:
+                                        "courage",
+
+                                    duration:
+                                        1
+                                }
+                            }
+                        ],
 
                         weight:
-                            42,
+                            38,
 
                         narrative: {
 
@@ -757,7 +977,7 @@ export const JUDGE_SITUATIONS = [
                                         "desert_judge_raft_route",
 
                                     weight:
-                                        36
+                                        38
                                 }
                             ]
 
@@ -772,20 +992,25 @@ export const JUDGE_SITUATIONS = [
                             "🌊",
 
                         text:
-                            "Le radeau est tellement lourd qu'il s'enfonce dangereusement dès que {group} montent dessus.",
+                            "Le radeau est tellement lourd que {group} doivent pagayer sans interruption pour éviter de dériver.",
 
                         effects: [
                             {
                                 target:
                                     "others",
 
-                                lives:
-                                    -2
+                                gauge: {
+                                    id:
+                                        "fatigue",
+
+                                    amount:
+                                        2
+                                }
                             }
                         ],
 
                         weight:
-                            48,
+                            47,
 
                         narrative: {
 
@@ -795,7 +1020,7 @@ export const JUDGE_SITUATIONS = [
                                         "desert_judge_raft_route",
 
                                     weight:
-                                        6
+                                        10
                                 }
                             ]
 
@@ -810,20 +1035,119 @@ export const JUDGE_SITUATIONS = [
                             "🥫",
 
                         text:
-                            "La solidité du radeau permet à {group} de transporter quelques provisions supplémentaires.",
+                            "La solidité du radeau permet de transporter davantage de provisions.",
 
                         effects: [
                             {
                                 target:
                                     "others",
 
-                                lives:
-                                    1
+                                removeStatus:
+                                    "hungry"
                             }
                         ],
 
                         weight:
-                            10
+                            15
+                    }
+
+                ]
+
+            },
+
+
+            // =================================================
+            // DÉBROUILLARDISE
+            // =================================================
+
+            {
+                id:
+                    "desert_raft_reinforced",
+
+                title:
+                    "🛠️ Construire un radeau renforcé",
+
+                description:
+                    "Utiliser des traverses, des lianes croisées et plusieurs flotteurs indépendants.",
+
+                condition: {
+                    type:
+                        "status",
+
+                    id:
+                        "resourceful"
+                },
+
+                narrative: {
+
+                    setFlags: [
+                        "judge_raft_built",
+                        "judge_raft_reinforced"
+                    ],
+
+                    removeFlags: [
+                        "judge_raft_light",
+                        "judge_raft_heavy"
+                    ],
+
+                    nextSituationBoosts: [
+                        {
+                            id:
+                                "desert_judge_raft_route",
+
+                            weight:
+                                48
+                        }
+                    ]
+
+                },
+
+                consequences: [
+
+                    {
+                        id:
+                            "desert_raft_reinforced_good",
+
+                        icon:
+                            "🛶",
+
+                        text:
+                            "Le radeau paraît artisanal, mais sa structure est excellente. {group} partent avec une embarcation stable et maniable.",
+
+                        effects:
+                            [],
+
+                        weight:
+                            82
+                    },
+
+                    {
+                        id:
+                            "desert_raft_reinforced_bonus",
+
+                        icon:
+                            "🎣",
+
+                        text:
+                            "En plus d'être solide, le radeau possède suffisamment d'espace pour transporter du matériel et quelques provisions.",
+
+                        effects: [
+                            {
+                                target:
+                                    "others",
+
+                                status: {
+                                    id:
+                                        "resourceful",
+
+                                    duration:
+                                        1
+                                }
+                            }
+                        ],
+
+                        weight:
+                            18
                     }
 
                 ]
@@ -837,7 +1161,6 @@ export const JUDGE_SITUATIONS = [
 
     // =========================================================
     // 4 - GROTTE
-    // CLASSIQUE
     // =========================================================
 
     {
@@ -872,7 +1195,7 @@ export const JUDGE_SITUATIONS = [
                     "⬅️ Tunnel de gauche",
 
                 description:
-                    "Un passage étroit qui descend profondément.",
+                    "Un passage étroit descend profondément sous terre.",
 
                 consequences: [
 
@@ -884,20 +1207,25 @@ export const JUDGE_SITUATIONS = [
                             "💧",
 
                         text:
-                            "{group} découvrent une réserve d'eau douce.",
+                            "{group} découvrent une réserve d'eau douce et prennent quelques minutes pour récupérer.",
 
                         effects: [
                             {
                                 target:
                                     "others",
 
-                                lives:
-                                    2
+                                gauge: {
+                                    id:
+                                        "fatigue",
+
+                                    amount:
+                                        -1
+                                }
                             }
                         ],
 
                         weight:
-                            12
+                            18
                     },
 
                     {
@@ -908,7 +1236,7 @@ export const JUDGE_SITUATIONS = [
                             "🦇",
 
                         text:
-                            "{group} tombent sur une énorme colonie de chauves-souris qui n'apprécient pas leur visite.",
+                            "{group} tombent sur une immense colonie de chauves-souris et doivent ressortir en courant.",
 
                         effects: [
                             {
@@ -916,12 +1244,29 @@ export const JUDGE_SITUATIONS = [
                                     "others",
 
                                 lives:
-                                    -2
+                                    -1,
+
+                                tags: [
+                                    "physical"
+                                ]
+                            },
+
+                            {
+                                target:
+                                    "others",
+
+                                gauge: {
+                                    id:
+                                        "fatigue",
+
+                                    amount:
+                                        1
+                                }
                             }
                         ],
 
                         weight:
-                            63
+                            52
                     },
 
                     {
@@ -932,13 +1277,25 @@ export const JUDGE_SITUATIONS = [
                             "🕯️",
 
                         text:
-                            "Le tunnel descend longtemps avant de finir sur une impasse.",
+                            "Le tunnel descend longtemps avant de finir sur une impasse. Le retour est interminable.",
 
-                        effects:
-                            [],
+                        effects: [
+                            {
+                                target:
+                                    "others",
+
+                                gauge: {
+                                    id:
+                                        "fatigue",
+
+                                    amount:
+                                        1
+                                }
+                            }
+                        ],
 
                         weight:
-                            25
+                            30
                     }
 
                 ]
@@ -966,15 +1323,20 @@ export const JUDGE_SITUATIONS = [
                             "🌴",
 
                         text:
-                            "Le tunnel débouche sur une partie inconnue de l'île remplie de ressources.",
+                            "Le tunnel débouche sur une petite vallée inconnue remplie de plantes et de matériaux utiles.",
 
                         effects: [
                             {
                                 target:
                                     "others",
 
-                                lives:
-                                    1
+                                status: {
+                                    id:
+                                        "resourceful",
+
+                                    duration:
+                                        2
+                                }
                             }
                         ],
 
@@ -990,7 +1352,7 @@ export const JUDGE_SITUATIONS = [
                             "🪨",
 
                         text:
-                            "Un éboulement surprend {group} et bloque temporairement le passage.",
+                            "Un éboulement surprend {group}. Tout le monde doit courir avant que le passage ne se referme.",
 
                         effects: [
                             {
@@ -998,12 +1360,29 @@ export const JUDGE_SITUATIONS = [
                                     "others",
 
                                 lives:
-                                    -2
+                                    -1,
+
+                                tags: [
+                                    "physical"
+                                ]
+                            },
+
+                            {
+                                target:
+                                    "others",
+
+                                gauge: {
+                                    id:
+                                        "fatigue",
+
+                                    amount:
+                                        1
+                                }
                             }
                         ],
 
                         weight:
-                            52
+                            47
                     },
 
                     {
@@ -1014,13 +1393,79 @@ export const JUDGE_SITUATIONS = [
                             "🌬️",
 
                         text:
-                            "Le tunnel débouche finalement à l'extérieur, mais beaucoup plus loin que prévu.",
+                            "Le tunnel débouche finalement à l'extérieur, beaucoup plus loin que prévu.",
 
-                        effects:
-                            [],
+                        effects: [
+                            {
+                                target:
+                                    "others",
+
+                                gauge: {
+                                    id:
+                                        "fatigue",
+
+                                    amount:
+                                        1
+                                }
+                            }
+                        ],
 
                         weight:
-                            30
+                            35
+                    }
+
+                ]
+
+            },
+
+
+            {
+                id:
+                    "desert_cave_marks",
+
+                title:
+                    "🛠️ Étudier les traces",
+
+                description:
+                    "{actor} prend le temps d'observer les courants d'air, les traces d'animaux et les marques sur les parois.",
+
+                condition: {
+                    type:
+                        "status",
+
+                    id:
+                        "resourceful"
+                },
+
+                consequences: [
+
+                    {
+                        id:
+                            "desert_cave_marks_good",
+
+                        icon:
+                            "🧭",
+
+                        text:
+                            "{actor} identifie un petit passage latéral beaucoup plus sûr. {group} traversent la grotte sans incident.",
+
+                        effects: [
+                            {
+                                target:
+                                    "others",
+
+                                status: {
+                                    id:
+                                        "courage",
+
+                                    duration:
+                                        1
+                                }
+                            }
+                        ],
+
+                        weight:
+                            100
                     }
 
                 ]
@@ -1097,7 +1542,7 @@ export const JUDGE_SITUATIONS = [
                             [],
 
                         weight:
-                            36
+                            37
                     },
 
                     {
@@ -1108,20 +1553,25 @@ export const JUDGE_SITUATIONS = [
                             "🐗",
 
                         text:
-                            "{actor} tombe nez à nez avec un sanglier. Le vacarme réveille {group} en catastrophe.",
+                            "{actor} tombe nez à nez avec un sanglier. Le vacarme réveille {group}, qui doivent quitter leur abri en urgence.",
 
                         effects: [
                             {
                                 target:
                                     "others",
 
-                                lives:
-                                    -1
+                                gauge: {
+                                    id:
+                                        "fatigue",
+
+                                    amount:
+                                        1
+                                }
                             }
                         ],
 
                         weight:
-                            54
+                            48
                     },
 
                     {
@@ -1132,20 +1582,20 @@ export const JUDGE_SITUATIONS = [
                             "🍌",
 
                         text:
-                            "{actor} découvre que le bruit provenait d'un petit animal près de quelques fruits encore comestibles.",
+                            "{actor} découvre que le bruit provenait d'un petit animal près de plusieurs fruits encore comestibles.",
 
                         effects: [
                             {
                                 target:
                                     "others",
 
-                                lives:
-                                    1
+                                removeStatus:
+                                    "hungry"
                             }
                         ],
 
                         weight:
-                            10
+                            15
                     }
 
                 ]
@@ -1173,13 +1623,25 @@ export const JUDGE_SITUATIONS = [
                             "😌",
 
                         text:
-                            "Les bruits finissent par disparaître. La nuit se termine sans incident.",
+                            "Les bruits finissent par disparaître. {group} ne se réveillent même pas.",
 
-                        effects:
-                            [],
+                        effects: [
+                            {
+                                target:
+                                    "others",
+
+                                gauge: {
+                                    id:
+                                        "fatigue",
+
+                                    amount:
+                                        -1
+                                }
+                            }
+                        ],
 
                         weight:
-                            60
+                            55
                     },
 
                     {
@@ -1190,20 +1652,25 @@ export const JUDGE_SITUATIONS = [
                             "🐒",
 
                         text:
-                            "Pendant que {actor} surveille le feu, plusieurs singes passent derrière lui et fouillent les affaires de {group}.",
+                            "Pendant que {actor} fixe les buissons, plusieurs singes passent derrière lui et pillent les réserves du camp.",
 
                         effects: [
                             {
                                 target:
                                     "others",
 
-                                lives:
-                                    -1
+                                status: {
+                                    id:
+                                        "hungry",
+
+                                    duration:
+                                        2
+                                }
                             }
                         ],
 
                         weight:
-                            40
+                            45
                     }
 
                 ]
@@ -1273,20 +1740,20 @@ export const JUDGE_SITUATIONS = [
                             "🥥",
 
                         text:
-                            "{group} découvrent une petite plage accessible uniquement depuis la mer avec quelques ressources.",
+                            "{group} découvrent une petite plage inaccessible depuis la jungle et trouvent plusieurs ressources.",
 
                         effects: [
                             {
                                 target:
                                     "others",
 
-                                lives:
-                                    1
+                                removeStatus:
+                                    "hungry"
                             }
                         ],
 
                         weight:
-                            15
+                            18
                     },
 
                     {
@@ -1297,7 +1764,7 @@ export const JUDGE_SITUATIONS = [
                             "🪨",
 
                         text:
-                            "Le radeau heurte plusieurs rochers dissimulés sous l'eau.",
+                            "Le radeau heurte plusieurs rochers dissimulés sous l'eau. {group} doivent descendre pour le dégager.",
 
                         effects: [
                             {
@@ -1305,12 +1772,45 @@ export const JUDGE_SITUATIONS = [
                                     "others",
 
                                 lives:
-                                    -1
+                                    -1,
+
+                                tags: [
+                                    "physical"
+                                ]
                             }
                         ],
 
                         weight:
-                            40
+                            35
+                    },
+
+                    {
+                        id:
+                            "raft_route_coast_tired",
+
+                        icon:
+                            "🥵",
+
+                        text:
+                            "Le trajet est beaucoup plus long que prévu. {group} pagaient pendant des heures.",
+
+                        effects: [
+                            {
+                                target:
+                                    "others",
+
+                                gauge: {
+                                    id:
+                                        "fatigue",
+
+                                    amount:
+                                        1
+                                }
+                            }
+                        ],
+
+                        weight:
+                            32
                     },
 
                     {
@@ -1327,7 +1827,7 @@ export const JUDGE_SITUATIONS = [
                             [],
 
                         weight:
-                            45
+                            15
                     }
 
                 ]
@@ -1343,7 +1843,7 @@ export const JUDGE_SITUATIONS = [
                     "🌊 Couper par le large",
 
                 description:
-                    "Un trajet beaucoup plus rapide, mais loin de la côte.",
+                    "Un trajet beaucoup plus rapide, mais très loin de la côte.",
 
                 consequences: [
 
@@ -1355,20 +1855,25 @@ export const JUDGE_SITUATIONS = [
                             "💨",
 
                         text:
-                            "Un courant favorable pousse le radeau et permet à {group} d'arriver bien plus vite que prévu.",
+                            "Un courant favorable pousse le radeau. {group} arrivent bien plus vite que prévu et prennent confiance.",
 
                         effects: [
                             {
                                 target:
                                     "others",
 
-                                lives:
-                                    2
+                                status: {
+                                    id:
+                                        "courage",
+
+                                    duration:
+                                        1
+                                }
                             }
                         ],
 
                         weight:
-                            8
+                            12
                     },
 
                     {
@@ -1379,7 +1884,7 @@ export const JUDGE_SITUATIONS = [
                             "🌊",
 
                         text:
-                            "Les vagues deviennent rapidement beaucoup trop fortes. {group} luttent pour ne pas chavirer.",
+                            "Les vagues deviennent rapidement trop fortes. {group} luttent pendant de longues minutes pour ne pas chavirer.",
 
                         effects: [
                             {
@@ -1387,12 +1892,29 @@ export const JUDGE_SITUATIONS = [
                                     "others",
 
                                 lives:
-                                    -2
+                                    -1,
+
+                                tags: [
+                                    "physical"
+                                ]
+                            },
+
+                            {
+                                target:
+                                    "others",
+
+                                gauge: {
+                                    id:
+                                        "fatigue",
+
+                                    amount:
+                                        2
+                                }
                             }
                         ],
 
                         weight:
-                            72
+                            63
                     },
 
                     {
@@ -1403,13 +1925,1484 @@ export const JUDGE_SITUATIONS = [
                             "🛶",
 
                         text:
-                            "La mer reste suffisamment calme et le radeau poursuit sa route sans incident particulier.",
+                            "La mer reste suffisamment calme et le radeau traverse sans incident particulier.",
+
+                        effects:
+                            [],
+
+                        weight:
+                            25
+                    }
+
+                ]
+
+            },
+
+
+            // =================================================
+            // SI RADEAU RENFORCÉ
+            // =================================================
+
+            {
+                id:
+                    "raft_route_current",
+
+                title:
+                    "🧭 Suivre le courant",
+
+                description:
+                    "Faire confiance à la construction et utiliser le courant plutôt que de pagayer en permanence.",
+
+                consequences: [
+
+                    {
+                        id:
+                            "raft_route_current_good",
+
+                        icon:
+                            "🌊",
+
+                        text:
+                            "Le courant entraîne le radeau exactement dans la bonne direction. {group} économisent énormément d'énergie.",
+
+                        effects: [
+                            {
+                                target:
+                                    "others",
+
+                                gauge: {
+                                    id:
+                                        "fatigue",
+
+                                    amount:
+                                        -1
+                                }
+                            }
+                        ],
+
+                        weight:
+                            30
+                    },
+
+                    {
+                        id:
+                            "raft_route_current_bad",
+
+                        icon:
+                            "🌀",
+
+                        text:
+                            "Le courant entraîne le radeau vers une zone agitée. {group} doivent pagayer brutalement pour s'en dégager.",
+
+                        effects: [
+                            {
+                                target:
+                                    "others",
+
+                                gauge: {
+                                    id:
+                                        "fatigue",
+
+                                    amount:
+                                        1
+                                }
+                            }
+                        ],
+
+                        weight:
+                            45
+                    },
+
+                    {
+                        id:
+                            "raft_route_current_neutral",
+
+                        icon:
+                            "🛶",
+
+                        text:
+                            "Le courant n'aide pas vraiment, mais ne provoque aucun problème particulier.",
+
+                        effects:
+                            [],
+
+                        weight:
+                            25
+                    }
+
+                ]
+
+            }
+
+        ]
+
+    },
+
+
+    // =========================================================
+    // 7 - NOUVEAU : DISTRIBUTION DES RATIONS
+    // =========================================================
+
+    {
+        id:
+            "desert_judge_rations",
+
+        type:
+            "judge_choice",
+
+        baseWeight:
+            1,
+
+        title:
+            "{actor} doit gérer les dernières rations",
+
+        category:
+            "Décision de groupe",
+
+        icon:
+            "🥫",
+
+        description:
+            "Les réserves diminuent dangereusement. {group} attendent que {actor} décide comment organiser les prochains repas.",
+
+        choices: [
+
+            {
+                id:
+                    "desert_rations_normal",
+
+                title:
+                    "🍽️ Faire un vrai repas",
+
+                description:
+                    "Manger correctement aujourd'hui quitte à réduire fortement les réserves.",
+
+                narrative: {
+
+                    setFlags: [
+                        "judge_rations_consumed"
+                    ],
+
+                    removeFlags: [
+                        "judge_rations_saved"
+                    ],
+
+                    nextSituationBoosts: [
+                        {
+                            id:
+                                "desert_judge_empty_supplies",
+
+                            weight:
+                                28
+                        }
+                    ]
+
+                },
+
+                consequences: [
+
+                    {
+                        id:
+                            "desert_rations_normal_good",
+
+                        icon:
+                            "😋",
+
+                        text:
+                            "{group} mangent enfin correctement et récupèrent une partie de leurs forces.",
+
+                        effects: [
+                            {
+                                target:
+                                    "others",
+
+                                removeStatus:
+                                    "hungry"
+                            },
+
+                            {
+                                target:
+                                    "others",
+
+                                lives:
+                                    1
+                            }
+                        ],
+
+                        weight:
+                            30
+                    },
+
+                    {
+                        id:
+                            "desert_rations_normal_bad",
+
+                        icon:
+                            "🥫",
+
+                        text:
+                            "Une grande partie des provisions s'avère déjà abîmée. Les réserves disparaissent beaucoup plus vite que prévu.",
+
+                        effects: [
+                            {
+                                target:
+                                    "others",
+
+                                status: {
+                                    id:
+                                        "hungry",
+
+                                    duration:
+                                        2
+                                }
+                            }
+                        ],
+
+                        weight:
+                            35,
+
+                        narrative: {
+
+                            nextSituationBoosts: [
+                                {
+                                    id:
+                                        "desert_judge_empty_supplies",
+
+                                    weight:
+                                        44
+                                }
+                            ]
+
+                        }
+                    },
+
+                    {
+                        id:
+                            "desert_rations_normal_neutral",
+
+                        icon:
+                            "🍽️",
+
+                        text:
+                            "Le repas permet de tenir la journée, mais les réserves sont maintenant presque vides.",
+
+                        effects: [
+                            {
+                                target:
+                                    "others",
+
+                                removeStatus:
+                                    "hungry"
+                            }
+                        ],
+
+                        weight:
+                            35
+                    }
+
+                ]
+
+            },
+
+
+            {
+                id:
+                    "desert_rations_reduce",
+
+                title:
+                    "🥄 Réduire les portions",
+
+                description:
+                    "Faire durer les réserves aussi longtemps que possible.",
+
+                narrative: {
+
+                    setFlags: [
+                        "judge_rations_saved"
+                    ],
+
+                    removeFlags: [
+                        "judge_rations_consumed"
+                    ],
+
+                    nextSituationBoosts: [
+                        {
+                            id:
+                                "desert_judge_empty_supplies",
+
+                            weight:
+                                16
+                        }
+                    ]
+
+                },
+
+                consequences: [
+
+                    {
+                        id:
+                            "desert_rations_reduce_neutral",
+
+                        icon:
+                            "🥄",
+
+                        text:
+                            "Les portions sont minuscules, mais les réserves tiendront probablement plusieurs jours.",
+
+                        effects: [
+                            {
+                                target:
+                                    "others",
+
+                                status: {
+                                    id:
+                                        "hungry",
+
+                                    duration:
+                                        2
+                                }
+                            }
+                        ],
+
+                        weight:
+                            60
+                    },
+
+                    {
+                        id:
+                            "desert_rations_reduce_good",
+
+                        icon:
+                            "📦",
+
+                        text:
+                            "{actor} organise parfaitement les portions et découvre même plusieurs conserves oubliées au fond d'une caisse.",
 
                         effects:
                             [],
 
                         weight:
                             20
+                    },
+
+                    {
+                        id:
+                            "desert_rations_reduce_bad",
+
+                        icon:
+                            "😵",
+
+                        text:
+                            "Les portions sont beaucoup trop faibles. {group} commencent à manquer sérieusement d'énergie.",
+
+                        effects: [
+                            {
+                                target:
+                                    "others",
+
+                                status: {
+                                    id:
+                                        "hungry",
+
+                                    duration:
+                                        3
+                                }
+                            },
+
+                            {
+                                target:
+                                    "others",
+
+                                gauge: {
+                                    id:
+                                        "fatigue",
+
+                                    amount:
+                                        1
+                                }
+                            }
+                        ],
+
+                        weight:
+                            20
+                    }
+
+                ]
+
+            }
+
+        ]
+
+    },
+
+
+    // =========================================================
+    // 8 - NOUVEAU : RÉSERVES VIDES
+    // SUITE DES RATIONS
+    // =========================================================
+
+    {
+        id:
+            "desert_judge_empty_supplies",
+
+        type:
+            "judge_choice",
+
+        baseWeight:
+            1,
+
+        requirements: {
+
+            any: [
+                "judge_rations_consumed",
+                "judge_rations_saved"
+            ]
+
+        },
+
+        title:
+            "Les réserves du camp touchent à leur fin",
+
+        category:
+            "Suite",
+
+        icon:
+            "📦",
+
+        description:
+            "Après les décisions prises concernant les rations, il ne reste presque plus rien. {actor} doit envoyer {group} chercher de la nourriture.",
+
+        choices: [
+
+            {
+                id:
+                    "desert_empty_supplies_jungle",
+
+                title:
+                    "🌴 Fouiller la jungle",
+
+                description:
+                    "Chercher des fruits, racines ou petits animaux.",
+
+                consequences: [
+
+                    {
+                        id:
+                            "desert_empty_jungle_good",
+
+                        icon:
+                            "🍌",
+
+                        text:
+                            "{group} trouvent plusieurs arbres fruitiers et rapportent suffisamment de nourriture pour quelques jours.",
+
+                        effects: [
+                            {
+                                target:
+                                    "others",
+
+                                removeStatus:
+                                    "hungry"
+                            }
+                        ],
+
+                        weight:
+                            22
+                    },
+
+                    {
+                        id:
+                            "desert_empty_jungle_bad",
+
+                        icon:
+                            "🐍",
+
+                        text:
+                            "La végétation est dense et plusieurs serpents se cachent sous les feuilles.",
+
+                        effects: [
+                            {
+                                target:
+                                    "others",
+
+                                status:
+                                    "poisoned"
+                            }
+                        ],
+
+                        weight:
+                            43
+                    },
+
+                    {
+                        id:
+                            "desert_empty_jungle_tired",
+
+                        icon:
+                            "🥵",
+
+                        text:
+                            "{group} cherchent pendant des heures sans presque rien trouver.",
+
+                        effects: [
+                            {
+                                target:
+                                    "others",
+
+                                gauge: {
+                                    id:
+                                        "fatigue",
+
+                                    amount:
+                                        2
+                                }
+                            },
+
+                            {
+                                target:
+                                    "others",
+
+                                status: {
+                                    id:
+                                        "hungry",
+
+                                    duration:
+                                        2
+                                }
+                            }
+                        ],
+
+                        weight:
+                            35
+                    }
+
+                ]
+
+            },
+
+
+            {
+                id:
+                    "desert_empty_supplies_fishing",
+
+                title:
+                    "🎣 Pêcher",
+
+                description:
+                    "Passer la journée près des rochers et tenter de ramener du poisson.",
+
+                consequences: [
+
+                    {
+                        id:
+                            "desert_empty_fishing_good",
+
+                        icon:
+                            "🐟",
+
+                        text:
+                            "{group} trouvent un excellent endroit et attrapent suffisamment de poissons pour manger correctement.",
+
+                        effects: [
+                            {
+                                target:
+                                    "others",
+
+                                lives:
+                                    1
+                            },
+
+                            {
+                                target:
+                                    "others",
+
+                                removeStatus:
+                                    "hungry"
+                            }
+                        ],
+
+                        weight:
+                            20
+                    },
+
+                    {
+                        id:
+                            "desert_empty_fishing_neutral",
+
+                        icon:
+                            "🎣",
+
+                        text:
+                            "Quelques petits poissons sont attrapés. Ce n'est pas grand-chose, mais cela évite le pire.",
+
+                        effects: [
+                            {
+                                target:
+                                    "others",
+
+                                removeStatus:
+                                    "hungry"
+                            }
+                        ],
+
+                        weight:
+                            35
+                    },
+
+                    {
+                        id:
+                            "desert_empty_fishing_bad",
+
+                        icon:
+                            "🌊",
+
+                        text:
+                            "Une grosse vague surprend {group} sur les rochers. Le matériel est perdu et tout le monde rentre épuisé.",
+
+                        effects: [
+                            {
+                                target:
+                                    "others",
+
+                                lives:
+                                    -1,
+
+                                tags: [
+                                    "physical"
+                                ]
+                            },
+
+                            {
+                                target:
+                                    "others",
+
+                                gauge: {
+                                    id:
+                                        "fatigue",
+
+                                    amount:
+                                        1
+                                }
+                            }
+                        ],
+
+                        weight:
+                            45
+                    }
+
+                ]
+
+            }
+
+        ]
+
+    },
+
+
+    // =========================================================
+    // 9 - NOUVEAU : PLUIE TORRENTIELLE
+    // =========================================================
+
+    {
+        id:
+            "desert_judge_flood",
+
+        type:
+            "judge_choice",
+
+        baseWeight:
+            0.9,
+
+        title:
+            "{actor} doit déplacer le camp avant la montée des eaux",
+
+        category:
+            "Décision de groupe",
+
+        icon:
+            "🌧️",
+
+        description:
+            "Une pluie torrentielle tombe depuis plusieurs heures. L'eau commence à envahir le camp et {group} attendent la décision de {actor}.",
+
+        choices: [
+
+            {
+                id:
+                    "desert_flood_hill",
+
+                title:
+                    "⛰️ Monter sur les hauteurs",
+
+                description:
+                    "Abandonner une partie du matériel et rejoindre une zone rocheuse.",
+
+                consequences: [
+
+                    {
+                        id:
+                            "desert_flood_hill_good",
+
+                        icon:
+                            "⛰️",
+
+                        text:
+                            "{group} atteignent les hauteurs avant que la rivière ne déborde complètement.",
+
+                        effects: [
+                            {
+                                target:
+                                    "others",
+
+                                status: {
+                                    id:
+                                        "courage",
+
+                                    duration:
+                                        1
+                                }
+                            }
+                        ],
+
+                        weight:
+                            32
+                    },
+
+                    {
+                        id:
+                            "desert_flood_hill_tired",
+
+                        icon:
+                            "🥵",
+
+                        text:
+                            "La montée sous la pluie est interminable. {group} arrivent en sécurité, mais complètement épuisés.",
+
+                        effects: [
+                            {
+                                target:
+                                    "others",
+
+                                gauge: {
+                                    id:
+                                        "fatigue",
+
+                                    amount:
+                                        2
+                                }
+                            }
+                        ],
+
+                        weight:
+                            48
+                    },
+
+                    {
+                        id:
+                            "desert_flood_hill_bad",
+
+                        icon:
+                            "🪨",
+
+                        text:
+                            "Le terrain détrempé provoque plusieurs chutes pendant l'ascension.",
+
+                        effects: [
+                            {
+                                target:
+                                    "others",
+
+                                lives:
+                                    -1,
+
+                                tags: [
+                                    "physical"
+                                ]
+                            }
+                        ],
+
+                        weight:
+                            20
+                    }
+
+                ]
+
+            },
+
+
+            {
+                id:
+                    "desert_flood_stay",
+
+                title:
+                    "🛖 Renforcer le camp",
+
+                description:
+                    "Essayer de détourner l'eau plutôt que d'abandonner les ressources.",
+
+                consequences: [
+
+                    {
+                        id:
+                            "desert_flood_stay_good",
+
+                        icon:
+                            "🛠️",
+
+                        text:
+                            "Les rigoles improvisées fonctionnent étonnamment bien. Le camp reste presque entièrement sec.",
+
+                        effects: [
+                            {
+                                target:
+                                    "others",
+
+                                status: {
+                                    id:
+                                        "resourceful",
+
+                                    duration:
+                                        1
+                                }
+                            }
+                        ],
+
+                        weight:
+                            18
+                    },
+
+                    {
+                        id:
+                            "desert_flood_stay_bad",
+
+                        icon:
+                            "🌊",
+
+                        text:
+                            "Le niveau monte brutalement. {group} doivent finalement évacuer dans l'urgence en abandonnant leurs affaires.",
+
+                        effects: [
+                            {
+                                target:
+                                    "others",
+
+                                lives:
+                                    -1,
+
+                                tags: [
+                                    "physical"
+                                ]
+                            },
+
+                            {
+                                target:
+                                    "others",
+
+                                gauge: {
+                                    id:
+                                        "fatigue",
+
+                                    amount:
+                                        1
+                                }
+                            }
+                        ],
+
+                        weight:
+                            57
+                    },
+
+                    {
+                        id:
+                            "desert_flood_stay_neutral",
+
+                        icon:
+                            "🌧️",
+
+                        text:
+                            "Le camp est trempé mais reste debout. Personne ne dormira vraiment cette nuit.",
+
+                        effects: [
+                            {
+                                target:
+                                    "others",
+
+                                gauge: {
+                                    id:
+                                        "fatigue",
+
+                                    amount:
+                                        1
+                                }
+                            }
+                        ],
+
+                        weight:
+                            25
+                    }
+
+                ]
+
+            }
+
+        ]
+
+    },
+
+
+    // =========================================================
+    // 10 - NOUVEAU : EXPÉDITION AU SOMMET
+    // DÉBUT MINI-HISTOIRE
+    // =========================================================
+
+    {
+        id:
+            "desert_judge_peak",
+
+        type:
+            "judge_choice",
+
+        baseWeight:
+            0.9,
+
+        title:
+            "{actor} organise une expédition vers le sommet",
+
+        category:
+            "Exploration",
+
+        icon:
+            "🏔️",
+
+        description:
+            "Depuis la plage, un sommet rocheux domine toute l'île. {group} pourraient y repérer une sortie, un bateau ou simplement mieux comprendre les environs.",
+
+        choices: [
+
+            {
+                id:
+                    "desert_peak_direct",
+
+                title:
+                    "🧗 Monter directement",
+
+                description:
+                    "Prendre le chemin le plus court à travers la pente rocheuse.",
+
+                narrative: {
+
+                    setFlags: [
+                        "judge_peak_attempted",
+                        "judge_peak_direct"
+                    ],
+
+                    removeFlags: [
+                        "judge_peak_jungle"
+                    ],
+
+                    nextSituationBoosts: [
+                        {
+                            id:
+                                "desert_judge_peak_top",
+
+                            weight:
+                                30
+                        }
+                    ]
+
+                },
+
+                consequences: [
+
+                    {
+                        id:
+                            "desert_peak_direct_good",
+
+                        icon:
+                            "🏔️",
+
+                        text:
+                            "La pente est raide mais praticable. {group} progressent beaucoup plus vite que prévu.",
+
+                        effects: [
+                            {
+                                target:
+                                    "others",
+
+                                status: {
+                                    id:
+                                        "courage",
+
+                                    duration:
+                                        1
+                                }
+                            }
+                        ],
+
+                        weight:
+                            20,
+
+                        narrative: {
+
+                            nextSituationBoosts: [
+                                {
+                                    id:
+                                        "desert_judge_peak_top",
+
+                                    weight:
+                                        44
+                                }
+                            ]
+
+                        }
+                    },
+
+                    {
+                        id:
+                            "desert_peak_direct_bad",
+
+                        icon:
+                            "🪨",
+
+                        text:
+                            "Une partie de la pente s'effondre sous les pieds de {group}.",
+
+                        effects: [
+                            {
+                                target:
+                                    "others",
+
+                                lives:
+                                    -2,
+
+                                tags: [
+                                    "physical"
+                                ]
+                            }
+                        ],
+
+                        weight:
+                            50,
+
+                        narrative: {
+
+                            nextSituationBoosts: [
+                                {
+                                    id:
+                                        "desert_judge_peak_top",
+
+                                    weight:
+                                        6
+                                }
+                            ]
+
+                        }
+                    },
+
+                    {
+                        id:
+                            "desert_peak_direct_tired",
+
+                        icon:
+                            "🥵",
+
+                        text:
+                            "La pente semble interminable. {group} continuent, mais l'effort est considérable.",
+
+                        effects: [
+                            {
+                                target:
+                                    "others",
+
+                                gauge: {
+                                    id:
+                                        "fatigue",
+
+                                    amount:
+                                        2
+                                }
+                            }
+                        ],
+
+                        weight:
+                            30,
+
+                        narrative: {
+
+                            nextSituationBoosts: [
+                                {
+                                    id:
+                                        "desert_judge_peak_top",
+
+                                    weight:
+                                        20
+                                }
+                            ]
+
+                        }
+                    }
+
+                ]
+
+            },
+
+
+            {
+                id:
+                    "desert_peak_jungle",
+
+                title:
+                    "🌴 Chercher un passage dans la jungle",
+
+                description:
+                    "Contourner la pente la plus raide en suivant une montée plus progressive.",
+
+                narrative: {
+
+                    setFlags: [
+                        "judge_peak_attempted",
+                        "judge_peak_jungle"
+                    ],
+
+                    removeFlags: [
+                        "judge_peak_direct"
+                    ],
+
+                    nextSituationBoosts: [
+                        {
+                            id:
+                                "desert_judge_peak_top",
+
+                            weight:
+                                24
+                        }
+                    ]
+
+                },
+
+                consequences: [
+
+                    {
+                        id:
+                            "desert_peak_jungle_good",
+
+                        icon:
+                            "🌿",
+
+                        text:
+                            "Un ancien sentier traverse la végétation et permet à {group} de progresser sans trop d'effort.",
+
+                        effects:
+                            [],
+
+                        weight:
+                            38,
+
+                        narrative: {
+
+                            nextSituationBoosts: [
+                                {
+                                    id:
+                                        "desert_judge_peak_top",
+
+                                    weight:
+                                        38
+                                }
+                            ]
+
+                        }
+                    },
+
+                    {
+                        id:
+                            "desert_peak_jungle_poison",
+
+                        icon:
+                            "🐍",
+
+                        text:
+                            "Le passage traverse une zone remplie de serpents et d'insectes agressifs.",
+
+                        effects: [
+                            {
+                                target:
+                                    "others",
+
+                                status:
+                                    "poisoned"
+                            }
+                        ],
+
+                        weight:
+                            32,
+
+                        narrative: {
+
+                            nextSituationBoosts: [
+                                {
+                                    id:
+                                        "desert_judge_peak_top",
+
+                                    weight:
+                                        8
+                                }
+                            ]
+
+                        }
+                    },
+
+                    {
+                        id:
+                            "desert_peak_jungle_tired",
+
+                        icon:
+                            "🌿",
+
+                        text:
+                            "La végétation est beaucoup plus dense que prévu et ralentit considérablement la progression.",
+
+                        effects: [
+                            {
+                                target:
+                                    "others",
+
+                                gauge: {
+                                    id:
+                                        "fatigue",
+
+                                    amount:
+                                        1
+                                }
+                            }
+                        ],
+
+                        weight:
+                            30
+                    }
+
+                ]
+
+            }
+
+        ]
+
+    },
+
+
+    // =========================================================
+    // 11 - NOUVEAU : SOMMET DE L'ÎLE
+    // SUITE DE desert_judge_peak
+    // =========================================================
+
+    {
+        id:
+            "desert_judge_peak_top",
+
+        type:
+            "judge_choice",
+
+        baseWeight:
+            1,
+
+        requirements: {
+
+            all: [
+                "judge_peak_attempted"
+            ]
+
+        },
+
+        title:
+            "{group} atteignent enfin les hauteurs de l'île",
+
+        category:
+            "Suite",
+
+        icon:
+            "🔭",
+
+        description:
+            "Depuis un plateau rocheux, l'horizon est enfin visible. {actor} doit décider où concentrer les recherches.",
+
+        choices: [
+
+            {
+                id:
+                    "desert_peak_top_sea",
+
+                title:
+                    "🔭 Observer la mer",
+
+                description:
+                    "Chercher des bateaux, des lumières ou une autre île.",
+
+                consequences: [
+
+                    {
+                        id:
+                            "desert_peak_top_sea_good",
+
+                        icon:
+                            "🚢",
+
+                        text:
+                            "Au loin, {group} distinguent clairement ce qui ressemble à une route maritime. Pour la première fois, une véritable piste de secours apparaît.",
+
+                        effects: [
+                            {
+                                target:
+                                    "others",
+
+                                status: {
+                                    id:
+                                        "courage",
+
+                                    duration:
+                                        2
+                                }
+                            }
+                        ],
+
+                        weight:
+                            15
+                    },
+
+                    {
+                        id:
+                            "desert_peak_top_sea_neutral",
+
+                        icon:
+                            "🌊",
+
+                        text:
+                            "L'océan semble vide dans toutes les directions. Au moins, {group} connaissent maintenant mieux leur position.",
+
+                        effects:
+                            [],
+
+                        weight:
+                            65
+                    },
+
+                    {
+                        id:
+                            "desert_peak_top_sea_bad",
+
+                        icon:
+                            "🌧️",
+
+                        text:
+                            "Une masse nuageuse énorme apparaît au large. Une nouvelle tempête semble se diriger directement vers l'île.",
+
+                        effects:
+                            [],
+
+                        weight:
+                            20
+                    }
+
+                ]
+
+            },
+
+
+            {
+                id:
+                    "desert_peak_top_island",
+
+                title:
+                    "🗺️ Observer l'île",
+
+                description:
+                    "Chercher des zones inconnues, de l'eau ou des traces humaines.",
+
+                consequences: [
+
+                    {
+                        id:
+                            "desert_peak_top_island_good",
+
+                        icon:
+                            "💧",
+
+                        text:
+                            "{group} repèrent une vallée verte traversée par ce qui ressemble à un cours d'eau.",
+
+                        effects: [
+                            {
+                                target:
+                                    "others",
+
+                                status: {
+                                    id:
+                                        "resourceful",
+
+                                    duration:
+                                        2
+                                }
+                            }
+                        ],
+
+                        weight:
+                            18
+                    },
+
+                    {
+                        id:
+                            "desert_peak_top_island_neutral",
+
+                        icon:
+                            "🗺️",
+
+                        text:
+                            "Le point de vue permet de mémoriser plusieurs chemins et d'éviter certaines zones dangereuses.",
+
+                        effects: [
+                            {
+                                target:
+                                    "others",
+
+                                status: {
+                                    id:
+                                        "resourceful",
+
+                                    duration:
+                                        1
+                                }
+                            }
+                        ],
+
+                        weight:
+                            52
+                    },
+
+                    {
+                        id:
+                            "desert_peak_top_island_bad",
+
+                        icon:
+                            "🌧️",
+
+                        text:
+                            "La météo change brutalement et force {group} à redescendre avant d'avoir terminé leur observation.",
+
+                        effects: [
+                            {
+                                target:
+                                    "others",
+
+                                gauge: {
+                                    id:
+                                        "fatigue",
+
+                                    amount:
+                                        1
+                                }
+                            }
+                        ],
+
+                        weight:
+                            30
                     }
 
                 ]

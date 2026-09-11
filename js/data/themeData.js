@@ -7,7 +7,7 @@ import {
 } from "./desertIsland/situations.js";
 
 import {
-    INTERACTION_SITUATIONS as DESERT_INTERACTIONS
+    INTERACTION_SITUATIONS as DESERT_INTERACTION_SITUATIONS
 } from "./desertIsland/interactionSituations.js";
 
 import {
@@ -19,24 +19,36 @@ import {
 } from "./desertIsland/secretSituations.js";
 
 import {
-    PROLOGUE as DESERT_PROLOGUE
-} from "./desertIsland/prologue.js";
-
-import {
     JUDGE_SITUATIONS as DESERT_JUDGE_SITUATIONS
 } from "./desertIsland/judgeSituations.js";
 
+import {
+    EVENTS as DESERT_EVENTS
+} from "./desertIsland/events.js";
 
-// =====================================
+import {
+    ITEMS as DESERT_ITEMS
+} from "./desertIsland/items.js";
+
+import {
+    STATUSES as DESERT_STATUSES
+} from "./desertIsland/statuses.js";
+
+import {
+    PROLOGUE as DESERT_PROLOGUE
+} from "./desertIsland/prologue.js";
+
+
+// =========================================
 // MANOIR HANTÉ
-// =====================================
+// =========================================
 
 import {
     SITUATIONS as MANSION_SITUATIONS
 } from "./hauntedMansion/situations.js";
 
 import {
-    INTERACTION_SITUATIONS as MANSION_INTERACTIONS
+    INTERACTION_SITUATIONS as MANSION_INTERACTION_SITUATIONS
 } from "./hauntedMansion/interactionSituations.js";
 
 import {
@@ -48,19 +60,30 @@ import {
 } from "./hauntedMansion/secretSituations.js";
 
 import {
-    PROLOGUE as MANSION_PROLOGUE
-} from "./hauntedMansion/prologue.js";
-
-import {
     JUDGE_SITUATIONS as MANSION_JUDGE_SITUATIONS
 } from "./hauntedMansion/judgeSituations.js";
 
+import {
+    EVENTS as MANSION_EVENTS
+} from "./hauntedMansion/events.js";
+
+import {
+    ITEMS as MANSION_ITEMS
+} from "./hauntedMansion/items.js";
+
+import {
+    STATUSES as MANSION_STATUSES
+} from "./hauntedMansion/statuses.js";
+
+import {
+    PROLOGUE as MANSION_PROLOGUE
+} from "./hauntedMansion/prologue.js";
 
 // =====================================
 // DONNÉES
 // =====================================
 
-export const THEME_DATA = {
+const THEME_DATA = {
 
     desert_island: {
 
@@ -68,7 +91,7 @@ export const THEME_DATA = {
             DESERT_SITUATIONS,
 
         interactionSituations:
-            DESERT_INTERACTIONS,
+            DESERT_INTERACTION_SITUATIONS,
 
         groupSituations:
             DESERT_GROUP_SITUATIONS,
@@ -79,9 +102,17 @@ export const THEME_DATA = {
         judgeSituations:
             DESERT_JUDGE_SITUATIONS,
 
+        events:
+            DESERT_EVENTS,
+
+        items:
+            DESERT_ITEMS,
+
+        statuses:
+            DESERT_STATUSES,
+
         prologue:
             DESERT_PROLOGUE
-
     },
 
 
@@ -91,7 +122,7 @@ export const THEME_DATA = {
             MANSION_SITUATIONS,
 
         interactionSituations:
-            MANSION_INTERACTIONS,
+            MANSION_INTERACTION_SITUATIONS,
 
         groupSituations:
             MANSION_GROUP_SITUATIONS,
@@ -102,39 +133,30 @@ export const THEME_DATA = {
         judgeSituations:
             MANSION_JUDGE_SITUATIONS,
 
+        events:
+            MANSION_EVENTS,
+
+        items:
+            MANSION_ITEMS,
+
+        statuses:
+            MANSION_STATUSES,
+
         prologue:
             MANSION_PROLOGUE
-
     }
 
 };
-
 
 // =====================================
 // RÉCUPÉRATION
 // =====================================
 
-export function getThemeData(
-    themeId
-) {
+export function getThemeData(themeId) {
 
-    const theme =
-        THEME_DATA[
-            themeId
-        ];
-
-
-    if (!theme) {
-
-        console.error(
-            `Thème inconnu : ${themeId}`
-        );
-
-        return null;
-
-    }
-
-
-    return theme;
+    return (
+        THEME_DATA[themeId] ??
+        null
+    );
 
 }

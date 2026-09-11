@@ -1,5 +1,5 @@
 const CACHE_NAME =
-    "battlesurvie-v8";
+    "battlesurvie-v9";
 
 
 const FILES_TO_CACHE = [
@@ -39,6 +39,13 @@ const FILES_TO_CACHE = [
     "./js/data/hauntedMansion/judgeSituations.js",
     "./js/data/hauntedMansion/secretSituations.js",
     "./js/data/hauntedMansion/prologue.js",
+
+    "./js/game/statusManager.js",
+    "./js/game/relationshipManager.js",
+    "./js/game/conditionManager.js",
+    "./js/data/relationships.js",
+    "./js/data/desertIsland/statuses.js",
+    "./js/data/hauntedMansion/statuses.js",
 
     "./manifest.json"
 

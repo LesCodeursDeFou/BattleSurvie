@@ -24,6 +24,40 @@ export class Player {
 
 
         // =====================================
+        // ÉTATS PERSONNELS
+        // =====================================
+
+        this.statuses =
+            [];
+
+
+        // =====================================
+        // JAUGES
+        //
+        // Certaines jauges ne seront utilisées
+        // que selon le thème.
+        // =====================================
+
+        this.gauges = {
+
+            fatigue:
+                0,
+
+            fear:
+                0
+
+        };
+
+
+        // =====================================
+        // OBJETS
+        // =====================================
+
+        this.items =
+            [];
+
+
+        // =====================================
         // STATISTIQUES
         // =====================================
 
@@ -49,15 +83,12 @@ export class Player {
 
         };
 
-
-        this.statuses =
-            [];
-
-        this.items =
-            [];
-
     }
 
+
+    // =====================================
+    // VIES
+    // =====================================
 
     changeLives(amount) {
 
@@ -75,10 +106,6 @@ export class Player {
         }
 
 
-        // =====================================
-        // BATTLE ROYAL
-        // =====================================
-
         if (
             this.eliminationEnabled &&
             this.lives === 0
@@ -89,10 +116,6 @@ export class Player {
 
         }
 
-
-        // =====================================
-        // SURVIVAL PARTY
-        // =====================================
 
         if (
             !this.eliminationEnabled
@@ -107,6 +130,7 @@ export class Player {
         return this.lives;
 
     }
+
 
     setEliminationEnabled(
         enabled
@@ -125,41 +149,162 @@ export class Player {
 
     }
 
-    addStatus(status) {
 
-        if (!status) {
+    // =====================================
+    // ÉTATS
+    // =====================================
 
-            return;
+    hasStatus(
+        statusId
+    ) {
 
-        }
-
-
-        const alreadyExists =
-            this.statuses.some(
-                item =>
-                    item.id === status.id
-            );
-
-
-        if (!alreadyExists) {
-
-            this.statuses.push(status);
-
-        }
+        return this.statuses.some(
+            status =>
+                status.id ===
+                statusId
+        );
 
     }
 
 
-    removeStatus(statusId) {
+    getStatus(
+        statusId
+    ) {
+
+        return (
+            this.statuses.find(
+                status =>
+                    status.id ===
+                    statusId
+            ) ?? null
+        );
+
+    }
+
+
+    addStatus(
+        status
+    ) {
+
+        if (
+            !status ||
+            !status.id
+        ) {
+
+            return false;
+
+        }
+
+
+        const existing =
+            this.getStatus(
+                status.id
+            );
+
+
+        if (existing) {
+
+            return false;
+
+        }
+
+
+        this.statuses.push(
+            status
+        );
+
+
+        return true;
+
+    }
+
+
+    removeStatus(
+        statusId
+    ) {
+
+        const before =
+            this.statuses.length;
+
 
         this.statuses =
             this.statuses.filter(
                 status =>
-                    status.id !== statusId
+                    status.id !==
+                    statusId
             );
+
+
+        return (
+            before !==
+            this.statuses.length
+        );
 
     }
 
+
+    // =====================================
+    // JAUGES
+    // =====================================
+
+    getGauge(
+        gaugeId
+    ) {
+
+        return Number(
+            this.gauges[
+                gaugeId
+            ] ?? 0
+        );
+
+    }
+
+
+    setGauge(
+        gaugeId,
+        value
+    ) {
+
+        const finalValue =
+            Math.max(
+                0,
+                Math.min(
+                    3,
+                    Number(value) || 0
+                )
+            );
+
+
+        this.gauges[
+            gaugeId
+        ] =
+            finalValue;
+
+
+        return finalValue;
+
+    }
+
+
+    changeGauge(
+        gaugeId,
+        amount
+    ) {
+
+        return this.setGauge(
+            gaugeId,
+            this.getGauge(
+                gaugeId
+            ) +
+            Number(amount || 0)
+        );
+
+    }
+
+
+    // =====================================
+    // OBJETS
+    // =====================================
 
     addItem(item) {
 
@@ -170,7 +315,9 @@ export class Player {
         }
 
 
-        this.items.push(item);
+        this.items.push(
+            item
+        );
 
     }
 
@@ -180,11 +327,15 @@ export class Player {
         const index =
             this.items.findIndex(
                 item =>
-                    item.id === itemId
+                    item.id ===
+                    itemId
             );
 
 
-        if (index !== -1) {
+        if (
+            index !==
+            -1
+        ) {
 
             this.items.splice(
                 index,

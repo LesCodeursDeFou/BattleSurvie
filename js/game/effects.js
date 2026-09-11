@@ -1,5 +1,76 @@
 // =====================================
-// MODIFICATION DES VIES
+// JOUEURS TOUCHÉS
+// =====================================
+
+function getAffectedPlayers(
+    effect,
+    actorPlayer,
+    targetPlayer,
+    allPlayers
+) {
+
+    if (
+        effect.target ===
+        "actor"
+    ) {
+
+        return actorPlayer
+            ? [actorPlayer]
+            : [];
+
+    }
+
+
+    if (
+        effect.target ===
+        "target"
+    ) {
+
+        return targetPlayer
+            ? [targetPlayer]
+            : [];
+
+    }
+
+
+    if (
+        effect.target ===
+        "others"
+    ) {
+
+        return allPlayers.filter(
+            player =>
+                player.alive &&
+                (
+                    !targetPlayer ||
+                    player.id !==
+                        targetPlayer.id
+                )
+        );
+
+    }
+
+
+    if (
+        effect.target ===
+        "all"
+    ) {
+
+        return allPlayers.filter(
+            player =>
+                player.alive
+        );
+
+    }
+
+
+    return [];
+
+}
+
+
+// =====================================
+// VIE
 // =====================================
 
 export function applyLifeEffect(
@@ -29,6 +100,9 @@ export function applyLifeEffect(
 
     return {
 
+        kind:
+            "life",
+
         playerId:
             player.id,
 
@@ -50,14 +124,15 @@ export function applyLifeEffect(
 
 
 // =====================================
-// APPLIQUER UNE CONSÉQUENCE
+// CONSÉQUENCE
 // =====================================
 
 export function applyConsequence(
     actorPlayer,
     targetPlayer,
     consequence,
-    allPlayers = []
+    allPlayers = [],
+    context = {}
 ) {
 
     const appliedEffects =
@@ -66,18 +141,23 @@ export function applyConsequence(
 
     if (!consequence) {
 
-        console.error(
-            "applyConsequence : conséquence absente"
-        );
-
         return appliedEffects;
 
     }
 
 
+    const statusManager =
+        context.statusManager ??
+        null;
+
+
+    const relationshipManager =
+        context.relationshipManager ??
+        null;
+
+
     // =====================================
-    // NOUVEAU FORMAT
-    // effects: [...]
+    // FORMAT effects[]
     // =====================================
 
     if (
@@ -96,175 +176,255 @@ export function applyConsequence(
                 }
 
 
-                let affectedPlayers =
-                    [];
-
-
-                // =====================================
-                // ACTEUR
-                // =====================================
-
-                if (
-                    effect.target ===
-                    "actor"
-                ) {
-
-                    if (actorPlayer) {
-
-                        affectedPlayers = [
-                            actorPlayer
-                        ];
-
-                    }
-
-                }
-
-
-                // =====================================
-                // CIBLE
-                // =====================================
-
-                else if (
-                    effect.target ===
-                    "target"
-                ) {
-
-                    if (targetPlayer) {
-
-                        affectedPlayers = [
-                            targetPlayer
-                        ];
-
-                    }
-
-                }
-
-
-                // =====================================
-                // AUTRES
-                //
-                // Tous les vivants sauf targetPlayer.
-                //
-                // Pour judge_choice :
-                // game.js passe actor comme
-                // targetPlayer.
-                //
-                // Donc :
-                // others = tous sauf X.
-                // =====================================
-
-                else if (
-                    effect.target ===
-                    "others"
-                ) {
-
-                    affectedPlayers =
-                        allPlayers.filter(
-                            player => {
-
-                                if (
-                                    !player.alive
-                                ) {
-
-                                    return false;
-
-                                }
-
-
-                                if (
-                                    !targetPlayer
-                                ) {
-
-                                    return true;
-
-                                }
-
-
-                                return (
-                                    player.id !==
-                                    targetPlayer.id
-                                );
-
-                            }
-                        );
-
-                }
-
-
-                // =====================================
-                // TOUS
-                // =====================================
-
-                else if (
-                    effect.target ===
-                    "all"
-                ) {
-
-                    affectedPlayers =
-                        allPlayers.filter(
-                            player =>
-                                player.alive
-                        );
-
-                }
-
-
-                // =====================================
-                // TARGET INCONNU
-                // =====================================
-
-                else {
-
-                    console.warn(
-                        "Type d'effet inconnu :",
-                        effect.target
+                const affectedPlayers =
+                    getAffectedPlayers(
+                        effect,
+                        actorPlayer,
+                        targetPlayer,
+                        allPlayers
                     );
 
-                    return;
 
-                }
-
-
-                // =====================================
-                // PAS DE MODIFICATION DE VIE
-                // =====================================
+                // =================================
+                // VIES
+                // =================================
 
                 if (
-                    typeof effect.lives !==
+                    typeof effect.lives ===
                     "number"
                 ) {
 
-                    return;
+                    affectedPlayers.forEach(
+                        player => {
+
+                            let amount =
+                                effect.lives;
+
+
+                            if (
+                                statusManager
+                            ) {
+
+                                amount =
+                                    statusManager
+                                        .modifyLifeAmount(
+                                            player,
+                                            amount,
+                                            effect
+                                        );
+
+                            }
+
+
+                            const lifeEffect =
+                                applyLifeEffect(
+                                    player,
+                                    amount
+                                );
+
+
+                            if (
+                                lifeEffect
+                            ) {
+
+                                appliedEffects.push(
+                                    lifeEffect
+                                );
+
+                            }
+
+                        }
+                    );
 
                 }
 
 
-                // =====================================
-                // APPLICATION
-                // =====================================
+                // =================================
+                // AJOUT ÉTAT
+                // =================================
 
-                affectedPlayers.forEach(
-                    affectedPlayer => {
+                if (
+                    effect.status &&
+                    statusManager
+                ) {
 
-                        const lifeEffect =
-                            applyLifeEffect(
-                                affectedPlayer,
-                                effect.lives
-                            );
+                    affectedPlayers.forEach(
+                        player => {
+
+                            const statusId =
+                                typeof effect.status ===
+                                    "string"
+                                    ? effect.status
+                                    : effect.status.id;
 
 
-                        if (
-                            lifeEffect
-                        ) {
+                            const duration =
+                                typeof effect.status ===
+                                    "object"
+                                    ? effect.status.duration
+                                    : undefined;
 
-                            appliedEffects.push(
-                                lifeEffect
+
+                            statusManager.addStatus(
+                                player,
+                                statusId,
+                                {
+                                    duration,
+                                    source:
+                                        consequence.id
+                                }
                             );
 
                         }
+                    );
+
+                }
+
+
+                // =================================
+                // SUPPRESSION ÉTAT
+                // =================================
+
+                if (
+                    effect.removeStatus &&
+                    statusManager
+                ) {
+
+                    affectedPlayers.forEach(
+                        player => {
+
+                            statusManager
+                                .removeStatus(
+                                    player,
+                                    effect.removeStatus,
+                                    "L'effet a été dissipé."
+                                );
+
+                        }
+                    );
+
+                }
+
+
+                // =================================
+                // JAUGE
+                // =================================
+
+                if (
+                    effect.gauge &&
+                    statusManager
+                ) {
+
+                    affectedPlayers.forEach(
+                        player => {
+
+                            statusManager
+                                .changeGauge(
+                                    player,
+                                    effect.gauge.id,
+                                    Number(
+                                        effect.gauge.amount ??
+                                        0
+                                    )
+                                );
+
+                        }
+                    );
+
+                }
+
+
+                // =================================
+                // RELATION
+                // =================================
+
+                if (
+                    effect.relation &&
+                    relationshipManager &&
+                    actorPlayer &&
+                    targetPlayer
+                ) {
+
+                    const relation =
+                        effect.relation;
+
+
+                    if (
+                        typeof relation.trust ===
+                        "number"
+                    ) {
+
+                        relationshipManager
+                            .changeTrust(
+                                actorPlayer,
+                                targetPlayer,
+                                relation.trust
+                            );
 
                     }
-                );
+
+
+                    if (
+                        relation.debt ===
+                        true
+                    ) {
+
+                        relationshipManager
+                            .addDebt(
+                                targetPlayer,
+                                actorPlayer
+                            );
+
+                    }
+
+
+                    if (
+                        relation.protection
+                    ) {
+
+                        relationshipManager
+                            .addProtection(
+                                actorPlayer,
+                                targetPlayer,
+                                Number(
+                                    relation.protection
+                                )
+                            );
+
+                    }
+
+
+                    if (
+                        relation.distrust
+                    ) {
+
+                        relationshipManager
+                            .addDistrust(
+                                actorPlayer,
+                                targetPlayer,
+                                Number(
+                                    relation.distrust
+                                )
+                            );
+
+                    }
+
+
+                    if (
+                        typeof relation.insight ===
+                        "number"
+                    ) {
+
+                        relationshipManager
+                            .changeInsight(
+                                actorPlayer,
+                                targetPlayer,
+                                relation.insight
+                            );
+
+                    }
+
+                }
 
             }
         );
@@ -276,14 +436,7 @@ export function applyConsequence(
 
 
     // =====================================
-    // ANCIEN FORMAT
-    //
-    // {
-    //     lives: -2
-    // }
-    //
-    // Compatibilité avec les anciennes
-    // situations.
+    // ANCIEN FORMAT lives
     // =====================================
 
     if (
@@ -292,10 +445,29 @@ export function applyConsequence(
         actorPlayer
     ) {
 
+        let amount =
+            consequence.lives;
+
+
+        if (
+            statusManager
+        ) {
+
+            amount =
+                statusManager
+                    .modifyLifeAmount(
+                        actorPlayer,
+                        amount,
+                        consequence
+                    );
+
+        }
+
+
         const lifeEffect =
             applyLifeEffect(
                 actorPlayer,
-                consequence.lives
+                amount
             );
 
 

@@ -12,7 +12,8 @@ import {
     displayModePrologue,
     displaySecretHandoff,
     displaySecretGuess,
-    displaySecretIntro
+    displaySecretIntro,
+    displayEffectUpdates
 } from "./ui/screens.js";
 
 
@@ -873,12 +874,52 @@ function handleSecretGuess(
 
 function continueAfterConsequence() {
 
+    // =====================================
+    // EFFETS DE FIN DE TOUR
+    // poison, malédiction, expiration...
+    // =====================================
+
+    const events =
+        game.processAfterCurrentTurn();
+
+
+    // =====================================
+    // AFFICHER LES CHANGEMENTS D'ÉTATS
+    // AVANT DE PASSER AU JOUEUR SUIVANT
+    // =====================================
+
+    if (
+        Array.isArray(events) &&
+        events.length > 0
+    ) {
+
+        displayEffectUpdates(
+            events,
+            continueToNextPlayer
+        );
+
+        return;
+
+    }
+
+
+    continueToNextPlayer();
+
+}
+
+
+// =====================================
+// PASSAGE AU JOUEUR SUIVANT
+// =====================================
+
+function continueToNextPlayer() {
+
     const hasNextPlayer =
         game.nextPlayer();
 
 
     // =====================================
-    // ENCORE UN JOUEUR
+    // ENCORE UN JOUEUR À FAIRE JOUER
     // =====================================
 
     if (hasNextPlayer) {
@@ -900,7 +941,7 @@ function continueAfterConsequence() {
 
 
     // =====================================
-    // BOUTON APRÈS RÉCAP
+    // TEXTE DU BOUTON APRÈS LE RÉCAP
     // =====================================
 
     if (
