@@ -1,59 +1,46 @@
 export const SITUATIONS = [
 
-    // =========================================================
-    // 1 - HORDE DE SINGES
-    // =========================================================
+    // =====================================================
+    // 1. HORDE DE SINGES
+    // =====================================================
 
     {
         id: "monkey_horde",
-        title: "Une horde de singes arrive !",
-        category: "Danger",
+        type: "classic",
+        category: "danger",
         icon: "🐒",
-        baseWeight: 1,
-
+        title: "Une horde de singes arrive !",
         description:
-            "Des cris retentissent derrière toi. Une horde entière de singes fonce dans ta direction.",
+            "Des dizaines de singes surgissent de la végétation et foncent droit sur toi.",
 
         choices: [
 
             {
                 id: "monkey_run",
-                title: "🏃 Courir",
-                description:
-                    "Tes jambes vont devoir faire le travail.",
-
+                title: "Courir",
                 consequences: [
 
                     {
-                        id: "monkey_run_bad",
+                        id: "monkey_run_damage",
                         text:
-                            "Tu cours jusqu'à ne plus sentir tes jambes, mais les singes finissent tout de même par te rattraper.",
-                        icon: "🥵",
+                            "Tu réussis à t'échapper, mais pas sans quelques blessures.",
+                        icon: "💥",
                         weight: 60,
-
                         effects: [
                             {
                                 target: "actor",
                                 lives: -1,
                                 tags: ["physical"]
-                            },
-                            {
-                                target: "actor",
-                                gauge: {
-                                    id: "fatigue",
-                                    amount: 1
-                                }
                             }
                         ]
                     },
 
                     {
-                        id: "monkey_run_neutral",
+                        id: "monkey_run_fatigue",
                         text:
-                            "Tu trouves un passage étroit entre deux rochers. Les singes abandonnent finalement la poursuite.",
-                        icon: "😮‍💨",
+                            "Tu distances finalement la horde, complètement essoufflé.",
+                        icon: "😥",
                         weight: 40,
-
                         effects: [
                             {
                                 target: "actor",
@@ -70,19 +57,15 @@ export const SITUATIONS = [
 
             {
                 id: "monkey_fight",
-                title: "💪 Se battre",
-                description:
-                    "Tu regardes tes biceps. Ça devrait suffire.",
-
+                title: "Se battre",
                 consequences: [
 
                     {
                         id: "monkey_fight_win",
                         text:
-                            "Contre toute logique, tu mets la horde en déroute. Même toi, tu ne comprends pas vraiment comment.",
+                            "Contre toute attente, tu fais fuir la horde. Cette victoire te donne confiance.",
                         icon: "💪",
-                        weight: 10,
-
+                        weight: 20,
                         effects: [
                             {
                                 target: "actor",
@@ -101,10 +84,9 @@ export const SITUATIONS = [
                     {
                         id: "monkey_fight_lose",
                         text:
-                            "Les singes étaient plus nombreux, plus rapides et apparemment bien mieux entraînés.",
-                        icon: "💀",
-                        weight: 90,
-
+                            "Ils sont beaucoup trop nombreux. Tu ressors sérieusement amoché.",
+                        icon: "🐒",
+                        weight: 80,
                         effects: [
                             {
                                 target: "actor",
@@ -120,25 +102,19 @@ export const SITUATIONS = [
             {
                 id: "monkey_trap",
                 title: "🛠️ Improviser un piège",
-                description:
-                    "Utiliser une liane et une branche pour détourner la horde.",
-
                 condition: {
                     type: "status",
                     id: "resourceful"
                 },
-
                 consequences: [
-
                     {
                         id: "monkey_trap_success",
                         text:
-                            "Ton piège improvisé fait suffisamment de bruit pour détourner toute la horde. Tu repars tranquillement.",
+                            "Ton piège détourne complètement la horde. Tu passes sans subir le moindre dégât.",
                         icon: "🛠️",
                         weight: 100,
                         effects: []
                     }
-
                 ]
             }
 
@@ -146,37 +122,32 @@ export const SITUATIONS = [
     },
 
 
-    // =========================================================
-    // 2 - NOIX DE COCO
-    // =========================================================
+    // =====================================================
+    // 2. NOIX DE COCO
+    // =====================================================
 
     {
         id: "coconut",
-        title: "Une noix de coco tombe devant toi",
-        category: "Survie",
+        type: "classic",
+        category: "resource",
         icon: "🥥",
-        baseWeight: 1,
-
+        title: "Une noix de coco tombe devant toi",
         description:
-            "Tu n'as rien mangé depuis des heures. Une noix de coco vient de tomber à quelques centimètres de toi.",
+            "Elle semble encore fraîche. Mais sur cette île, même un repas peut réserver une mauvaise surprise.",
 
         choices: [
 
             {
                 id: "coconut_eat",
-                title: "😋 La manger",
-                description:
-                    "De la nourriture gratuite, que demander de plus ?",
-
+                title: "La manger",
                 consequences: [
 
                     {
-                        id: "coconut_eat_good",
+                        id: "coconut_good",
                         text:
-                            "Elle est parfaite. Tu récupères un peu d'énergie et ton ventre arrête enfin de protester.",
+                            "La noix est excellente et te redonne des forces.",
                         icon: "😋",
-                        weight: 18,
-
+                        weight: 30,
                         effects: [
                             {
                                 target: "actor",
@@ -190,12 +161,11 @@ export const SITUATIONS = [
                     },
 
                     {
-                        id: "coconut_eat_bad",
+                        id: "coconut_bad",
                         text:
-                            "Elle était complètement pourrie. Ton estomac déclare immédiatement la guerre.",
+                            "Mauvaise idée. Elle était presque pourrie et ton estomac ne l'apprécie pas.",
                         icon: "🤢",
-                        weight: 62,
-
+                        weight: 40,
                         effects: [
                             {
                                 target: "actor",
@@ -212,11 +182,11 @@ export const SITUATIONS = [
                     },
 
                     {
-                        id: "coconut_eat_neutral",
+                        id: "coconut_neutral",
                         text:
-                            "Elle est à moitié sèche mais comestible. Ce n'est pas un festin, mais ça fera l'affaire.",
+                            "Elle n'est ni bonne ni mauvaise. Au moins, rien ne t'arrive.",
                         icon: "🥥",
-                        weight: 20,
+                        weight: 30,
                         effects: []
                     }
 
@@ -224,29 +194,25 @@ export const SITUATIONS = [
             },
 
             {
-                id: "coconut_leave",
-                title: "🚶 L'ignorer",
-                description:
-                    "Ça paraît beaucoup trop facile.",
-
+                id: "coconut_ignore",
+                title: "L'ignorer",
                 consequences: [
 
                     {
-                        id: "coconut_leave_neutral",
+                        id: "coconut_ignore_nothing",
                         text:
-                            "Tu poursuis simplement ton chemin. Au moins, ton estomac reste tranquille.",
-                        icon: "😌",
+                            "Tu continues ton chemin sans y toucher.",
+                        icon: "🚶",
                         weight: 80,
                         effects: []
                     },
 
                     {
-                        id: "coconut_leave_good",
+                        id: "coconut_ignore_resourceful",
                         text:
-                            "Un énorme singe arrive pour récupérer la noix. Ton instinct vient probablement de te sauver.",
-                        icon: "🐒",
+                            "En observant la noix et les fibres autour, une idée te vient. Tout peut servir ici.",
+                        icon: "🛠️",
                         weight: 20,
-
                         effects: [
                             {
                                 target: "actor",
@@ -259,276 +225,20 @@ export const SITUATIONS = [
                     }
 
                 ]
-            }
-
-        ]
-    },
-
-
-    // =========================================================
-    // 3 - GROTTE
-    // DÉBUT HISTOIRE GROTTE
-    // =========================================================
-
-    {
-        id: "cave",
-        title: "Tu découvres une immense grotte",
-        category: "Exploration",
-        icon: "⛰️",
-        baseWeight: 1,
-
-        description:
-            "La nuit approche. La grotte pourrait constituer un excellent abri, mais son entrée disparaît rapidement dans l'obscurité.",
-
-        choices: [
-
-            {
-                id: "cave_enter",
-                title: "🔦 Entrer",
-                description:
-                    "Tu décides d'explorer l'intérieur.",
-
-                narrative: {
-                    setFlags: [
-                        "cave_entered"
-                    ],
-                    removeFlags: [
-                        "cave_abandoned"
-                    ],
-                    nextSituationBoosts: [
-                        {
-                            id: "cave_deeper",
-                            weight: 28
-                        }
-                    ]
-                },
-
-                consequences: [
-
-                    {
-                        id: "cave_enter_ok",
-                        text:
-                            "L'entrée semble calme. Tu trouves même quelques traces montrant que quelqu'un est déjà passé par ici.",
-                        icon: "👣",
-                        weight: 55,
-                        effects: [],
-
-                        narrative: {
-                            nextSituationBoosts: [
-                                {
-                                    id: "cave_deeper",
-                                    weight: 38
-                                }
-                            ]
-                        }
-                    },
-
-                    {
-                        id: "cave_enter_bad",
-                        text:
-                            "Un sanglier caché dans l'obscurité te surprend et te force à reculer précipitamment.",
-                        icon: "🐗",
-                        weight: 45,
-
-                        effects: [
-                            {
-                                target: "actor",
-                                lives: -1,
-                                tags: ["physical"]
-                            },
-                            {
-                                target: "actor",
-                                gauge: {
-                                    id: "fatigue",
-                                    amount: 1
-                                }
-                            }
-                        ],
-
-                        narrative: {
-                            nextSituationBoosts: [
-                                {
-                                    id: "cave_deeper",
-                                    weight: 4
-                                }
-                            ]
-                        }
-                    }
-
-                ]
             },
 
             {
-                id: "cave_outside",
-                title: "🏕️ Rester dehors",
-                description:
-                    "Tu préfères ne pas découvrir ce qui vit là-dedans.",
-
-                narrative: {
-                    setFlags: [
-                        "cave_abandoned"
-                    ],
-                    removeFlags: [
-                        "cave_entered",
-                        "cave_deep_path"
-                    ]
-                },
-
-                consequences: [
-
-                    {
-                        id: "cave_outside_neutral",
-                        text:
-                            "La nuit est inconfortable mais relativement calme.",
-                        icon: "🌙",
-                        weight: 65,
-                        effects: []
-                    },
-
-                    {
-                        id: "cave_outside_bad",
-                        text:
-                            "Une pluie torrentielle tombe toute la nuit. Tu ne dors pratiquement pas.",
-                        icon: "🌧️",
-                        weight: 35,
-
-                        effects: [
-                            {
-                                target: "actor",
-                                gauge: {
-                                    id: "fatigue",
-                                    amount: 1
-                                }
-                            }
-                        ]
-                    }
-
-                ]
-            }
-
-        ]
-    },
-
-
-    // =========================================================
-    // 4 - SERPENT
-    // =========================================================
-
-    {
-        id: "snake",
-        title: "Un serpent bloque le passage",
-        category: "Danger",
-        icon: "🐍",
-        baseWeight: 1,
-
-        description:
-            "Un énorme serpent est enroulé juste devant toi et semble particulièrement attentif à tes mouvements.",
-
-        choices: [
-
-            {
-                id: "snake_pass",
-                title: "🥷 Passer doucement",
-                description:
-                    "Tu avances le plus lentement possible.",
-
-                consequences: [
-
-                    {
-                        id: "snake_pass_neutral",
-                        text:
-                            "Tu passes sans faire de bruit. Le serpent ne bouge même pas.",
-                        icon: "😮‍💨",
-                        weight: 58,
-                        effects: []
-                    },
-
-                    {
-                        id: "snake_pass_bad",
-                        text:
-                            "Une branche craque sous ton pied. Le serpent apprécie moyennement et te mord avant de disparaître.",
-                        icon: "🐍",
-                        weight: 42,
-
-                        effects: [
-                            {
-                                target: "actor",
-                                lives: -1
-                            },
-                            {
-                                target: "actor",
-                                status: "poisoned"
-                            }
-                        ]
-                    }
-
-                ]
-            },
-
-            {
-                id: "snake_throw",
-                title: "🪨 Lui jeter une pierre",
-                description:
-                    "La négociation n'est visiblement pas ton fort.",
-
-                consequences: [
-
-                    {
-                        id: "snake_throw_good",
-                        text:
-                            "La pierre tombe juste devant lui et le fait fuir. Tu prends soudainement un peu trop confiance en toi.",
-                        icon: "🎯",
-                        weight: 20,
-
-                        effects: [
-                            {
-                                target: "actor",
-                                status: {
-                                    id: "courage",
-                                    duration: 1
-                                }
-                            }
-                        ]
-                    },
-
-                    {
-                        id: "snake_throw_bad",
-                        text:
-                            "Tu rates le serpent mais réussis parfaitement à l'énerver. Il te mord avant de s'éloigner.",
-                        icon: "😬",
-                        weight: 80,
-
-                        effects: [
-                            {
-                                target: "actor",
-                                lives: -1
-                            },
-                            {
-                                target: "actor",
-                                status: "poisoned"
-                            }
-                        ]
-                    }
-
-                ]
-            },
-
-            {
-                id: "snake_diversion",
-                title: "🛠️ Créer une diversion",
-                description:
-                    "Utiliser une longue branche pour attirer son attention ailleurs.",
-
+                id: "coconut_resourceful",
+                title: "🛠️ Récupérer la noix et ses fibres",
                 condition: {
                     type: "status",
                     id: "resourceful"
                 },
-
                 consequences: [
                     {
-                        id: "snake_diversion_success",
+                        id: "coconut_resourceful_success",
                         text:
-                            "Tu déplaces lentement une branche à distance. Le serpent suit le mouvement et libère le passage.",
+                            "Tu récupères proprement ce qui peut être utile sans prendre de risque.",
                         icon: "🛠️",
                         weight: 100,
                         effects: []
@@ -540,574 +250,231 @@ export const SITUATIONS = [
     },
 
 
-    // =========================================================
-    // 5 - CABANE
-    // DÉBUT HISTOIRE CABANE
-    // =========================================================
+    // =====================================================
+    // 3. GROTTE — DÉBUT
+    // =====================================================
 
     {
-        id: "abandoned_hut",
-        title: "Tu trouves une cabane abandonnée",
-        category: "Exploration",
-        icon: "🛖",
-        baseWeight: 1,
-
+        id: "cave",
+        type: "classic",
+        category: "exploration",
+        icon: "🕳️",
+        title: "Tu découvres une immense grotte",
         description:
-            "Une vieille cabane apparaît derrière les arbres. La porte est entrouverte et l'intérieur est plongé dans l'obscurité.",
+            "Une ouverture béante s'enfonce sous la roche. L'air froid qui en sort contraste avec la chaleur de l'île.",
 
         choices: [
 
             {
-                id: "hut_enter",
-                title: "🚪 Entrer",
-                description:
-                    "Quel est le pire qui puisse arriver ?",
-
-                narrative: {
-                    setFlags: [
-                        "hut_entered"
-                    ],
-                    removeFlags: [
-                        "hut_abandoned"
-                    ],
-                    nextSituationBoosts: [
-                        {
-                            id: "hut_inside",
-                            weight: 30
-                        }
-                    ]
-                },
-
+                id: "cave_enter",
+                title: "Entrer",
                 consequences: [
 
                     {
-                        id: "hut_enter_good",
+                        id: "cave_enter_success",
                         text:
-                            "Tu trouves quelques conserves, une vieille lampe et plusieurs objets encore utilisables.",
-                        icon: "🥫",
-                        weight: 18,
+                            "Tu progresses dans l'obscurité. Le terrain est éprouvant, mais un passage continue plus profondément.",
+                        icon: "🔦",
+                        weight: 80,
+                        effects: [
+                            {
+                                target: "actor",
+                                gauge: {
+                                    id: "fatigue",
+                                    amount: 1
+                                }
+                            }
+                        ],
+                        narrative: {
+                            setFlags: [
+                                "cave_started"
+                            ],
+                            forceNextSituation:
+                                "cave_deeper"
+                        }
+                    },
 
+                    {
+                        id: "cave_enter_fail",
+                        text:
+                            "Tu glisses sur la roche et te blesses. Tu préfères abandonner l'exploration.",
+                        icon: "💥",
+                        weight: 20,
+                        effects: [
+                            {
+                                target: "actor",
+                                lives: -1,
+                                tags: ["physical"]
+                            }
+                        ],
+                        narrative: {
+                            setFlags: [
+                                "cave_closed"
+                            ],
+                            removeFlags: [
+                                "cave_started",
+                                "cave_deeper_reached"
+                            ],
+                            cancelStory: true
+                        }
+                    }
+
+                ]
+            },
+
+            {
+                id: "cave_stay_out",
+                title: "Rester dehors",
+                consequences: [
+
+                    {
+                        id: "cave_stay_out_safe",
+                        text:
+                            "Tu décides que cette grotte ne mérite pas le risque.",
+                        icon: "🌴",
+                        weight: 80,
+                        effects: [],
+                        narrative: {
+                            setFlags: [
+                                "cave_closed"
+                            ],
+                            cancelStory: true
+                        }
+                    },
+
+                    {
+                        id: "cave_stay_out_fatigue",
+                        text:
+                            "Tu contournes la zone rocheuse. Le détour est plus fatigant que prévu.",
+                        icon: "😥",
+                        weight: 20,
+                        effects: [
+                            {
+                                target: "actor",
+                                gauge: {
+                                    id: "fatigue",
+                                    amount: 1
+                                }
+                            }
+                        ],
+                        narrative: {
+                            setFlags: [
+                                "cave_closed"
+                            ],
+                            cancelStory: true
+                        }
+                    }
+
+                ]
+            },
+
+            {
+                id: "cave_resourceful",
+                title: "🛠️ Fabriquer une torche et explorer",
+                condition: {
+                    type: "status",
+                    id: "resourceful"
+                },
+                consequences: [
+                    {
+                        id: "cave_resourceful_success",
+                        text:
+                            "Avec une torche improvisée, tu peux avancer sans difficulté dans l'obscurité.",
+                        icon: "🔥",
+                        weight: 100,
+                        effects: [],
+                        narrative: {
+                            setFlags: [
+                                "cave_started"
+                            ],
+                            forceNextSituation:
+                                "cave_deeper"
+                        }
+                    }
+                ]
+            }
+
+        ]
+    },
+
+
+    // =====================================================
+    // 4. SERPENT
+    // =====================================================
+
+    {
+        id: "snake",
+        type: "classic",
+        category: "danger",
+        icon: "🐍",
+        title: "Un serpent bloque le passage",
+        description:
+            "Le reptile se dresse devant toi et semble prêt à frapper au moindre mouvement.",
+
+        choices: [
+
+            {
+                id: "snake_slow",
+                title: "Passer doucement",
+                consequences: [
+
+                    {
+                        id: "snake_slow_success",
+                        text:
+                            "Tu observes ses mouvements et réussis à passer. Cette expérience t'apprend à mieux improviser.",
+                        icon: "🛠️",
+                        weight: 70,
+                        effects: [
+                            {
+                                target: "actor",
+                                status: {
+                                    id: "resourceful",
+                                    duration: 1
+                                }
+                            }
+                        ]
+                    },
+
+                    {
+                        id: "snake_slow_fail",
+                        text:
+                            "Le serpent frappe plus vite que prévu.",
+                        icon: "☠️",
+                        weight: 30,
+                        effects: [
+                            {
+                                target: "actor",
+                                lives: -1,
+                                tags: ["physical"]
+                            },
+                            {
+                                target: "actor",
+                                status: {
+                                    id: "poisoned"
+                                }
+                            }
+                        ]
+                    }
+
+                ]
+            },
+
+            {
+                id: "snake_stone",
+                title: "Lui jeter une pierre",
+                consequences: [
+
+                    {
+                        id: "snake_stone_success",
+                        text:
+                            "Ton lancer est parfait. Le serpent prend la fuite et tu te sens invincible.",
+                        icon: "💪",
+                        weight: 30,
                         effects: [
                             {
                                 target: "actor",
                                 lives: 1
                             },
-                            {
-                                target: "actor",
-                                status: {
-                                    id: "resourceful",
-                                    duration: 2
-                                }
-                            }
-                        ],
-
-                        narrative: {
-                            nextSituationBoosts: [
-                                {
-                                    id: "hut_inside",
-                                    weight: 42
-                                }
-                            ]
-                        }
-                    },
-
-                    {
-                        id: "hut_enter_bad",
-                        text:
-                            "Le plancher cède sous ton pied. Tu réussis à ressortir, légèrement moins enthousiaste qu'avant.",
-                        icon: "🕳️",
-                        weight: 62,
-
-                        effects: [
-                            {
-                                target: "actor",
-                                lives: -1,
-                                tags: ["physical"]
-                            },
-                            {
-                                target: "actor",
-                                gauge: {
-                                    id: "fatigue",
-                                    amount: 1
-                                }
-                            }
-                        ],
-
-                        narrative: {
-                            nextSituationBoosts: [
-                                {
-                                    id: "hut_inside",
-                                    weight: 5
-                                }
-                            ]
-                        }
-                    },
-
-                    {
-                        id: "hut_enter_neutral",
-                        text:
-                            "La cabane semble vide. Tu décides tout de même de regarder rapidement autour de toi.",
-                        icon: "🔦",
-                        weight: 20,
-                        effects: []
-                    }
-
-                ]
-            },
-
-            {
-                id: "hut_ignore",
-                title: "🚶 Continuer",
-                description:
-                    "Tu as vu suffisamment de films d'horreur.",
-
-                narrative: {
-                    setFlags: [
-                        "hut_abandoned"
-                    ],
-                    removeFlags: [
-                        "hut_entered",
-                        "hut_floor_checked",
-                        "hut_key"
-                    ]
-                },
-
-                consequences: [
-
-                    {
-                        id: "hut_ignore_neutral",
-                        text:
-                            "Tu laisses la cabane derrière toi et continues ton exploration.",
-                        icon: "😌",
-                        weight: 82,
-                        effects: []
-                    },
-
-                    {
-                        id: "hut_ignore_bad",
-                        text:
-                            "En voulant contourner la cabane, tu te retrouves dans une végétation extrêmement dense.",
-                        icon: "🌿",
-                        weight: 18,
-
-                        effects: [
-                            {
-                                target: "actor",
-                                gauge: {
-                                    id: "fatigue",
-                                    amount: 1
-                                }
-                            }
-                        ]
-                    }
-
-                ]
-            }
-
-        ]
-    },
-
-
-    // =========================================================
-    // 6 - TEMPÊTE
-    // =========================================================
-
-    {
-        id: "storm",
-        title: "Une énorme tempête approche",
-        category: "Météo",
-        icon: "⛈️",
-        baseWeight: 1,
-
-        description:
-            "Le ciel devient noir et le vent commence à souffler extrêmement fort.",
-
-        choices: [
-
-            {
-                id: "storm_tree",
-                title: "🌳 S'abriter sous un arbre",
-                description:
-                    "C'est l'abri le plus proche.",
-
-                consequences: [
-
-                    {
-                        id: "storm_tree_neutral",
-                        text:
-                            "L'arbre résiste et te protège d'une bonne partie de la pluie.",
-                        icon: "🌳",
-                        weight: 35,
-                        effects: []
-                    },
-
-                    {
-                        id: "storm_tree_bad",
-                        text:
-                            "Une énorme branche tombe à quelques centimètres de toi. Enfin... pas suffisamment loin.",
-                        icon: "🪵",
-                        weight: 65,
-
-                        effects: [
-                            {
-                                target: "actor",
-                                lives: -2,
-                                tags: ["physical"]
-                            }
-                        ]
-                    }
-
-                ]
-            },
-
-            {
-                id: "storm_rocks",
-                title: "⛰️ Chercher un abri rocheux",
-                description:
-                    "Tu cours vers une zone de rochers.",
-
-                consequences: [
-
-                    {
-                        id: "storm_rocks_good",
-                        text:
-                            "Tu trouves une petite cavité parfaitement protégée et peux enfin reprendre ton souffle.",
-                        icon: "😌",
-                        weight: 22,
-
-                        effects: [
-                            {
-                                target: "actor",
-                                gauge: {
-                                    id: "fatigue",
-                                    amount: -1
-                                }
-                            }
-                        ]
-                    },
-
-                    {
-                        id: "storm_rocks_bad",
-                        text:
-                            "Tu glisses sur la roche mouillée et termines quelques mètres plus bas.",
-                        icon: "🤕",
-                        weight: 78,
-
-                        effects: [
-                            {
-                                target: "actor",
-                                lives: -1,
-                                tags: ["physical"]
-                            }
-                        ]
-                    }
-
-                ]
-            },
-
-            {
-                id: "storm_shelter",
-                title: "🛠️ Construire un abri rapide",
-                description:
-                    "Quelques branches et de grandes feuilles devraient suffire.",
-
-                condition: {
-                    type: "status",
-                    id: "resourceful"
-                },
-
-                consequences: [
-
-                    {
-                        id: "storm_shelter_success",
-                        text:
-                            "Ton abri improvisé résiste suffisamment longtemps pour laisser passer le pire de la tempête.",
-                        icon: "🛖",
-                        weight: 100,
-
-                        effects: [
-                            {
-                                target: "actor",
-                                gauge: {
-                                    id: "fatigue",
-                                    amount: -1
-                                }
-                            }
-                        ]
-                    }
-
-                ]
-            }
-
-        ]
-    },
-
-
-    // =========================================================
-    // 7 - RIVIÈRE
-    // DÉBUT HISTOIRE RIVIÈRE
-    // =========================================================
-
-    {
-        id: "river",
-        title: "Une rivière bloque ton chemin",
-        category: "Exploration",
-        icon: "🌊",
-        baseWeight: 1,
-
-        description:
-            "Le courant est puissant. Tu peux tenter de traverser ou suivre la rivière pour découvrir où elle mène.",
-
-        choices: [
-
-            {
-                id: "river_swim",
-                title: "🏊 Traverser",
-                description:
-                    "Quelques mètres seulement... normalement.",
-
-                narrative: {
-                    setFlags: [
-                        "river_crossed"
-                    ],
-                    removeFlags: [
-                        "river_followed"
-                    ]
-                },
-
-                consequences: [
-
-                    {
-                        id: "river_swim_good",
-                        text:
-                            "Tu réussis à atteindre l'autre rive, complètement trempé mais satisfait.",
-                        icon: "🏊",
-                        weight: 22,
-
-                        effects: [
-                            {
-                                target: "actor",
-                                gauge: {
-                                    id: "fatigue",
-                                    amount: 1
-                                }
-                            }
-                        ]
-                    },
-
-                    {
-                        id: "river_swim_bad",
-                        text:
-                            "Le courant t'emporte et te projette contre plusieurs rochers.",
-                        icon: "🌊",
-                        weight: 78,
-
-                        effects: [
-                            {
-                                target: "actor",
-                                lives: -1,
-                                tags: ["physical"]
-                            },
-                            {
-                                target: "actor",
-                                gauge: {
-                                    id: "fatigue",
-                                    amount: 1
-                                }
-                            }
-                        ]
-                    }
-
-                ]
-            },
-
-            {
-                id: "river_follow",
-                title: "🥾 Suivre la rivière",
-                description:
-                    "Une rivière mène forcément quelque part.",
-
-                narrative: {
-                    setFlags: [
-                        "river_followed"
-                    ],
-                    removeFlags: [
-                        "river_crossed"
-                    ],
-                    nextSituationBoosts: [
-                        {
-                            id: "waterfall",
-                            weight: 30
-                        }
-                    ]
-                },
-
-                consequences: [
-
-                    {
-                        id: "river_follow_neutral",
-                        text:
-                            "Le chemin longeant la rivière est étonnamment facile à suivre.",
-                        icon: "🌿",
-                        weight: 68,
-                        effects: [],
-
-                        narrative: {
-                            nextSituationBoosts: [
-                                {
-                                    id: "waterfall",
-                                    weight: 40
-                                }
-                            ]
-                        }
-                    },
-
-                    {
-                        id: "river_follow_bad",
-                        text:
-                            "La végétation devient extrêmement dense et ralentit fortement ta progression.",
-                        icon: "🌿",
-                        weight: 32,
-
-                        effects: [
-                            {
-                                target: "actor",
-                                gauge: {
-                                    id: "fatigue",
-                                    amount: 1
-                                }
-                            }
-                        ],
-
-                        narrative: {
-                            nextSituationBoosts: [
-                                {
-                                    id: "waterfall",
-                                    weight: 7
-                                }
-                            ]
-                        }
-                    }
-
-                ]
-            },
-
-            {
-                id: "river_build_raft",
-                title: "🛠️ Fabriquer un petit radeau",
-                description:
-                    "Quelques branches et lianes peuvent t'éviter une baignade très risquée.",
-
-                condition: {
-                    type: "status",
-                    id: "resourceful"
-                },
-
-                narrative: {
-                    setFlags: [
-                        "river_crossed",
-                        "river_raft_used"
-                    ],
-                    removeFlags: [
-                        "river_followed"
-                    ]
-                },
-
-                consequences: [
-
-                    {
-                        id: "river_build_raft_success",
-                        text:
-                            "Ton radeau est laid, bancal et absolument pas homologué. Mais il traverse la rivière sans problème.",
-                        icon: "🛶",
-                        weight: 100,
-                        effects: []
-                    }
-
-                ]
-            }
-
-        ]
-    },
-
-
-    // =========================================================
-    // 8 - SANGLIER
-    // =========================================================
-
-    {
-        id: "boar",
-        title: "Un sanglier te charge",
-        category: "Danger",
-        icon: "🐗",
-        baseWeight: 1,
-
-        description:
-            "Tu entends un grognement puis vois un énorme sanglier foncer droit vers toi.",
-
-        choices: [
-
-            {
-                id: "boar_tree",
-                title: "🌴 Grimper à un arbre",
-                description:
-                    "Il faut juste être plus rapide que lui.",
-
-                consequences: [
-
-                    {
-                        id: "boar_tree_neutral",
-                        text:
-                            "Tu atteins une branche juste à temps. Le sanglier finit par repartir.",
-                        icon: "😮‍💨",
-                        weight: 52,
-
-                        effects: [
-                            {
-                                target: "actor",
-                                gauge: {
-                                    id: "fatigue",
-                                    amount: 1
-                                }
-                            }
-                        ]
-                    },
-
-                    {
-                        id: "boar_tree_bad",
-                        text:
-                            "Tu découvres que grimper à un arbre demande un minimum de technique.",
-                        icon: "😵",
-                        weight: 48,
-
-                        effects: [
-                            {
-                                target: "actor",
-                                lives: -1,
-                                tags: ["physical"]
-                            }
-                        ]
-                    }
-
-                ]
-            },
-
-            {
-                id: "boar_dodge",
-                title: "💨 L'esquiver",
-                description:
-                    "Tu te prends soudainement pour un torero.",
-
-                consequences: [
-
-                    {
-                        id: "boar_dodge_good",
-                        text:
-                            "Esquive parfaite. Le sanglier termine sa course dans un buisson et ton ego vient de doubler de volume.",
-                        icon: "😎",
-                        weight: 18,
-
-                        effects: [
                             {
                                 target: "actor",
                                 status: {
@@ -1119,12 +486,270 @@ export const SITUATIONS = [
                     },
 
                     {
-                        id: "boar_dodge_bad",
+                        id: "snake_stone_fail",
                         text:
-                            "Tu avais oublié un détail essentiel : tu n'es effectivement pas torero.",
-                        icon: "💥",
-                        weight: 82,
+                            "La pierre le rend agressif. Il bondit et te mord.",
+                        icon: "☠️",
+                        weight: 70,
+                        effects: [
+                            {
+                                target: "actor",
+                                lives: -1,
+                                tags: ["physical"]
+                            },
+                            {
+                                target: "actor",
+                                status: {
+                                    id: "poisoned"
+                                }
+                            }
+                        ]
+                    }
 
+                ]
+            },
+
+            {
+                id: "snake_diversion",
+                title: "🛠️ Créer une diversion",
+                condition: {
+                    type: "status",
+                    id: "resourceful"
+                },
+                consequences: [
+                    {
+                        id: "snake_diversion_success",
+                        text:
+                            "Tu détournes son attention et passes tranquillement.",
+                        icon: "🛠️",
+                        weight: 100,
+                        effects: []
+                    }
+                ]
+            }
+
+        ]
+    },
+
+
+    // =====================================================
+    // 5. CABANE — DÉBUT
+    // =====================================================
+
+    {
+        id: "abandoned_hut",
+        type: "classic",
+        category: "exploration",
+        icon: "🛖",
+        title: "Tu trouves une cabane abandonnée",
+        description:
+            "À moitié dissimulée par la végétation, une vieille cabane semble abandonnée depuis des années.",
+
+        choices: [
+
+            {
+                id: "hut_enter",
+                title: "Entrer",
+                consequences: [
+
+                    {
+                        id: "hut_enter_good",
+                        text:
+                            "Tu trouves quelques provisions encore utilisables. Quelque chose dans le plancher attire ensuite ton attention.",
+                        icon: "❤️",
+                        weight: 30,
+                        effects: [
+                            {
+                                target: "actor",
+                                lives: 1
+                            },
+                            {
+                                target: "actor",
+                                gauge: {
+                                    id: "fatigue",
+                                    amount: 1
+                                }
+                            }
+                        ],
+                        narrative: {
+                            setFlags: [
+                                "hut_started"
+                            ],
+                            forceNextSituation:
+                                "hut_inside"
+                        }
+                    },
+
+                    {
+                        id: "hut_enter_bad",
+                        text:
+                            "Une planche cède sous ton poids. Blessé, tu quittes immédiatement la cabane.",
+                        icon: "💥",
+                        weight: 20,
+                        effects: [
+                            {
+                                target: "actor",
+                                lives: -1,
+                                tags: ["physical"]
+                            },
+                            {
+                                target: "actor",
+                                gauge: {
+                                    id: "fatigue",
+                                    amount: 1
+                                }
+                            }
+                        ],
+                        narrative: {
+                            setFlags: [
+                                "hut_closed"
+                            ],
+                            cancelStory: true
+                        }
+                    },
+
+                    {
+                        id: "hut_enter_neutral",
+                        text:
+                            "L'intérieur semble vide, mais certaines lames du plancher paraissent étrangement récentes.",
+                        icon: "🔎",
+                        weight: 50,
+                        effects: [],
+                        narrative: {
+                            setFlags: [
+                                "hut_started"
+                            ],
+                            forceNextSituation:
+                                "hut_inside"
+                        }
+                    }
+
+                ]
+            },
+
+            {
+                id: "hut_continue",
+                title: "Continuer ton chemin",
+                consequences: [
+
+                    {
+                        id: "hut_continue_safe",
+                        text:
+                            "Tu laisses la cabane derrière toi.",
+                        icon: "🚶",
+                        weight: 80,
+                        effects: [],
+                        narrative: {
+                            setFlags: [
+                                "hut_closed"
+                            ],
+                            cancelStory: true
+                        }
+                    },
+
+                    {
+                        id: "hut_continue_tired",
+                        text:
+                            "Tu contournes la végétation autour de la cabane et perds beaucoup d'énergie.",
+                        icon: "😥",
+                        weight: 20,
+                        effects: [
+                            {
+                                target: "actor",
+                                gauge: {
+                                    id: "fatigue",
+                                    amount: 1
+                                }
+                            }
+                        ],
+                        narrative: {
+                            setFlags: [
+                                "hut_closed"
+                            ],
+                            cancelStory: true
+                        }
+                    }
+
+                ]
+            },
+
+            {
+                id: "hut_window",
+                title: "🛠️ Inspecter par la fenêtre avant d'entrer",
+                condition: {
+                    type: "status",
+                    id: "resourceful"
+                },
+                consequences: [
+                    {
+                        id: "hut_window_success",
+                        text:
+                            "Tu repères les planches fragiles avant d'entrer et explores la cabane sans danger.",
+                        icon: "🔎",
+                        weight: 100,
+                        effects: [],
+                        narrative: {
+                            setFlags: [
+                                "hut_started"
+                            ],
+                            forceNextSituation:
+                                "hut_inside"
+                        }
+                    }
+                ]
+            }
+
+        ]
+    },
+
+
+    // =====================================================
+    // 6. TEMPÊTE
+    // =====================================================
+
+    {
+        id: "storm",
+        type: "classic",
+        category: "weather",
+        icon: "⛈️",
+        title: "Une énorme tempête approche",
+        description:
+            "Le ciel devient noir en quelques minutes. Le vent secoue déjà violemment les arbres.",
+
+        choices: [
+
+            {
+                id: "storm_tree",
+                title: "S'abriter sous le premier arbre",
+                consequences: [
+
+                    {
+                        id: "storm_tree_good",
+                        text:
+                            "L'arbre résiste à la tempête. Tu traverses l'épreuve avec une confiance nouvelle.",
+                        icon: "🛡️",
+                        weight: 35,
+                        effects: [
+                            {
+                                target: "actor",
+                                lives: 1
+                            },
+                            {
+                                target: "actor",
+                                status: {
+                                    id: "courage",
+                                    duration: 1
+                                }
+                            }
+                        ]
+                    },
+
+                    {
+                        id: "storm_tree_bad",
+                        text:
+                            "Une énorme branche s'effondre près de toi et te frappe.",
+                        icon: "🌳",
+                        weight: 65,
                         effects: [
                             {
                                 target: "actor",
@@ -1135,110 +760,153 @@ export const SITUATIONS = [
                     }
 
                 ]
+            },
+
+            {
+                id: "storm_rock",
+                title: "Chercher un abri rocheux",
+                consequences: [
+
+                    {
+                        id: "storm_rock_good",
+                        text:
+                            "Tu trouves une cavité parfaitement protégée du vent et récupères un peu.",
+                        icon: "🪨",
+                        weight: 60,
+                        effects: [
+                            {
+                                target: "actor",
+                                gauge: {
+                                    id: "fatigue",
+                                    amount: -1
+                                }
+                            },
+                            {
+                                target: "actor",
+                                status: {
+                                    id: "resourceful",
+                                    duration: 1
+                                }
+                            }
+                        ]
+                    },
+
+                    {
+                        id: "storm_rock_bad",
+                        text:
+                            "La recherche est difficile, mais tu finis par trouver un abri après quelques blessures.",
+                        icon: "💥",
+                        weight: 40,
+                        effects: [
+                            {
+                                target: "actor",
+                                lives: -1,
+                                tags: ["physical"]
+                            },
+                            {
+                                target: "actor",
+                                gauge: {
+                                    id: "fatigue",
+                                    amount: -1
+                                }
+                            }
+                        ]
+                    }
+
+                ]
+            },
+
+            {
+                id: "storm_resourceful",
+                title: "🛠️ Construire un abri rapide",
+                condition: {
+                    type: "status",
+                    id: "resourceful"
+                },
+                consequences: [
+                    {
+                        id: "storm_resourceful_success",
+                        text:
+                            "Ton abri improvisé tient suffisamment longtemps pour laisser passer le plus violent de la tempête.",
+                        icon: "🛖",
+                        weight: 100,
+                        effects: []
+                    }
+                ]
             }
 
         ]
     },
 
 
-    // =========================================================
-    // 9 - INTÉRIEUR DE LA CABANE
-    // SUITE CABANE
-    // =========================================================
+    // =====================================================
+    // 7. RIVIÈRE — DÉBUT
+    // =====================================================
 
     {
-        id: "hut_inside",
-        title: "Tu explores plus sérieusement la cabane",
-        category: "Suite",
-        icon: "🛖",
-        baseWeight: 1,
-
-        requirements: {
-            all: [
-                "hut_entered"
-            ],
-            not: [
-                "hut_abandoned"
-            ]
-        },
-
+        id: "river",
+        type: "classic",
+        category: "exploration",
+        icon: "🌊",
+        title: "Une rivière bloque ton chemin",
         description:
-            "Quelque chose dans cette cabane continue de t'intriguer. Tu décides d'inspecter les lieux plus attentivement.",
+            "Le courant est puissant. Tu peux tenter de traverser ou suivre la rivière vers l'intérieur de l'île.",
 
         choices: [
 
             {
-                id: "hut_inside_floor",
-                title: "🪵 Inspecter le plancher",
-                description:
-                    "Certaines lattes semblent avoir été déplacées.",
-
-                narrative: {
-                    setFlags: [
-                        "hut_floor_checked"
-                    ],
-                    nextSituationBoosts: [
-                        {
-                            id: "hut_trapdoor",
-                            weight: 32
-                        }
-                    ]
-                },
-
+                id: "river_cross",
+                title: "Traverser",
                 consequences: [
 
                     {
-                        id: "hut_inside_floor_good",
+                        id: "river_cross_tired",
                         text:
-                            "Sous une latte, tu découvres une petite clé rouillée et quelques outils encore utilisables.",
-                        icon: "🗝️",
-                        weight: 52,
-
+                            "Tu atteins l'autre rive, épuisé par le courant.",
+                        icon: "😥",
+                        weight: 30,
                         effects: [
                             {
                                 target: "actor",
-                                status: {
-                                    id: "resourceful",
-                                    duration: 2
+                                gauge: {
+                                    id: "fatigue",
+                                    amount: 1
                                 }
                             }
                         ],
-
                         narrative: {
                             setFlags: [
-                                "hut_key"
+                                "river_closed"
                             ],
-                            nextSituationBoosts: [
-                                {
-                                    id: "hut_trapdoor",
-                                    weight: 45
-                                }
-                            ]
+                            cancelStory: true
                         }
                     },
 
                     {
-                        id: "hut_inside_floor_bad",
+                        id: "river_cross_hurt",
                         text:
-                            "Une latte casse et ta jambe traverse brutalement le plancher.",
-                        icon: "🤕",
-                        weight: 48,
-
+                            "Le courant te projette contre les rochers avant que tu atteignes l'autre rive.",
+                        icon: "💥",
+                        weight: 70,
                         effects: [
                             {
                                 target: "actor",
                                 lives: -1,
                                 tags: ["physical"]
+                            },
+                            {
+                                target: "actor",
+                                gauge: {
+                                    id: "fatigue",
+                                    amount: 1
+                                }
                             }
                         ],
-
                         narrative: {
-                            nextSituationBoosts: [
-                                {
-                                    id: "hut_trapdoor",
-                                    weight: 8
-                                }
-                            ]
+                            setFlags: [
+                                "river_closed"
+                            ],
+                            cancelStory: true
                         }
                     }
 
@@ -1246,49 +914,103 @@ export const SITUATIONS = [
             },
 
             {
-                id: "hut_inside_leave",
-                title: "🚪 Quitter la cabane",
-                description:
-                    "Tu as déjà suffisamment tenté ta chance.",
-
-                narrative: {
-                    setFlags: [
-                        "hut_abandoned"
-                    ],
-                    removeFlags: [
-                        "hut_entered",
-                        "hut_floor_checked",
-                        "hut_key"
-                    ]
-                },
-
+                id: "river_follow",
+                title: "Suivre la rivière",
                 consequences: [
 
                     {
-                        id: "hut_inside_leave_neutral",
+                        id: "river_follow_tired",
                         text:
-                            "Tu quittes définitivement la cabane sans incident.",
-                        icon: "🚶",
-                        weight: 88,
-                        effects: []
+                            "Le trajet est fatigant, mais un grondement immense apparaît au loin.",
+                        icon: "🌊",
+                        weight: 30,
+                        effects: [
+                            {
+                                target: "actor",
+                                gauge: {
+                                    id: "fatigue",
+                                    amount: 1
+                                }
+                            }
+                        ],
+                        narrative: {
+                            setFlags: [
+                                "river_started"
+                            ],
+                            forceNextSituation:
+                                "waterfall"
+                        }
                     },
 
                     {
-                        id: "hut_inside_leave_bad",
+                        id: "river_follow_fail",
                         text:
-                            "Une planche du toit se détache au moment où tu passes la porte.",
-                        icon: "🪵",
-                        weight: 12,
-
+                            "Tu glisses sur la berge et te blesses. Tu décides d'abandonner ce chemin.",
+                        icon: "💥",
+                        weight: 20,
                         effects: [
                             {
                                 target: "actor",
                                 lives: -1,
                                 tags: ["physical"]
+                            },
+                            {
+                                target: "actor",
+                                gauge: {
+                                    id: "fatigue",
+                                    amount: 1
+                                }
                             }
-                        ]
+                        ],
+                        narrative: {
+                            setFlags: [
+                                "river_closed"
+                            ],
+                            cancelStory: true
+                        }
+                    },
+
+                    {
+                        id: "river_follow_good",
+                        text:
+                            "Tu suis tranquillement la berge. Le bruit d'une immense cascade devient de plus en plus puissant.",
+                        icon: "💧",
+                        weight: 50,
+                        effects: [],
+                        narrative: {
+                            setFlags: [
+                                "river_started"
+                            ],
+                            forceNextSituation:
+                                "waterfall"
+                        }
                     }
 
+                ]
+            },
+
+            {
+                id: "river_raft",
+                title: "🛠️ Fabriquer un petit radeau",
+                condition: {
+                    type: "status",
+                    id: "resourceful"
+                },
+                consequences: [
+                    {
+                        id: "river_raft_success",
+                        text:
+                            "Ton radeau fonctionne. Tu traverses directement jusqu'à l'autre rive sans te blesser.",
+                        icon: "🛶",
+                        weight: 100,
+                        effects: [],
+                        narrative: {
+                            setFlags: [
+                                "river_closed"
+                            ],
+                            cancelStory: true
+                        }
+                    }
                 ]
             }
 
@@ -1296,37 +1018,350 @@ export const SITUATIONS = [
     },
 
 
-    // =========================================================
-    // 10 - ABEILLES
-    // =========================================================
+    // =====================================================
+    // 8. SANGLIER
+    // =====================================================
+
+    {
+        id: "boar",
+        type: "classic",
+        category: "danger",
+        icon: "🐗",
+        title: "Un sanglier te charge",
+        description:
+            "Un énorme sanglier surgit des buissons et fonce droit sur toi.",
+
+        choices: [
+
+            {
+                id: "boar_tree",
+                title: "Grimper à un arbre",
+                consequences: [
+
+                    {
+                        id: "boar_tree_tired",
+                        text:
+                            "Tu échappes au sanglier, mais l'ascension t'épuise.",
+                        icon: "😥",
+                        weight: 40,
+                        effects: [
+                            {
+                                target: "actor",
+                                gauge: {
+                                    id: "fatigue",
+                                    amount: 1
+                                }
+                            }
+                        ]
+                    },
+
+                    {
+                        id: "boar_tree_hurt",
+                        text:
+                            "Le sanglier te percute avant que tu sois suffisamment haut.",
+                        icon: "💥",
+                        weight: 25,
+                        effects: [
+                            {
+                                target: "actor",
+                                lives: -1,
+                                tags: ["physical"]
+                            }
+                        ]
+                    },
+
+                    {
+                        id: "boar_tree_safe",
+                        text:
+                            "Tu atteins une branche juste à temps. Le sanglier finit par partir.",
+                        icon: "🌳",
+                        weight: 35,
+                        effects: []
+                    }
+
+                ]
+            },
+
+            {
+                id: "boar_dodge",
+                title: "L'esquiver",
+                consequences: [
+
+                    {
+                        id: "boar_dodge_success",
+                        text:
+                            "Tu esquives la charge au dernier instant. Cette réussite te galvanise.",
+                        icon: "🛡️",
+                        weight: 20,
+                        effects: [
+                            {
+                                target: "actor",
+                                status: {
+                                    id: "courage",
+                                    duration: 2
+                                }
+                            }
+                        ]
+                    },
+
+                    {
+                        id: "boar_dodge_fail",
+                        text:
+                            "Le sanglier anticipe ton mouvement et te percute violemment.",
+                        icon: "🐗",
+                        weight: 80,
+                        effects: [
+                            {
+                                target: "actor",
+                                lives: -2,
+                                tags: ["physical"]
+                            }
+                        ]
+                    }
+
+                ]
+            },
+
+            {
+                id: "boar_resourceful",
+                title: "🛠️ Se faire passer pour un sanglier",
+                condition: {
+                    type: "status",
+                    id: "resourceful"
+                },
+                consequences: [
+                    {
+                        id: "boar_resourceful_success",
+                        text:
+                            "Personne ne sait vraiment pourquoi ça fonctionne, mais le sanglier hésite puis s'en va. Tu peux enfin souffler.",
+                        icon: "🐗",
+                        weight: 100,
+                        effects: [
+                            {
+                                target: "actor",
+                                gauge: {
+                                    id: "fatigue",
+                                    amount: -1
+                                }
+                            }
+                        ]
+                    }
+                ]
+            }
+
+        ]
+    },
+
+
+    // =====================================================
+    // 9. CABANE — INTÉRIEUR
+    // =====================================================
+
+    {
+        id: "hut_inside",
+        type: "classic",
+        category: "exploration",
+        icon: "🛖",
+        title: "Tu explores plus sérieusement la cabane",
+        description:
+            "Certaines lames du plancher semblent avoir été déplacées récemment.",
+
+        requirements: {
+            all: [
+                "hut_started"
+            ],
+            not: [
+                "hut_closed"
+            ]
+        },
+
+        choices: [
+
+            {
+                id: "hut_floor",
+                title: "Inspecter le plancher",
+                consequences: [
+
+                    {
+                        id: "hut_floor_success",
+                        text:
+                            "Sous une vieille natte, tu découvres les contours d'une trappe.",
+                        icon: "🔎",
+                        weight: 60,
+                        effects: [],
+                        narrative: {
+                            setFlags: [
+                                "hut_trapdoor_found"
+                            ],
+                            forceNextSituation:
+                                "hut_trapdoor"
+                        }
+                    },
+
+                    {
+                        id: "hut_floor_resourceful",
+                        text:
+                            "Après une longue inspection, tu comprends comment le mécanisme du plancher fonctionne.",
+                        icon: "🛠️",
+                        weight: 20,
+                        effects: [
+                            {
+                                target: "actor",
+                                gauge: {
+                                    id: "fatigue",
+                                    amount: 1
+                                }
+                            },
+                            {
+                                target: "actor",
+                                status: {
+                                    id: "resourceful",
+                                    duration: 1
+                                }
+                            }
+                        ],
+                        narrative: {
+                            setFlags: [
+                                "hut_trapdoor_found"
+                            ],
+                            forceNextSituation:
+                                "hut_trapdoor"
+                        }
+                    },
+
+                    {
+                        id: "hut_floor_fail",
+                        text:
+                            "Une lame pourrie cède et te blesse. Tu préfères quitter définitivement la cabane.",
+                        icon: "💥",
+                        weight: 20,
+                        effects: [
+                            {
+                                target: "actor",
+                                lives: -1,
+                                tags: ["physical"]
+                            }
+                        ],
+                        narrative: {
+                            setFlags: [
+                                "hut_closed"
+                            ],
+                            cancelStory: true
+                        }
+                    }
+
+                ]
+            },
+
+            {
+                id: "hut_leave",
+                title: "Quitter la cabane",
+                consequences: [
+
+                    {
+                        id: "hut_leave_safe",
+                        text:
+                            "Tu quittes la cabane et reprends ton exploration de l'île.",
+                        icon: "🚶",
+                        weight: 90,
+                        effects: [],
+                        narrative: {
+                            setFlags: [
+                                "hut_closed"
+                            ],
+                            cancelStory: true
+                        }
+                    },
+
+                    {
+                        id: "hut_leave_bad",
+                        text:
+                            "Une planche te blesse au moment de sortir.",
+                        icon: "💥",
+                        weight: 10,
+                        effects: [
+                            {
+                                target: "actor",
+                                lives: -1,
+                                tags: ["physical"]
+                            }
+                        ],
+                        narrative: {
+                            setFlags: [
+                                "hut_closed"
+                            ],
+                            cancelStory: true
+                        }
+                    }
+
+                ]
+            },
+
+            {
+                id: "hut_floor_key",
+                title: "🛠️ Chercher un mécanisme d'ouverture",
+                condition: {
+                    type: "status",
+                    id: "resourceful"
+                },
+                consequences: [
+                    {
+                        id: "hut_floor_key_success",
+                        text:
+                            "Tu trouves une vieille clé cachée entre deux lames. Elle semble correspondre à la serrure de la trappe.",
+                        icon: "🗝️",
+                        weight: 100,
+                        effects: [
+                            {
+                                target: "actor",
+                                gauge: {
+                                    id: "fatigue",
+                                    amount: -1
+                                }
+                            }
+                        ],
+                        narrative: {
+                            setFlags: [
+                                "hut_trapdoor_found",
+                                "hut_key"
+                            ],
+                            forceNextSituation:
+                                "hut_trapdoor"
+                        }
+                    }
+                ]
+            }
+
+        ]
+    },
+
+
+    // =====================================================
+    // 10. RUCHE
+    // =====================================================
 
     {
         id: "bees",
-        title: "Tu trouves une énorme ruche",
-        category: "Nourriture",
+        type: "classic",
+        category: "resource",
         icon: "🐝",
-        baseWeight: 1,
-
+        title: "Tu trouves une énorme ruche",
         description:
-            "La ruche déborde de miel. Elle déborde également d'abeilles.",
+            "Une quantité impressionnante de miel est visible, mais des centaines d'abeilles protègent la ruche.",
 
         choices: [
 
             {
                 id: "bees_honey",
-                title: "🍯 Prendre du miel",
-                description:
-                    "Le risque semble acceptable.",
-
+                title: "Prendre du miel",
                 consequences: [
 
                     {
-                        id: "bees_honey_good",
+                        id: "bees_honey_success",
                         text:
-                            "Tu réussis à récupérer du miel sans provoquer la colonie. Un miracle statistique.",
+                            "Tu récupères une belle quantité de miel sans trop déranger les abeilles.",
                         icon: "🍯",
-                        weight: 14,
-
+                        weight: 40,
                         effects: [
                             {
                                 target: "actor",
@@ -1335,17 +1370,23 @@ export const SITUATIONS = [
                             {
                                 target: "actor",
                                 removeStatus: "hungry"
+                            },
+                            {
+                                target: "actor",
+                                status: {
+                                    id: "courage",
+                                    duration: 1
+                                }
                             }
                         ]
                     },
 
                     {
-                        id: "bees_honey_bad",
+                        id: "bees_honey_fail",
                         text:
-                            "Les abeilles ne semblent absolument pas d'accord avec ton concept du partage.",
+                            "La ruche entière se retourne contre toi.",
                         icon: "🐝",
-                        weight: 86,
-
+                        weight: 60,
                         effects: [
                             {
                                 target: "actor",
@@ -1360,32 +1401,29 @@ export const SITUATIONS = [
 
             {
                 id: "bees_leave",
-                title: "🚶 Partir",
-                description:
-                    "Tu tiens beaucoup à ton visage actuel.",
-
+                title: "Partir",
                 consequences: [
 
                     {
-                        id: "bees_leave_neutral",
+                        id: "bees_leave_safe",
                         text:
-                            "Tu t'éloignes tranquillement. Pour une fois, une décision raisonnable.",
-                        icon: "😌",
-                        weight: 85,
+                            "Tu t'éloignes prudemment.",
+                        icon: "🚶",
+                        weight: 90,
                         effects: []
                     },
 
                     {
                         id: "bees_leave_bad",
                         text:
-                            "Une abeille particulièrement rancunière te suit quand même.",
-                        icon: "😑",
-                        weight: 15,
-
+                            "Quelques abeilles t'ont déjà repéré et te poursuivent.",
+                        icon: "🐝",
+                        weight: 10,
                         effects: [
                             {
                                 target: "actor",
-                                lives: -1
+                                lives: -1,
+                                tags: ["physical"]
                             }
                         ]
                     }
@@ -1395,23 +1433,18 @@ export const SITUATIONS = [
 
             {
                 id: "bees_smoke",
-                title: "🌫️ Fabriquer de la fumée",
-                description:
-                    "Utiliser de la végétation humide pour calmer temporairement les abeilles.",
-
+                title: "🛠️ Fabriquer de la fumée",
                 condition: {
                     type: "status",
                     id: "resourceful"
                 },
-
                 consequences: [
                     {
-                        id: "bees_smoke_good",
+                        id: "bees_smoke_success",
                         text:
-                            "La fumée fonctionne. Tu récupères un peu de miel sans subir la moindre piqûre.",
+                            "La fumée calme suffisamment les abeilles pour récupérer du miel sans danger.",
                         icon: "🍯",
                         weight: 100,
-
                         effects: [
                             {
                                 target: "actor",
@@ -1430,76 +1463,384 @@ export const SITUATIONS = [
     },
 
 
-    // =========================================================
-    // 11 - PLUS PROFOND DANS LA GROTTE
-    // =========================================================
+    // =====================================================
+    // 11. GROTTE — PASSAGE PROFOND
+    // =====================================================
 
     {
         id: "cave_deeper",
+        type: "classic",
+        category: "exploration",
+        icon: "🔦",
         title: "Un passage s'enfonce plus profondément dans la grotte",
-        category: "Suite",
-        icon: "🕯️",
-        baseWeight: 1,
+        description:
+            "La lumière extérieure disparaît derrière toi. Le bruit régulier de gouttes d'eau résonne dans les profondeurs.",
 
         requirements: {
             all: [
-                "cave_entered"
+                "cave_started"
             ],
             not: [
-                "cave_abandoned"
+                "cave_closed"
             ]
         },
-
-        description:
-            "Tu reconnais l'endroit exploré précédemment. Cette fois, tu remarques une galerie étroite qui descend encore plus profondément.",
 
         choices: [
 
             {
                 id: "cave_deeper_continue",
-                title: "🕯️ Continuer",
-                description:
-                    "Tu veux savoir ce qui se trouve au fond.",
-
-                narrative: {
-                    setFlags: [
-                        "cave_deep_path"
-                    ],
-                    nextSituationBoosts: [
-                        {
-                            id: "cave_lake",
-                            weight: 28
-                        }
-                    ]
-                },
-
+                title: "Continuer",
                 consequences: [
 
                     {
-                        id: "cave_deeper_continue_neutral",
+                        id: "cave_deeper_continue_safe",
                         text:
-                            "La galerie est étroite mais praticable. Tu entends de l'eau couler quelque part plus loin.",
-                        icon: "💧",
+                            "Le passage débouche finalement sur une immense cavité.",
+                        icon: "🕳️",
                         weight: 55,
                         effects: [],
-
                         narrative: {
-                            nextSituationBoosts: [
-                                {
-                                    id: "cave_lake",
-                                    weight: 42
-                                }
-                            ]
+                            setFlags: [
+                                "cave_deeper_reached"
+                            ],
+                            forceNextSituation:
+                                "cave_lake"
                         }
                     },
 
                     {
-                        id: "cave_deeper_continue_bad",
+                        id: "cave_deeper_continue_tired",
                         text:
-                            "Tu dois ramper pendant de longues minutes entre les rochers. Lorsque le passage s'élargit enfin, tu es épuisé.",
-                        icon: "🥵",
-                        weight: 35,
+                            "La progression est difficile, mais tu découvres plusieurs repères naturels qui t'aident à avancer.",
+                        icon: "🛠️",
+                        weight: 30,
+                        effects: [
+                            {
+                                target: "actor",
+                                status: {
+                                    id: "resourceful",
+                                    duration: 1
+                                }
+                            },
+                            {
+                                target: "actor",
+                                gauge: {
+                                    id: "fatigue",
+                                    amount: 1
+                                }
+                            }
+                        ],
+                        narrative: {
+                            setFlags: [
+                                "cave_deeper_reached"
+                            ],
+                            forceNextSituation:
+                                "cave_lake"
+                        }
+                    },
 
+                    {
+                        id: "cave_deeper_continue_fail",
+                        text:
+                            "Une chute de pierres te blesse. Tu rebrousses chemin avant que le passage ne devienne trop dangereux.",
+                        icon: "💥",
+                        weight: 15,
+                        effects: [
+                            {
+                                target: "actor",
+                                lives: -1,
+                                tags: ["physical"]
+                            }
+                        ],
+                        narrative: {
+                            setFlags: [
+                                "cave_closed"
+                            ],
+                            cancelStory: true
+                        }
+                    }
+
+                ]
+            },
+
+            {
+                id: "cave_deeper_back",
+                title: "Faire demi-tour",
+                consequences: [
+
+                    {
+                        id: "cave_deeper_back_safe",
+                        text:
+                            "Tu retrouves la sortie sans difficulté.",
+                        icon: "🌴",
+                        weight: 90,
+                        effects: [],
+                        narrative: {
+                            setFlags: [
+                                "cave_closed"
+                            ],
+                            cancelStory: true
+                        }
+                    },
+
+                    {
+                        id: "cave_deeper_back_bad",
+                        text:
+                            "Tu te blesses légèrement en remontant vers la sortie.",
+                        icon: "💥",
+                        weight: 10,
+                        effects: [
+                            {
+                                target: "actor",
+                                lives: -1,
+                                tags: ["physical"]
+                            }
+                        ],
+                        narrative: {
+                            setFlags: [
+                                "cave_closed"
+                            ],
+                            cancelStory: true
+                        }
+                    }
+
+                ]
+            },
+
+            {
+                id: "cave_deeper_resourceful",
+                title: "🛠️ Se repérer au bruit des gouttes d'eau",
+                condition: {
+                    type: "status",
+                    id: "resourceful"
+                },
+                consequences: [
+                    {
+                        id: "cave_deeper_resourceful_success",
+                        text:
+                            "Tu suis méthodiquement l'écho de l'eau jusqu'à une immense cavité.",
+                        icon: "💧",
+                        weight: 100,
+                        effects: [],
+                        narrative: {
+                            setFlags: [
+                                "cave_deeper_reached"
+                            ],
+                            forceNextSituation:
+                                "cave_lake"
+                        }
+                    }
+                ]
+            }
+
+        ]
+    },
+
+
+    // =====================================================
+    // 12. GROTTE — LAC SOUTERRAIN
+    // FIN DE L'HISTOIRE
+    // =====================================================
+
+    {
+        id: "cave_lake",
+        type: "classic",
+        category: "exploration",
+        icon: "💧",
+        title: "Tu découvres un lac souterrain",
+        description:
+            "Une eau parfaitement calme s'étend sous la roche. Après cette longue exploration, tu as enfin atteint le cœur de la grotte.",
+
+        requirements: {
+            all: [
+                "cave_deeper_reached"
+            ],
+            not: [
+                "cave_closed"
+            ]
+        },
+
+        choices: [
+
+            {
+                id: "cave_lake_drink",
+                title: "Boire",
+                consequences: [
+
+                    {
+                        id: "cave_lake_drink_good",
+                        text:
+                            "L'eau est fraîche et parfaitement potable. Tu récupères énormément d'énergie.",
+                        icon: "❤️",
+                        weight: 60,
+                        effects: [
+                            {
+                                target: "actor",
+                                lives: 2
+                            },
+                            {
+                                target: "actor",
+                                removeStatus: "hungry"
+                            }
+                        ],
+                        narrative: {
+                            setFlags: [
+                                "cave_completed"
+                            ],
+                            cancelStory: true
+                        }
+                    },
+
+                    {
+                        id: "cave_lake_drink_poison",
+                        text:
+                            "L'eau semblait pure, mais quelque chose ne va pas...",
+                        icon: "☠️",
+                        weight: 15,
+                        effects: [
+                            {
+                                target: "actor",
+                                status: {
+                                    id: "poisoned"
+                                }
+                            }
+                        ],
+                        narrative: {
+                            setFlags: [
+                                "cave_completed"
+                            ],
+                            cancelStory: true
+                        }
+                    },
+
+                    {
+                        id: "cave_lake_drink_neutral",
+                        text:
+                            "L'eau n'a rien d'exceptionnel, mais elle calme ta faim.",
+                        icon: "💧",
+                        weight: 25,
+                        effects: [
+                            {
+                                target: "actor",
+                                removeStatus: "hungry"
+                            }
+                        ],
+                        narrative: {
+                            setFlags: [
+                                "cave_completed"
+                            ],
+                            cancelStory: true
+                        }
+                    }
+
+                ]
+            },
+
+            {
+                id: "cave_lake_leave",
+                title: "Ne rien toucher",
+                consequences: [
+                    {
+                        id: "cave_lake_leave_success",
+                        text:
+                            "Tu résistes à la tentation. Être arrivé jusqu'ici suffit à renforcer ton courage.",
+                        icon: "🛡️",
+                        weight: 100,
+                        effects: [
+                            {
+                                target: "actor",
+                                status: {
+                                    id: "courage",
+                                    duration: 2
+                                }
+                            }
+                        ],
+                        narrative: {
+                            setFlags: [
+                                "cave_completed"
+                            ],
+                            cancelStory: true
+                        }
+                    }
+                ]
+            },
+
+            {
+                id: "cave_lake_filter",
+                title: "🛠️ Filtrer l'eau avec une chaussette",
+                condition: {
+                    type: "status",
+                    id: "resourceful"
+                },
+                consequences: [
+                    {
+                        id: "cave_lake_filter_success",
+                        text:
+                            "Ce n'est pas très élégant, mais ça fonctionne. L'eau te redonne toutes tes forces.",
+                        icon: "🧦",
+                        weight: 100,
+                        effects: [
+                            {
+                                target: "actor",
+                                lives: 2
+                            },
+                            {
+                                target: "actor",
+                                gauge: {
+                                    id: "fatigue",
+                                    amount: -1
+                                }
+                            }
+                        ],
+                        narrative: {
+                            setFlags: [
+                                "cave_completed"
+                            ],
+                            cancelStory: true
+                        }
+                    }
+                ]
+            }
+
+        ]
+    },
+
+
+    // =====================================================
+    // 13. RIVIÈRE — CASCADE
+    // =====================================================
+
+    {
+        id: "waterfall",
+        type: "classic",
+        category: "exploration",
+        icon: "🌊",
+        title: "Le bruit d'une immense cascade se rapproche",
+        description:
+            "La rivière se jette soudainement dans le vide. En contrebas, tu aperçois un bassin turquoise.",
+
+        requirements: {
+            all: [
+                "river_started"
+            ],
+            not: [
+                "river_closed"
+            ]
+        },
+
+        choices: [
+
+            {
+                id: "waterfall_descend",
+                title: "Descendre la paroi",
+                consequences: [
+
+                    {
+                        id: "waterfall_descend_tired",
+                        text:
+                            "La descente est éprouvante, mais tu atteins le pied de la cascade.",
+                        icon: "😥",
+                        weight: 50,
                         effects: [
                             {
                                 target: "actor",
@@ -1509,41 +1850,57 @@ export const SITUATIONS = [
                                 }
                             }
                         ],
-
                         narrative: {
-                            nextSituationBoosts: [
-                                {
-                                    id: "cave_lake",
-                                    weight: 18
-                                }
-                            ]
+                            setFlags: [
+                                "waterfall_descended"
+                            ],
+                            forceNextSituation:
+                                "waterfall_pool"
                         }
                     },
 
                     {
-                        id: "cave_deeper_continue_good",
+                        id: "waterfall_descend_fail",
                         text:
-                            "Tu découvres des marques gravées dans la roche qui t'aident à repérer le chemin le plus sûr.",
-                        icon: "🧭",
-                        weight: 10,
+                            "Une prise casse sous ta main. Tu chutes et renonces à descendre plus bas.",
+                        icon: "💥",
+                        weight: 20,
+                        effects: [
+                            {
+                                target: "actor",
+                                lives: -1,
+                                tags: ["physical"]
+                            }
+                        ],
+                        narrative: {
+                            setFlags: [
+                                "river_closed"
+                            ],
+                            cancelStory: true
+                        }
+                    },
 
+                    {
+                        id: "waterfall_descend_courage",
+                        text:
+                            "Tu maîtrises parfaitement la descente. L'expérience te donne confiance.",
+                        icon: "🛡️",
+                        weight: 30,
                         effects: [
                             {
                                 target: "actor",
                                 status: {
-                                    id: "resourceful",
-                                    duration: 2
+                                    id: "courage",
+                                    duration: 1
                                 }
                             }
                         ],
-
                         narrative: {
-                            nextSituationBoosts: [
-                                {
-                                    id: "cave_lake",
-                                    weight: 45
-                                }
-                            ]
+                            setFlags: [
+                                "waterfall_descended"
+                            ],
+                            forceNextSituation:
+                                "waterfall_pool"
                         }
                     }
 
@@ -1551,29 +1908,56 @@ export const SITUATIONS = [
             },
 
             {
-                id: "cave_deeper_return",
-                title: "↩️ Faire demi-tour",
-                description:
-                    "Tu préfères ne pas t'enfoncer davantage.",
-
-                narrative: {
-                    setFlags: [
-                        "cave_abandoned"
-                    ],
-                    removeFlags: [
-                        "cave_entered",
-                        "cave_deep_path"
-                    ]
-                },
-
+                id: "waterfall_back",
+                title: "Rebrousser chemin",
                 consequences: [
                     {
-                        id: "cave_deeper_return_safe",
+                        id: "waterfall_back_success",
                         text:
-                            "Tu retrouves l'entrée sans difficulté et décides d'oublier cette grotte.",
-                        icon: "🌤️",
+                            "Tu préfères ne pas risquer la descente et retournes vers la forêt.",
+                        icon: "🚶",
                         weight: 100,
-                        effects: []
+                        effects: [],
+                        narrative: {
+                            setFlags: [
+                                "river_closed"
+                            ],
+                            cancelStory: true
+                        }
+                    }
+                ]
+            },
+
+            {
+                id: "waterfall_rope",
+                title: "🛠️ Fabriquer une corde",
+                condition: {
+                    type: "status",
+                    id: "resourceful"
+                },
+                consequences: [
+                    {
+                        id: "waterfall_rope_success",
+                        text:
+                            "Ta corde improvisée rend la descente presque facile.",
+                        icon: "🪢",
+                        weight: 100,
+                        effects: [
+                            {
+                                target: "actor",
+                                gauge: {
+                                    id: "fatigue",
+                                    amount: -1
+                                }
+                            }
+                        ],
+                        narrative: {
+                            setFlags: [
+                                "waterfall_descended"
+                            ],
+                            forceNextSituation:
+                                "waterfall_pool"
+                        }
                     }
                 ]
             }
@@ -1582,48 +1966,144 @@ export const SITUATIONS = [
     },
 
 
-    // =========================================================
-    // 12 - LAC SOUTERRAIN
-    // FIN HISTOIRE GROTTE
-    // =========================================================
+    // =====================================================
+    // 14. RIVIÈRE — BASSIN
+    // FIN DE L'HISTOIRE
+    // =====================================================
 
     {
-        id: "cave_lake",
-        title: "Tu découvres un lac souterrain",
-        category: "Suite",
-        icon: "💧",
-        baseWeight: 1,
+        id: "waterfall_pool",
+        type: "classic",
+        category: "resource",
+        icon: "🏞️",
+        title: "Un bassin turquoise s'étend sous la cascade",
+        description:
+            "Après avoir suivi la rivière jusqu'ici, tu découvres un endroit presque paradisiaque.",
 
         requirements: {
             all: [
-                "cave_entered",
-                "cave_deep_path"
+                "waterfall_descended"
             ],
             not: [
-                "cave_abandoned"
+                "river_closed"
             ]
         },
-
-        description:
-            "La galerie débouche sur une immense cavité. Une eau parfaitement claire remplit presque toute la salle.",
 
         choices: [
 
             {
-                id: "cave_lake_drink",
-                title: "💧 Boire",
-                description:
-                    "L'eau semble beaucoup trop propre pour être naturelle.",
-
+                id: "pool_fish",
+                title: "Essayer de pêcher",
                 consequences: [
 
                     {
-                        id: "cave_lake_drink_good",
+                        id: "pool_fish_success",
                         text:
-                            "L'eau est fraîche et parfaitement potable. Tu récupères enfin.",
-                        icon: "😌",
-                        weight: 35,
+                            "Tu attrapes finalement un poisson. Un vrai festin.",
+                        icon: "🐟",
+                        weight: 50,
+                        effects: [
+                            {
+                                target: "actor",
+                                lives: 1
+                            },
+                            {
+                                target: "actor",
+                                removeStatus: "hungry"
+                            }
+                        ],
+                        narrative: {
+                            setFlags: [
+                                "river_completed"
+                            ],
+                            cancelStory: true
+                        }
+                    },
 
+                    {
+                        id: "pool_fish_tired",
+                        text:
+                            "Les poissons sont beaucoup plus rapides que toi. Tu t'épuises pour rien.",
+                        icon: "😥",
+                        weight: 30,
+                        effects: [
+                            {
+                                target: "actor",
+                                gauge: {
+                                    id: "fatigue",
+                                    amount: 1
+                                }
+                            }
+                        ],
+                        narrative: {
+                            setFlags: [
+                                "river_completed"
+                            ],
+                            cancelStory: true
+                        }
+                    },
+
+                    {
+                        id: "pool_fish_nothing",
+                        text:
+                            "Après une longue attente, tu abandonnes.",
+                        icon: "💧",
+                        weight: 20,
+                        effects: [],
+                        narrative: {
+                            setFlags: [
+                                "river_completed"
+                            ],
+                            cancelStory: true
+                        }
+                    }
+
+                ]
+            },
+
+            {
+                id: "pool_rest",
+                title: "Se reposer",
+                consequences: [
+                    {
+                        id: "pool_rest_success",
+                        text:
+                            "Le bruit de la cascade et l'eau fraîche te permettent de récupérer pleinement.",
+                        icon: "😴",
+                        weight: 100,
+                        effects: [
+                            {
+                                target: "actor",
+                                gauge: {
+                                    id: "fatigue",
+                                    amount: -2
+                                }
+                            }
+                        ],
+                        narrative: {
+                            setFlags: [
+                                "river_completed"
+                            ],
+                            cancelStory: true
+                        }
+                    }
+                ]
+            },
+
+            {
+                id: "pool_harpoon",
+                title: "🛠️ Fabriquer un harpon avec des pierres",
+                condition: {
+                    type: "status",
+                    id: "resourceful"
+                },
+                consequences: [
+                    {
+                        id: "pool_harpoon_success",
+                        text:
+                            "Ton harpon improvisé fonctionne étonnamment bien.",
+                        icon: "🐟",
+                        weight: 100,
                         effects: [
                             {
                                 target: "actor",
@@ -1636,442 +2116,115 @@ export const SITUATIONS = [
                                     amount: -1
                                 }
                             }
-                        ]
-                    },
+                        ],
+                        narrative: {
+                            setFlags: [
+                                "river_completed"
+                            ],
+                            cancelStory: true
+                        }
+                    }
+                ]
+            }
+
+        ]
+    },
+
+
+    // =====================================================
+    // 15. CABANE — TRAPPE
+    // =====================================================
+
+    {
+        id: "hut_trapdoor",
+        type: "classic",
+        category: "exploration",
+        icon: "🚪",
+        title: "Une trappe est cachée sous le plancher",
+        description:
+            "La vieille trappe est solidement fermée. Quelque chose se trouve forcément en dessous.",
+
+        requirements: {
+            all: [
+                "hut_trapdoor_found"
+            ],
+            not: [
+                "hut_closed"
+            ]
+        },
+
+        choices: [
+
+            {
+                id: "trapdoor_force",
+                title: "Forcer la trappe",
+                consequences: [
 
                     {
-                        id: "cave_lake_drink_bad",
+                        id: "trapdoor_force_fail",
                         text:
-                            "L'eau était claire, certes. Potable, beaucoup moins.",
-                        icon: "🤢",
-                        weight: 45,
-
+                            "Le bois casse brutalement et te blesse. Impossible de continuer.",
+                        icon: "💥",
+                        weight: 20,
                         effects: [
                             {
                                 target: "actor",
-                                status: "poisoned"
+                                lives: -1,
+                                tags: ["physical"]
                             }
-                        ]
+                        ],
+                        narrative: {
+                            setFlags: [
+                                "hut_closed"
+                            ],
+                            cancelStory: true
+                        }
                     },
 
                     {
-                        id: "cave_lake_drink_neutral",
+                        id: "trapdoor_force_resourceful",
                         text:
-                            "Le goût est étrange mais aucun effet immédiat ne se manifeste.",
-                        icon: "😐",
-                        weight: 20,
-                        effects: []
-                    }
-
-                ]
-            },
-
-            {
-                id: "cave_lake_leave",
-                title: "🚶 Ne rien toucher",
-                description:
-                    "Un lac souterrain inconnu n'est pas exactement une fontaine publique.",
-
-                narrative: {
-                    setFlags: [
-                        "cave_completed"
-                    ]
-                },
-
-                consequences: [
-                    {
-                        id: "cave_lake_leave_safe",
-                        text:
-                            "Tu mémorises l'endroit puis retournes vers la surface.",
-                        icon: "🧭",
-                        weight: 100,
-
+                            "Tu finis par comprendre comment faire levier sur le mécanisme.",
+                        icon: "🛠️",
+                        weight: 25,
                         effects: [
                             {
                                 target: "actor",
                                 status: {
                                     id: "resourceful",
-                                    duration: 2
-                                }
-                            }
-                        ]
-                    }
-                ]
-            }
-
-        ]
-    },
-
-
-    // =========================================================
-    // 13 - CASCADE
-    // SUITE RIVIÈRE
-    // =========================================================
-
-    {
-        id: "waterfall",
-        title: "Le bruit d'une immense cascade se rapproche",
-        category: "Suite",
-        icon: "🏞️",
-        baseWeight: 1,
-
-        requirements: {
-            all: [
-                "river_followed"
-            ]
-        },
-
-        description:
-            "Après avoir longé la rivière, tu arrives au sommet d'une cascade. Une petite corniche permet peut-être de descendre.",
-
-        choices: [
-
-            {
-                id: "waterfall_climb",
-                title: "🧗 Descendre la paroi",
-                description:
-                    "Ça paraît faisable... de loin.",
-
-                narrative: {
-                    setFlags: [
-                        "waterfall_descended"
-                    ],
-                    nextSituationBoosts: [
-                        {
-                            id: "waterfall_pool",
-                            weight: 28
-                        }
-                    ]
-                },
-
-                consequences: [
-
-                    {
-                        id: "waterfall_climb_neutral",
-                        text:
-                            "La descente est lente mais tu atteins le bas sans incident.",
-                        icon: "😮‍💨",
-                        weight: 45,
-
-                        effects: [
-                            {
-                                target: "actor",
-                                gauge: {
-                                    id: "fatigue",
-                                    amount: 1
-                                }
-                            }
-                        ],
-
-                        narrative: {
-                            nextSituationBoosts: [
-                                {
-                                    id: "waterfall_pool",
-                                    weight: 38
-                                }
-                            ]
-                        }
-                    },
-
-                    {
-                        id: "waterfall_climb_bad",
-                        text:
-                            "Une pierre se détache. Tu termines la descente beaucoup plus rapidement que prévu.",
-                        icon: "💥",
-                        weight: 45,
-
-                        effects: [
-                            {
-                                target: "actor",
-                                lives: -1,
-                                tags: ["physical"]
-                            }
-                        ],
-
-                        narrative: {
-                            nextSituationBoosts: [
-                                {
-                                    id: "waterfall_pool",
-                                    weight: 8
-                                }
-                            ]
-                        }
-                    },
-
-                    {
-                        id: "waterfall_climb_good",
-                        text:
-                            "Tu repères naturellement les meilleurs appuis et descends avec une facilité surprenante.",
-                        icon: "🧗",
-                        weight: 10,
-
-                        effects: [
-                            {
-                                target: "actor",
-                                status: {
-                                    id: "courage",
                                     duration: 1
                                 }
-                            }
-                        ],
-
-                        narrative: {
-                            nextSituationBoosts: [
-                                {
-                                    id: "waterfall_pool",
-                                    weight: 42
-                                }
-                            ]
-                        }
-                    }
-
-                ]
-            },
-
-            {
-                id: "waterfall_turn",
-                title: "↩️ Rebrousser chemin",
-                description:
-                    "Cette randonnée improvisée est déjà assez longue.",
-
-                narrative: {
-                    setFlags: [
-                        "river_abandoned"
-                    ],
-                    removeFlags: [
-                        "river_followed"
-                    ]
-                },
-
-                consequences: [
-                    {
-                        id: "waterfall_turn_neutral",
-                        text:
-                            "Tu repars dans la direction du camp sans prendre davantage de risques.",
-                        icon: "🥾",
-                        weight: 100,
-                        effects: []
-                    }
-                ]
-            },
-
-            {
-                id: "waterfall_rope",
-                title: "🛠️ Fabriquer une corde",
-                description:
-                    "Des lianes solides pourraient rendre la descente beaucoup plus sûre.",
-
-                condition: {
-                    type: "status",
-                    id: "resourceful"
-                },
-
-                narrative: {
-                    setFlags: [
-                        "waterfall_descended"
-                    ],
-                    nextSituationBoosts: [
-                        {
-                            id: "waterfall_pool",
-                            weight: 45
-                        }
-                    ]
-                },
-
-                consequences: [
-                    {
-                        id: "waterfall_rope_success",
-                        text:
-                            "Ton système de corde improvisé tient parfaitement. Tu atteins le bas sans difficulté.",
-                        icon: "🪢",
-                        weight: 100,
-                        effects: []
-                    }
-                ]
-            }
-
-        ]
-    },
-
-
-    // =========================================================
-    // 14 - BASSIN DE LA CASCADE
-    // =========================================================
-
-    {
-        id: "waterfall_pool",
-        title: "Un bassin turquoise s'étend sous la cascade",
-        category: "Suite",
-        icon: "💦",
-        baseWeight: 1,
-
-        requirements: {
-            all: [
-                "waterfall_descended"
-            ]
-        },
-
-        description:
-            "Au pied de la cascade, l'eau est calme. Tu distingues même plusieurs poissons près des rochers.",
-
-        choices: [
-
-            {
-                id: "waterfall_pool_fish",
-                title: "🐟 Essayer de pêcher",
-                description:
-                    "Un vrai repas commence à devenir urgent.",
-
-                consequences: [
-
-                    {
-                        id: "waterfall_pool_fish_good",
-                        text:
-                            "Après beaucoup trop de tentatives, tu attrapes enfin un poisson.",
-                        icon: "🐟",
-                        weight: 28,
-
-                        effects: [
-                            {
-                                target: "actor",
-                                lives: 1
                             },
                             {
                                 target: "actor",
-                                removeStatus: "hungry"
-                            }
-                        ]
-                    },
-
-                    {
-                        id: "waterfall_pool_fish_bad",
-                        text:
-                            "Tu glisses dans le bassin en essayant d'attraper un poisson à mains nues.",
-                        icon: "💦",
-                        weight: 42,
-
-                        effects: [
-                            {
-                                target: "actor",
                                 gauge: {
                                     id: "fatigue",
                                     amount: 1
                                 }
                             }
-                        ]
-                    },
-
-                    {
-                        id: "waterfall_pool_fish_neutral",
-                        text:
-                            "Les poissons se révèlent beaucoup plus intelligents que prévu.",
-                        icon: "😑",
-                        weight: 30,
-                        effects: []
-                    }
-
-                ]
-            },
-
-            {
-                id: "waterfall_pool_rest",
-                title: "😴 Se reposer",
-                description:
-                    "Pour une fois, le lieu semble presque paisible.",
-
-                consequences: [
-                    {
-                        id: "waterfall_pool_rest_good",
-                        text:
-                            "Tu restes quelques instants près de l'eau et récupères réellement.",
-                        icon: "😌",
-                        weight: 100,
-
-                        effects: [
-                            {
-                                target: "actor",
-                                gauge: {
-                                    id: "fatigue",
-                                    amount: -2
-                                }
-                            }
-                        ]
-                    }
-                ]
-            }
-
-        ]
-    },
-
-
-    // =========================================================
-    // 15 - TRAPPE DE LA CABANE
-    // =========================================================
-
-    {
-        id: "hut_trapdoor",
-        title: "Une trappe est cachée sous le plancher",
-        category: "Suite",
-        icon: "🚪",
-        baseWeight: 1,
-
-        requirements: {
-            all: [
-                "hut_entered",
-                "hut_floor_checked"
-            ],
-            not: [
-                "hut_abandoned"
-            ]
-        },
-
-        description:
-            "Sous plusieurs lattes déplacées, tu découvres une petite trappe métallique. Elle semble verrouillée.",
-
-        choices: [
-
-            {
-                id: "hut_trapdoor_force",
-                title: "💪 Forcer la trappe",
-                description:
-                    "Une serrure rouillée ne devrait pas résister longtemps.",
-
-                consequences: [
-
-                    {
-                        id: "hut_trapdoor_force_bad",
-                        text:
-                            "La serrure résiste. Ton outil improvisé, beaucoup moins.",
-                        icon: "🤕",
-                        weight: 65,
-
-                        effects: [
-                            {
-                                target: "actor",
-                                lives: -1,
-                                tags: ["physical"]
-                            }
-                        ]
-                    },
-
-                    {
-                        id: "hut_trapdoor_force_neutral",
-                        text:
-                            "Après plusieurs minutes, la serrure cède enfin.",
-                        icon: "🔓",
-                        weight: 35,
-                        effects: [],
-
+                        ],
                         narrative: {
                             setFlags: [
-                                "hut_trapdoor_open"
+                                "hut_cellar_open"
                             ],
-                            nextSituationBoosts: [
-                                {
-                                    id: "hut_cellar",
-                                    weight: 35
-                                }
-                            ]
+                            forceNextSituation:
+                                "hut_cellar"
+                        }
+                    },
+
+                    {
+                        id: "trapdoor_force_success",
+                        text:
+                            "Après plusieurs efforts, la serrure cède. Un escalier descend dans l'obscurité.",
+                        icon: "🕳️",
+                        weight: 55,
+                        effects: [],
+                        narrative: {
+                            setFlags: [
+                                "hut_cellar_open"
+                            ],
+                            forceNextSituation:
+                                "hut_cellar"
                         }
                     }
 
@@ -2079,11 +2232,29 @@ export const SITUATIONS = [
             },
 
             {
-                id: "hut_trapdoor_key",
-                title: "🗝️ Utiliser la clé",
-                description:
-                    "La petite clé trouvée sous le plancher pourrait enfin servir.",
+                id: "trapdoor_leave",
+                title: "Laisser la trappe",
+                consequences: [
+                    {
+                        id: "trapdoor_leave_success",
+                        text:
+                            "Tu décides que ce qui se trouve dessous peut très bien y rester.",
+                        icon: "🚶",
+                        weight: 100,
+                        effects: [],
+                        narrative: {
+                            setFlags: [
+                                "hut_closed"
+                            ],
+                            cancelStory: true
+                        }
+                    }
+                ]
+            },
 
+            {
+                id: "trapdoor_key",
+                title: "🗝️ Utiliser la clé",
                 condition: {
                     all: [
                         {
@@ -2092,51 +2263,21 @@ export const SITUATIONS = [
                         }
                     ]
                 },
-
-                narrative: {
-                    setFlags: [
-                        "hut_trapdoor_open"
-                    ],
-                    nextSituationBoosts: [
-                        {
-                            id: "hut_cellar",
-                            weight: 45
+                consequences: [
+                    {
+                        id: "trapdoor_key_success",
+                        text:
+                            "La clé tourne parfaitement dans la serrure. La trappe s'ouvre sans effort.",
+                        icon: "🗝️",
+                        weight: 100,
+                        effects: [],
+                        narrative: {
+                            setFlags: [
+                                "hut_cellar_open"
+                            ],
+                            forceNextSituation:
+                                "hut_cellar"
                         }
-                    ]
-                },
-
-                consequences: [
-                    {
-                        id: "hut_trapdoor_key_good",
-                        text:
-                            "Après quelques ajustements, tu réussis à utiliser la vieille clé et la trappe s'ouvre.",
-                        icon: "🔓",
-                        weight: 100,
-                        effects: []
-                    }
-                ]
-            },
-
-            {
-                id: "hut_trapdoor_leave",
-                title: "🚪 Laisser la trappe",
-                description:
-                    "Tu n'as aucune obligation morale d'explorer chaque trou de cette île.",
-
-                narrative: {
-                    setFlags: [
-                        "hut_abandoned"
-                    ]
-                },
-
-                consequences: [
-                    {
-                        id: "hut_trapdoor_leave_safe",
-                        text:
-                            "Tu quittes la cabane et continues ton chemin.",
-                        icon: "🚶",
-                        weight: 100,
-                        effects: []
                     }
                 ]
             }
@@ -2145,43 +2286,42 @@ export const SITUATIONS = [
     },
 
 
-    // =========================================================
-    // 16 - CAVE DE LA CABANE
-    // =========================================================
+    // =====================================================
+    // 16. CABANE — CAVE
+    // FIN DE L'HISTOIRE
+    // =====================================================
 
     {
         id: "hut_cellar",
+        type: "classic",
+        category: "exploration",
+        icon: "🕯️",
         title: "Une petite cave se trouve sous la cabane",
-        category: "Suite",
-        icon: "🕳️",
-        baseWeight: 1,
+        description:
+            "Des caisses, de vieux outils et plusieurs étagères remplissent cette pièce oubliée.",
 
         requirements: {
             all: [
-                "hut_trapdoor_open"
+                "hut_cellar_open"
+            ],
+            not: [
+                "hut_closed"
             ]
         },
-
-        description:
-            "Une échelle descend vers une pièce étroite. Des étagères couvertes de poussière longent les murs.",
 
         choices: [
 
             {
-                id: "hut_cellar_search",
-                title: "🔦 Fouiller la cave",
-                description:
-                    "Quelqu'un a stocké quelque chose ici autrefois.",
-
+                id: "cellar_search",
+                title: "Fouiller la cave",
                 consequences: [
 
                     {
-                        id: "hut_cellar_search_good",
+                        id: "cellar_search_resourceful",
                         text:
-                            "Tu trouves plusieurs outils encore fonctionnels. Sur cette île, c'est pratiquement un trésor.",
+                            "Tu récupères plusieurs objets qui pourront t'être utiles.",
                         icon: "🛠️",
-                        weight: 25,
-
+                        weight: 30,
                         effects: [
                             {
                                 target: "actor",
@@ -2190,16 +2330,21 @@ export const SITUATIONS = [
                                     duration: 2
                                 }
                             }
-                        ]
+                        ],
+                        narrative: {
+                            setFlags: [
+                                "hut_completed"
+                            ],
+                            cancelStory: true
+                        }
                     },
 
                     {
-                        id: "hut_cellar_search_food",
+                        id: "cellar_search_food",
                         text:
-                            "Quelques conserves sont encore fermées et semblent consommables.",
+                            "Tu trouves quelques conserves encore mangeables.",
                         icon: "🥫",
-                        weight: 20,
-
+                        weight: 60,
                         effects: [
                             {
                                 target: "actor",
@@ -2209,50 +2354,91 @@ export const SITUATIONS = [
                                 target: "actor",
                                 removeStatus: "hungry"
                             }
-                        ]
+                        ],
+                        narrative: {
+                            setFlags: [
+                                "hut_completed"
+                            ],
+                            cancelStory: true
+                        }
                     },
 
                     {
-                        id: "hut_cellar_search_bad",
+                        id: "cellar_search_poison",
                         text:
-                            "Une araignée de taille beaucoup trop respectable était cachée derrière les boîtes.",
-                        icon: "🕷️",
-                        weight: 35,
-
+                            "Tu respires la poussière d'un vieux produit renversé. Tu ne te sens pas bien.",
+                        icon: "☠️",
+                        weight: 10,
                         effects: [
                             {
                                 target: "actor",
-                                status: "poisoned"
+                                status: {
+                                    id: "poisoned"
+                                }
                             }
-                        ]
-                    },
-
-                    {
-                        id: "hut_cellar_search_neutral",
-                        text:
-                            "La plupart des objets ont été détruits par l'humidité.",
-                        icon: "😐",
-                        weight: 20,
-                        effects: []
+                        ],
+                        narrative: {
+                            setFlags: [
+                                "hut_completed"
+                            ],
+                            cancelStory: true
+                        }
                     }
 
                 ]
             },
 
             {
-                id: "hut_cellar_leave",
-                title: "⬆️ Remonter",
-                description:
-                    "L'air devient franchement désagréable ici-dessous.",
-
+                id: "cellar_leave",
+                title: "Remonter",
                 consequences: [
                     {
-                        id: "hut_cellar_leave_safe",
+                        id: "cellar_leave_success",
                         text:
-                            "Tu remontes et refermes la trappe derrière toi.",
-                        icon: "🪜",
+                            "Tu remontes dans la cabane et reprends ton exploration.",
+                        icon: "🚶",
                         weight: 100,
-                        effects: []
+                        effects: [],
+                        narrative: {
+                            setFlags: [
+                                "hut_completed"
+                            ],
+                            cancelStory: true
+                        }
+                    }
+                ]
+            },
+
+            {
+                id: "cellar_wall",
+                title: "🛠️ Inspecter le faux mur",
+                condition: {
+                    type: "status",
+                    id: "resourceful"
+                },
+                consequences: [
+                    {
+                        id: "cellar_wall_success",
+                        text:
+                            "Derrière le faux mur, tu découvres une réserve parfaitement conservée.",
+                        icon: "🎁",
+                        weight: 100,
+                        effects: [
+                            {
+                                target: "actor",
+                                lives: 2
+                            },
+                            {
+                                target: "actor",
+                                removeStatus: "hungry"
+                            }
+                        ],
+                        narrative: {
+                            setFlags: [
+                                "hut_completed"
+                            ],
+                            cancelStory: true
+                        }
                     }
                 ]
             }
@@ -2261,37 +2447,32 @@ export const SITUATIONS = [
     },
 
 
-    // =========================================================
-    // 17 - NOUVEAU : CHALEUR ÉCRASANTE
-    // =========================================================
+    // =====================================================
+    // 17. CHALEUR
+    // =====================================================
 
     {
         id: "desert_heatwave",
-        title: "La chaleur devient insupportable",
-        category: "Météo",
+        type: "classic",
+        category: "weather",
         icon: "☀️",
-        baseWeight: 1,
-
+        title: "La chaleur devient insupportable",
         description:
-            "Le soleil frappe sans interruption. Chaque mouvement devient plus difficile que le précédent.",
+            "Le soleil frappe sans relâche et chaque pas devient plus difficile.",
 
         choices: [
 
             {
                 id: "heatwave_continue",
-                title: "🥾 Continuer d'avancer",
-                description:
-                    "Tu veux profiter de la lumière tant qu'elle est là.",
-
+                title: "Continuer d'avancer",
                 consequences: [
 
                     {
-                        id: "heatwave_continue_bad",
+                        id: "heatwave_continue_tired",
                         text:
-                            "Tu surestimes clairement ton endurance. Tes jambes commencent à trembler.",
+                            "Tu forces beaucoup trop et sens tes forces disparaître.",
                         icon: "🥵",
-                        weight: 65,
-
+                        weight: 60,
                         effects: [
                             {
                                 target: "actor",
@@ -2304,18 +2485,21 @@ export const SITUATIONS = [
                     },
 
                     {
-                        id: "heatwave_continue_neutral",
+                        id: "heatwave_continue_good",
                         text:
-                            "Tu progresses lentement en économisant tes forces.",
-                        icon: "☀️",
-                        weight: 35,
-
+                            "Tu trouves finalement une zone plus fraîche et récupères en chemin.",
+                        icon: "❤️",
+                        weight: 40,
                         effects: [
+                            {
+                                target: "actor",
+                                lives: 1
+                            },
                             {
                                 target: "actor",
                                 gauge: {
                                     id: "fatigue",
-                                    amount: 1
+                                    amount: -1
                                 }
                             }
                         ]
@@ -2325,20 +2509,16 @@ export const SITUATIONS = [
             },
 
             {
-                id: "heatwave_rest",
-                title: "🌴 Chercher de l'ombre",
-                description:
-                    "Il est peut-être temps de respecter les lois de la thermodynamique.",
-
+                id: "heatwave_shadow",
+                title: "Chercher de l'ombre",
                 consequences: [
 
                     {
-                        id: "heatwave_rest_good",
+                        id: "heatwave_shadow_rest",
                         text:
-                            "Tu trouves un endroit ombragé et récupères pendant que le soleil descend.",
-                        icon: "😌",
+                            "Tu trouves un arbre immense et récupères à l'ombre.",
+                        icon: "🌴",
                         weight: 75,
-
                         effects: [
                             {
                                 target: "actor",
@@ -2351,12 +2531,11 @@ export const SITUATIONS = [
                     },
 
                     {
-                        id: "heatwave_rest_hungry",
+                        id: "heatwave_shadow_hungry",
                         text:
-                            "Le repos aide, mais ton ventre te rappelle brutalement que tu n'as presque rien mangé.",
+                            "Tu récupères un peu, mais la pause te rappelle à quel point tu as faim.",
                         icon: "🍖",
                         weight: 25,
-
                         effects: [
                             {
                                 target: "actor",
@@ -2369,43 +2548,65 @@ export const SITUATIONS = [
                     }
 
                 ]
+            },
+
+            {
+                id: "heatwave_resourceful",
+                title: "🛠️ Extraire l'eau contenue dans un arbre",
+                condition: {
+                    type: "status",
+                    id: "resourceful"
+                },
+                consequences: [
+                    {
+                        id: "heatwave_resourceful_success",
+                        text:
+                            "Tu récupères suffisamment d'eau pour te rafraîchir et reprendre des forces.",
+                        icon: "💧",
+                        weight: 100,
+                        effects: [
+                            {
+                                target: "actor",
+                                gauge: {
+                                    id: "fatigue",
+                                    amount: -1
+                                }
+                            }
+                        ]
+                    }
+                ]
             }
 
         ]
     },
 
 
-    // =========================================================
-    // 18 - NOUVEAU : FRUITS INCONNUS
-    // =========================================================
+    // =====================================================
+    // 18. FRUITS INCONNUS
+    // =====================================================
 
     {
         id: "desert_unknown_fruits",
-        title: "Tu découvres des fruits inconnus",
-        category: "Nourriture",
+        type: "classic",
+        category: "resource",
         icon: "🍈",
-        baseWeight: 1,
-
+        title: "Tu découvres des fruits inconnus",
         description:
-            "Un arbuste est couvert de fruits violets que tu n'as jamais vus auparavant.",
+            "Ils sont colorés, juteux... et absolument impossibles à identifier au premier regard.",
 
         choices: [
 
             {
                 id: "unknown_fruits_eat",
-                title: "😋 En goûter un",
-                description:
-                    "Ton estomac vote très clairement pour cette option.",
-
+                title: "En goûter un",
                 consequences: [
 
                     {
-                        id: "unknown_fruits_eat_good",
+                        id: "unknown_fruits_good",
                         text:
-                            "Ils sont délicieux et particulièrement nourrissants.",
+                            "Ils sont délicieux et parfaitement comestibles.",
                         icon: "😋",
-                        weight: 18,
-
+                        weight: 30,
                         effects: [
                             {
                                 target: "actor",
@@ -2414,74 +2615,80 @@ export const SITUATIONS = [
                             {
                                 target: "actor",
                                 removeStatus: "hungry"
+                            },
+                            {
+                                target: "actor",
+                                status: {
+                                    id: "courage",
+                                    duration: 1
+                                }
                             }
                         ]
                     },
 
                     {
-                        id: "unknown_fruits_eat_poison",
+                        id: "unknown_fruits_poison",
                         text:
-                            "Après quelques bouchées, tes lèvres commencent à picoter. Ce n'est probablement pas bon signe.",
+                            "Quelques minutes plus tard, ton ventre commence à se retourner.",
                         icon: "☠️",
-                        weight: 57,
-
+                        weight: 50,
                         effects: [
                             {
                                 target: "actor",
-                                status: "poisoned"
+                                status: {
+                                    id: "poisoned"
+                                }
                             }
                         ]
                     },
 
                     {
-                        id: "unknown_fruits_eat_neutral",
+                        id: "unknown_fruits_neutral",
                         text:
-                            "Le goût est absolument infect, mais tu ne sembles pas malade.",
-                        icon: "🤢",
-                        weight: 25,
+                            "Le goût est étrange, mais rien ne semble se produire.",
+                        icon: "🤨",
+                        weight: 20,
                         effects: []
                     }
 
-                ]
-            },
-
-            {
-                id: "unknown_fruits_test",
-                title: "🛠️ Tester les fruits",
-                description:
-                    "Observer la sève, l'odeur et les traces laissées par les animaux.",
-
-                condition: {
-                    type: "status",
-                    id: "resourceful"
-                },
-
-                consequences: [
-                    {
-                        id: "unknown_fruits_test_success",
-                        text:
-                            "Plusieurs indices montrent que les fruits sont toxiques. Tu évites de les manger.",
-                        icon: "🧠",
-                        weight: 100,
-                        effects: []
-                    }
                 ]
             },
 
             {
                 id: "unknown_fruits_leave",
-                title: "🚶 Continuer",
-                description:
-                    "Survivre consiste parfois simplement à ne rien mettre dans sa bouche.",
-
+                title: "Continuer",
                 consequences: [
                     {
                         id: "unknown_fruits_leave_safe",
                         text:
-                            "Tu continues ton chemin sans tenter l'expérience.",
-                        icon: "😌",
+                            "Tu préfères ne pas tester ta chance.",
+                        icon: "🚶",
                         weight: 100,
                         effects: []
+                    }
+                ]
+            },
+
+            {
+                id: "unknown_fruits_resourceful",
+                title: "🛠️ Identifier les fruits",
+                condition: {
+                    type: "status",
+                    id: "resourceful"
+                },
+                consequences: [
+                    {
+                        id: "unknown_fruits_resourceful_success",
+                        text:
+                            "Tu reconnais l'espèce : ils sont parfaitement comestibles.",
+                        icon: "🍈",
+                        weight: 100,
+                        effects: [
+                            {
+                                target: "actor",
+                                lives: 2
+                            }
+                        ]
                     }
                 ]
             }
@@ -2490,50 +2697,32 @@ export const SITUATIONS = [
     },
 
 
-    // =========================================================
-    // 19 - NOUVEAU : ÉPAVE
-    // DÉBUT MINI-HISTOIRE
-    // =========================================================
+    // =====================================================
+    // 19. ÉPAVE — DÉBUT
+    // =====================================================
 
     {
         id: "desert_shipwreck",
-        title: "Une épave apparaît à marée basse",
-        category: "Exploration",
+        type: "classic",
+        category: "exploration",
         icon: "🚢",
-        baseWeight: 1,
-
+        title: "Une épave apparaît à marée basse",
         description:
-            "À quelques dizaines de mètres du rivage, une vieille épave vient d'être révélée par la marée descendante.",
+            "La marée découvre la carcasse d'un vieux bateau. Une partie du pont est encore accessible.",
 
         choices: [
 
             {
                 id: "shipwreck_explore",
-                title: "🚢 Explorer l'épave",
-                description:
-                    "Il pourrait rester du matériel utilisable à l'intérieur.",
-
-                narrative: {
-                    setFlags: [
-                        "shipwreck_entered"
-                    ],
-                    nextSituationBoosts: [
-                        {
-                            id: "desert_shipwreck_hold",
-                            weight: 34
-                        }
-                    ]
-                },
-
+                title: "Explorer l'épave",
                 consequences: [
 
                     {
-                        id: "shipwreck_explore_good",
+                        id: "shipwreck_explore_resourceful",
                         text:
-                            "Tu récupères une corde, un couteau émoussé et quelques outils.",
+                            "Tu comprends rapidement comment te déplacer dans la structure instable et repères un accès vers la cale.",
                         icon: "🛠️",
-                        weight: 20,
-
+                        weight: 30,
                         effects: [
                             {
                                 target: "actor",
@@ -2543,24 +2732,21 @@ export const SITUATIONS = [
                                 }
                             }
                         ],
-
                         narrative: {
-                            nextSituationBoosts: [
-                                {
-                                    id: "desert_shipwreck_hold",
-                                    weight: 45
-                                }
-                            ]
+                            setFlags: [
+                                "shipwreck_started"
+                            ],
+                            forceNextSituation:
+                                "desert_shipwreck_hold"
                         }
                     },
 
                     {
-                        id: "shipwreck_explore_bad",
+                        id: "shipwreck_explore_fail",
                         text:
-                            "Une vague soulève brutalement l'épave et te projette contre la coque.",
-                        icon: "🌊",
-                        weight: 50,
-
+                            "Une partie du pont s'effondre. Tu te blesses et quittes l'épave avant qu'elle ne devienne trop dangereuse.",
+                        icon: "💥",
+                        weight: 20,
                         effects: [
                             {
                                 target: "actor",
@@ -2575,49 +2761,76 @@ export const SITUATIONS = [
                                 }
                             }
                         ],
-
                         narrative: {
-                            nextSituationBoosts: [
-                                {
-                                    id: "desert_shipwreck_hold",
-                                    weight: 8
-                                }
-                            ]
+                            setFlags: [
+                                "shipwreck_closed"
+                            ],
+                            cancelStory: true
                         }
                     },
 
                     {
-                        id: "shipwreck_explore_neutral",
+                        id: "shipwreck_explore_safe",
                         text:
-                            "L'intérieur est presque vide, mais une ouverture mène vers la cale.",
-                        icon: "🕳️",
-                        weight: 30,
-                        effects: []
+                            "Tu traverses le pont avec prudence et découvres un escalier menant sous le navire.",
+                        icon: "🔎",
+                        weight: 50,
+                        effects: [],
+                        narrative: {
+                            setFlags: [
+                                "shipwreck_started"
+                            ],
+                            forceNextSituation:
+                                "desert_shipwreck_hold"
+                        }
                     }
 
                 ]
             },
 
             {
-                id: "shipwreck_leave",
-                title: "🏖️ Rester sur la plage",
-                description:
-                    "La marée ne restera pas basse éternellement.",
-
-                narrative: {
-                    setFlags: [
-                        "shipwreck_abandoned"
-                    ]
-                },
-
+                id: "shipwreck_stay",
+                title: "Rester sur la plage",
                 consequences: [
                     {
-                        id: "shipwreck_leave_safe",
+                        id: "shipwreck_stay_safe",
                         text:
-                            "Tu observes l'épave de loin jusqu'à ce que la mer la recouvre à nouveau.",
-                        icon: "🌊",
+                            "Tu regardes la mer reprendre lentement possession de l'épave.",
+                        icon: "🏝️",
                         weight: 100,
-                        effects: []
+                        effects: [],
+                        narrative: {
+                            setFlags: [
+                                "shipwreck_closed"
+                            ],
+                            cancelStory: true
+                        }
+                    }
+                ]
+            },
+
+            {
+                id: "shipwreck_resourceful",
+                title: "🛠️ Chercher un accès sécurisé",
+                condition: {
+                    type: "status",
+                    id: "resourceful"
+                },
+                consequences: [
+                    {
+                        id: "shipwreck_resourceful_success",
+                        text:
+                            "Tu repères une petite trappe intacte qui permet de descendre directement vers la cale.",
+                        icon: "🚪",
+                        weight: 100,
+                        effects: [],
+                        narrative: {
+                            setFlags: [
+                                "shipwreck_started"
+                            ],
+                            forceNextSituation:
+                                "desert_shipwreck_hold"
+                        }
                     }
                 ]
             }
@@ -2626,46 +2839,42 @@ export const SITUATIONS = [
     },
 
 
-    // =========================================================
-    // 20 - NOUVEAU : CALE DE L'ÉPAVE
-    // =========================================================
+    // =====================================================
+    // 20. ÉPAVE — CALE
+    // FIN DE L'HISTOIRE
+    // =====================================================
 
     {
         id: "desert_shipwreck_hold",
-        title: "Une cale sombre se trouve sous le pont de l'épave",
-        category: "Suite",
+        type: "classic",
+        category: "exploration",
         icon: "⚓",
-        baseWeight: 1,
+        title: "Une cale sombre se trouve sous le pont de l'épave",
+        description:
+            "L'eau s'infiltre lentement entre les planches. Il vaut mieux ne pas rester ici trop longtemps.",
 
         requirements: {
             all: [
-                "shipwreck_entered"
+                "shipwreck_started"
             ],
             not: [
-                "shipwreck_abandoned"
+                "shipwreck_closed"
             ]
         },
-
-        description:
-            "L'eau commence déjà à remonter autour de l'épave. La cale pourrait contenir quelque chose, mais tu n'as probablement que quelques minutes.",
 
         choices: [
 
             {
                 id: "shipwreck_hold_search",
-                title: "🔦 Fouiller rapidement",
-                description:
-                    "Quelques minutes de plus. Pas davantage.",
-
+                title: "Fouiller rapidement",
                 consequences: [
 
                     {
                         id: "shipwreck_hold_food",
                         text:
-                            "Tu trouves un compartiment étanche avec quelques rations encore exploitables.",
+                            "Tu trouves quelques provisions encore protégées dans une caisse étanche.",
                         icon: "🥫",
-                        weight: 18,
-
+                        weight: 30,
                         effects: [
                             {
                                 target: "actor",
@@ -2675,16 +2884,21 @@ export const SITUATIONS = [
                                 target: "actor",
                                 removeStatus: "hungry"
                             }
-                        ]
+                        ],
+                        narrative: {
+                            setFlags: [
+                                "shipwreck_completed"
+                            ],
+                            cancelStory: true
+                        }
                     },
 
                     {
-                        id: "shipwreck_hold_tool",
+                        id: "shipwreck_hold_tools",
                         text:
-                            "Tu récupères plusieurs outils avant que l'eau ne monte davantage.",
+                            "Tu récupères plusieurs outils encore utilisables.",
                         icon: "🛠️",
-                        weight: 22,
-
+                        weight: 50,
                         effects: [
                             {
                                 target: "actor",
@@ -2693,16 +2907,21 @@ export const SITUATIONS = [
                                     duration: 2
                                 }
                             }
-                        ]
+                        ],
+                        narrative: {
+                            setFlags: [
+                                "shipwreck_completed"
+                            ],
+                            cancelStory: true
+                        }
                     },
 
                     {
-                        id: "shipwreck_hold_bad",
+                        id: "shipwreck_hold_danger",
                         text:
-                            "Une partie de la coque se déplace et te coince quelques secondes sous l'eau.",
-                        icon: "🌊",
-                        weight: 45,
-
+                            "Une caisse tombe brutalement. Tu es blessé, mais l'adrénaline te pousse à sortir rapidement.",
+                        icon: "💥",
+                        weight: 20,
                         effects: [
                             {
                                 target: "actor",
@@ -2715,17 +2934,21 @@ export const SITUATIONS = [
                                     id: "fatigue",
                                     amount: 1
                                 }
+                            },
+                            {
+                                target: "actor",
+                                status: {
+                                    id: "courage",
+                                    duration: 1
+                                }
                             }
-                        ]
-                    },
-
-                    {
-                        id: "shipwreck_hold_neutral",
-                        text:
-                            "La cale est vide. Tu repars avant que la marée ne te bloque à l'intérieur.",
-                        icon: "😮‍💨",
-                        weight: 15,
-                        effects: []
+                        ],
+                        narrative: {
+                            setFlags: [
+                                "shipwreck_completed"
+                            ],
+                            cancelStory: true
+                        }
                     }
 
                 ]
@@ -2733,18 +2956,55 @@ export const SITUATIONS = [
 
             {
                 id: "shipwreck_hold_leave",
-                title: "🏃 Sortir immédiatement",
-                description:
-                    "Le bruit de l'eau qui monte suffit à te convaincre.",
-
+                title: "Sortir immédiatement",
                 consequences: [
                     {
                         id: "shipwreck_hold_leave_safe",
                         text:
-                            "Tu rejoins la plage juste avant que les vagues ne recouvrent de nouveau l'épave.",
-                        icon: "🏖️",
+                            "Tu remontes avant que la marée ne rende la sortie dangereuse.",
+                        icon: "🚶",
                         weight: 100,
-                        effects: []
+                        effects: [],
+                        narrative: {
+                            setFlags: [
+                                "shipwreck_completed"
+                            ],
+                            cancelStory: true
+                        }
+                    }
+                ]
+            },
+
+            {
+                id: "shipwreck_hold_resourceful",
+                title: "🛠️ Inspecter les compartiments cachés",
+                condition: {
+                    type: "status",
+                    id: "resourceful"
+                },
+                consequences: [
+                    {
+                        id: "shipwreck_hold_resourceful_success",
+                        text:
+                            "Tu découvres une petite trappe contenant des provisions parfaitement protégées.",
+                        icon: "🎁",
+                        weight: 100,
+                        effects: [
+                            {
+                                target: "actor",
+                                lives: 1
+                            },
+                            {
+                                target: "actor",
+                                removeStatus: "hungry"
+                            }
+                        ],
+                        narrative: {
+                            setFlags: [
+                                "shipwreck_completed"
+                            ],
+                            cancelStory: true
+                        }
                     }
                 ]
             }
@@ -2753,37 +3013,32 @@ export const SITUATIONS = [
     },
 
 
-    // =========================================================
-    // 21 - NOUVEAU : NUIT GLACIALE
-    // =========================================================
+    // =====================================================
+    // 21. NUIT FROIDE
+    // =====================================================
 
     {
         id: "desert_cold_night",
+        type: "classic",
+        category: "weather",
+        icon: "🌙",
         title: "La température chute brutalement pendant la nuit",
-        category: "Survie",
-        icon: "🥶",
-        baseWeight: 1,
-
         description:
-            "La chaleur de la journée disparaît complètement. Ton abri laisse passer un vent glacial.",
+            "La chaleur tropicale disparaît avec le soleil. Le froid devient rapidement difficile à supporter.",
 
         choices: [
 
             {
                 id: "cold_night_fire",
-                title: "🔥 Entretenir un feu",
-                description:
-                    "Tu sacrifies une partie de ton sommeil pour rester au chaud.",
-
+                title: "Entretenir un feu",
                 consequences: [
 
                     {
-                        id: "cold_night_fire_safe",
+                        id: "cold_night_fire_tired",
                         text:
-                            "Le feu tient toute la nuit. Tu dors peu mais évites le pire.",
+                            "Tu maintiens le feu toute la nuit, mais tu ne dors presque pas.",
                         icon: "🔥",
-                        weight: 65,
-
+                        weight: 55,
                         effects: [
                             {
                                 target: "actor",
@@ -2796,12 +3051,11 @@ export const SITUATIONS = [
                     },
 
                     {
-                        id: "cold_night_fire_good",
+                        id: "cold_night_fire_rest",
                         text:
-                            "Le feu tient parfaitement et tu réussis même à dormir quelques heures.",
+                            "Le feu tient parfaitement et tu réussis à récupérer.",
                         icon: "😴",
-                        weight: 20,
-
+                        weight: 30,
                         effects: [
                             {
                                 target: "actor",
@@ -2816,10 +3070,9 @@ export const SITUATIONS = [
                     {
                         id: "cold_night_fire_bad",
                         text:
-                            "Le feu s'éteint au milieu de la nuit et tu passes des heures à trembler.",
+                            "Le feu s'éteint en pleine nuit. Le froid te fait passer une nuit terrible.",
                         icon: "🥶",
                         weight: 15,
-
                         effects: [
                             {
                                 target: "actor",
@@ -2840,19 +3093,15 @@ export const SITUATIONS = [
 
             {
                 id: "cold_night_sleep",
-                title: "😴 Essayer de dormir",
-                description:
-                    "Tu t'enroules dans tout ce que tu trouves.",
-
+                title: "Essayer de dormir",
                 consequences: [
 
                     {
                         id: "cold_night_sleep_bad",
                         text:
-                            "Tu passes une nuit catastrophique et te réveilles complètement épuisé.",
-                        icon: "🥱",
-                        weight: 65,
-
+                            "Le froid t'empêche complètement de dormir.",
+                        icon: "🥶",
+                        weight: 50,
                         effects: [
                             {
                                 target: "actor",
@@ -2865,12 +3114,11 @@ export const SITUATIONS = [
                     },
 
                     {
-                        id: "cold_night_sleep_neutral",
+                        id: "cold_night_sleep_hungry",
                         text:
-                            "La nuit est difficile mais tu réussis à dormir par intermittence.",
-                        icon: "🌙",
-                        weight: 35,
-
+                            "Tu dors par intermittence et te réveilles épuisé et affamé.",
+                        icon: "🍖",
+                        weight: 30,
                         effects: [
                             {
                                 target: "actor",
@@ -2878,10 +3126,45 @@ export const SITUATIONS = [
                                     id: "fatigue",
                                     amount: 1
                                 }
+                            },
+                            {
+                                target: "actor",
+                                status: {
+                                    id: "hungry",
+                                    duration: 1
+                                }
                             }
                         ]
+                    },
+
+                    {
+                        id: "cold_night_sleep_safe",
+                        text:
+                            "Contre toute attente, tu trouves une position suffisamment confortable pour dormir.",
+                        icon: "😴",
+                        weight: 20,
+                        effects: []
                     }
 
+                ]
+            },
+
+            {
+                id: "cold_night_resourceful",
+                title: "🛠️ Fabriquer un abri isolé",
+                condition: {
+                    type: "status",
+                    id: "resourceful"
+                },
+                consequences: [
+                    {
+                        id: "cold_night_resourceful_success",
+                        text:
+                            "Avec des feuilles et du bois sec, tu construis un abri qui conserve suffisamment la chaleur.",
+                        icon: "🛖",
+                        weight: 100,
+                        effects: []
+                    }
                 ]
             }
 
@@ -2889,38 +3172,32 @@ export const SITUATIONS = [
     },
 
 
-    // =========================================================
-    // 22 - NOUVEAU : JOURNÉE CALME
-    // RESPIRATION / ÉQUILIBRAGE
-    // =========================================================
+    // =====================================================
+    // 22. JOURNÉE CALME
+    // =====================================================
 
     {
         id: "desert_quiet_day",
-        title: "Pour une fois, l'île semble calme",
-        category: "Repos",
+        type: "classic",
+        category: "rest",
         icon: "🌴",
-        baseWeight: 0.8,
-
+        title: "Pour une fois, l'île semble calme",
         description:
-            "Aucun animal ne te poursuit, rien ne s'effondre et personne ne semble vouloir te tuer. Une situation presque inquiétante.",
+            "Aucun danger immédiat, aucun bruit inquiétant. Une occasion rare de souffler ou de préparer la suite.",
 
         choices: [
 
             {
                 id: "quiet_day_rest",
-                title: "😴 Se reposer",
-                description:
-                    "Profiter de l'occasion pendant qu'elle existe.",
-
+                title: "Se reposer",
                 consequences: [
 
                     {
                         id: "quiet_day_rest_good",
                         text:
-                            "Tu récupères réellement et te sens beaucoup plus reposé.",
-                        icon: "😌",
+                            "Tu profites pleinement de cette accalmie.",
+                        icon: "😴",
                         weight: 70,
-
                         effects: [
                             {
                                 target: "actor",
@@ -2933,12 +3210,11 @@ export const SITUATIONS = [
                     },
 
                     {
-                        id: "quiet_day_rest_neutral",
+                        id: "quiet_day_rest_small",
                         text:
-                            "Tu somnoles un moment sans vraiment parvenir à dormir.",
-                        icon: "😴",
+                            "Tu récupères un peu avant de repartir.",
+                        icon: "🌴",
                         weight: 30,
-
                         effects: [
                             {
                                 target: "actor",
@@ -2955,19 +3231,15 @@ export const SITUATIONS = [
 
             {
                 id: "quiet_day_prepare",
-                title: "🛠️ Préparer du matériel",
-                description:
-                    "Profiter du calme pour fabriquer quelques outils simples.",
-
+                title: "Préparer du matériel",
                 consequences: [
 
                     {
                         id: "quiet_day_prepare_good",
                         text:
-                            "Avec du temps et un peu de patience, tu fabriques plusieurs outils improvisés.",
+                            "Tu prends le temps de fabriquer et organiser du matériel utile.",
                         icon: "🛠️",
-                        weight: 65,
-
+                        weight: 50,
                         effects: [
                             {
                                 target: "actor",
@@ -2982,10 +3254,9 @@ export const SITUATIONS = [
                     {
                         id: "quiet_day_prepare_tired",
                         text:
-                            "Tu obtiens quelques outils corrects, mais tu y passes beaucoup plus d'énergie que prévu.",
-                        icon: "🥱",
-                        weight: 35,
-
+                            "Tu fabriques quelques outils, mais tu y dépenses beaucoup d'énergie.",
+                        icon: "😥",
+                        weight: 20,
                         effects: [
                             {
                                 target: "actor",
@@ -2999,6 +3270,23 @@ export const SITUATIONS = [
                                 gauge: {
                                     id: "fatigue",
                                     amount: 1
+                                }
+                            }
+                        ]
+                    },
+
+                    {
+                        id: "quiet_day_prepare_normal",
+                        text:
+                            "Tu prépares quelques outils simples pour la suite.",
+                        icon: "🛠️",
+                        weight: 30,
+                        effects: [
+                            {
+                                target: "actor",
+                                status: {
+                                    id: "resourceful",
+                                    duration: 1
                                 }
                             }
                         ]

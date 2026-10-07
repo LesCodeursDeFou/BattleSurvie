@@ -72,20 +72,19 @@ export class StatusManager {
 
         }
 
-
         const min =
             Number(
+                definition.minDuration ??
                 definition.duration?.min ??
                 1
             );
 
-
         const max =
             Number(
+                definition.maxDuration ??
                 definition.duration?.max ??
                 min
             );
-
 
         return (
             Math.floor(

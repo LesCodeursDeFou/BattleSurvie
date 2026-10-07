@@ -92,11 +92,11 @@ export const STATUSES = [
         category: "mental",
 
         description:
-            "Le joueur peut accéder à certains choix spéciaux ou plus sûrs.",
+            "Débloque systématiquement un troisième choix spécial dans chaque situation.",
 
-        minDuration: 2,
+        minDuration: 10,
 
-        maxDuration: 2,
+        maxDuration: 10,
 
         countsTowardLimit: true
     },

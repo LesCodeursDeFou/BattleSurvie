@@ -21,17 +21,13 @@ import {
 // DONNÉES TEMPORAIRES AVANT LANCEMENT
 // =====================================
 
-let pendingPlayerNames =
-    [];
-
+let pendingPlayerNames = [];
 
 let selectedGameMode =
     "battle_royal";
 
-
 let selectedTheme =
     "desert_island";
-
 
 let selectedMaxRounds =
     5;
@@ -54,28 +50,29 @@ const playerCount =
         "playerCount"
     );
 
-
 const btnStartGame =
     document.getElementById(
         "btnStartGame"
     );
-
 
 const btnContinue =
     document.getElementById(
         "btnContinue"
     );
 
-
 const btnNextRound =
     document.getElementById(
         "btnNextRound"
     );
 
-
 const btnRestart =
     document.getElementById(
         "btnRestart"
+    );
+
+const gameVersionElement =
+    document.getElementById(
+        "gameVersion"
     );
 
 
@@ -88,36 +85,30 @@ const btnLaunchAdventure =
         "btnLaunchAdventure"
     );
 
-
 const btnBackToSetup =
     document.getElementById(
         "btnBackToSetup"
     );
-
 
 const gameModeContainer =
     document.getElementById(
         "gameModeContainer"
     );
 
-
 const themeContainer =
     document.getElementById(
         "themeContainer"
     );
-
 
 const roundConfig =
     document.getElementById(
         "roundConfig"
     );
 
-
 const roundChoices =
     document.getElementById(
         "roundChoices"
     );
-
 
 const roundEstimate =
     document.getElementById(
@@ -146,17 +137,13 @@ function applyThemeAppearance(
 function refreshPlayerInputs() {
 
     if (!playerCount) {
-
         return;
-
     }
-
 
     const count =
         Number(
             playerCount.value
         );
-
 
     createPlayerInputs(
         count
@@ -177,24 +164,17 @@ function selectRoundCount(
         !button ||
         !roundChoices
     ) {
-
         return;
-
     }
-
 
     const rounds =
         Number(
             button.dataset.rounds
         );
 
-
     if (!rounds) {
-
         return;
-
     }
-
 
     selectedMaxRounds =
         rounds;
@@ -209,7 +189,6 @@ function selectRoundCount(
             ".round-choice"
         );
 
-
     buttons.forEach(
         item => {
 
@@ -219,7 +198,6 @@ function selectRoundCount(
 
         }
     );
-
 
     button.classList.add(
         "active"
@@ -233,60 +211,35 @@ function selectRoundCount(
     const configs = {
 
         3: {
-            name:
-                "Partie courte",
-
-            icon:
-                "⚡",
-
-            minutes:
-                8
+            name: "Partie courte",
+            icon: "⚡",
+            minutes: 8
         },
-
 
         5: {
-            name:
-                "Partie normale",
-
-            icon:
-                "🎮",
-
-            minutes:
-                15
+            name: "Partie normale",
+            icon: "🎮",
+            minutes: 15
         },
-
 
         8: {
-            name:
-                "Partie longue",
-
-            icon:
-                "🔥",
-
-            minutes:
-                25
+            name: "Partie longue",
+            icon: "🔥",
+            minutes: 25
         },
 
-
         10: {
-            name:
-                "Marathon",
-
-            icon:
-                "🏆",
-
-            minutes:
-                35
+            name: "Marathon",
+            icon: "🏆",
+            minutes: 35
         }
 
     };
-
 
     const config =
         configs[
             selectedMaxRounds
         ];
-
 
     if (
         roundEstimate &&
@@ -297,7 +250,6 @@ function selectRoundCount(
             `${config.icon} ${config.name} • ${selectedMaxRounds} tours • environ ${config.minutes} min`;
 
     }
-
 
     console.log(
         "Nombre de tours sélectionné :",
@@ -317,7 +269,6 @@ function startGame() {
     const playerNames =
         getPlayerNames();
 
-
     if (
         !Array.isArray(
             playerNames
@@ -333,13 +284,9 @@ function startGame() {
 
     }
 
-
-    // On ne démarre pas encore
-    // réellement le moteur.
-
+    // On ne démarre pas encore réellement le moteur.
     pendingPlayerNames =
         playerNames;
-
 
     showScreen(
         "gameOptions"
@@ -361,22 +308,15 @@ function selectGameMode(
         modeButton.disabled ||
         !gameModeContainer
     ) {
-
         return;
-
     }
-
 
     const mode =
         modeButton.dataset.mode;
 
-
     if (!mode) {
-
         return;
-
     }
-
 
     selectedGameMode =
         mode;
@@ -390,7 +330,6 @@ function selectGameMode(
         gameModeContainer.querySelectorAll(
             ".option-card[data-mode]"
         );
-
 
     modeButtons.forEach(
         button => {
@@ -439,7 +378,6 @@ function selectGameMode(
 
     }
 
-
     console.log(
         "Mode sélectionné :",
         selectedGameMode
@@ -461,22 +399,15 @@ function selectTheme(
         themeButton.disabled ||
         !themeContainer
     ) {
-
         return;
-
     }
-
 
     const theme =
         themeButton.dataset.theme;
 
-
     if (!theme) {
-
         return;
-
     }
-
 
     selectedTheme =
         theme;
@@ -500,7 +431,6 @@ function selectTheme(
             ".theme-card[data-theme]"
         );
 
-
     themeButtons.forEach(
         button => {
 
@@ -519,7 +449,6 @@ function selectTheme(
     themeButton.classList.add(
         "active"
     );
-
 
     console.log(
         "Thème sélectionné :",
@@ -544,11 +473,9 @@ function launchAdventure() {
             "Aucun joueur en attente."
         );
 
-
         showScreen(
             "setup"
         );
-
 
         return;
 
@@ -566,7 +493,6 @@ function launchAdventure() {
             selectedTheme,
             selectedMaxRounds
         );
-
 
     if (!gameStarted) {
 
@@ -587,11 +513,9 @@ function launchAdventure() {
             }
         );
 
-
         return;
 
     }
-
 
     console.log(
         "Partie lancée :",
@@ -647,41 +571,20 @@ function launchAdventure() {
 
 function backToSetup() {
 
-    // =====================================
-    // RESET DES CHOIX
-    // =====================================
-
     selectedGameMode =
         "battle_royal";
-
 
     selectedTheme =
         "desert_island";
 
-
     selectedMaxRounds =
         5;
-
-
-    // =====================================
-    // RETOUR AU VERT
-    // =====================================
 
     applyThemeAppearance(
         "desert_island"
     );
 
-
-    // =====================================
-    // RESET VISUEL
-    // =====================================
-
     resetGameOptions();
-
-
-    // =====================================
-    // RETOUR ACCUEIL
-    // =====================================
 
     showScreen(
         "setup"
@@ -698,7 +601,6 @@ function showCurrentTurn() {
 
     const situation =
         game.getCurrentSituation();
-
 
     if (!situation) {
 
@@ -732,7 +634,6 @@ function showCurrentTurn() {
             }
         );
 
-
         return;
 
     }
@@ -763,7 +664,6 @@ function handleChoice(
             choiceId
         );
 
-
     if (!data) {
 
         console.error(
@@ -771,11 +671,9 @@ function handleChoice(
             choiceId
         );
 
-
         return;
 
     }
-
 
     console.log(
         "Résultat de makeChoice :",
@@ -805,7 +703,6 @@ function handleChoice(
 
             }
         );
-
 
         return;
 
@@ -837,7 +734,6 @@ function handleSecretGuess(
             guessId
         );
 
-
     if (!data) {
 
         console.error(
@@ -845,21 +741,14 @@ function handleSecretGuess(
             guessId
         );
 
-
         return;
 
     }
-
 
     console.log(
         "Choix secret résolu :",
         data
     );
-
-
-    // =====================================
-    // AFFICHAGE DE LA RÉVÉLATION
-    // =====================================
 
     displayConsequence(
         data
@@ -901,7 +790,6 @@ function continueAfterConsequence() {
         return;
 
     }
-
 
     continueToNextPlayer();
 
@@ -945,27 +833,27 @@ function continueToNextPlayer() {
     // =====================================
 
     if (
-        game.isGameOver()
-    ) {
-
-        btnNextRound.textContent =
-            "Voir le classement";
-
-    }
-
-    else if (
+        game.isGameOver() ||
         game.areQuestionsExhausted()
     ) {
 
-        btnNextRound.textContent =
-            "Voir le classement";
+        if (btnNextRound) {
+
+            btnNextRound.textContent =
+                "Voir le classement";
+
+        }
 
     }
 
     else {
 
-        btnNextRound.textContent =
-            "Tour suivant";
+        if (btnNextRound) {
+
+            btnNextRound.textContent =
+                "Tour suivant";
+
+        }
 
     }
 
@@ -978,10 +866,6 @@ function continueToNextPlayer() {
 
 function nextRound() {
 
-    // =====================================
-    // PARTIE TERMINÉE
-    // =====================================
-
     if (
         game.isGameOver()
     ) {
@@ -989,7 +873,6 @@ function nextRound() {
         displayGameOver(
             game
         );
-
 
         return;
 
@@ -1003,22 +886,22 @@ function nextRound() {
     const roundStarted =
         game.startNewRound();
 
-
     if (!roundStarted) {
 
         displayGameOver(
             game
         );
 
-
         return;
 
     }
 
+    if (btnNextRound) {
 
-    btnNextRound.textContent =
-        "Tour suivant";
+        btnNextRound.textContent =
+            "Tour suivant";
 
+    }
 
     showCurrentTurn();
 
@@ -1044,7 +927,6 @@ function resetGameOptions() {
                 ".option-card[data-mode]"
             );
 
-
         modeButtons.forEach(
             button => {
 
@@ -1055,12 +937,10 @@ function resetGameOptions() {
             }
         );
 
-
         const defaultMode =
             gameModeContainer.querySelector(
                 '[data-mode="battle_royal"]'
             );
-
 
         if (
             defaultMode
@@ -1088,7 +968,6 @@ function resetGameOptions() {
                 ".theme-card[data-theme]"
             );
 
-
         themeButtons.forEach(
             button => {
 
@@ -1099,12 +978,10 @@ function resetGameOptions() {
             }
         );
 
-
         const defaultTheme =
             themeContainer.querySelector(
                 '[data-theme="desert_island"]'
             );
-
 
         if (
             defaultTheme
@@ -1141,7 +1018,6 @@ function resetGameOptions() {
     selectedMaxRounds =
         5;
 
-
     if (
         roundChoices
     ) {
@@ -1150,7 +1026,6 @@ function resetGameOptions() {
             roundChoices.querySelectorAll(
                 ".round-choice[data-rounds]"
             );
-
 
         roundButtons.forEach(
             button => {
@@ -1162,12 +1037,10 @@ function resetGameOptions() {
             }
         );
 
-
         const defaultRound =
             roundChoices.querySelector(
                 '[data-rounds="5"]'
             );
-
 
         if (
             defaultRound
@@ -1180,7 +1053,6 @@ function resetGameOptions() {
         }
 
     }
-
 
     if (
         roundEstimate
@@ -1214,14 +1086,11 @@ function restartGame() {
     pendingPlayerNames =
         [];
 
-
     selectedGameMode =
         "battle_royal";
 
-
     selectedTheme =
         "desert_island";
-
 
     selectedMaxRounds =
         5;
@@ -1240,8 +1109,12 @@ function restartGame() {
     // RESET BOUTON
     // =====================================
 
-    btnNextRound.textContent =
-        "Tour suivant";
+    if (btnNextRound) {
+
+        btnNextRound.textContent =
+            "Tour suivant";
+
+    }
 
 
     // =====================================
@@ -1284,7 +1157,6 @@ if (
 
 }
 
-
 if (
     btnStartGame
 ) {
@@ -1314,13 +1186,9 @@ if (
                     ".option-card[data-mode]"
                 );
 
-
             if (!button) {
-
                 return;
-
             }
-
 
             selectGameMode(
                 button
@@ -1349,13 +1217,9 @@ if (
                     ".theme-card[data-theme]"
                 );
 
-
             if (!button) {
-
                 return;
-
             }
-
 
             selectTheme(
                 button
@@ -1384,13 +1248,9 @@ if (
                     ".round-choice[data-rounds]"
                 );
 
-
             if (!button) {
-
                 return;
-
             }
-
 
             selectRoundCount(
                 button
@@ -1416,7 +1276,6 @@ if (
     );
 
 }
-
 
 if (
     btnBackToSetup
@@ -1445,7 +1304,6 @@ if (
 
 }
 
-
 if (
     btnNextRound
 ) {
@@ -1457,7 +1315,6 @@ if (
 
 }
 
-
 if (
     btnRestart
 ) {
@@ -1465,6 +1322,261 @@ if (
     btnRestart.addEventListener(
         "click",
         restartGame
+    );
+
+}
+
+
+// =====================================
+// VERSION DU JEU
+// =====================================
+
+function displayGameVersion(
+    version
+) {
+
+    if (
+        !gameVersionElement ||
+        !version
+    ) {
+        return;
+    }
+
+    gameVersionElement.textContent =
+        `v${version}`;
+
+}
+
+
+// =====================================
+// DEMANDER LA VERSION AU SERVICE WORKER
+// =====================================
+
+function getServiceWorkerVersion(
+    worker
+) {
+
+    if (!worker) {
+        return;
+    }
+
+    const messageChannel =
+        new MessageChannel();
+
+    messageChannel.port1.onmessage =
+        event => {
+
+            const version =
+                event.data?.version;
+
+            if (!version) {
+                return;
+            }
+
+            displayGameVersion(
+                version
+            );
+
+            console.log(
+                `BattleSurvie v${version}`
+            );
+
+        };
+
+    worker.postMessage(
+        {
+            type:
+                "GET_VERSION"
+        },
+        [
+            messageChannel.port2
+        ]
+    );
+
+}
+
+
+// =====================================
+// SERVICE WORKER
+// =====================================
+
+const canUseServiceWorker =
+
+    window.location.hostname.includes(
+        "github.io"
+    ) ||
+
+    window.location.hostname ===
+        "localhost" ||
+
+    window.location.hostname ===
+        "127.0.0.1";
+
+
+// =====================================
+// ENREGISTREMENT DU SERVICE WORKER
+// =====================================
+
+function registerServiceWorker() {
+
+    if (
+        !("serviceWorker" in navigator) ||
+        !canUseServiceWorker
+    ) {
+
+        console.log(
+            "Service Worker non utilisé dans cet environnement."
+        );
+
+        return;
+
+    }
+
+
+    window.addEventListener(
+        "load",
+        async () => {
+
+            try {
+
+                const registration =
+                    await navigator.serviceWorker.register(
+                        "./service-worker.js"
+                    );
+
+                console.log(
+                    "Service Worker enregistré"
+                );
+
+
+                // =================================
+                // VÉRIFIER UNE MISE À JOUR
+                // =================================
+
+                try {
+
+                    await registration.update();
+
+                }
+
+                catch (
+                    updateError
+                ) {
+
+                    console.warn(
+                        "Vérification de mise à jour impossible :",
+                        updateError
+                    );
+
+                }
+
+
+                // =================================
+                // ATTENDRE LE SW ACTIF
+                // =================================
+
+                const readyRegistration =
+                    await navigator.serviceWorker.ready;
+
+                const worker =
+
+                    readyRegistration.active ??
+
+                    registration.active ??
+
+                    registration.waiting ??
+
+                    registration.installing ??
+
+                    navigator.serviceWorker.controller;
+
+
+                if (
+                    worker
+                ) {
+
+                    getServiceWorkerVersion(
+                        worker
+                    );
+
+                }
+
+
+                // =================================
+                // NOUVEAU SW INSTALLÉ
+                // =================================
+
+                registration.addEventListener(
+                    "updatefound",
+                    () => {
+
+                        const newWorker =
+                            registration.installing;
+
+                        if (!newWorker) {
+                            return;
+                        }
+
+                        newWorker.addEventListener(
+                            "statechange",
+                            () => {
+
+                                if (
+                                    newWorker.state ===
+                                    "activated"
+                                ) {
+
+                                    getServiceWorkerVersion(
+                                        newWorker
+                                    );
+
+                                }
+
+                            }
+                        );
+
+                    }
+                );
+
+
+                // =================================
+                // NOUVEAU SW PREND LE CONTRÔLE
+                // =================================
+
+                navigator.serviceWorker.addEventListener(
+                    "controllerchange",
+                    () => {
+
+                        const newController =
+                            navigator.serviceWorker.controller;
+
+                        if (
+                            newController
+                        ) {
+
+                            getServiceWorkerVersion(
+                                newController
+                            );
+
+                        }
+
+                    }
+                );
+
+            }
+
+            catch (
+                error
+            ) {
+
+                console.error(
+                    "Erreur Service Worker :",
+                    error
+                );
+
+            }
+
+        }
     );
 
 }
@@ -1494,48 +1606,5 @@ showScreen(
 );
 
 
-// =====================================
-// SERVICE WORKER
-// =====================================
-
-const isGitHubPages =
-    window.location.hostname.includes(
-        "github.io"
-    );
-
-
-if (
-    "serviceWorker" in navigator &&
-    isGitHubPages
-) {
-
-    window.addEventListener(
-        "load",
-        () => {
-
-            navigator.serviceWorker
-                .register(
-                    "./service-worker.js"
-                )
-                .then(() => {
-
-                    console.log(
-                        "Service Worker enregistré"
-                    );
-
-                })
-                .catch(
-                    error => {
-
-                        console.error(
-                            "Erreur Service Worker :",
-                            error
-                        );
-
-                    }
-                );
-
-        }
-    );
-
-}
+// Service Worker + version
+registerServiceWorker();
