@@ -1,32 +1,25 @@
 // =====================================================
 // BATTLESURVIE - SERVICE WORKER
 // =====================================================
-//
-// À CHAQUE GROSSE MISE À JOUR :
-// modifier uniquement APP_VERSION.
-//
-// Exemple :
-// "14" -> "15"
-//
-// Le nom du cache sera automatiquement :
-// battlesurvie-v15
-// =====================================================
+
+import {
+    APP_VERSION
+} from "./js/version.js";
 
 
 // =====================================================
-// VERSION DE L'APPLICATION
+// CACHE
 // =====================================================
 
-const APP_VERSION =
-    "1.0.1";
-
+const CACHE_PREFIX =
+    "battlesurvie-v";
 
 const CACHE_NAME =
-    `version v${APP_VERSION}`;
+    `${CACHE_PREFIX}${APP_VERSION}`;
 
 
 // =====================================================
-// FICHIERS PRINCIPAUX À METTRE EN CACHE
+// FICHIERS À METTRE EN CACHE
 // =====================================================
 
 const FILES_TO_CACHE = [
@@ -53,6 +46,7 @@ const FILES_TO_CACHE = [
     // JS PRINCIPAL
     // -------------------------------------------------
 
+    "./js/version.js",
     "./js/main.js",
 
 
@@ -123,14 +117,6 @@ const FILES_TO_CACHE = [
 // =====================================================
 // INSTALLATION
 // =====================================================
-//
-// Chaque fichier est ajouté individuellement.
-//
-// Avantage :
-// si un fichier manque temporairement pendant le
-// développement, l'installation complète du Service
-// Worker ne plante pas.
-// =====================================================
 
 self.addEventListener(
     "install",
@@ -139,7 +125,6 @@ self.addEventListener(
         console.log(
             `[Service Worker] Installation ${CACHE_NAME}`
         );
-
 
         event.waitUntil(
 
@@ -150,7 +135,6 @@ self.addEventListener(
                         CACHE_NAME
                     );
 
-
                 await Promise.all(
 
                     FILES_TO_CACHE.map(
@@ -158,9 +142,10 @@ self.addEventListener(
 
                             try {
 
-                                // ---------------------------------
-                                // FORCER LA VERSION RÉSEAU
-                                // ---------------------------------
+                                // =================================
+                                // TOUJOURS PRENDRE LA VERSION
+                                // DISPONIBLE SUR LE SERVEUR
+                                // =================================
 
                                 const response =
                                     await fetch(
@@ -170,7 +155,6 @@ self.addEventListener(
                                                 "no-store"
                                         }
                                     );
-
 
                                 if (
                                     !response ||
@@ -183,16 +167,10 @@ self.addEventListener(
 
                                 }
 
-
-                                // ---------------------------------
-                                // AJOUT AU CACHE
-                                // ---------------------------------
-
                                 await cache.put(
                                     file,
-                                    response
+                                    response.clone()
                                 );
-
 
                                 console.log(
                                     `[Service Worker] Cache OK : ${file}`
@@ -203,6 +181,10 @@ self.addEventListener(
                             catch (
                                 error
                             ) {
+
+                                // Un fichier manquant ne doit pas
+                                // empêcher toute l'application
+                                // de s'installer.
 
                                 console.warn(
                                     `[Service Worker] Cache impossible : ${file}`,
@@ -217,9 +199,9 @@ self.addEventListener(
                 );
 
 
-                // -----------------------------------------
-                // ACTIVER IMMÉDIATEMENT LE NOUVEAU SW
-                // -----------------------------------------
+                // =================================
+                // NE PAS ATTENDRE L'ANCIEN SW
+                // =================================
 
                 await self.skipWaiting();
 
@@ -234,11 +216,6 @@ self.addEventListener(
 // =====================================================
 // ACTIVATION
 // =====================================================
-//
-// 1. Supprime les anciens caches BattleSurvie.
-// 2. Le nouveau Service Worker prend immédiatement
-//    le contrôle des pages ouvertes.
-// =====================================================
 
 self.addEventListener(
     "activate",
@@ -248,7 +225,6 @@ self.addEventListener(
             `[Service Worker] Activation ${CACHE_NAME}`
         );
 
-
         event.waitUntil(
 
             (async () => {
@@ -257,34 +233,32 @@ self.addEventListener(
                     await caches.keys();
 
 
+                // =================================
+                // SUPPRIMER LES ANCIENNES VERSIONS
+                // =================================
+
                 await Promise.all(
 
                     cacheNames.map(
                         cacheName => {
 
-                            // ---------------------------------
-                            // NE SUPPRIMER QUE NOS CACHES
-                            // ---------------------------------
-
                             if (
                                 cacheName.startsWith(
-                                    "battlesurvie-v"
+                                    CACHE_PREFIX
                                 ) &&
                                 cacheName !==
                                     CACHE_NAME
                             ) {
 
                                 console.log(
-                                    `[Service Worker] Suppression ancien cache : ${cacheName}`
+                                    `[Service Worker] Suppression : ${cacheName}`
                                 );
-
 
                                 return caches.delete(
                                     cacheName
                                 );
 
                             }
-
 
                             return Promise.resolve();
 
@@ -294,12 +268,12 @@ self.addEventListener(
                 );
 
 
-                // -----------------------------------------
-                // PRENDRE LE CONTRÔLE IMMÉDIATEMENT
-                // -----------------------------------------
+                // =================================
+                // CONTRÔLER IMMÉDIATEMENT
+                // LES PAGES OUVERTES
+                // =================================
 
                 await self.clients.claim();
-
 
                 console.log(
                     `[Service Worker] ${CACHE_NAME} actif`
@@ -319,13 +293,11 @@ self.addEventListener(
 //
 // STRATÉGIE : NETWORK FIRST
 //
-// 1. Internet est essayé en premier.
-// 2. La réponse réseau est renvoyée.
-// 3. Une copie est enregistrée dans le cache.
-// 4. Si Internet ne fonctionne pas : cache.
+// Pendant le développement :
+// - réseau en priorité
+// - cache mis à jour
+// - cache utilisé uniquement hors ligne
 //
-// Cette stratégie est pratique pendant le
-// développement de BattleSurvie.
 // =====================================================
 
 self.addEventListener(
@@ -336,9 +308,9 @@ self.addEventListener(
             event.request;
 
 
-        // -------------------------------------------------
-        // UNIQUEMENT LES REQUÊTES GET
-        // -------------------------------------------------
+        // =================================
+        // UNIQUEMENT GET
+        // =================================
 
         if (
             request.method !==
@@ -356,9 +328,9 @@ self.addEventListener(
             );
 
 
-        // -------------------------------------------------
-        // IGNORER LES AUTRES DOMAINES
-        // -------------------------------------------------
+        // =================================
+        // UNIQUEMENT NOTRE DOMAINE
+        // =================================
 
         if (
             requestUrl.origin !==
@@ -371,11 +343,9 @@ self.addEventListener(
 
 
         event.respondWith(
-
             networkFirst(
                 request
             )
-
         );
 
     }
@@ -392,9 +362,9 @@ async function networkFirst(
 
     try {
 
-        // -------------------------------------------------
-        // RÉCUPÉRER LA DERNIÈRE VERSION RÉSEAU
-        // -------------------------------------------------
+        // =================================
+        // FORCER LE RÉSEAU
+        // =================================
 
         const networkResponse =
             await fetch(
@@ -406,107 +376,113 @@ async function networkFirst(
             );
 
 
-        // -------------------------------------------------
-        // METTRE À JOUR LE CACHE
-        // -------------------------------------------------
+        // =================================
+        // ERREUR HTTP
+        // =================================
 
         if (
-            networkResponse &&
-            networkResponse.ok
+            !networkResponse ||
+            !networkResponse.ok
         ) {
 
-            try {
-
-                const cache =
-                    await caches.open(
-                        CACHE_NAME
-                    );
-
-
-                await cache.put(
-                    request,
-                    networkResponse.clone()
-                );
-
-            }
-
-            catch (
-                error
-            ) {
-
-                console.warn(
-                    "[Service Worker] Impossible de mettre à jour le cache :",
-                    request.url,
-                    error
-                );
-
-            }
+            throw new Error(
+                `HTTP ${networkResponse?.status ?? "inconnu"}`
+            );
 
         }
 
+
+        // =================================
+        // METTRE À JOUR LE CACHE
+        // =================================
+
+        try {
+
+            const cache =
+                await caches.open(
+                    CACHE_NAME
+                );
+
+            await cache.put(
+                request,
+                networkResponse.clone()
+            );
+
+        }
+
+        catch (
+            cacheError
+        ) {
+
+            console.warn(
+                "[Service Worker] Mise à jour cache impossible :",
+                request.url,
+                cacheError
+            );
+
+        }
+
+
+        // =================================
+        // RÉPONSE RÉSEAU
+        // =================================
 
         return networkResponse;
 
     }
 
     catch (
-        error
+        networkError
     ) {
 
         console.warn(
-            "[Service Worker] Réseau indisponible :",
+            "[Service Worker] Réseau indisponible, utilisation du cache :",
             request.url
         );
 
 
-        // -------------------------------------------------
-        // RECHERCHER LA RESSOURCE DANS LE CACHE
-        // -------------------------------------------------
+        // =================================
+        // RECHERCHER EXACTEMENT
+        // CETTE RESSOURCE
+        // =================================
 
         const cachedResponse =
             await caches.match(
                 request
             );
 
-
         if (
             cachedResponse
         ) {
-
-            console.log(
-                "[Service Worker] Ressource chargée depuis le cache :",
-                request.url
-            );
-
 
             return cachedResponse;
 
         }
 
 
-        // -------------------------------------------------
-        // FALLBACK POUR UNE NAVIGATION
-        // -------------------------------------------------
+        // =================================
+        // FALLBACK INDEX.HTML
+        // UNIQUEMENT POUR NAVIGATION
+        // =================================
 
         if (
             request.mode ===
             "navigate"
         ) {
 
-            const indexFallback =
-                await caches.match(
-                    "./index.html"
+            const cache =
+                await caches.open(
+                    CACHE_NAME
                 );
 
+            const indexFallback =
+                await cache.match(
+                    "./index.html"
+                );
 
             if (
                 indexFallback
             ) {
-
-                console.log(
-                    "[Service Worker] Fallback vers index.html"
-                );
-
 
                 return indexFallback;
 
@@ -515,11 +491,7 @@ async function networkFirst(
         }
 
 
-        // -------------------------------------------------
-        // AUCUNE RESSOURCE DISPONIBLE
-        // -------------------------------------------------
-
-        throw error;
+        throw networkError;
 
     }
 
@@ -527,24 +499,7 @@ async function networkFirst(
 
 
 // =====================================================
-// COMMUNICATION AVEC L'APPLICATION
-// =====================================================
-//
-// Messages disponibles :
-//
-// SKIP_WAITING
-//     Force l'activation du Service Worker.
-//
-// GET_VERSION
-//     Retourne la version actuelle de BattleSurvie.
-//
-// Exemple de réponse :
-//
-// {
-//     version: "14",
-//     cacheName: "battlesurvie-v14"
-// }
-//
+// MESSAGES
 // =====================================================
 
 self.addEventListener(
@@ -555,9 +510,9 @@ self.addEventListener(
             event.data?.type;
 
 
-        // -------------------------------------------------
+        // =================================
         // FORCER L'ACTIVATION
-        // -------------------------------------------------
+        // =================================
 
         if (
             type ===
@@ -565,73 +520,10 @@ self.addEventListener(
         ) {
 
             console.log(
-                "[Service Worker] SKIP_WAITING demandé"
+                `[Service Worker] Activation forcée de ${CACHE_NAME}`
             );
 
-
             self.skipWaiting();
-
-
-            return;
-
-        }
-
-
-        // -------------------------------------------------
-        // ENVOYER LA VERSION À MAIN.JS
-        // -------------------------------------------------
-
-        if (
-            type ===
-            "GET_VERSION"
-        ) {
-
-            const response = {
-
-                version:
-                    APP_VERSION,
-
-                cacheName:
-                    CACHE_NAME
-
-            };
-
-
-            // ---------------------------------------------
-            // RÉPONSE VIA MESSAGECHANNEL
-            // ---------------------------------------------
-
-            if (
-                event.ports &&
-                event.ports[0]
-            ) {
-
-                event.ports[0].postMessage(
-                    response
-                );
-
-
-                return;
-
-            }
-
-
-            // ---------------------------------------------
-            // FALLBACK
-            // ---------------------------------------------
-
-            if (
-                event.source
-            ) {
-
-                event.source.postMessage({
-                    type:
-                        "VERSION",
-
-                    ...response
-                });
-
-            }
 
         }
 

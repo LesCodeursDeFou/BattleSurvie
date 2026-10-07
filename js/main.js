@@ -1,3 +1,5 @@
+import { APP_VERSION } from "./version.js";
+
 import { Game } from "./game/game.js";
 
 import {
@@ -21,7 +23,8 @@ import {
 // DONNÉES TEMPORAIRES AVANT LANCEMENT
 // =====================================
 
-let pendingPlayerNames = [];
+let pendingPlayerNames =
+    [];
 
 let selectedGameMode =
     "battle_royal";
@@ -117,6 +120,35 @@ const roundEstimate =
 
 
 // =====================================
+// VERSION DU JEU
+// =====================================
+//
+// La version est affichée directement depuis
+// version.js.
+//
+// Elle ne dépend PAS du Service Worker.
+// Cela évite les problèmes d'affichage sur iOS.
+//
+
+function displayGameVersion() {
+
+    if (!gameVersionElement) {
+
+        console.warn(
+            "Élément #gameVersion introuvable."
+        );
+
+        return;
+
+    }
+
+    gameVersionElement.textContent =
+        `v${APP_VERSION}`;
+
+}
+
+
+// =====================================
 // APPARENCE DU THÈME
 // =====================================
 
@@ -137,7 +169,9 @@ function applyThemeAppearance(
 function refreshPlayerInputs() {
 
     if (!playerCount) {
+
         return;
+
     }
 
     const count =
@@ -164,7 +198,9 @@ function selectRoundCount(
         !button ||
         !roundChoices
     ) {
+
         return;
+
     }
 
     const rounds =
@@ -173,7 +209,9 @@ function selectRoundCount(
         );
 
     if (!rounds) {
+
         return;
+
     }
 
     selectedMaxRounds =
@@ -211,27 +249,47 @@ function selectRoundCount(
     const configs = {
 
         3: {
-            name: "Partie courte",
-            icon: "⚡",
-            minutes: 8
+            name:
+                "Partie courte",
+
+            icon:
+                "⚡",
+
+            minutes:
+                8
         },
 
         5: {
-            name: "Partie normale",
-            icon: "🎮",
-            minutes: 15
+            name:
+                "Partie normale",
+
+            icon:
+                "🎮",
+
+            minutes:
+                15
         },
 
         8: {
-            name: "Partie longue",
-            icon: "🔥",
-            minutes: 25
+            name:
+                "Partie longue",
+
+            icon:
+                "🔥",
+
+            minutes:
+                25
         },
 
         10: {
-            name: "Marathon",
-            icon: "🏆",
-            minutes: 35
+            name:
+                "Marathon",
+
+            icon:
+                "🏆",
+
+            minutes:
+                35
         }
 
     };
@@ -284,7 +342,6 @@ function startGame() {
 
     }
 
-    // On ne démarre pas encore réellement le moteur.
     pendingPlayerNames =
         playerNames;
 
@@ -308,14 +365,18 @@ function selectGameMode(
         modeButton.disabled ||
         !gameModeContainer
     ) {
+
         return;
+
     }
 
     const mode =
         modeButton.dataset.mode;
 
     if (!mode) {
+
         return;
+
     }
 
     selectedGameMode =
@@ -399,14 +460,18 @@ function selectTheme(
         themeButton.disabled ||
         !themeContainer
     ) {
+
         return;
+
     }
 
     const theme =
         themeButton.dataset.theme;
 
     if (!theme) {
+
         return;
+
     }
 
     selectedTheme =
@@ -545,10 +610,6 @@ function launchAdventure() {
     displayPrologue(
         game,
         () => {
-
-            // =================================
-            // PROLOGUE DU MODE
-            // =================================
 
             displayModePrologue(
                 game,
@@ -763,19 +824,8 @@ function handleSecretGuess(
 
 function continueAfterConsequence() {
 
-    // =====================================
-    // EFFETS DE FIN DE TOUR
-    // poison, malédiction, expiration...
-    // =====================================
-
     const events =
         game.processAfterCurrentTurn();
-
-
-    // =====================================
-    // AFFICHER LES CHANGEMENTS D'ÉTATS
-    // AVANT DE PASSER AU JOUEUR SUIVANT
-    // =====================================
 
     if (
         Array.isArray(events) &&
@@ -804,11 +854,6 @@ function continueToNextPlayer() {
 
     const hasNextPlayer =
         game.nextPlayer();
-
-
-    // =====================================
-    // ENCORE UN JOUEUR À FAIRE JOUER
-    // =====================================
 
     if (hasNextPlayer) {
 
@@ -877,11 +922,6 @@ function nextRound() {
         return;
 
     }
-
-
-    // =====================================
-    // DÉMARRAGE NOUVEAU TOUR
-    // =====================================
 
     const roundStarted =
         game.startNewRound();
@@ -1072,16 +1112,7 @@ function resetGameOptions() {
 
 function restartGame() {
 
-    // =====================================
-    // RESET MOTEUR
-    // =====================================
-
     game.reset();
-
-
-    // =====================================
-    // RESET TEMPORAIRE
-    // =====================================
 
     pendingPlayerNames =
         [];
@@ -1095,19 +1126,9 @@ function restartGame() {
     selectedMaxRounds =
         5;
 
-
-    // =====================================
-    // RETOUR THÈME ÎLE
-    // =====================================
-
     applyThemeAppearance(
         "desert_island"
     );
-
-
-    // =====================================
-    // RESET BOUTON
-    // =====================================
 
     if (btnNextRound) {
 
@@ -1116,24 +1137,9 @@ function restartGame() {
 
     }
 
-
-    // =====================================
-    // RESET OPTIONS
-    // =====================================
-
     resetGameOptions();
 
-
-    // =====================================
-    // RECRÉER LES INPUTS
-    // =====================================
-
     refreshPlayerInputs();
-
-
-    // =====================================
-    // RETOUR ACCUEIL
-    // =====================================
 
     showScreen(
         "setup"
@@ -1187,7 +1193,9 @@ if (
                 );
 
             if (!button) {
+
                 return;
+
             }
 
             selectGameMode(
@@ -1218,7 +1226,9 @@ if (
                 );
 
             if (!button) {
+
                 return;
+
             }
 
             selectTheme(
@@ -1249,7 +1259,9 @@ if (
                 );
 
             if (!button) {
+
                 return;
+
             }
 
             selectRoundCount(
@@ -1328,75 +1340,6 @@ if (
 
 
 // =====================================
-// VERSION DU JEU
-// =====================================
-
-function displayGameVersion(
-    version
-) {
-
-    if (
-        !gameVersionElement ||
-        !version
-    ) {
-        return;
-    }
-
-    gameVersionElement.textContent =
-        `v${version}`;
-
-}
-
-
-// =====================================
-// DEMANDER LA VERSION AU SERVICE WORKER
-// =====================================
-
-function getServiceWorkerVersion(
-    worker
-) {
-
-    if (!worker) {
-        return;
-    }
-
-    const messageChannel =
-        new MessageChannel();
-
-    messageChannel.port1.onmessage =
-        event => {
-
-            const version =
-                event.data?.version;
-
-            if (!version) {
-                return;
-            }
-
-            displayGameVersion(
-                version
-            );
-
-            console.log(
-                `BattleSurvie v${version}`
-            );
-
-        };
-
-    worker.postMessage(
-        {
-            type:
-                "GET_VERSION"
-        },
-        [
-            messageChannel.port2
-        ]
-    );
-
-}
-
-
-// =====================================
 // SERVICE WORKER
 // =====================================
 
@@ -1417,7 +1360,7 @@ const canUseServiceWorker =
 // ENREGISTREMENT DU SERVICE WORKER
 // =====================================
 
-function registerServiceWorker() {
+async function registerServiceWorker() {
 
     if (
         !("serviceWorker" in navigator) ||
@@ -1432,152 +1375,116 @@ function registerServiceWorker() {
 
     }
 
+    try {
 
-    window.addEventListener(
-        "load",
-        async () => {
+        const registration =
+            await navigator.serviceWorker.register(
+                "./service-worker.js",
+                {
+                    type:
+                        "module",
 
-            try {
-
-                const registration =
-                    await navigator.serviceWorker.register(
-                        "./service-worker.js"
-                    );
-
-                console.log(
-                    "Service Worker enregistré"
-                );
-
-
-                // =================================
-                // VÉRIFIER UNE MISE À JOUR
-                // =================================
-
-                try {
-
-                    await registration.update();
-
+                    updateViaCache:
+                        "none"
                 }
+            );
 
-                catch (
-                    updateError
-                ) {
-
-                    console.warn(
-                        "Vérification de mise à jour impossible :",
-                        updateError
-                    );
-
-                }
+        console.log(
+            `Service Worker enregistré - BattleSurvie v${APP_VERSION}`
+        );
 
 
-                // =================================
-                // ATTENDRE LE SW ACTIF
-                // =================================
+        // =================================
+        // VÉRIFIER IMMÉDIATEMENT
+        // LES MISES À JOUR
+        // =================================
 
-                const readyRegistration =
-                    await navigator.serviceWorker.ready;
+        try {
 
-                const worker =
-
-                    readyRegistration.active ??
-
-                    registration.active ??
-
-                    registration.waiting ??
-
-                    registration.installing ??
-
-                    navigator.serviceWorker.controller;
-
-
-                if (
-                    worker
-                ) {
-
-                    getServiceWorkerVersion(
-                        worker
-                    );
-
-                }
-
-
-                // =================================
-                // NOUVEAU SW INSTALLÉ
-                // =================================
-
-                registration.addEventListener(
-                    "updatefound",
-                    () => {
-
-                        const newWorker =
-                            registration.installing;
-
-                        if (!newWorker) {
-                            return;
-                        }
-
-                        newWorker.addEventListener(
-                            "statechange",
-                            () => {
-
-                                if (
-                                    newWorker.state ===
-                                    "activated"
-                                ) {
-
-                                    getServiceWorkerVersion(
-                                        newWorker
-                                    );
-
-                                }
-
-                            }
-                        );
-
-                    }
-                );
-
-
-                // =================================
-                // NOUVEAU SW PREND LE CONTRÔLE
-                // =================================
-
-                navigator.serviceWorker.addEventListener(
-                    "controllerchange",
-                    () => {
-
-                        const newController =
-                            navigator.serviceWorker.controller;
-
-                        if (
-                            newController
-                        ) {
-
-                            getServiceWorkerVersion(
-                                newController
-                            );
-
-                        }
-
-                    }
-                );
-
-            }
-
-            catch (
-                error
-            ) {
-
-                console.error(
-                    "Erreur Service Worker :",
-                    error
-                );
-
-            }
+            await registration.update();
 
         }
-    );
+
+        catch (
+            error
+        ) {
+
+            console.warn(
+                "Vérification du Service Worker impossible :",
+                error
+            );
+
+        }
+
+
+        // =================================
+        // SI UN WORKER ATTEND DÉJÀ
+        // =================================
+
+        if (
+            registration.waiting
+        ) {
+
+            registration.waiting.postMessage({
+                type:
+                    "SKIP_WAITING"
+            });
+
+        }
+
+
+        // =================================
+        // NOUVELLE VERSION DÉTECTÉE
+        // =================================
+
+        registration.addEventListener(
+            "updatefound",
+            () => {
+
+                const newWorker =
+                    registration.installing;
+
+                if (!newWorker) {
+
+                    return;
+
+                }
+
+                newWorker.addEventListener(
+                    "statechange",
+                    () => {
+
+                        if (
+                            newWorker.state ===
+                            "installed" &&
+                            navigator.serviceWorker.controller
+                        ) {
+
+                            newWorker.postMessage({
+                                type:
+                                    "SKIP_WAITING"
+                            });
+
+                        }
+
+                    }
+                );
+
+            }
+        );
+
+    }
+
+    catch (
+        error
+    ) {
+
+        console.error(
+            "Erreur Service Worker :",
+            error
+        );
+
+    }
 
 }
 
@@ -1585,6 +1492,10 @@ function registerServiceWorker() {
 // =====================================
 // INITIALISATION
 // =====================================
+
+// Version
+displayGameVersion();
+
 
 // Thème visuel par défaut
 applyThemeAppearance(
@@ -1606,5 +1517,15 @@ showScreen(
 );
 
 
-// Service Worker + version
-registerServiceWorker();
+// =====================================
+// SERVICE WORKER APRÈS CHARGEMENT
+// =====================================
+
+window.addEventListener(
+    "load",
+    () => {
+
+        registerServiceWorker();
+
+    }
+);
